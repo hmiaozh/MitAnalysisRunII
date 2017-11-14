@@ -15,16 +15,17 @@
 
 void testTrigger(){
 
-const int nTrgBinTestPt1  = 5; Float_t xTrgBinTestPt1[nTrgBinTestPt1+1]   = {25,30,35,45,50,10000};
-const int nTrgBinTestPt2  = 7; Float_t xTrgBinTestPt2[nTrgBinTestPt2+1]   = {10,15,25,30,35,45,50,10000};
-const int nTrgBinTestEta1 = 9; Float_t xTrgBinTestEta1[nTrgBinTestEta1+1] = {-2.5,-2.3,-2.2,-2.1,-1.7,1.7,2.1,2.2,2.3,2.5};
-const int nTrgBinTestEta2 = 9; Float_t xTrgBinTestEta2[nTrgBinTestEta2+1] = {-2.5,-2.3,-2.2,-2.1,-1.7,1.7,2.1,2.2,2.3,2.5};
+const int nTrgBinTestPt1  =  5; Float_t xTrgBinTestPt1[nTrgBinTestPt1+1]   = {25,30,35,45,50,10000};
+const int nTrgBinTestPt2  =  7; Float_t xTrgBinTestPt2[nTrgBinTestPt2+1]   = {10,15,25,30,35,45,50,10000};
+const int nTrgBinTestEta1 = 11; Float_t xTrgBinTestEta1[nTrgBinTestEta1+1] = {-2.5,-2.3,-2.2,-2.1,-1.7,-1.5,1.5,1.7,2.1,2.2,2.3,2.5};
+const int nTrgBinTestEta2 = 11; Float_t xTrgBinTestEta2[nTrgBinTestEta2+1] = {-2.5,-2.3,-2.2,-2.1,-1.7,-1.5,1.5,1.7,2.1,2.2,2.3,2.5};
 
 TH1D *hDTrgBinTestPt1  = new TH1D(Form("hDTrgBinTestPt1"),  Form("hDTrgBinTestPt1"),  nTrgBinTestPt1,  xTrgBinTestPt1);
 TH1D *hDTrgBinTestPt2  = new TH1D(Form("hDTrgBinTestPt2"),  Form("hDTrgBinTestPt2"),  nTrgBinTestPt2,  xTrgBinTestPt2);
 TH1D *hDTrgBinTestEta1 = new TH1D(Form("hDTrgBinTestEta1"), Form("hDTrgBinTestEta1"), nTrgBinTestEta1, xTrgBinTestEta1);
 TH1D *hDTrgBinTestEta2 = new TH1D(Form("hDTrgBinTestEta2"), Form("hDTrgBinTestEta2"), nTrgBinTestEta2, xTrgBinTestEta2);
 
+// to be removed if using auxiliar_old
 double trgEff[2][2][nTrgBinPt1][nTrgBinPt2][nTrgBinEta1][nTrgBinEta2];
 initialize_trgEff(trgEff);
 

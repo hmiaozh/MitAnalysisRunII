@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Thu Jun 29 19:14:55 2017 by ROOT version 6.06/01
+// Sat Nov 11 15:51:46 2017 by ROOT version 6.06/01
 // from TTree events/events
-// found on file: /afs/cern.ch/work/c/ceballos/public/samples/panda/v_004_0/finerptbin/DYJetsToLL_M-50_NLO.root
+// found on file: /data/t3home000/ceballos/panda/v_005_0/qqWW.root
 //////////////////////////////////////////////////////////
 
 #ifndef pandaFlat_h
@@ -77,6 +77,14 @@ public :
    Float_t         looseLep2Phi;
    Float_t         looseLep3Phi;
    Float_t         looseLep4Phi;
+   Float_t         looseLep1RegPt;
+   Float_t         looseLep2RegPt;
+   Float_t         looseLep3RegPt;
+   Float_t         looseLep4RegPt;
+   Float_t         looseLep1SmePt;
+   Float_t         looseLep2SmePt;
+   Float_t         looseLep3SmePt;
+   Float_t         looseLep4SmePt;
    Int_t           nJet;
    Int_t           jetNLBtags;
    Int_t           jetNMBtags;
@@ -242,6 +250,14 @@ public :
    TBranch        *b_looseLep2Phi;   //!
    TBranch        *b_looseLep3Phi;   //!
    TBranch        *b_looseLep4Phi;   //!
+   TBranch        *b_looseLep1RegPt;   //!
+   TBranch        *b_looseLep2RegPt;   //!
+   TBranch        *b_looseLep3RegPt;   //!
+   TBranch        *b_looseLep4RegPt;   //!
+   TBranch        *b_looseLep1SmePt;   //!
+   TBranch        *b_looseLep2SmePt;   //!
+   TBranch        *b_looseLep3SmePt;   //!
+   TBranch        *b_looseLep4SmePt;   //!
    TBranch        *b_nJet;   //!
    TBranch        *b_jetNLBtags;   //!
    TBranch        *b_jetNMBtags;   //!
@@ -370,9 +386,9 @@ pandaFlat::pandaFlat(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/afs/cern.ch/work/c/ceballos/public/samples/panda/v_004_0/finerptbin/DYJetsToLL_M-50_NLO.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/t3home000/ceballos/panda/v_005_0/qqWW.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/afs/cern.ch/work/c/ceballos/public/samples/panda/v_004_0/finerptbin/DYJetsToLL_M-50_NLO.root");
+         f = new TFile("/data/t3home000/ceballos/panda/v_005_0/qqWW.root");
       }
       f->GetObject("events",tree);
 
@@ -476,6 +492,14 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("looseLep2Phi", &looseLep2Phi, &b_looseLep2Phi);
    fChain->SetBranchAddress("looseLep3Phi", &looseLep3Phi, &b_looseLep3Phi);
    fChain->SetBranchAddress("looseLep4Phi", &looseLep4Phi, &b_looseLep4Phi);
+   fChain->SetBranchAddress("looseLep1RegPt", &looseLep1RegPt, &b_looseLep1RegPt);
+   fChain->SetBranchAddress("looseLep2RegPt", &looseLep2RegPt, &b_looseLep2RegPt);
+   fChain->SetBranchAddress("looseLep3RegPt", &looseLep3RegPt, &b_looseLep3RegPt);
+   fChain->SetBranchAddress("looseLep4RegPt", &looseLep4RegPt, &b_looseLep4RegPt);
+   fChain->SetBranchAddress("looseLep1SmePt", &looseLep1SmePt, &b_looseLep1SmePt);
+   fChain->SetBranchAddress("looseLep2SmePt", &looseLep2SmePt, &b_looseLep2SmePt);
+   fChain->SetBranchAddress("looseLep3SmePt", &looseLep3SmePt, &b_looseLep3SmePt);
+   fChain->SetBranchAddress("looseLep4SmePt", &looseLep4SmePt, &b_looseLep4SmePt);
    fChain->SetBranchAddress("nJet", &nJet, &b_nJet);
    fChain->SetBranchAddress("jetNLBtags", &jetNLBtags, &b_jetNLBtags);
    fChain->SetBranchAddress("jetNMBtags", &jetNMBtags, &b_jetNMBtags);
