@@ -65,7 +65,7 @@ int whichAnaFlow = 0
     else {return;}
   }
 
-  TFile *fLepton_Eta_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_eta_sf_37ifb_ori.root"));
+  TFile *fLepton_Eta_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_eta_sf_37ifb.root"));
   TH1D* scalefactors_Muon_Eta = (TH1D*)fLepton_Eta_SF->Get("scalefactors_Muon_Eta"); scalefactors_Muon_Eta->SetDirectory(0);
   TH1D* scalefactors_Electron_Eta = (TH1D*)fLepton_Eta_SF->Get("scalefactors_Electron_Eta"); scalefactors_Electron_Eta->SetDirectory(0);
   fLepton_Eta_SF->Close();
@@ -257,6 +257,8 @@ int whichAnaFlow = 0
           eff = TMath::Min(num_HLT_Muon[ncha]->GetBinContent(i,j)/den_HLT_Muon[ncha]->GetBinContent(i,j),1.0);
           unc = sqrt(eff*(1-eff)/den_HLT_Muon[ncha]->GetBinContent(i,j));
 	}
+	if(ncha == 0 && (abs(eff_HLT_Muon[ncha]->GetXaxis()->GetBinLowEdge(i)+2.4)<0.001 ||
+	                 abs(eff_HLT_Muon[ncha]->GetXaxis()->GetBinLowEdge(i)-2.3)<0.001)) eff = eff * 0.97;
         eff_HLT_Muon[ncha]->SetBinContent(i,j,eff);
         eff_HLT_Muon[ncha]->SetBinError  (i,j,unc);
 	if(ncha == 0) printf("data = "); else printf("mc = ");
@@ -275,6 +277,11 @@ int whichAnaFlow = 0
           eff = TMath::Min(num_HLT_Electron[ncha]->GetBinContent(i,j)/den_HLT_Electron[ncha]->GetBinContent(i,j),1.0);
           unc = sqrt(eff*(1-eff)/den_HLT_Electron[ncha]->GetBinContent(i,j));
 	}
+	if     (ncha == 0 && abs(eff_HLT_Electron[ncha]->GetXaxis()->GetBinLowEdge(i)+2.4)<0.001) eff = eff * 0.91;
+	else if(ncha == 0 && abs(eff_HLT_Electron[ncha]->GetXaxis()->GetBinLowEdge(i)+2.3)<0.001) eff = eff * 0.95;
+	else if(ncha == 0 && abs(eff_HLT_Electron[ncha]->GetXaxis()->GetBinLowEdge(i)+2.2)<0.001) eff = eff * 0.98;
+	else if(ncha == 0 && abs(eff_HLT_Electron[ncha]->GetXaxis()->GetBinLowEdge(i)-2.1)<0.001) eff = eff * 0.96;
+	else if(ncha == 0 && abs(eff_HLT_Electron[ncha]->GetXaxis()->GetBinLowEdge(i)-2.2)<0.001) eff = eff * 0.97;
         eff_HLT_Electron[ncha]->SetBinContent(i,j,eff);
         eff_HLT_Electron[ncha]->SetBinError  (i,j,unc);
  	if(ncha == 0) printf("data = "); else printf("mc = ");
