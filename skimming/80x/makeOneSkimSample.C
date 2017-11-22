@@ -38,11 +38,12 @@
 // filterType == -1 ==> all events included in the skimmed ntuple
 
 void makeOneSkimSample(
- TString input_file     = "nero_old.root",
- TString outputFileName = "nero_new.root",
- TString processName    = "data",
- Int_t   filterType     = 0,
- Int_t   applyWeights   = 1
+ TString input_file         = "nero_old.root",
+ TString outputFileName     = "nero_new.root",
+ TString processName        = "data",
+ Int_t   filterType         = 0,
+ Int_t   applyWeights       = 1,
+ bool doReject0WeightEvents = false
  ){
 
   bool fillPDFInfo = true;
@@ -144,7 +145,9 @@ void makeOneSkimSample(
     }
   }
 
-  UInt_t N_all  = the_input_all->GetEntries();
+  if(doReject0WeightEvents == true && the_input_all->GetEntries() != the_input_tree->GetEntries()) {printf("doReject0WeightEvents can not be true\n"); doReject0WeightEvents = false;}
+
+  UInt_t N_all  = 0;
   UInt_t N_pass = 0;
   UInt_t Filter_pass[totalNumberSkims] = {0,0,0,0,0,0,0,0};
   Double_t sumAllEvents = 0;
@@ -152,10 +155,15 @@ void makeOneSkimSample(
   Double_t sumPassSelection[5] = {0,0,0,0,0};
   for (int i=0; i<the_input_all->GetEntries(); ++i) {
     the_input_all->GetEntry(i);
+    if(doReject0WeightEvents == true) the_input_tree->GetEntry(i);
     if(i%100000==0) printf("eventsAll %d out of %d\n",i,(int)the_input_all->GetEntries());
+    if(doReject0WeightEvents == true && eventMonteCarlo.mcWeight == 0) continue;
+    //if(doReject0WeightEvents == true) eventAll0.mcWeight = (double)(*eventMonteCarlo.pdfRwgt)[164]/(*eventMonteCarlo.pdfRwgt)[103];
+    if(doReject0WeightEvents == true) eventAll0.mcWeight = (double)(*eventMonteCarlo.pdfRwgt)[164];
     if(processName.CompareTo("data") != 0 && eventAll0.mcWeight == 0) {assert(0); printf("PROBLEM, event weight == 0\n"); return;}
     if(processName.CompareTo("data") != 0) sumAllEvents = sumAllEvents + eventAll0.mcWeight;
     else                                   sumAllEvents = sumAllEvents + 1.0;
+    N_all++;
     normalizedTree0->Fill(); 
   }
 
@@ -171,6 +179,8 @@ void makeOneSkimSample(
   for (int i=0; i<the_input_tree->GetEntries(); ++i) {
     the_input_tree->GetEntry(i);
     if(i%100000==0) printf("event %d out of %d\n",i,(int)the_input_tree->GetEntries());
+
+    if(doReject0WeightEvents == true && eventMonteCarlo.mcWeight == 0) continue;
 
     // Begin gen fiducial selection
     Int_t countSelectedGenLeptons = 0;
@@ -474,6 +484,9 @@ void makeOneSkimSample(
     N_pass++;
 
     the_SelBit_tree.Fill(); 
+
+    //if(doReject0WeightEvents == true) eventMonteCarlo.mcWeight = (double)(*eventMonteCarlo.pdfRwgt)[164]/(*eventMonteCarlo.pdfRwgt)[103];
+    if(doReject0WeightEvents == true) eventMonteCarlo.mcWeight = (double)(*eventMonteCarlo.pdfRwgt)[164];
 
     if(eventMonteCarlo.mcWeight == 0 && processName.CompareTo("data") != 0) {printf("PROBLEM WIH WEIGTHS\n");return;}
 

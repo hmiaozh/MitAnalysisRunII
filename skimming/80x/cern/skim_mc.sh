@@ -111,6 +111,11 @@ root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/WG
 root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_0000.root\",\"$OUTPUTDIR/${PREFIX}ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root\",\"zllg\",$1\)
 root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0000.root\",\"$OUTPUTDIR/${PREFIX}WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root\",\"wln\",$1\)
 
+root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/WWTo2L2Nu_MWW-0To400_aTGC_13TeV-amcatnloFXFX-madspin-pythia8_0000.root\",\"$OUTPUTDIR/${PREFIX}WWTo2L2Nu_MWW-0To400_aTGC_13TeV-amcatnloFXFX-madspin-pythia8.root\",\"wwlnln_amcnlo_000To400\",$1\)
+root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/WWTo2L2Nu_MWW-400To600_aTGC_13TeV-amcatnloFXFX-madspin-pythia8_0000.root\",\"$OUTPUTDIR/${PREFIX}WWTo2L2Nu_MWW-400To600_aTGC_13TeV-amcatnloFXFX-madspin-pythia8.root\",\"wwlnln_amcnlo_400To600\",$1\)
+root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/WWTo2L2Nu_MWW-600To800_aTGC_13TeV-amcatnloFXFX-madspin-pythia8_0000.root\",\"$OUTPUTDIR/${PREFIX}WWTo2L2Nu_MWW-600To800_aTGC_13TeV-amcatnloFXFX-madspin-pythia8.root\",\"wwlnln_amcnlo_600To800\",$1\)
+root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/WWTo2L2Nu_MWW-800ToInf_aTGC_13TeV-amcatnloFXFX-madspin-pythia8_0000.root\",\"$OUTPUTDIR/${PREFIX}WWTo2L2Nu_MWW-800ToInf_aTGC_13TeV-amcatnloFXFX-madspin-pythia8.root\",\"wwlnln_amcnlo_800ToInf\",$1\)
+
 root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/WWTo2L2Nu_13TeV-powheg-CUETP8M1Down_0000.root\",\"$OUTPUTDIR/${PREFIX}WWTo2L2Nu_13TeV-powheg-CUETP8M1Down.root\",\"wwlnln\",$1\)
 root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/WWTo2L2Nu_13TeV-powheg-CUETP8M1Up_0000.root\",\"$OUTPUTDIR/${PREFIX}WWTo2L2Nu_13TeV-powheg-CUETP8M1Up.root\",\"wwlnln\",$1\)
 root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/WWTo2L2Nu_13TeV-powheg_0000.root\",\"$OUTPUTDIR/${PREFIX}WWTo2L2Nu_13TeV-powheg.root\",\"wwlnln\",$1\)
