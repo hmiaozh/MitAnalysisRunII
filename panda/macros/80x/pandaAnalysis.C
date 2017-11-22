@@ -18,6 +18,8 @@
 #include "MitAnalysisRunII/panda/macros/80x/auxiliar.h"
 #include "MitAnalysisRunII/panda/macros/80x/common.h"
 
+const bool isSingleLeptonAna = false;
+
 void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, bool isMIT=true)
 {
 
@@ -151,12 +153,20 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, bool isMIT=true)
                                                                               28,  30, 32,  35, 37,  40,43,  48, 52, 59, 65, 75, 86,100,120,140,160, 175, 190, 205,
                                                                              220, 235,250, 275,300, 350,400,450,500,750,1500};
 
+  const int nBinHLTRap = 7;
+  TH1D *eff_HLT_Rap;
+  TH2D *eff_HLT_Muon[nBinHLTRap];
+  TH2D *eff_HLT_Electron[nBinHLTRap];
   TFile *feff_hlt = TFile::Open(Form("MitAnalysisRunII/data/80x/efficiency_hlt_80x.root"));
-  TH2D* eff_HLT_Muon     = (TH2D*)feff_hlt->Get("eff_HLT_Muon_0");     eff_HLT_Muon    ->SetDirectory(0);
-  TH2D* eff_HLT_Electron = (TH2D*)feff_hlt->Get("eff_HLT_Electron_0"); eff_HLT_Electron->SetDirectory(0);
+  eff_HLT_Rap = (TH1D*)feff_hlt->Get("eff_HLT_Rap"); eff_HLT_Rap->SetDirectory(0);
+  for(int k=0; k<nBinHLTRap; k++){
+    eff_HLT_Muon[k]     = (TH2D*)feff_hlt->Get(Form("eff_HLT_Muon_%d_0",k));     eff_HLT_Muon[k]    ->SetDirectory(0);
+    eff_HLT_Electron[k] = (TH2D*)feff_hlt->Get(Form("eff_HLT_Electron_%d_0",k)); eff_HLT_Electron[k]->SetDirectory(0);
+  }
   feff_hlt->Close();
 
   TFile *fLepton_Eta_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_eta_sf_37ifb_ori.root"));
+  if(isSingleLeptonAna == true) fLepton_Eta_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_eta_sf_37ifb.root"));
   TH1D* scalefactors_Muon_Eta = (TH1D*)fLepton_Eta_SF->Get("scalefactors_Muon_Eta"); scalefactors_Muon_Eta->SetDirectory(0);
   TH1D* scalefactors_Electron_Eta = (TH1D*)fLepton_Eta_SF->Get("scalefactors_Electron_Eta"); scalefactors_Electron_Eta->SetDirectory(0);
   fLepton_Eta_SF->Close();
@@ -197,8 +207,8 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, bool isMIT=true)
                               scalefactors_Medium_Electron              ->GetYaxis()->GetBinCenter(scalefactors_Medium_Electron		     ->GetNbinsY()),
                               scalefactors_Medium_Muon_stat_error_hi    ->GetYaxis()->GetBinCenter(scalefactors_Medium_Muon_stat_error_hi    ->GetNbinsY()),
 		              scalefactors_Medium_Electron_stat_error_hi->GetYaxis()->GetBinCenter(scalefactors_Medium_Electron_stat_error_hi->GetNbinsY()),
-			      eff_HLT_Muon                              ->GetYaxis()->GetBinCenter(eff_HLT_Muon		                     ->GetNbinsY()),
-			      eff_HLT_Electron                          ->GetYaxis()->GetBinCenter(eff_HLT_Electron		             ->GetNbinsY())
+			      eff_HLT_Muon[0]                           ->GetYaxis()->GetBinCenter(eff_HLT_Muon[0]			     ->GetNbinsY()),
+			      eff_HLT_Electron[0]                       ->GetYaxis()->GetBinCenter(eff_HLT_Electron[0]  		     ->GetNbinsY())
 		              };
 
   const int nBinEtaPlot = 26; Float_t xbinsEtaPlot[nBinEtaPlot+1] = {-2.4,-2.3,-2.2,-2.0,-1.8,-1.63,-1.566,-1.4442,-1.2,-1.0,-0.6,-0.4,-0.2,0.0,
@@ -844,11 +854,12 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, bool isMIT=true)
       if (jentry%1000000 == 0) printf("--- reading event %8lld (%8lld) of %8lld\n",jentry,ientry,nentries);
 
       bool passTrigger = (thePandaFlat.trigger & kMuEGTrig) == kMuEGTrig || (thePandaFlat.trigger & kMuMuTrig) == kMuMuTrig ||
-        	         (thePandaFlat.trigger & kMuTrig)   == kMuTrig   || (thePandaFlat.trigger & kEGEGTrig) == kEGEGTrig ||
-        	         (thePandaFlat.trigger & kEGTrig)   == kEGTrig;
-      if(passTrigger == false) continue;
-      //bool passTrigger = (thePandaFlat.trigger & kMuTagTrig) == kMuTagTrig || (thePandaFlat.trigger & kEGTagTrig)   == kEGTagTrig;
-      //if(passTrigger == false && infileCat_[ifile] == 0) continue;
+                         (thePandaFlat.trigger & kMuTrig)   == kMuTrig   || (thePandaFlat.trigger & kEGEGTrig) == kEGEGTrig ||
+                         (thePandaFlat.trigger & kEGTrig)   == kEGTrig;
+      if(isSingleLeptonAna == true) passTrigger = (thePandaFlat.trigger & kMuTagTrig) == kMuTagTrig || (thePandaFlat.trigger & kEGTagTrig)   == kEGTagTrig;
+
+      if((isSingleLeptonAna == false && passTrigger == false) || (isSingleLeptonAna == true && passTrigger == false && infileCat_[ifile] == 0)) continue;
+
       //if(thePandaFlat.metFilter == 0) continue;
 
       if(thePandaFlat.nLooseLep != 2) continue;
@@ -919,39 +930,42 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, bool isMIT=true)
 	  if(thePandaFlat.looseLep2Pt < 20 || thePandaFlat.looseLep2Pt > 80) the_eta_sf_unc[1] = sqrt(the_eta_sf_unc[1]*the_eta_sf_unc[1] + 0.01*0.01);
         }
 
-	the_trigger_sf = trigger_sf(trgEff,thePandaFlat.looseLep1Pt,thePandaFlat.looseLep1Eta,thePandaFlat.looseLep1PdgId,thePandaFlat.looseLep2Pt,thePandaFlat.looseLep2Eta,thePandaFlat.looseLep2PdgId);
-	the_trigger_sf_unc = TMath::Abs(the_trigger_sf-1.0)*0.20;
-	/*
-	double trigEff[2] = {1.0, 1.0}; double trigEffE[2] = {0.0, 0.0}; 
-        if(abs(thePandaFlat.looseLep1PdgId)==13){
-          double etal = (vLoose1+vLoose2).Rapidity(); // thePandaFlat.looseLep1Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
-          int binXT = eff_HLT_Muon->GetXaxis()->FindFixBin(etal);
-          int binYT = eff_HLT_Muon->GetYaxis()->FindFixBin(TMath::Min((double)thePandaFlat.looseLep1Pt,getMaxPtForSFs[4]));
-	  trigEff[0]  = eff_HLT_Muon->GetBinContent(binXT,binYT);
-          trigEffE[0] = eff_HLT_Muon->GetBinError  (binXT,binYT);
-        } else {
-          double etal = (vLoose1+vLoose2).Rapidity(); // thePandaFlat.looseLep1Eta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
-          int binXT = eff_HLT_Electron->GetXaxis()->FindFixBin(etal);
-          int binYT = eff_HLT_Electron->GetYaxis()->FindFixBin(TMath::Min((double)thePandaFlat.looseLep1Pt,getMaxPtForSFs[5]));
-	  trigEff[0]  = eff_HLT_Electron->GetBinContent(binXT,binYT);
-          trigEffE[0] = eff_HLT_Electron->GetBinError  (binXT,binYT);
-        }        
-        if(abs(thePandaFlat.looseLep2PdgId)==13){
-          double etal = (vLoose1+vLoose2).Rapidity(); // thePandaFlat.looseLep2Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
-          int binXT = eff_HLT_Muon->GetXaxis()->FindFixBin(etal);
-          int binYT = eff_HLT_Muon->GetYaxis()->FindFixBin(TMath::Min((double)thePandaFlat.looseLep2Pt,getMaxPtForSFs[4]));
-	  trigEff[1]  = eff_HLT_Muon->GetBinContent(binXT,binYT);
-          trigEffE[1] = eff_HLT_Muon->GetBinError  (binXT,binYT);
-        } else {
-          double etal = (vLoose1+vLoose2).Rapidity(); // thePandaFlat.looseLep2Eta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
-          int binXT = eff_HLT_Electron->GetXaxis()->FindFixBin(etal);
-          int binYT = eff_HLT_Electron->GetYaxis()->FindFixBin(TMath::Min((double)thePandaFlat.looseLep2Pt,getMaxPtForSFs[5]));
-	  trigEff[1]  = eff_HLT_Electron->GetBinContent(binXT,binYT);
-          trigEffE[1] = eff_HLT_Electron->GetBinError  (binXT,binYT);
+        if(isSingleLeptonAna == false){
+	  the_trigger_sf = trigger_sf(trgEff,thePandaFlat.looseLep1Pt,thePandaFlat.looseLep1Eta,thePandaFlat.looseLep1PdgId,thePandaFlat.looseLep2Pt,thePandaFlat.looseLep2Eta,thePandaFlat.looseLep2PdgId);
+	  the_trigger_sf_unc = TMath::Abs(the_trigger_sf-1.0)*0.20;
+	} else {
+	  double trigEff[2] = {1.0, 1.0}; double trigEffE[2] = {0.0, 0.0}; 
+          int nEvtRap = eff_HLT_Rap->GetXaxis()->FindFixBin((vLoose1+vLoose2).Rapidity())-1;
+          if(nEvtRap < 0 || nEvtRap >= nBinRap) {printf("PROBLEM WITH RAP!\n"); return;};
+          if(abs(thePandaFlat.looseLep1PdgId)==13){
+            double etal = thePandaFlat.looseLep1Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
+            int binXT = eff_HLT_Muon[nEvtRap]->GetXaxis()->FindFixBin(etal);
+            int binYT = eff_HLT_Muon[nEvtRap]->GetYaxis()->FindFixBin(TMath::Min((double)thePandaFlat.looseLep1Pt,getMaxPtForSFs[4]));
+	    trigEff[0]  = eff_HLT_Muon[nEvtRap]->GetBinContent(binXT,binYT);
+            trigEffE[0] = eff_HLT_Muon[nEvtRap]->GetBinError  (binXT,binYT);
+          } else {
+            double etal = thePandaFlat.looseLep1Eta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
+            int binXT = eff_HLT_Electron[nEvtRap]->GetXaxis()->FindFixBin(etal);
+            int binYT = eff_HLT_Electron[nEvtRap]->GetYaxis()->FindFixBin(TMath::Min((double)thePandaFlat.looseLep1Pt,getMaxPtForSFs[5]));
+	    trigEff[0]  = eff_HLT_Electron[nEvtRap]->GetBinContent(binXT,binYT);
+            trigEffE[0] = eff_HLT_Electron[nEvtRap]->GetBinError  (binXT,binYT);
+          }        
+          if(abs(thePandaFlat.looseLep2PdgId)==13){
+            double etal = thePandaFlat.looseLep2Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
+            int binXT = eff_HLT_Muon[nEvtRap]->GetXaxis()->FindFixBin(etal);
+            int binYT = eff_HLT_Muon[nEvtRap]->GetYaxis()->FindFixBin(TMath::Min((double)thePandaFlat.looseLep2Pt,getMaxPtForSFs[4]));
+	    trigEff[1]  = eff_HLT_Muon[nEvtRap]->GetBinContent(binXT,binYT);
+            trigEffE[1] = eff_HLT_Muon[nEvtRap]->GetBinError  (binXT,binYT);
+          } else {
+            double etal = thePandaFlat.looseLep2Eta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
+            int binXT = eff_HLT_Electron[nEvtRap]->GetXaxis()->FindFixBin(etal);
+            int binYT = eff_HLT_Electron[nEvtRap]->GetYaxis()->FindFixBin(TMath::Min((double)thePandaFlat.looseLep2Pt,getMaxPtForSFs[5]));
+	    trigEff[1]  = eff_HLT_Electron[nEvtRap]->GetBinContent(binXT,binYT);
+            trigEffE[1] = eff_HLT_Electron[nEvtRap]->GetBinError  (binXT,binYT);
+          }
+	  the_trigger_sf = 1.0 - (1-trigEff[0]) * (1-trigEff[1]);
+	  the_trigger_sf_unc = 1.0 - (1-trigEff[0]-trigEffE[0]) * (1-trigEff[1]-trigEffE[1]) - the_trigger_sf;
         }
-	the_trigger_sf = 1.0 - (1-trigEff[0]) * (1-trigEff[1]);
-	the_trigger_sf_unc = 1.0 - (1-trigEff[0]-trigEffE[0]) * (1-trigEff[1]-trigEffE[1]) - the_trigger_sf;
-        */
       }
 
       if(passLooseSel) {
