@@ -244,12 +244,13 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, bool isMIT=true)
     else if(thePlot >= 12 && thePlot <= 15) {nBinPlot = 100; xminPlot =-50.0; xmaxPlot = 50;}
     else if(thePlot >= 16 && thePlot <= 17) {nBinPlot =  96; xminPlot = -2.4; xmaxPlot = 2.4;}
     else if(thePlot >= 18 && thePlot <= 19) {nBinPlot = 100; xminPlot = -1.0; xmaxPlot = 1.0;}
+    else if(thePlot >= 28 && thePlot <= 29) {nBinPlot = 120; xminPlot = 91.1876-15; xmaxPlot = 91.1876+15;}
     else if(thePlot >= 22 && thePlot <= 49) {nBinPlot =  96; xminPlot = -2.4; xmaxPlot = 2.4;}
     else if(thePlot >= 50 && thePlot <= 89) {nBinPlot = 120; xminPlot = 91.1876-15; xmaxPlot = 91.1876+15;}
     else if(thePlot >= 90 && thePlot <= 91) {nBinPlot =  48; xminPlot =  0.0; xmaxPlot = 2.4;}
     else if(thePlot >= 92 && thePlot <= 95) {nBinPlot =  90; xminPlot =  0.0; xmaxPlot =180;}
     TH1D* histos;
-    if     (thePlot >= 24 && thePlot <= 29){
+    if     (thePlot >= 24 && thePlot <= 27){
       histos = new TH1D("histos", "histos", nBinEtaPlot, xbinsEtaPlot);
     }    
     else if(thePlot != 20 && thePlot != 21){
@@ -979,15 +980,11 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, bool isMIT=true)
 	  histo[lepType+22][theCategory]->Fill((vLoose1+vLoose2).Rapidity(),1.0);
 	  histo[lepType+24][theCategory]->Fill(TMath::Min(thePandaFlat.looseLep1Eta,thePandaFlat.looseLep2Eta),1.0);
 	  histo[lepType+26][theCategory]->Fill(TMath::Max(thePandaFlat.looseLep1Eta,thePandaFlat.looseLep2Eta),1.0);
-	  histo[lepType+28][theCategory]->Fill(thePandaFlat.looseLep1Eta,1.0);
-	  histo[lepType+28][theCategory]->Fill(thePandaFlat.looseLep2Eta,1.0);
         }
         else if(theCategory != 5){
 	  histo[lepType+22][theCategory]->Fill((vLoose1+vLoose2).Rapidity(),totalLooseWeight);
 	  histo[lepType+24][theCategory]->Fill(TMath::Min(thePandaFlat.looseLep1Eta,thePandaFlat.looseLep2Eta),totalLooseWeight);
 	  histo[lepType+26][theCategory]->Fill(TMath::Max(thePandaFlat.looseLep1Eta,thePandaFlat.looseLep2Eta),totalLooseWeight);
-	  histo[lepType+28][theCategory]->Fill(thePandaFlat.looseLep1Eta,totalLooseWeight);
-	  histo[lepType+28][theCategory]->Fill(thePandaFlat.looseLep2Eta,totalLooseWeight);
         }
 	else {
           for(int theLepType = 0; theLepType<2; theLepType++) {
@@ -996,8 +993,6 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, bool isMIT=true)
 	    histo[theLepType+22][theCategory]->Fill((vLoose1+vLoose2).Rapidity(),1.0*theKeff);
 	    histo[theLepType+24][theCategory]->Fill(TMath::Min(thePandaFlat.looseLep1Eta,thePandaFlat.looseLep2Eta),1.0*theKeff);
 	    histo[theLepType+26][theCategory]->Fill(TMath::Max(thePandaFlat.looseLep1Eta,thePandaFlat.looseLep2Eta),1.0*theKeff);
-	    histo[theLepType+28][theCategory]->Fill(thePandaFlat.looseLep1Eta,1.0*theKeff);
-	    histo[theLepType+28][theCategory]->Fill(thePandaFlat.looseLep2Eta,1.0*theKeff);
           }
 	}
       }
@@ -1306,6 +1301,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, bool isMIT=true)
       if(passSel){
         double the_cos_theta_star = cos_theta_star(v1,v2,(v1+v2));
         if(theCategory != 5){
+	  histo[lepType+28][theCategory]->Fill((vLoose1+vLoose2).M(),totalWeight);
 	  histo[lepType+0][theCategory]->Fill((v1+v2).M(),totalWeight);
 	  histo[lepType+2][theCategory]->Fill(ZRecPt,totalWeight);
 	  histo[lepType+4][theCategory]->Fill(TMath::Abs(ZRecPt-ZGenPt),totalWeight);
@@ -1397,6 +1393,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, bool isMIT=true)
           for(int theLepType = 0; theLepType<2; theLepType++) {
             double theKeff = 0.5*k_eff;
             if(theLepType == 1) theKeff = 0.5/k_eff;
+	    histo[theLepType+28][theCategory]->Fill((vLoose1+vLoose2).M(),totalWeight*theKeff);
  	    histo[theLepType+0][theCategory]->Fill((v1+v2).M(),totalWeight*theKeff);
 	    histo[theLepType+2][theCategory]->Fill(ZRecPt,totalWeight*theKeff);
 	    histo[theLepType+4][theCategory]->Fill(TMath::Abs(ZRecPt-ZGenPt),totalWeight*theKeff);
