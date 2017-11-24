@@ -160,8 +160,8 @@ void wwAnalysis(
 
   if(infilenamev.size() != infilecatv.size()) {assert(0); return;}
 
-  infilenamev.clear();infilecatv.clear();
-  infilenamev.push_back(Form("%sWWTo2L2Nu_13TeV-amcnlo.root",filesPathMC.Data())); infilecatv.push_back(1);
+  //infilenamev.clear();infilecatv.clear();
+  //infilenamev.push_back(Form("%sWWTo2L2Nu_13TeV-amcnlo.root",filesPathMC.Data())); infilecatv.push_back(1);
   //infilenamev.push_back(Form("%sWWTo2L2Nu_13TeV-powheg.root",filesPathMC.Data())); infilecatv.push_back(1);
   //infilenamev.push_back(Form("%sWWTo2L2Nu_13TeV-powheg-herwigpp.root",filesPathMC.Data())); infilecatv.push_back(1);
   //infilenamev.push_back(Form("%sWWTo2L2Nu_13TeV-powheg-CUETP8M1Up.root",filesPathMC.Data())); infilecatv.push_back(1);
