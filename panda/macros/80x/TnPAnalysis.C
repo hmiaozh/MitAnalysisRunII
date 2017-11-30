@@ -85,7 +85,7 @@ int whichAnaFlow = 0
   const int nBinEta = 28; Float_t xbinsEta[nBinEta+1] = {-2.4,-2.3,-2.2,-2.1,-2.0,-1.7,-1.6,-1.5,-1.4,-1.2,-0.8,-0.5,-0.3,-0.2,0.0,
                                                           0.2, 0.3, 0.5, 0.8, 1.2, 1.4, 1.5, 1.6, 1.7, 2.0, 2.1, 2.2, 2.3, 2.4};
 
-  const int nBinPt = 20; Float_t xbinsPt[nBinPt+1] = {20,21,22,23,24,25,26,27,28,29,30,32,35,40,45,50,60,80,100,200,1000};
+  const int nBinPt = 21; Float_t xbinsPt[nBinPt+1] = {20,21,22,23,24,25,26,27,28,29,30,32,35,40,45,50,60,80,105,150,200,1000};
 
   const int nBinRap = 7; Float_t xbinsRap[nBinRap+1] = {-2.4, -2.1, -1.7, -0.8, 0.8, 1.7, 2.1, 2.4};
   TH1D *eff_HLT_Rap = new TH1D(Form("eff_HLT_Rap"), Form("eff_HLT_Rap"), nBinRap, xbinsRap);
@@ -178,7 +178,7 @@ int whichAnaFlow = 0
           int binEta = scalefactors_Muon_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[0] = scalefactors_Muon_Eta->GetBinContent(binEta);
         } else {
-          double etal = thePandaFlat.looseLep1Eta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
+          double etal = thePandaFlat.looseLep1SCEta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
           int binEta = scalefactors_Electron_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[0] = scalefactors_Electron_Eta->GetBinContent(binEta);
         }        
@@ -187,7 +187,7 @@ int whichAnaFlow = 0
           int binEta = scalefactors_Muon_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[1] = scalefactors_Muon_Eta->GetBinContent(binEta);
         } else {
-          double etal = thePandaFlat.looseLep2Eta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
+          double etal = thePandaFlat.looseLep2SCEta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
           int binEta = scalefactors_Electron_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[1] = scalefactors_Electron_Eta->GetBinContent(binEta);
         }
@@ -266,15 +266,19 @@ int whichAnaFlow = 0
       for(int j=1; j<=eff_HLT_Muon[k][0]->GetNbinsY(); j++){
 	printf("mu(%1d,%2d,%2d): ",k,i,j);
 	for(int ncha=0; ncha<2; ncha++){
-          eff = 0.0; unc = 1.0;
-	  if(den_HLT_Muon[k][ncha]->GetBinContent(i,j) > 0 && num_HLT_Muon[k][ncha]->GetBinContent(i,j)){
+          eff = 1.0; unc = 0.0;
+	  if     (den_HLT_Muon[k][ncha]->GetBinContent(i,j) > 0 && num_HLT_Muon[k][ncha]->GetBinContent(i,j) > 0){
             eff = TMath::Min(num_HLT_Muon[k][ncha]->GetBinContent(i,j)/den_HLT_Muon[k][ncha]->GetBinContent(i,j),1.0);
             unc = sqrt(eff*(1-eff)/den_HLT_Muon[k][ncha]->GetBinContent(i,j));
 	  }
-
+	  else if(den_HLT_Muon[k][ncha]->GetBinContent(i,j) > 0){
+            eff = 0.0;
+            unc = TMath::Min(sqrt(1.0/den_HLT_Muon[k][ncha]->GetBinContent(i,j)),0.999);
+	  }
+          /*
 	  if(ncha == 0 && (abs(eff_HLT_Muon[k][ncha]->GetXaxis()->GetBinLowEdge(i)+2.4)<0.001 ||
 	                   abs(eff_HLT_Muon[k][ncha]->GetXaxis()->GetBinLowEdge(i)-2.3)<0.001)) eff = eff * 0.98;
-
+          */
           eff_HLT_Muon[k][ncha]->SetBinContent(i,j,eff);
           eff_HLT_Muon[k][ncha]->SetBinError  (i,j,unc);
 	  if(ncha == 0) printf("data = "); else printf("mc = ");
@@ -290,18 +294,22 @@ int whichAnaFlow = 0
       for(int j=1; j<=eff_HLT_Electron[k][0]->GetNbinsY(); j++){
 	printf("el(%1d,%2d,%2d): ",k,i,j);
 	for(int ncha=0; ncha<2; ncha++){
-          eff = 0.0; unc = 1.0;
-	  if(den_HLT_Electron[k][ncha]->GetBinContent(i,j) > 0 && num_HLT_Electron[k][ncha]->GetBinContent(i,j)){
+          eff = 1.0; unc = 0.0;
+	  if     (den_HLT_Electron[k][ncha]->GetBinContent(i,j) > 0 && num_HLT_Electron[k][ncha]->GetBinContent(i,j) > 0){
             eff = TMath::Min(num_HLT_Electron[k][ncha]->GetBinContent(i,j)/den_HLT_Electron[k][ncha]->GetBinContent(i,j),1.0);
             unc = sqrt(eff*(1-eff)/den_HLT_Electron[k][ncha]->GetBinContent(i,j));
 	  }
-
+	  else if(den_HLT_Electron[k][ncha]->GetBinContent(i,j) > 0){
+            eff = 0.0;
+            unc = TMath::Min(sqrt(1.0/den_HLT_Electron[k][ncha]->GetBinContent(i,j)),0.999);
+	  }
+          /*
 	  if     (ncha == 0 && abs(eff_HLT_Electron[k][ncha]->GetXaxis()->GetBinLowEdge(i)+2.4)<0.001) eff = eff * 0.92;
 	  else if(ncha == 0 && abs(eff_HLT_Electron[k][ncha]->GetXaxis()->GetBinLowEdge(i)+2.3)<0.001) eff = eff * 0.96;
 	  else if(ncha == 0 && abs(eff_HLT_Electron[k][ncha]->GetXaxis()->GetBinLowEdge(i)+2.2)<0.001) eff = eff * 0.98;
 	  else if(ncha == 0 && abs(eff_HLT_Electron[k][ncha]->GetXaxis()->GetBinLowEdge(i)-2.1)<0.001) eff = eff * 0.97;
 	  else if(ncha == 0 && abs(eff_HLT_Electron[k][ncha]->GetXaxis()->GetBinLowEdge(i)-2.2)<0.001) eff = eff * 0.98;
-
+          */
           eff_HLT_Electron[k][ncha]->SetBinContent(i,j,eff);
           eff_HLT_Electron[k][ncha]->SetBinError  (i,j,unc);
 	  if(ncha == 0) printf("data = "); else printf("mc = ");

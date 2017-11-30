@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Sat Nov 11 15:51:46 2017 by ROOT version 6.06/01
+// Thu Nov 30 02:49:40 2017 by ROOT version 6.06/01
 // from TTree events/events
 // found on file: /data/t3home000/ceballos/panda/v_005_0/qqWW.root
 //////////////////////////////////////////////////////////
@@ -85,6 +85,10 @@ public :
    Float_t         looseLep2SmePt;
    Float_t         looseLep3SmePt;
    Float_t         looseLep4SmePt;
+   Float_t         looseLep1SCEta;
+   Float_t         looseLep2SCEta;
+   Float_t         looseLep3SCEta;
+   Float_t         looseLep4SCEta;
    Int_t           nJet;
    Int_t           jetNLBtags;
    Int_t           jetNMBtags;
@@ -258,6 +262,10 @@ public :
    TBranch        *b_looseLep2SmePt;   //!
    TBranch        *b_looseLep3SmePt;   //!
    TBranch        *b_looseLep4SmePt;   //!
+   TBranch        *b_looseLep1SCEta;   //!
+   TBranch        *b_looseLep2SCEta;   //!
+   TBranch        *b_looseLep3SCEta;   //!
+   TBranch        *b_looseLep4SCEta;   //!
    TBranch        *b_nJet;   //!
    TBranch        *b_jetNLBtags;   //!
    TBranch        *b_jetNMBtags;   //!
@@ -500,6 +508,10 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("looseLep2SmePt", &looseLep2SmePt, &b_looseLep2SmePt);
    fChain->SetBranchAddress("looseLep3SmePt", &looseLep3SmePt, &b_looseLep3SmePt);
    fChain->SetBranchAddress("looseLep4SmePt", &looseLep4SmePt, &b_looseLep4SmePt);
+   fChain->SetBranchAddress("looseLep1SCEta", &looseLep1SCEta, &b_looseLep1SCEta);
+   fChain->SetBranchAddress("looseLep2SCEta", &looseLep2SCEta, &b_looseLep2SCEta);
+   fChain->SetBranchAddress("looseLep3SCEta", &looseLep3SCEta, &b_looseLep3SCEta);
+   fChain->SetBranchAddress("looseLep4SCEta", &looseLep4SCEta, &b_looseLep4SCEta);
    fChain->SetBranchAddress("nJet", &nJet, &b_nJet);
    fChain->SetBranchAddress("jetNLBtags", &jetNLBtags, &b_jetNLBtags);
    fChain->SetBranchAddress("jetNMBtags", &jetNMBtags, &b_jetNMBtags);
