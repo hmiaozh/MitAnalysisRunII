@@ -158,7 +158,7 @@ void makeOneSkimSample(
     if(doReject0WeightEvents == true) the_input_tree->GetEntry(i);
     if(i%100000==0) printf("eventsAll %d out of %d\n",i,(int)the_input_all->GetEntries());
     if(doReject0WeightEvents == true && eventMonteCarlo.mcWeight == 0) continue;
-    if(doReject0WeightEvents == true) eventAll0.mcWeight = (double)(*eventMonteCarlo.pdfRwgt)[164]/(*eventMonteCarlo.pdfRwgt)[103]*TMath::Abs(eventMonteCarlo.mcWeight)/eventMonteCarlo.mcWeight;
+    if(doReject0WeightEvents == true) eventAll0.mcWeight = (double)(*eventMonteCarlo.pdfRwgt)[164]/TMath::Abs(eventMonteCarlo.mcWeight);
     //if(doReject0WeightEvents == true) eventAll0.mcWeight = (double)(*eventMonteCarlo.pdfRwgt)[164];
     if(processName.CompareTo("data") != 0 && eventAll0.mcWeight == 0) {assert(0); printf("PROBLEM, event weight == 0\n"); return;}
     if(processName.CompareTo("data") != 0) sumAllEvents = sumAllEvents + eventAll0.mcWeight;
@@ -485,7 +485,7 @@ void makeOneSkimSample(
 
     the_SelBit_tree.Fill(); 
 
-    if(doReject0WeightEvents == true) eventMonteCarlo.mcWeight = (double)(*eventMonteCarlo.pdfRwgt)[164]/(*eventMonteCarlo.pdfRwgt)[103]*TMath::Abs(eventMonteCarlo.mcWeight)/eventMonteCarlo.mcWeight;
+    if(doReject0WeightEvents == true) eventMonteCarlo.mcWeight = (double)(*eventMonteCarlo.pdfRwgt)[164]/TMath::Abs(eventMonteCarlo.mcWeight);
     //if(doReject0WeightEvents == true) eventMonteCarlo.mcWeight = (double)(*eventMonteCarlo.pdfRwgt)[164];
 
     if(eventMonteCarlo.mcWeight == 0 && processName.CompareTo("data") != 0) {printf("PROBLEM WIH WEIGTHS\n");return;}

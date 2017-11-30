@@ -267,6 +267,7 @@ root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/Da
 
 root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/DarkMatter_MonoZToLL_NLO_Vector_Mx2-150_Mv-500_gDM1_gQ0p25_TuneCUETP8M1_Mx1-1_ctau-1_13TeV-madgraph_0000.root\",\"$OUTPUTDIR/${PREFIX}DarkMatter_MonoZToLL_NLO_Vector_Mx2-150_Mv-500_gDM1_gQ0p25_TuneCUETP8M1_Mx1-1_ctau-1_13TeV-madgraph.root\",\"dm_ll\",$1\)
 root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/DarkMatter_MonoZToLL_NLO_Vector_Mx2-1_Mv-500_gDM1_gQ0p25_TuneCUETP8M1_Mx1-0p1_ctau-1_13TeV-madgraph_0000.root\",\"$OUTPUTDIR/${PREFIX}DarkMatter_MonoZToLL_NLO_Vector_Mx2-1_Mv-500_gDM1_gQ0p25_TuneCUETP8M1_Mx1-0p1_ctau-1_13TeV-madgraph.root\",\"dm_ll\",$1\)
+root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/DarkMatter_MonoZToLL_NLO_Vector_Mx2-50_Mv-500_gDM1_gQ0p25_TuneCUETP8M1_Mx1-1_ctau-10_13TeV-madgraph_0000.root\",\"$OUTPUTDIR/${PREFIX}DarkMatter_MonoZToLL_NLO_Vector_Mx2-50_Mv-500_gDM1_gQ0p25_TuneCUETP8M1_Mx1-1_ctau-10_13TeV-madgraph.root\",\"dm_ll\",$1\)
 
 root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/ZH_ZToEE_HToInvisible_M110_13TeV_powheg_pythia8_0000.root\",\"$OUTPUTDIR/${PREFIX}ZH_ZToEE_HToInvisible_M110_13TeV_powheg_pythia8.root\",\"zeehinv110\",$1\)
 root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/ZH_ZToEE_HToInvisible_M125_13TeV_powheg_pythia8_0000.root\",\"$OUTPUTDIR/${PREFIX}ZH_ZToEE_HToInvisible_M125_13TeV_powheg_pythia8.root\",\"zeehinv125\",$1\)
