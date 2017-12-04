@@ -55,6 +55,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, bool isMIT=true)
     //infileName_.push_back(Form("%sWGstar.root" ,filesPath.Data()));		   infileCat_.push_back(4);
     //infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));		   infileCat_.push_back(6);
     //infileName_.push_back(Form("%sH125.root" ,filesPath.Data()));		   infileCat_.push_back(7);
+    //infileName_.push_back(Form("%sWJets.root" ,filesPath.Data()));		   infileCat_.push_back(7);
   }
 
   if(whichAnaFlow == 0 || whichAnaFlow == 2){

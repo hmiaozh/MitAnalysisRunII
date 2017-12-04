@@ -9,7 +9,7 @@ PandaAnalysis/T3/bin/catalogT2Prod.py --outfile ~/public_html/$USER/catalog/test
 
 PandaAnalysis/T3/bin/catalogT2Prod.py --outfile ~/public_html/$USER/catalog/test.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/005 \
 --include SingleElectron SingleMuon DoubleEG DoubleMuon MuonEG ZZ WZ WW DYJetsToLL_M-50_Tune DYJetsToLL_M-10to50_Tune tZq GluGluH VBFH VBF_H ttHToNonbb VHToNonbb \
-TTG TTZ TTW ST_tW TTTo2L2Nu WGstarTo WGToLNuG ZGTo2LG JetsToLL DYJetsToTauTau NNPDF30_13TeV-powheg --exclude ZpWW_med JetsToLL_M-50_HT
+TTG TTZ TTW ST_tW TTTo2L2Nu WGstarTo WGToLNuG ZGTo2LG JetsToLL DYJetsToTauTau NNPDF30_13TeV-powheg MET WJetsToLNu --exclude ZpWW_med JetsToLL_M-50_HT
 
 --> Processes must be included in 
 PandaCore/Tools/python/processes/*.py
