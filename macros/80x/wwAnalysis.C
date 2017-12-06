@@ -1082,6 +1082,12 @@ void wwAnalysis(
         else if(TMath::Abs((int)(*eventMonteCarlo.pdgId)[ngen0]) == 4 && ((TLorentzVector*)(*eventMonteCarlo.p4)[ngen0])->Pt() > 15) idC.push_back(ngen0);
       }
 
+      double jetPtCut = 30.0;
+      if     (shapeAnaType ==  7) jetPtCut = 25.0;
+      else if(shapeAnaType ==  8) jetPtCut = 35.0;
+      else if(shapeAnaType ==  9) jetPtCut = 50.0;
+      else if(shapeAnaType == 10) jetPtCut = 100.0;
+      else if(shapeAnaType == 11) jetPtCut = 30000.0;
       vector<int> idJet,idJesUp,idJesDown,idJerUp,idJerDown;
       bool isBtag = kFALSE;
       double bDiscrMax = 0.0; double bDiscrMaxJESUp = 0.0; double bDiscrMaxJESDown = 0.0;double bDiscrMaxJERUp = 0.0; double bDiscrMaxJERDown = 0.0;
@@ -1181,11 +1187,11 @@ void wwAnalysis(
 	    sf_jer[0] = (float)(*eventJets.ptResUncUp)[nj]   / (float)(*eventJets.ptResUncCentral)[nj];
 	    sf_jer[1] = (float)(*eventJets.ptResUncDown)[nj] / (float)(*eventJets.ptResUncCentral)[nj];
           }
-          if(((TLorentzVector*)(*eventJets.p4)[nj])->Pt()*(1+(float)(*eventJets.unc)[nj]) > 30) idJesUp.push_back(nj);
-          if(((TLorentzVector*)(*eventJets.p4)[nj])->Pt()*(1-(float)(*eventJets.unc)[nj]) > 30) idJesDown.push_back(nj);
+          if(((TLorentzVector*)(*eventJets.p4)[nj])->Pt()*(1+(float)(*eventJets.unc)[nj]) > jetPtCut) idJesUp.push_back(nj);
+          if(((TLorentzVector*)(*eventJets.p4)[nj])->Pt()*(1-(float)(*eventJets.unc)[nj]) > jetPtCut) idJesDown.push_back(nj);
 
-          if(((TLorentzVector*)(*eventJets.p4)[nj])->Pt()*sf_jer[0] > 30) idJerUp.push_back(nj);
-          if(((TLorentzVector*)(*eventJets.p4)[nj])->Pt()*sf_jer[1] > 30) idJerDown.push_back(nj);
+          if(((TLorentzVector*)(*eventJets.p4)[nj])->Pt()*sf_jer[0] > jetPtCut) idJerUp.push_back(nj);
+          if(((TLorentzVector*)(*eventJets.p4)[nj])->Pt()*sf_jer[1] > jetPtCut) idJerDown.push_back(nj);
 
           if(((TLorentzVector*)(*eventJets.p4)[nj])->Pt()*(1+(float)(*eventJets.unc)[nj]) > 20 && 
              (float)(*eventJets.bDiscr)[nj] > bDiscrMaxJESUp)   bDiscrMaxJESUp   = (float)(*eventJets.bDiscr)[nj];
@@ -1204,9 +1210,9 @@ void wwAnalysis(
 	if(((TLorentzVector*)(*eventJets.p4)[nj])->Pt() > 20 && 
 	   (float)(*eventJets.bDiscr)[nj] > bDiscrMax) bDiscrMax = (float)(*eventJets.bDiscr)[nj];
 
-        if(((TLorentzVector*)(*eventJets.p4)[nj])->Pt() > 30) theHT = theHT + ((TLorentzVector*)(*eventJets.p4)[nj])->Pt();
+        if(((TLorentzVector*)(*eventJets.p4)[nj])->Pt() > jetPtCut) theHT = theHT + ((TLorentzVector*)(*eventJets.p4)[nj])->Pt();
 
-        if(((TLorentzVector*)(*eventJets.p4)[nj])->Pt() > 30) idJet.push_back(nj);
+        if(((TLorentzVector*)(*eventJets.p4)[nj])->Pt() > jetPtCut) idJet.push_back(nj);
       }
 
       double deltaPhiDileptonMet = TMath::Abs(dilep.DeltaPhi(theMET));
@@ -1599,7 +1605,7 @@ void wwAnalysis(
 	     	}
               }
               if(isGenLepton) continue;
-              if(((TLorentzVector*)(*eventMonteCarlo.jetP4)[njetgen])->Pt() > 30) idGenJet30.push_back(njetgen);
+              if(((TLorentzVector*)(*eventMonteCarlo.jetP4)[njetgen])->Pt() > jetPtCut) idGenJet30.push_back(njetgen);
 	    }
 
 	    if(idGenJet30.size() == nJetsType) passFiducial[1] = true;
@@ -1620,8 +1626,8 @@ void wwAnalysis(
           int genbin = histoGenMVA->GetXaxis()->FindBin(MVAGenVar)-1;
 	  if     (genbin == -1) {/*printf("%d %d %f\n",genbin,passFiducial[0],MVAGenVar);*/ genbin = nGenBins - 1;}
 	  else if(genbin >= nGenBins) {printf("PROBLEM %d %d %f\n",genbin,passFiducial[0],MVAGenVar);}
-	  if     (shapeAnaType != 6 && passFiducial[0] == false) genbin = nGenBins - 1;
-	  else if(shapeAnaType == 6 && passFiducial[1] == false) genbin = nGenBins - 1;
+	  if     (shapeAnaType <= 5 && passFiducial[0] == false) genbin = nGenBins - 1;
+	  else if(shapeAnaType >  5 && passFiducial[1] == false) genbin = nGenBins - 1;
 	  // End gen fiducial selection
 	  if((passAllCuts[SIGSEL] && theControlRegion == 0) || (passAllCuts[TOPSEL] && theControlRegion == 1) || (passAllCuts[DYSEL] && theControlRegion == 2)) {
 	    histo_qqWW->Fill(MVAVar,totalWeight);
@@ -3127,7 +3133,32 @@ void wwAnalysis(
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
-  else if(shapeAnaType == 6){ // lep and jet fiducial
+  else if(shapeAnaType == 6){ // lep and jet fiducial, ptjet<30
+    for(int i=1; i<nRecBins; i++){
+      system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+    }
+  }
+  else if(shapeAnaType == 7){ // lep and jet fiducial, ptjet<25
+    for(int i=1; i<nRecBins; i++){
+      system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+    }
+  }
+  else if(shapeAnaType == 8){ // lep and jet fiducial, ptjet<35
+    for(int i=1; i<nRecBins; i++){
+      system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+    }
+  }
+  else if(shapeAnaType == 9){ // lep and jet fiducial, ptjet<50
+    for(int i=1; i<nRecBins; i++){
+      system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+    }
+  }
+  else if(shapeAnaType == 10){ // lep and jet fiducial, ptjet<100
+    for(int i=1; i<nRecBins; i++){
+      system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+    }
+  }
+  else if(shapeAnaType == 11){ // lep and jet fiducial, ptjet<30000
     for(int i=1; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
