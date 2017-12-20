@@ -16,14 +16,18 @@
 
 void TnPAnalysis(
 int whichDY = 3, 
-int whichAnaFlow = 0
+int whichAnaFlow = 0,
+unsigned int period = 0,
+bool useZRap = true
 ){
 
   double lumi = 35.8;
+  if     (period == 1) lumi = 19.3;
+  else if(period == 2) lumi = 16.5;
   //*******************************************************
   //Input Files
   //*******************************************************
-  TString filesPath    = "/data/t3home000/ceballos/panda/v_005_0/";
+  TString filesPath = "/data/t3home000/ceballos/panda/v_006_0/";
   vector<TString> infileName_;
   vector<int> infileCat_;
 
@@ -65,7 +69,7 @@ int whichAnaFlow = 0
     else {return;}
   }
 
-  TFile *fLepton_Eta_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_eta_sf_37ifb.root"));
+  TFile *fLepton_Eta_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_eta_sf_37ifb_period%d.root",period));
   TH1D* scalefactors_Muon_Eta = (TH1D*)fLepton_Eta_SF->Get("scalefactors_Muon_Eta"); scalefactors_Muon_Eta->SetDirectory(0);
   TH1D* scalefactors_Electron_Eta = (TH1D*)fLepton_Eta_SF->Get("scalefactors_Electron_Eta"); scalefactors_Electron_Eta->SetDirectory(0);
   fLepton_Eta_SF->Close();
@@ -130,6 +134,8 @@ int whichAnaFlow = 0
       nb = thePandaFlat.fChain->GetEntry(jentry);   nbytes += nb;
       if (jentry%1000000 == 0) printf("--- reading event %8lld (%8lld) of %8lld\n",jentry,ientry,nentries);
 
+      if(infileCat_[ifile] == 0 && ((period == 1 && thePandaFlat.runNumber > 278802) || (period == 2 && thePandaFlat.runNumber <= 278802))) continue;
+
       if(thePandaFlat.nLooseLep != 2) continue;
 
       if(TMath::Abs(thePandaFlat.looseLep1PdgId)!=TMath::Abs(thePandaFlat.looseLep2PdgId))continue;
@@ -156,13 +162,14 @@ int whichAnaFlow = 0
       TLorentzVector vLoose1,vLoose2;
       vLoose1.SetPtEtaPhiM(thePandaFlat.looseLep1Pt,thePandaFlat.looseLep1Eta,thePandaFlat.looseLep1Phi,thePDGMass[0]);
       vLoose2.SetPtEtaPhiM(thePandaFlat.looseLep2Pt,thePandaFlat.looseLep2Eta,thePandaFlat.looseLep2Phi,thePDGMass[1]);
-      double ZRecRap = (vLoose1+vLoose2).Rapidity();
+      double ZRecRap = (vLoose1+vLoose2).Rapidity(); if(useZRap == false) ZRecRap = xbinsRap[0]+0.001;
       bool passMllSel = TMath::Abs((vLoose1+vLoose2).M()-91.1876) < 15;
       if(passMllSel == false)continue;
 
       if( TMath::Abs(ZRecRap) >= 2.4) continue;
 
       bool passLepId = ((thePandaFlat.looseLep1SelBit & kMedium) == kMedium) && ((thePandaFlat.looseLep2SelBit & kMedium) == kMedium);
+      if(useZRap == false) passLepId = passLepId && ((thePandaFlat.looseLep1SelBit & kFake) == kFake) && ((thePandaFlat.looseLep2SelBit & kFake) == kFake);
       if(passLepId == false) continue;
 
       bool passTrigger = (thePandaFlat.trigger & kMuTagTrig) == kMuTagTrig || (thePandaFlat.trigger & kEGTagTrig) == kEGTagTrig;
@@ -328,7 +335,7 @@ int whichAnaFlow = 0
   }
 
   char output[200];
-  sprintf(output,"histo_hlttrigger_dy%d.root",whichDY);	
+  sprintf(output,"histo_hlttrigger_dy%d_period%d.root",whichDY,period);	
   TFile* outFilePlotsHistos = new TFile(output,"recreate");
   outFilePlotsHistos->cd();
   eff_HLT_Rap->Write();

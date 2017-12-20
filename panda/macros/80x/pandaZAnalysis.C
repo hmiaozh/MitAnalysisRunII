@@ -31,9 +31,9 @@ void pandaZAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false)
   //*******************************************************
   //Input Files
   //*******************************************************
-  TString filesPathOld = "/data/t3home000/ceballos/panda/v_005_0/";
+  TString filesPathOld = "/data/t3home000/ceballos/panda/v_006_0/";
   TString filesPath    = "/data/t3home000/ceballos/panda/v_006_0/";
-  if(isMIT == false) filesPath = "/afs/cern.ch/work/c/ceballos/public/samples/panda/v_005_0/";
+  if(isMIT == false) filesPath = "/afs/cern.ch/work/c/ceballos/public/samples/panda/v_006_0/";
   vector<TString> infileName_;
   vector<Int_t> infileCat_;
   infileName_.push_back(Form("%sdata.root",filesPath.Data()));                 infileCat_.push_back(0);

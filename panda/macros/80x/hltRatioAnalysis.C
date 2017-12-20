@@ -20,7 +20,7 @@ int typeAna = 1
   //*******************************************************
   //Input Files
   //*******************************************************
-  TString filesPath    = "/data/t3home000/ceballos/panda/v_005_0/";
+  TString filesPath    = "/data/t3home000/ceballos/panda/v_006_0/";
   vector<TString> infileName_;
   vector<int> infileCat_;
 

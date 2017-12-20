@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Thu Nov 30 02:49:40 2017 by ROOT version 6.06/01
+// Sun Dec 10 12:46:46 2017 by ROOT version 6.06/01
 // from TTree events/events
-// found on file: /data/t3home000/ceballos/panda/v_005_0/qqWW.root
+// found on file: /data/t3home000/ceballos/panda/v_006_0/qqWW.root
 //////////////////////////////////////////////////////////
 
 #ifndef pandaFlat_h
@@ -51,7 +51,7 @@ public :
    Float_t         mcWeight;
    Int_t           trigger;
    Int_t           metFilter;
-   Int_t           egmFilter;
+   Float_t         zPos;
    Int_t           nLooseLep;
    Int_t           looseGenLep1PdgId;
    Int_t           looseGenLep2PdgId;
@@ -176,26 +176,6 @@ public :
    Float_t         sf_zhUp;
    Float_t         sf_zhDown;
    Float_t         sf_tt;
-   Float_t         sf_trk1;
-   Float_t         sf_trk2;
-   Float_t         sf_trk3;
-   Float_t         sf_trk4;
-   Float_t         sf_loose1;
-   Float_t         sf_loose2;
-   Float_t         sf_loose3;
-   Float_t         sf_loose4;
-   Float_t         sf_medium1;
-   Float_t         sf_medium2;
-   Float_t         sf_medium3;
-   Float_t         sf_medium4;
-   Float_t         sf_tight1;
-   Float_t         sf_tight2;
-   Float_t         sf_tight3;
-   Float_t         sf_tight4;
-   Float_t         sf_unc1;
-   Float_t         sf_unc2;
-   Float_t         sf_unc3;
-   Float_t         sf_unc4;
    Float_t         normalizedWeight;
 
    // List of branches
@@ -228,7 +208,7 @@ public :
    TBranch        *b_mcWeight;   //!
    TBranch        *b_trigger;   //!
    TBranch        *b_metFilter;   //!
-   TBranch        *b_egmFilter;   //!
+   TBranch        *b_zPos;   //!
    TBranch        *b_nLooseLep;   //!
    TBranch        *b_looseGenLep1PdgId;   //!
    TBranch        *b_looseGenLep2PdgId;   //!
@@ -353,26 +333,6 @@ public :
    TBranch        *b_sf_zhUp;   //!
    TBranch        *b_sf_zhDown;   //!
    TBranch        *b_sf_tt;   //!
-   TBranch        *b_sf_trk1;   //!
-   TBranch        *b_sf_trk2;   //!
-   TBranch        *b_sf_trk3;   //!
-   TBranch        *b_sf_trk4;   //!
-   TBranch        *b_sf_loose1;   //!
-   TBranch        *b_sf_loose2;   //!
-   TBranch        *b_sf_loose3;   //!
-   TBranch        *b_sf_loose4;   //!
-   TBranch        *b_sf_medium1;   //!
-   TBranch        *b_sf_medium2;   //!
-   TBranch        *b_sf_medium3;   //!
-   TBranch        *b_sf_medium4;   //!
-   TBranch        *b_sf_tight1;   //!
-   TBranch        *b_sf_tight2;   //!
-   TBranch        *b_sf_tight3;   //!
-   TBranch        *b_sf_tight4;   //!
-   TBranch        *b_sf_unc1;   //!
-   TBranch        *b_sf_unc2;   //!
-   TBranch        *b_sf_unc3;   //!
-   TBranch        *b_sf_unc4;   //!
    TBranch        *b_normalizedWeight;   //!
 
    pandaFlat(TTree *tree=0);
@@ -394,9 +354,9 @@ pandaFlat::pandaFlat(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/t3home000/ceballos/panda/v_005_0/qqWW.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/t3home000/ceballos/panda/v_006_0/qqWW.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/data/t3home000/ceballos/panda/v_005_0/qqWW.root");
+         f = new TFile("/data/t3home000/ceballos/panda/v_006_0/qqWW.root");
       }
       f->GetObject("events",tree);
 
@@ -474,7 +434,7 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("mcWeight", &mcWeight, &b_mcWeight);
    fChain->SetBranchAddress("trigger", &trigger, &b_trigger);
    fChain->SetBranchAddress("metFilter", &metFilter, &b_metFilter);
-   fChain->SetBranchAddress("egmFilter", &egmFilter, &b_egmFilter);
+   fChain->SetBranchAddress("zPos", &zPos, &b_zPos);
    fChain->SetBranchAddress("nLooseLep", &nLooseLep, &b_nLooseLep);
    fChain->SetBranchAddress("looseGenLep1PdgId", &looseGenLep1PdgId, &b_looseGenLep1PdgId);
    fChain->SetBranchAddress("looseGenLep2PdgId", &looseGenLep2PdgId, &b_looseGenLep2PdgId);
@@ -599,26 +559,6 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("sf_zhUp", &sf_zhUp, &b_sf_zhUp);
    fChain->SetBranchAddress("sf_zhDown", &sf_zhDown, &b_sf_zhDown);
    fChain->SetBranchAddress("sf_tt", &sf_tt, &b_sf_tt);
-   fChain->SetBranchAddress("sf_trk1", &sf_trk1, &b_sf_trk1);
-   fChain->SetBranchAddress("sf_trk2", &sf_trk2, &b_sf_trk2);
-   fChain->SetBranchAddress("sf_trk3", &sf_trk3, &b_sf_trk3);
-   fChain->SetBranchAddress("sf_trk4", &sf_trk4, &b_sf_trk4);
-   fChain->SetBranchAddress("sf_loose1", &sf_loose1, &b_sf_loose1);
-   fChain->SetBranchAddress("sf_loose2", &sf_loose2, &b_sf_loose2);
-   fChain->SetBranchAddress("sf_loose3", &sf_loose3, &b_sf_loose3);
-   fChain->SetBranchAddress("sf_loose4", &sf_loose4, &b_sf_loose4);
-   fChain->SetBranchAddress("sf_medium1", &sf_medium1, &b_sf_medium1);
-   fChain->SetBranchAddress("sf_medium2", &sf_medium2, &b_sf_medium2);
-   fChain->SetBranchAddress("sf_medium3", &sf_medium3, &b_sf_medium3);
-   fChain->SetBranchAddress("sf_medium4", &sf_medium4, &b_sf_medium4);
-   fChain->SetBranchAddress("sf_tight1", &sf_tight1, &b_sf_tight1);
-   fChain->SetBranchAddress("sf_tight2", &sf_tight2, &b_sf_tight2);
-   fChain->SetBranchAddress("sf_tight3", &sf_tight3, &b_sf_tight3);
-   fChain->SetBranchAddress("sf_tight4", &sf_tight4, &b_sf_tight4);
-   fChain->SetBranchAddress("sf_unc1", &sf_unc1, &b_sf_unc1);
-   fChain->SetBranchAddress("sf_unc2", &sf_unc2, &b_sf_unc2);
-   fChain->SetBranchAddress("sf_unc3", &sf_unc3, &b_sf_unc3);
-   fChain->SetBranchAddress("sf_unc4", &sf_unc4, &b_sf_unc4);
    fChain->SetBranchAddress("normalizedWeight", &normalizedWeight, &b_normalizedWeight);
    Notify();
 }
