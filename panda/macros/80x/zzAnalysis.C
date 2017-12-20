@@ -120,7 +120,7 @@ unsigned int period = 0
 
       if(TMath::Abs(thePandaFlat.looseLep1Eta) >= 2.4 || TMath::Abs(thePandaFlat.looseLep2Eta) >= 2.4 || TMath::Abs(thePandaFlat.looseLep3Eta) >= 2.4 || TMath::Abs(thePandaFlat.looseLep4Eta) >= 2.4) continue;
 
-      if(thePandaFlat.looseLep1Pt <= 20 || thePandaFlat.looseLep2Pt <= 20 || thePandaFlat.looseLep3Pt <= 10 || thePandaFlat.looseLep4Pt <= 10) continue;
+      if(thePandaFlat.looseLep1Pt <= 25 || thePandaFlat.looseLep2Pt <= 20 || thePandaFlat.looseLep3Pt <= 10 || thePandaFlat.looseLep4Pt <= 10) continue;
 
       int theCategory = infileCat_[ifile];
       bool isNotMCFake = thePandaFlat.looseGenLep1PdgId != 0 && thePandaFlat.looseGenLep2PdgId != 0 && thePandaFlat.looseGenLep3PdgId != 0 && thePandaFlat.looseGenLep4PdgId != 0;
