@@ -69,16 +69,23 @@ bool useZRap = true
     else {return;}
   }
 
+  TString puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
+  if     (period == 1) puPath = "MitAnalysisRunII/data/80x/puWeights_2016_bf.root";
+  else if(period == 2) puPath = "MitAnalysisRunII/data/80x/puWeights_2016_gh.root";
+  TFile *fPUFile = TFile::Open(Form("%s",puPath.Data()));
+  TH1D *fhDPU     = (TH1D*)(fPUFile->Get("puWeights"));     assert(fhDPU);    fhDPU    ->SetDirectory(0);
+  delete fPUFile;
+
   TFile *fLepton_Eta_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_eta_sf_37ifb_period%d.root",period));
   TH1D* scalefactors_Muon_Eta = (TH1D*)fLepton_Eta_SF->Get("scalefactors_Muon_Eta"); scalefactors_Muon_Eta->SetDirectory(0);
   TH1D* scalefactors_Electron_Eta = (TH1D*)fLepton_Eta_SF->Get("scalefactors_Electron_Eta"); scalefactors_Electron_Eta->SetDirectory(0);
   fLepton_Eta_SF->Close();
 
-  TFile *fLepton_SF_mu_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_ori.root"));
+  TFile *fLepton_SF_mu_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period%d.root",period));
   TH2D* scalefactors_Medium_Muon = (TH2D*)fLepton_SF_mu_central->Get("scalefactors_Medium_Muon"); scalefactors_Medium_Muon->SetDirectory(0);
   fLepton_SF_mu_central->Close();
 
-  TFile *fLepton_SF_el_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_ori.root"));
+  TFile *fLepton_SF_el_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period%d.root",period));
   TH2D* scalefactors_Medium_Electron = (TH2D*)fLepton_SF_el_central->Get("scalefactors_Medium_Electron"); scalefactors_Medium_Electron->SetDirectory(0);
   fLepton_SF_el_central->Close();
 
@@ -175,9 +182,12 @@ bool useZRap = true
       bool passTrigger = (thePandaFlat.trigger & kMuTagTrig) == kMuTagTrig || (thePandaFlat.trigger & kEGTagTrig) == kEGTagTrig;
       if(passTrigger == false) continue;
 
+      double puWeight = 1.0;
+
       int theCategory = infileCat_[ifile];
       double totalWeight = 1.0;
       if(theCategory != 0){
+        puWeight = nPUScaleFactor(fhDPU, thePandaFlat.pu);
 
         double the_eta_sf[2] = {1.0, 1.0};
         if(abs(thePandaFlat.looseLep1PdgId)==13){
@@ -223,7 +233,7 @@ bool useZRap = true
 	  sfWeightLepEff[1]        = scalefactors_Medium_Electron                   ->GetBinContent(binXT,binYT_c);
         }
 
-        totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu *
+        totalWeight = thePandaFlat.normalizedWeight * lumi * puWeight *
 		      the_eta_sf[0] * sfWeightLepEff[0] *
 		      the_eta_sf[1] * sfWeightLepEff[1];
 

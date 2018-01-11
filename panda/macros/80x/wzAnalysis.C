@@ -61,11 +61,11 @@ unsigned int period = 0
   TH1D* scalefactors_Electron_Eta = (TH1D*)fLepton_Eta_SF->Get("scalefactors_Electron_Eta"); scalefactors_Electron_Eta->SetDirectory(0);
   fLepton_Eta_SF->Close();
 
-  TFile *fLepton_SF_mu_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_ori.root"));
+  TFile *fLepton_SF_mu_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period%d.root",period));
   TH2D* scalefactors_Medium_Muon = (TH2D*)fLepton_SF_mu_central->Get("scalefactors_Medium_Muon"); scalefactors_Medium_Muon->SetDirectory(0);
   fLepton_SF_mu_central->Close();
 
-  TFile *fLepton_SF_el_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_ori.root"));
+  TFile *fLepton_SF_el_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period%d.root",period));
   TH2D* scalefactors_Medium_Electron = (TH2D*)fLepton_SF_el_central->Get("scalefactors_Medium_Electron"); scalefactors_Medium_Electron->SetDirectory(0);
   fLepton_SF_el_central->Close();
 
@@ -133,8 +133,8 @@ unsigned int period = 0
       if((thePandaFlat.looseLep2SelBit & kMedium) == kMedium) idLep[1] = 1;
       if((thePandaFlat.looseLep3SelBit & kMedium) == kMedium) idLep[2] = 1;
 
-      int qtot = abs(thePandaFlat.looseLep1PdgId)/thePandaFlat.looseLep1PdgId + abs(thePandaFlat.looseLep2PdgId)/thePandaFlat.looseLep2PdgId + abs(thePandaFlat.looseLep3PdgId)/thePandaFlat.looseLep3PdgId;
-      if(abs(qtot) != 1) continue;
+      int qTot = abs(thePandaFlat.looseLep1PdgId)/thePandaFlat.looseLep1PdgId + abs(thePandaFlat.looseLep2PdgId)/thePandaFlat.looseLep2PdgId + abs(thePandaFlat.looseLep3PdgId)/thePandaFlat.looseLep3PdgId;
+      if(abs(qTot) != 1) continue;
 
       int lepType = -1;
       if     (abs(thePandaFlat.looseLep1PdgId)==13 && abs(thePandaFlat.looseLep2PdgId)==13 && abs(thePandaFlat.looseLep3PdgId)==13) lepType = 0;

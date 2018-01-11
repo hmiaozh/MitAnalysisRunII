@@ -41,3 +41,9 @@ double fakeRateFactor(double pt, double eta, int pdgId, bool applyTight, TH2D *h
 
   return rate/(1-rate);
 }
+
+double nPUScaleFactor(TH1D *fhDPU, float npu){
+  double mynpu = TMath::Min(npu,(float)99.999);
+  Int_t npuxbin = fhDPU->GetXaxis()->FindBin(mynpu);
+  return fhDPU->GetBinContent(npuxbin);
+}

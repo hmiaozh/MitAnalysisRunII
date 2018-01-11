@@ -162,6 +162,13 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
                                                                               28,  30, 32,  35, 37,  40,43,  48, 52, 59, 65, 75, 86,100,120,140,160, 175, 190, 205,
                                                                              220, 235,250, 275,300, 350,400,450,500,750,1500};
 
+  TString puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
+  if     (period == 1) puPath = "MitAnalysisRunII/data/80x/puWeights_2016_bf.root";
+  else if(period == 2) puPath = "MitAnalysisRunII/data/80x/puWeights_2016_gh.root";
+  TFile *fPUFile = TFile::Open(Form("%s",puPath.Data()));
+  TH1D *fhDPU     = (TH1D*)(fPUFile->Get("puWeights"));     assert(fhDPU);    fhDPU    ->SetDirectory(0);
+  delete fPUFile;
+
   const int nBinHLTRap = 7;
   TH1D *eff_HLT_Rap;
   TH2D *eff_HLT_Muon_DA[nBinHLTRap];
@@ -188,15 +195,15 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   TH1D* scalefactors_Electron_Eta = (TH1D*)fLepton_Eta_SF->Get("scalefactors_Electron_Eta"); scalefactors_Electron_Eta->SetDirectory(0);
   fLepton_Eta_SF->Close();
 
-  TFile *fLepton_SF_mu_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_ori.root"));
+  TFile *fLepton_SF_mu_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period%d.root",period));
   TH2D* scalefactors_Medium_Muon = (TH2D*)fLepton_SF_mu_central->Get("scalefactors_Medium_Muon"); scalefactors_Medium_Muon->SetDirectory(0);
   fLepton_SF_mu_central->Close();
 
-  TFile *fLepton_SF_el_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_ori.root"));
+  TFile *fLepton_SF_el_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period%d.root",period));
   TH2D* scalefactors_Medium_Electron = (TH2D*)fLepton_SF_el_central->Get("scalefactors_Medium_Electron"); scalefactors_Medium_Electron->SetDirectory(0);
   fLepton_SF_el_central->Close();
 
-  TFile *fLepton_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_ori.root"));
+  TFile *fLepton_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period%d.root",period));
 
   TH2D* scalefactors_Medium_Muon_stat_error_hi      = (TH2D*)fLepton_SF->Get("scalefactors_Medium_Muon_stat_error_hi");      scalefactors_Medium_Muon_stat_error_hi     ->SetDirectory(0);
   TH2D* scalefactors_Medium_Muon_signalFsrTNP	    = (TH2D*)fLepton_SF->Get("scalefactors_Medium_Muon_signalFsrTNP");       scalefactors_Medium_Muon_signalFsrTNP      ->SetDirectory(0);
@@ -231,11 +238,11 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   const int nBinEtaPlot = 26; Float_t xbinsEtaPlot[nBinEtaPlot+1] = {-2.4,-2.3,-2.2,-2.0,-1.8,-1.63,-1.566,-1.4442,-1.2,-1.0,-0.6,-0.4,-0.2,0.0,
                                                                      0.2,0.4,0.6,1.0,1.2,1.4442,1.566,1.63,1.8,2.0,2.2,2.3,2.4};
 
-  const int muBinxX = scalefactors_Medium_Muon_stat_error_hi->GetNbinsX();
-  const int muBinxY = scalefactors_Medium_Muon_stat_error_hi->GetNbinsY();
+  const int muBinxX = 0;//scalefactors_Medium_Muon_stat_error_hi->GetNbinsX();
+  const int muBinxY = 0;//scalefactors_Medium_Muon_stat_error_hi->GetNbinsY();
   const int nMuSFBins = muBinxX*muBinxY;
-  const int elBinxX = scalefactors_Medium_Electron_stat_error_hi->GetNbinsX();
-  const int elBinxY = scalefactors_Medium_Electron_stat_error_hi->GetNbinsY();
+  const int elBinxX = 0;//scalefactors_Medium_Electron_stat_error_hi->GetNbinsX();
+  const int elBinxY = 0;//scalefactors_Medium_Electron_stat_error_hi->GetNbinsY();
   const int nElSFBins = elBinxX*elBinxY;
   const int nRecNuisances = 1;
   const int nEffNuisances = 8+nMuSFBins;
@@ -256,7 +263,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     if     (thePlot >=  0 && thePlot <=  1) {nBinPlot = 120; xminPlot = 91.1876-15; xmaxPlot = 91.1876+15;}
     else if(thePlot >=  2 && thePlot <=  3) {nBinPlot = 500; xminPlot =  0.0; xmaxPlot =500;}
-    else if(thePlot >=  4 && thePlot <=  5) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot =  20;}
+    else if(thePlot >=  4 && thePlot <=  5) {nBinPlot = 100; xminPlot = -0.5; xmaxPlot =  99.5;}
     else if(thePlot >=  6 && thePlot <= 11) {nBinPlot = 120; xminPlot = 91.1876-15; xmaxPlot = 91.1876+15;}
     else if(thePlot >= 12 && thePlot <= 15) {nBinPlot = 100; xminPlot =-50.0; xmaxPlot = 50;}
     else if(thePlot >= 16 && thePlot <= 17) {nBinPlot =  96; xminPlot = -2.4; xmaxPlot = 2.4;}
@@ -929,6 +936,8 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
       else if(abs(lepType) == 2 && abs(thePandaFlat.looseLep1PdgId)==11) {thePDGMass[0] = mass_el;}
       else if(abs(lepType) == 2 && abs(thePandaFlat.looseLep2PdgId)==11) {thePDGMass[1] = mass_el;}
 
+      double puWeight = 1.0;
+
       // Begin Momentum scale corrections and uncertainties
       float lepPtSF[2] = {1,1};
       float lepPtSFSyst[2][nMomNuisances] = {1,1,1,1,1,1,1,1,1,1};
@@ -1000,6 +1009,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           lepPtSFSyst[1][3] = 1.0/lepPtSF[1];
         }
       } else { // MC
+        puWeight = nPUScaleFactor(fhDPU, thePandaFlat.pu);
         if(abs(thePandaFlat.looseLep1PdgId)==13) {
 	  double rnd[2] = {gRandom->Rndm(), gRandom->Rndm()};
           lepPtSF[0] = rmcor.kScaleAndSmearMC(-1*abs(thePandaFlat.looseLep1PdgId)/thePandaFlat.looseLep1PdgId, thePandaFlat.looseLep1Pt,thePandaFlat.looseLep1Eta,thePandaFlat.looseLep1Phi, (int)thePandaFlat.looseLep1RegPt, rnd[0], rnd[1], 0, 0);
@@ -1255,7 +1265,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
 	  if(nElSFBins == elBinxX*elBinxY) sfSystWeightLepEff[1][elBinxX*(binXT-1)+(binYT_s-1)+8] = scalefactors_Medium_Electron_stat_error_hi->GetBinContent(binXT,binYT_s);
         }
 
-        totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu *
+        totalWeight = thePandaFlat.normalizedWeight * lumi * puWeight *
 		      the_eta_sf[0] * sfWeightLepEff[0] *
 		      the_eta_sf[1] * sfWeightLepEff[1] *
 		      the_trigger_sf * theMCPrescale * zPos_SF;
@@ -1269,7 +1279,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
       if(passLooseSel[0]) {
         double totalLooseWeight = 1.0;
         if(theCategory != 0 && theCategory != 5){
-          totalLooseWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu *
+          totalLooseWeight = thePandaFlat.normalizedWeight * lumi * puWeight *
 		             the_eta_sf[0] * the_eta_sf[1] * sfWeightLepEff[0] * the_trigger_sf * theMCPrescale * zPos_SF;
         }
         if(theCategory != 5){
@@ -1289,7 +1299,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
       if(passLooseSel[1]) {
         double totalLooseWeight = 1.0;
         if(theCategory != 0 && theCategory != 5){
-          totalLooseWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu *
+          totalLooseWeight = thePandaFlat.normalizedWeight * lumi * puWeight *
 		             the_eta_sf[0] * the_eta_sf[1] * sfWeightLepEff[1] * the_trigger_sf * theMCPrescale * zPos_SF;
         }
         if(theCategory != 5){
@@ -1350,7 +1360,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
         if(theCategory != 5){
 	  histo[lepType+0][theCategory]->Fill((v1+v2).M(),totalWeight);
 	  histo[lepType+2][theCategory]->Fill(ZRecPt,totalWeight);
-	  histo[lepType+4][theCategory]->Fill(TMath::Abs(ZRecPt-ZGenPt),totalWeight);
+	  histo[lepType+4][theCategory]->Fill(TMath::Min((double)thePandaFlat.npv,99.499),totalWeight);
           if     (TMath::Abs(thePandaFlat.looseLep1Eta) <  1.5 && TMath::Abs(thePandaFlat.looseLep2Eta) <  1.5){
 	    histo[lepType+ 6][theCategory]->Fill((v1+v2).M(),totalWeight);
           }
@@ -1477,7 +1487,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
             if(theLepType == 1) theKeff = 0.5/k_eff;
  	    histo[theLepType+0][theCategory]->Fill((v1+v2).M(),totalWeight*theKeff);
 	    histo[theLepType+2][theCategory]->Fill(ZRecPt,totalWeight*theKeff);
-	    histo[theLepType+4][theCategory]->Fill(TMath::Abs(ZRecPt-ZGenPt),totalWeight*theKeff);
+	    histo[theLepType+4][theCategory]->Fill(TMath::Min((double)thePandaFlat.npv,99.499),totalWeight*theKeff);
             if     (TMath::Abs(thePandaFlat.looseLep1Eta) <  1.5 && TMath::Abs(thePandaFlat.looseLep2Eta) <  1.5){
 	      histo[theLepType+ 6][theCategory]->Fill((v1+v2).M(),totalWeight*theKeff);
             }
