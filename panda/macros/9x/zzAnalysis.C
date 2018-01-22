@@ -15,7 +15,7 @@
 #include "MitAnalysisRunII/panda/macros/9x/common.h"
 
 const double mcPrescale = 1;
-const bool usePureMC = true;
+const bool usePureMC = false;
 
 void zzAnalysis(
 unsigned int period = 0
