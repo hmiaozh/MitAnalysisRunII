@@ -15,7 +15,7 @@
 #include "MitAnalysisRunII/panda/macros/80x/common.h"
 
 const double mcPrescale = 1;
-const bool usePureMC = false;
+const bool usePureMC = true;
 
 void zzAnalysis(
 unsigned int period = 0
@@ -48,6 +48,11 @@ unsigned int period = 0
   infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));  	       infileCat_.push_back(5);
   infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	       infileCat_.push_back(5);
   infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	       infileCat_.push_back(6);
+
+  //infileName_.clear();infileCat_.clear();
+  //infileName_.push_back(Form("PandaAnalysis/Flat/test/testskim.root")); infileCat_.push_back(4);
+  //infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	       infileCat_.push_back(4);
+  //infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data())); 	       infileCat_.push_back(4);
 
   TFile *fLepton_Fakes = TFile::Open(Form("MitAnalysisRunII/data/80x/histoFakeEtaPt_80x_37ifb.root"));
   TH2D* histoFakeEffSelMediumEtaPt_m = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel0EtaPt_0"); histoFakeEffSelMediumEtaPt_m->SetDirectory(0);
@@ -102,6 +107,7 @@ unsigned int period = 0
     double theMCPrescale = 1.0; if(infileCat_[ifile] != 0) theMCPrescale = mcPrescale;
     Long64_t nentries = thePandaFlat.fChain->GetEntriesFast();
     Long64_t nbytes = 0, nb = 0;
+    double nTrigger[6] = {0,0,0,0,0,0};
     for (Long64_t jentry=0; jentry<nentries;jentry++) {
       Long64_t ientry = thePandaFlat.LoadTree(jentry);
       if (ientry < 0) break;
@@ -368,6 +374,15 @@ unsigned int period = 0
         totalWeight = totalWeight * fakeSF;
       }
 
+      if(passZZSel){
+        if((thePandaFlat.trigger & kMuEGTrig) == kMuEGTrig) nTrigger[0] = nTrigger[0] + totalWeight;
+        if((thePandaFlat.trigger & kMuMuTrig) == kMuMuTrig) nTrigger[1] = nTrigger[1] + totalWeight;
+        if((thePandaFlat.trigger & kMuTrig)   == kMuTrig)   nTrigger[2] = nTrigger[2] + totalWeight;
+        if((thePandaFlat.trigger & kEGEGTrig) == kEGEGTrig) nTrigger[3] = nTrigger[3] + totalWeight;
+        if((thePandaFlat.trigger & kEGTrig)   == kEGTrig)   nTrigger[4] = nTrigger[4] + totalWeight;
+        nTrigger[5] = nTrigger[5] + totalWeight;
+      }
+
       if(passAllButOneSel[0]){histo[lepType+ 0][theCategory]->Fill(TMath::Min(mllmin,99.999),totalWeight);                                if(lepType != 3) histo[ 4][theCategory]->Fill(TMath::Min(mllmin,99.999),totalWeight);}
       if(passAllButOneSel[1]){histo[lepType+ 5][theCategory]->Fill(TMath::Min(fabs(mllZ-91.1876),99.999),totalWeight);                    if(lepType != 3) histo[ 9][theCategory]->Fill(TMath::Min(fabs(mllZ-91.1876),99.999),totalWeight);}
       if(passAllButOneSel[2]){histo[lepType+10][theCategory]->Fill(TMath::Min(fabs((vZ2l1+vZ2l2).M()-91.1876),99.999),totalWeight);       if(lepType != 3) histo[14][theCategory]->Fill(TMath::Min(fabs((vZ2l1+vZ2l2).M()-91.1876),99.999),totalWeight);}
@@ -381,11 +396,13 @@ unsigned int period = 0
       if(passZZSel)          {histo[lepType+50][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,4.499),totalWeight);        if(lepType != 3) histo[54][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,4.499),totalWeight);}
 
     } // end events loop
+    printf("%6.3f %6.3f %6.3f %6.3f %6.3f\n",nTrigger[0]/nTrigger[5],nTrigger[1]/nTrigger[5],nTrigger[2]/nTrigger[5],nTrigger[3]/nTrigger[5],nTrigger[4]/nTrigger[5]);
     the_input_file->Close();
   } // end chain loop
 
   char output[200];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
+    if(thePlot >= 20) continue;
     sprintf(output,"histoZZ_%d.root",thePlot);	
     TFile* outFilePlotsNote = new TFile(output,"recreate");
     outFilePlotsNote->cd();
