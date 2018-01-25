@@ -198,7 +198,7 @@ unsigned int period = 0
       double minPMET[1] = {TMath::Min(PMET[0],PTrackMET[0])};
 
       bool passSel[7] = {qTot == 0, (vLoose1+vLoose2).M() > 20, fabs((vLoose1+vLoose2).M()-91.1876) > 15 || lepType == 2, minPMET[0] > 20, minPMET[0] > 45 || lepType == 2, 
-                         (vLoose1+vLoose2).Pt() > 30 && ((vLoose1+vLoose2).Pt() > 45 ||  lepType == 2), thePandaFlat.jetNMBtags == 0};
+                         (vLoose1+vLoose2).Pt() > 30 && ((vLoose1+vLoose2).Pt() > 45 ||  lepType == 2), thePandaFlat.jetNBtags == 0};
 
       bool passWWSel  =  passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[4] && passSel[5] &&  passSel[6];
       bool passSSSel  = !passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[4] && passSel[5] &&  passSel[6];
@@ -302,7 +302,7 @@ unsigned int period = 0
       if(passAllButOneSel[1])histo[lepType+ 18][theCategory]->Fill(TMath::Min(vMet.Pt(),199.999),totalWeight);
       if(passAllButOneSel[1])histo[lepType+ 27][theCategory]->Fill(TMath::Min(vTrkMet.Pt(),199.999),totalWeight);
       if(passAllButOneSel[2])histo[lepType+ 36][theCategory]->Fill(TMath::Min((vLoose1+vLoose2).Pt(),199.999),totalWeight);
-      if(passAllButOneSel[3])histo[lepType+ 45][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,4.499),totalWeight);
+      if(passAllButOneSel[3])histo[lepType+ 45][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNBtags,4.499),totalWeight);
       if(passWWSel)          histo[lepType+ 54][theCategory]->Fill(TMath::Min(vLoose1.Pt(),199.999),totalWeight);
       if(passWWSel)          histo[lepType+ 63][theCategory]->Fill(TMath::Min(vLoose2.Pt(),199.999),totalWeight);
       if(passWWSel)          histo[lepType+ 72][theCategory]->Fill(TMath::Min((vLoose1+vLoose2).M(),199.999),totalWeight);

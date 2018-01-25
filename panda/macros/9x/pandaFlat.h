@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Fri Jan 19 12:04:59 2018 by ROOT version 6.08/07
+// Tue Jan 23 14:25:33 2018 by ROOT version 6.08/07
 // from TTree events/events
 // found on file: /data/t3home000/ceballos/panda/v_007_0/qqZZ.root
 //////////////////////////////////////////////////////////
@@ -24,6 +24,10 @@ public :
    // Declaration of leaf types
    Int_t           nJet;
    Int_t           nJot;
+   Int_t           nJot_jesUp;
+   Int_t           nJot_jesDown;
+   Int_t           nJet_jesUp;
+   Int_t           nJet_jesDown;
    Int_t           nLooseLep;
    Int_t           nLooseElectron;
    Int_t           nLooseMuon;
@@ -253,6 +257,10 @@ public :
    // List of branches
    TBranch        *b_nJet;   //!
    TBranch        *b_nJot;   //!
+   TBranch        *b_nJot_jesUp;   //!
+   TBranch        *b_nJot_jesDown;   //!
+   TBranch        *b_nJet_jesUp;   //!
+   TBranch        *b_nJet_jesDown;   //!
    TBranch        *b_nLooseLep;   //!
    TBranch        *b_nLooseElectron;   //!
    TBranch        *b_nLooseMuon;   //!
@@ -551,6 +559,10 @@ void pandaFlat::Init(TTree *tree)
 
    fChain->SetBranchAddress("nJet", &nJet, &b_nJet);
    fChain->SetBranchAddress("nJot", &nJot, &b_nJot);
+   fChain->SetBranchAddress("nJot_jesUp", &nJot_jesUp, &b_nJot_jesUp);
+   fChain->SetBranchAddress("nJot_jesDown", &nJot_jesDown, &b_nJot_jesDown);
+   fChain->SetBranchAddress("nJet_jesUp", &nJet_jesUp, &b_nJet_jesUp);
+   fChain->SetBranchAddress("nJet_jesDown", &nJet_jesDown, &b_nJet_jesDown);
    fChain->SetBranchAddress("nLooseLep", &nLooseLep, &b_nLooseLep);
    fChain->SetBranchAddress("nLooseElectron", &nLooseElectron, &b_nLooseElectron);
    fChain->SetBranchAddress("nLooseMuon", &nLooseMuon, &b_nLooseMuon);
