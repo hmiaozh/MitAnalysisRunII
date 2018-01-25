@@ -105,7 +105,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   const double dileptonPtCut = 0.0;
   const int nBinTot = 1; Float_t xbinsTot[nBinTot+1] = {0,1};
   const int nBinPt = 36; Float_t xbinsPt[nBinPt+1] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,18,20,22,25,28,32,37,43,52,65,85,120,160,190,220,250,300,400,500,800,1500};
-  //const int nBinPt = 7; Float_t xbinsPt[nBinPt+1] = {200,220,250,300,400,500,800,1500};
+  //const int nBinPt = 5; Float_t xbinsPt[nBinPt+1] = {200,300,400,500,800,1500};
   const int nBinRap = 12; Float_t xbinsRap[nBinRap+1] = {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4};
   const int nBinPhiStar = 34; Float_t xbinsPhiStar[nBinPhiStar+1] = {
                                          1e-3, 2e-3, 3e-3, 4e-3, 5e-3, 6e-3, 7e-3, 8e-3, 9e-3,
@@ -123,7 +123,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   								      10,10.5, 11,11.5, 12,12.5,13,13.5, 14, 15, 16, 17, 18, 19, 20, 21, 22,23.5,  25,26.5,
   								      28,  30, 32,  35, 37,  40,43,  48, 52, 59, 65, 75, 85,100,120,140,160, 175, 190, 205,
   								     220, 235,250, 275,300, 350,400,450,500,650,800,1150,1500};
-  //const int nBinRecoPt     = 14; Float_t xbinsRecoPt[nBinRecoPt+1]         = {200,210,220,235,250,275,300,350,400,450,500,650,800,1150,1500};
+  //const int nBinRecoPt     = 10; Float_t xbinsRecoPt[nBinRecoPt+1]         = {200,250,300,350,400,450,500,650,800,1150,1500};
 
   const int nBinRecoRap = 24; Float_t xbinsRecoRap[nBinRecoRap+1] = {0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4};
 
@@ -238,11 +238,11 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   const int nBinEtaPlot = 26; Float_t xbinsEtaPlot[nBinEtaPlot+1] = {-2.4,-2.3,-2.2,-2.0,-1.8,-1.63,-1.566,-1.4442,-1.2,-1.0,-0.6,-0.4,-0.2,0.0,
                                                                      0.2,0.4,0.6,1.0,1.2,1.4442,1.566,1.63,1.8,2.0,2.2,2.3,2.4};
 
-  const int muBinxX = 0;//scalefactors_Medium_Muon_stat_error_hi->GetNbinsX();
-  const int muBinxY = 0;//scalefactors_Medium_Muon_stat_error_hi->GetNbinsY();
+  const int muBinxX = scalefactors_Medium_Muon_stat_error_hi->GetNbinsX();
+  const int muBinxY = scalefactors_Medium_Muon_stat_error_hi->GetNbinsY();
   const int nMuSFBins = muBinxX*muBinxY;
-  const int elBinxX = 0;//scalefactors_Medium_Electron_stat_error_hi->GetNbinsX();
-  const int elBinxY = 0;//scalefactors_Medium_Electron_stat_error_hi->GetNbinsY();
+  const int elBinxX = scalefactors_Medium_Electron_stat_error_hi->GetNbinsX();
+  const int elBinxY = scalefactors_Medium_Electron_stat_error_hi->GetNbinsY();
   const int nElSFBins = elBinxX*elBinxY;
   const int nRecNuisances = 1;
   const int nEffNuisances = 8+nMuSFBins;
