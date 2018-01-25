@@ -163,6 +163,7 @@ void wwAnalysis(
   if(infilenamev.size() != infilecatv.size()) {assert(0); return;}
 
   //infilenamev.clear();infilecatv.clear();
+  //infilenamev.push_back(Form("%sTTTo2L2Nu_13TeV-powheg.root",filesPathMC2.Data()));					      infilecatv.push_back(3);
   //infilenamev.push_back(Form("%sWWTo2L2Nu_13TeV-amcnlo.root",filesPathMC.Data())); infilecatv.push_back(1);
   //infilenamev.push_back(Form("%sWWTo2L2Nu_13TeV-powheg.root",filesPathMC.Data())); infilecatv.push_back(1);
   //infilenamev.push_back(Form("%sWWTo2L2Nu_13TeV-powheg-herwigpp.root",filesPathMC.Data())); infilecatv.push_back(1);
@@ -970,6 +971,8 @@ void wwAnalysis(
 
       the_input_tree->GetEntry(i);
  
+      //if(debug == 1 && eventEvent.lumiNum > 260545) continue;
+
       int initPDFTag = 0;
       if((*eventMonteCarlo.pdfRwgt).size() == 0) initPDFTag = -1;
 
@@ -1252,7 +1255,7 @@ void wwAnalysis(
 	if(totalSel == kTRUE) sumEvol[typeSel]++;
       }
       if(totalSel && debug == 1){
-      printf("EVENT %d %d %llu %d %f %f %f %f %f %f %f %f %f %f %f %d ",eventEvent.runNum,eventEvent.lumiNum,eventEvent.eventNum,typeSel,
+      printf("EVENT %d %llu %d %d %f %f %f %f %f %f %f %f %f %f %f %d ",eventEvent.runNum,eventEvent.eventNum,eventEvent.lumiNum,typeSel,
       ((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Pt(),((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Eta(),((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Phi(),
       ((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Pt(),((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Eta(),((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Phi(),
       theMET.Pt(),(double)eventMet.trackMet->Pt(),dPhiLepMETMin,dPhiLepTrackMETMin,minPMET[0],(int)idJet.size());
