@@ -62,10 +62,10 @@ const double mjjCut = 500.;
 
 void sswwjjAnalysis(
  int theControlRegion = 0, 
- TString typeLepSel = "verytight", 
  int finalVar = 0, // 0 == mjj 4 x 6, 1 == mll 4 x 6, 2 == mll  5 x 2, 3 == mll 5 x 1, 4 == mjj vs. mll 4 x 5
+ TString typeLepSel = "verytight", 
  bool isBlinded = false,
- bool isMIT = false
+ bool isMIT = true
  ){
 
   // File instances on EOS
@@ -225,6 +225,7 @@ void sswwjjAnalysis(
 
   //infilenamev.clear();infilecatv.clear();
   //infilenamev.push_back(Form("nero.root")); infilecatv.push_back(6);
+  //infilenamev.push_back(Form("%sWpWpJJ_EWK_TuneCUETP8M1_13TeV-madgraph-pythia8.root",filesPathMC.Data()));                   infilecatv.push_back(1);
 
   if(infilenamev.size() != infilecatv.size()) {assert(0); return;}
 
@@ -374,6 +375,12 @@ void sswwjjAnalysis(
   }
   else if(finalVar == 4){ // just to show nothing needs to be done
   }
+
+  const int nBinWWSS = 5;
+  Float_t xbinsWWSSMLL[nBinWWSS+1];
+    xbinsWWSSMLL[ 0] =   0;      xbinsWWSSMLL[ 1] = 100;      xbinsWWSSMLL[ 2] = 200;      xbinsWWSSMLL[ 3] = 300;      xbinsWWSSMLL[ 4] = 400;
+    xbinsWWSSMLL[ 5] = 600;
+  TH1D* histoMllGen = new TH1D("histoMllGen", "histoMllGen", nBinWWSS, xbinsWWSSMLL);
 
   TH1D* histoMVA = new TH1D("histoMVA", "histoMVA", nBinMVA, xbins);
   histoMVA->Sumw2();
@@ -1772,7 +1779,7 @@ void sswwjjAnalysis(
            histo_EWK_CMS_MVABTAGBoundingUp  ->Fill(MVAVar,totalWeight*btagCorr[0]);
            histo_EWK_CMS_MVABTAGBoundingDown->Fill(MVAVar,totalWeight*btagCorr[1]);
 
-          bool passFiducial[2] = {false, false};
+          bool passFiducial[2] = {false, false}; double mllGen = 0;
 	  // Begin gen fiducial selection
 	  Int_t countSelectedGenLeptons = 0;
 	  vector<int> idGenLep;
@@ -1811,6 +1818,7 @@ void sswwjjAnalysis(
 	      double deltaEtaJJ = TMath::Abs(((TLorentzVector*)(*eventMonteCarlo.jetP4)[idGenJet30[0]])->Eta()-((TLorentzVector*)(*eventMonteCarlo.jetP4)[idGenJet30[1]])->Eta());
               if(deltaEtaJJ > 2.5 && dijet.M() > 300) passFiducial[0] = true;
               if(deltaEtaJJ > 2.5 && dijet.M() > 500) passFiducial[1] = true;
+	      mllGen = (( *(TLorentzVector*)(*eventMonteCarlo.p4)[idGenLep[0]] ) +   ( *(TLorentzVector*)(*eventMonteCarlo.p4)[idGenLep[1]] )).M();
 	    }
 	  }
 	  // End gen fiducial selection
@@ -1818,6 +1826,8 @@ void sswwjjAnalysis(
           else                selectedNonFiducial[0] = selectedNonFiducial[0] + totalWeight;
           if(passFiducial[1]) selectedFiducial[1]    = selectedFiducial[1]    + totalWeight;
           else                selectedNonFiducial[1] = selectedNonFiducial[1] + totalWeight;
+
+          if(passFiducial[1]) histoMllGen->Fill(TMath::Min(mllGen, 599.999),totalWeight);
         }
         if(passSystCuts[JESUP])  histo_EWK_CMS_MVAJESBoundingUp  ->Fill(MVAVarJESSyst[0],totalWeight);
         if(passSystCuts[JESDOWN])histo_EWK_CMS_MVAJESBoundingDown->Fill(MVAVarJESSyst[1],totalWeight);
@@ -2247,6 +2257,15 @@ void sswwjjAnalysis(
     printf("Signal selected Fiducial1 ==> good: %f / bad: %f -> %f\n",selectedFiducial[1],selectedNonFiducial[1],selectedNonFiducial[1]/histo_EWK->GetSumOfWeights());
     printf("Cross section Fiducial0/1 (fb): %f %f\n",effTimesXsFiducial[0],effTimesXsFiducial[1]);
     printf("Efficiency Fiducial0/1 ==> %f %f\n",selectedFiducial[0]/effTimesXsFiducial[0]/lumi,selectedFiducial[1]/effTimesXsFiducial[1]/lumi);
+  }
+
+  {
+    char output[200];
+    sprintf(output,"histoMllGen.root");	
+    TFile* outFilePlotsNote = new TFile(output,"recreate");
+    outFilePlotsNote->cd();
+    histoMllGen->Write();
+    outFilePlotsNote->Close();
   }
 
   histo[6][allPlots-1][0] ->Add(histo_Data);
