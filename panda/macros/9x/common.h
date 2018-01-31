@@ -6,6 +6,15 @@ enum LepSelectionBit {
  kDxyz    =(1<<4)
 };
 
+enum PhoSelectionBit {
+ pMedium    =(1<<0),
+ pTight     =(1<<1),
+ pHighPt    =(1<<2),
+ pCsafeVeto =(1<<3),
+ pPixelVeto =(1<<4),
+ pTrkVeto   =(1<<5)
+};
+
 enum TriggerBits {
     kMETTrig	  =(1<<0),
     kSingleEleTrig=(1<<1),
@@ -43,4 +52,38 @@ double nPUScaleFactor(TH1D *fhDPU, float npu){
   double mynpu = TMath::Min(npu,(float)99.999);
   Int_t npuxbin = fhDPU->GetXaxis()->FindBin(mynpu);
   return fhDPU->GetBinContent(npuxbin);
+}
+
+double electronToPhotonSF(double pt){
+double effDA = 0.0292 + 0.131 / (pt - 12.80);
+double effMD = 0.0147 + 0.208 / (pt + 10.89);
+
+//printf("electronToPhotonSF: %f/%f=%f\n",effDA,effMD,effDA/effMD);
+
+return effDA/effMD;
+}
+
+double effhDPhotonScaleFactor(double pt, double eta, TString type, TH2D *fhDIdSF, TH2D *fhDVetoSF){
+
+  if(pt>=200) pt = +199.999;
+
+  if     (eta>=+2.4) eta = +2.399;
+  else if(eta<=-2.4) eta = -2.399;
+
+  Int_t binXA = 0;
+  Int_t binYA = 0;
+  Int_t binXB = 0;
+  Int_t binYB = 0;
+
+  binXA = fhDIdSF  ->GetXaxis()->FindFixBin(eta);binYA = fhDIdSF  ->GetYaxis()->FindFixBin(pt);
+  
+  eta = abs(eta); if(eta < 1.5) eta = 1.0; else eta = 2.0;
+  binXB = fhDVetoSF->GetXaxis()->FindFixBin(eta);binYB = fhDVetoSF->GetYaxis()->FindFixBin(pt);
+
+  double idSF   = fhDIdSF  ->GetBinContent(binXA, binYA);
+  double vetoSF = fhDVetoSF->GetBinContent(binXB, binYB);
+  
+  if(idSF <= 0 || vetoSF <= 0) printf("photonSF <= 0! %f %f %d %d %d %d - %f %f\n",idSF,vetoSF,binXA,binYA,binXB,binYB,pt,eta);
+
+  return idSF*vetoSF;
 }

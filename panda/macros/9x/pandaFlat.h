@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Tue Jan 23 14:25:33 2018 by ROOT version 6.08/07
+// Wed Jan 31 01:55:02 2018 by ROOT version 6.08/07
 // from TTree events/events
 // found on file: /data/t3home000/ceballos/panda/v_007_0/qqZZ.root
 //////////////////////////////////////////////////////////
@@ -121,6 +121,8 @@ public :
    Int_t           looseGenLep2PdgId;
    Int_t           looseGenLep3PdgId;
    Int_t           looseGenLep4PdgId;
+   Int_t           loosePho1SelBit;
+   Int_t           looseGenPho1PdgId;
    Float_t         genFatJetPt;
    Float_t         trkmetphi;
    Int_t           whichRecoil;
@@ -354,6 +356,8 @@ public :
    TBranch        *b_looseGenLep2PdgId;   //!
    TBranch        *b_looseGenLep3PdgId;   //!
    TBranch        *b_looseGenLep4PdgId;   //!
+   TBranch        *b_loosePho1SelBit;   //!
+   TBranch        *b_looseGenPho1PdgId;   //!
    TBranch        *b_genFatJetPt;   //!
    TBranch        *b_trkmetphi;   //!
    TBranch        *b_whichRecoil;   //!
@@ -656,6 +660,8 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("looseGenLep2PdgId", &looseGenLep2PdgId, &b_looseGenLep2PdgId);
    fChain->SetBranchAddress("looseGenLep3PdgId", &looseGenLep3PdgId, &b_looseGenLep3PdgId);
    fChain->SetBranchAddress("looseGenLep4PdgId", &looseGenLep4PdgId, &b_looseGenLep4PdgId);
+   fChain->SetBranchAddress("loosePho1SelBit", &loosePho1SelBit, &b_loosePho1SelBit);
+   fChain->SetBranchAddress("looseGenPho1PdgId", &looseGenPho1PdgId, &b_looseGenPho1PdgId);
    fChain->SetBranchAddress("genFatJetPt", &genFatJetPt, &b_genFatJetPt);
    fChain->SetBranchAddress("trkmetphi", &trkmetphi, &b_trkmetphi);
    fChain->SetBranchAddress("whichRecoil", &whichRecoil, &b_whichRecoil);
