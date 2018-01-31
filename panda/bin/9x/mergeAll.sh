@@ -28,6 +28,7 @@ PandaAnalysis/T3/merging/merge.py --cfg leptonic DYJetsToMM_POWHEG
 PandaAnalysis/T3/merging/merge.py --cfg leptonic DYJetsToEE_POWHEG
 PandaAnalysis/T3/merging/merge.py --cfg leptonic WJets
 PandaAnalysis/T3/merging/merge.py --cfg leptonic MET
+#PandaAnalysis/T3/merging/merge.py --cfg leptonic DarkPhoton_ZH_powheg_M-125
 #PandaAnalysis/T3/merging/merge.py --cfg leptonic SingleMuon           
 #PandaAnalysis/T3/merging/merge.py --cfg leptonic SingleElectron     
 #PandaAnalysis/T3/merging/merge.py --cfg leptonic MuonEG       
