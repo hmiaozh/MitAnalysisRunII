@@ -41,7 +41,7 @@ unsigned int period = 0
   infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));		       infileCat_.push_back(3);
 
   infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(4);
-  infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));  infileCat_.push_back(4);
+  infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));   infileCat_.push_back(4);
 
   infileName_.push_back(Form("%sWZ.root" ,filesPath.Data()));		       infileCat_.push_back(5);
   infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	       infileCat_.push_back(5);
@@ -212,23 +212,8 @@ unsigned int period = 0
       };
       if(usePureMC == true && countLeptonTight != idLep.size()) continue;
 
-      vector<int> idJet30;
-      vector<TLorentzVector> vJet;
-      TLorentzVector vJetTemp;
-      if(thePandaFlat.jet1Pt > 10) {vJetTemp.SetPtEtaPhiM(thePandaFlat.jet1Pt,thePandaFlat.jet1Eta,thePandaFlat.jet1Phi,0.0); vJet.push_back(vJetTemp);}
-      if(thePandaFlat.jet2Pt > 10) {vJetTemp.SetPtEtaPhiM(thePandaFlat.jet2Pt,thePandaFlat.jet2Eta,thePandaFlat.jet2Phi,0.0); vJet.push_back(vJetTemp);}
-      for(unsigned int nj=0; nj<vJet.size(); nj++){
-
-        Bool_t isLepton = kFALSE;
-	if(vLoose1.Pt() > 0) if(vLoose1.DeltaR(vJet[nj]) < 0.3) isLepton = kTRUE;
-	if(vLoose2.Pt() > 0) if(vLoose2.DeltaR(vJet[nj]) < 0.3) isLepton = kTRUE;
-        if(isLepton == kTRUE) continue;
-
-        if(vJet[nj].Pt() > 30)  idJet30.push_back(nj);
-      }
-
-      if(idJet30.size() > 2) continue;
-      lepType = lepType + 3*(int)idJet30.size();
+      if(thePandaFlat.nJot > 2) continue;
+      lepType = lepType + 3*(int)thePandaFlat.nJot;
 
       double totalWeight = 1.0;
       if(theCategory != 0){

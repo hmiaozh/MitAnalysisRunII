@@ -36,7 +36,7 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false)
   if     (whichDY == 0)
  {infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root" ,filesPath.Data()));  infileCat_.push_back(2);}
   else if(whichDY == 1)
- {infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));  infileCat_.push_back(2);}
+ {infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));  infileCat_.push_back(2);}
   else if(whichDY == 2)
  {infileName_.push_back(Form("%sDYJetsToLL_POWHEG.root",filesPath.Data()));    infileCat_.push_back(2);}
   else if(whichDY == 3)

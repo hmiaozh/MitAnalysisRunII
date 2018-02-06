@@ -10,7 +10,7 @@ PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$US
 # standard
 PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$USER/catalog/test.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/008 \
 --include SingleElectron SingleMuon DoubleEG DoubleMuon MuonEG ZZ WZ WW DYJetsToLL_M-50_Tune DYJetsToLL_M-10to50_Tune tZq GluGluH VBFH VBF_H ttHToNonbb VHToNonbb \
-TTG TTZ TTW ST_tW TTTo2L2Nu WGstarTo WGToLNuG ZGTo2LG JetsToLL DYJetsToTauTau NNPDF30_13TeV-powheg MET WJetsToLNu TT_TuneCUETP8M2T4 --exclude ZpWW_med JetsToLL_M-50_HT
+TTG TTZ TTW ST_tW TTTo2L2Nu WGstarTo WGToLNuG ZGTo2LG JetsToLL DYJetsToTauTau NNPDF30_13TeV-powheg MET WJetsToLNu TT_TuneCUETP8M2T4 WpWpJJ --exclude ZpWW_med JetsToLL_M-50_HT
 
 # fakes
 PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$USER/catalog/test.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/008 \
@@ -45,3 +45,6 @@ git fetch sid
 git merge sid/master
 git push -u origin master
 rm .git/hooks/pre-push
+
+--> Adding new variables in the Panda ntuple
+./Flat/bin/generateTreeClass.py --cfg Flat/config/GeneralTree.cfg

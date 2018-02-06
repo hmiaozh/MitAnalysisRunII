@@ -34,7 +34,7 @@ unsigned int period = 0
   infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	       infileCat_.push_back(0);
   if(usePureMC == true){
   infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(1);
-  infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));  infileCat_.push_back(1);
+  infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));   infileCat_.push_back(1);
   infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
   infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
   infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		       infileCat_.push_back(1);
@@ -237,22 +237,6 @@ unsigned int period = 0
       };
       if(usePureMC == true && countLeptonTight != idLep.size()) continue;
 
-      vector<int> idJet30;
-      vector<TLorentzVector> vJet;
-      TLorentzVector vJetTemp;
-      if(thePandaFlat.jet1Pt > 10) {vJetTemp.SetPtEtaPhiM(thePandaFlat.jet1Pt,thePandaFlat.jet1Eta,thePandaFlat.jet1Phi,0.0); vJet.push_back(vJetTemp);}
-      if(thePandaFlat.jet2Pt > 10) {vJetTemp.SetPtEtaPhiM(thePandaFlat.jet2Pt,thePandaFlat.jet2Eta,thePandaFlat.jet2Phi,0.0); vJet.push_back(vJetTemp);}
-      for(unsigned int nj=0; nj<vJet.size(); nj++){
-
-        Bool_t isLepton = kFALSE;
-	if(vLoose1.Pt() > 0) if(vLoose1.DeltaR(vJet[nj]) < 0.3) isLepton = kTRUE;
-	if(vLoose2.Pt() > 0) if(vLoose2.DeltaR(vJet[nj]) < 0.3) isLepton = kTRUE;
-	if(vLoose3.Pt() > 0) if(vLoose3.DeltaR(vJet[nj]) < 0.3) isLepton = kTRUE;
-        if(isLepton == kTRUE) continue;
-
-        if(vJet[nj].Pt() > 30)  idJet30.push_back(nj);
-      }
-
       double deltaPhiLeptonMet = TMath::Abs(vWln.DeltaPhi(vMet));
       double mt = TMath::Sqrt(2.0*vWln.Pt()*vMet.Pt()*(1.0 - cos(deltaPhiLeptonMet)));
 
@@ -358,8 +342,8 @@ unsigned int period = 0
       if(passWZSel)          {histo[lepType+30][theCategory]->Fill(TMath::Min(vZl2.Pt(),199.999),totalWeight);                    histo[34][theCategory]->Fill(TMath::Min(vZl2.Pt(),199.999),totalWeight);}
       if(passWZSel)          {histo[lepType+35][theCategory]->Fill(TMath::Min(mt,199.999),totalWeight);                           histo[39][theCategory]->Fill(TMath::Min(mt,199.999),totalWeight);}
       if(passTopSel)         {histo[lepType+40][theCategory]->Fill(TMath::Min(vMet.Pt(),199.999),totalWeight);			  histo[44][theCategory]->Fill(TMath::Min(vMet.Pt(),199.999),totalWeight);}
-      if(passWZSel)          {histo[lepType+45][theCategory]->Fill(TMath::Min((double)idJet30.size(),4.499),totalWeight);         histo[49][theCategory]->Fill(TMath::Min((double)idJet30.size(),4.499),totalWeight);}
-      if(passTopSel)         {histo[lepType+50][theCategory]->Fill(TMath::Min((double)idJet30.size(),4.499),totalWeight);         histo[54][theCategory]->Fill(TMath::Min((double)idJet30.size(),4.499),totalWeight);}
+      if(passWZSel)          {histo[lepType+45][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,4.499),totalWeight);      histo[49][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,4.499),totalWeight);}
+      if(passTopSel)         {histo[lepType+50][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,4.499),totalWeight);      histo[54][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,4.499),totalWeight);}
       if(passAllButOneSel[5]){histo[lepType+55][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,4.499),totalWeight);histo[59][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,4.499),totalWeight);}
 
     } // end events loop

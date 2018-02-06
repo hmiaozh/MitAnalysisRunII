@@ -44,7 +44,7 @@ unsigned int period = 0
   infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));		       infileCat_.push_back(1);
   infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
   infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(2);
-  infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));  infileCat_.push_back(2);
+  infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));   infileCat_.push_back(2);
   infileName_.push_back(Form("%sWJets.root" ,filesPath.Data()));               infileCat_.push_back(3);
 
   TFile *fnpvWeights = TFile::Open(Form("MitAnalysisRunII/data/80x/npvWeights_2016_FakeTriggers.root"));
@@ -207,25 +207,9 @@ unsigned int period = 0
         vLoose1.SetPtEtaPhiM(looseLepEta[0],looseLepEta[0],looseLepPhi[0],thePDGMass[0]);
       }
 
-      vector<int> idJet20,idJet30;
-      vector<TLorentzVector> vJet;
-      TLorentzVector vJetTemp;
-      if(thePandaFlat.jet1Pt > 10) {vJetTemp.SetPtEtaPhiM(thePandaFlat.jet1Pt,thePandaFlat.jet1Eta,thePandaFlat.jet1Phi,0.0); vJet.push_back(vJetTemp);}
-      if(thePandaFlat.jet2Pt > 10) {vJetTemp.SetPtEtaPhiM(thePandaFlat.jet2Pt,thePandaFlat.jet2Eta,thePandaFlat.jet2Phi,0.0); vJet.push_back(vJetTemp);}
-      for(unsigned int nj=0; nj<vJet.size(); nj++){
-
-        Bool_t isLepton = kFALSE;
-	if(vLoose1.Pt() > 0) if(vLoose1.DeltaR(vJet[nj]) < 0.3) isLepton = kTRUE;
-	if(vLoose2.Pt() > 0) if(vLoose2.DeltaR(vJet[nj]) < 0.3) isLepton = kTRUE;
-        if(isLepton == kTRUE) continue;
-
-        if(vJet[nj].Pt() > 20)  idJet20.push_back(nj);
-        if(vJet[nj].Pt() > 30)  idJet30.push_back(nj);
-      }
-
       bool passJetSel = kFALSE;
-      if((lepType == 0 && idJet20.size() >= 1) || 
-         (lepType == 1 && idJet30.size() >= 1)) passJetSel = kTRUE;
+      if((lepType == 0 && thePandaFlat.nJot >= 1) || 
+         (lepType == 1 && thePandaFlat.nJot >= 1)) passJetSel = kTRUE;
       if(passJetSel == kFALSE) continue;
 
       double deltaPhiLeptonMet = TMath::Abs(vLoose1.DeltaPhi(vMet));
