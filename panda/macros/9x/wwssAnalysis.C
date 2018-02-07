@@ -48,7 +48,7 @@ unsigned int period = 0
 
   infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));		       infileCat_.push_back(6);
   infileName_.push_back(Form("%sggWW.root" ,filesPath.Data()));		       infileCat_.push_back(6);
-  infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		       infileCat_.push_back(6);
+  infileName_.push_back(Form("%sTT.root" ,filesPath.Data()));		       infileCat_.push_back(6);
   infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));		       infileCat_.push_back(6);
   infileName_.push_back(Form("%sDYNJetsToLL.root" ,filesPath.Data()));         infileCat_.push_back(6);
   infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	       infileCat_.push_back(6);
@@ -88,10 +88,11 @@ unsigned int period = 0
                               scalefactors_Medium_Electron              ->GetYaxis()->GetBinCenter(scalefactors_Medium_Electron		     ->GetNbinsY())
 		              };
 
+  const int nBinMVA = 4; Float_t xbins[nBinMVA+1] = {500, 800, 1100, 1500, 2000};
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 27;
+  const int allPlots = 30;
   const int histBins = 10;
   TH1D* histo[allPlots][histBins];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
@@ -101,7 +102,10 @@ unsigned int period = 0
     else if(thePlot >=  12 && thePlot <=  14) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot =2000;}
     else if(thePlot >=  15 && thePlot <=  20) {nBinPlot =   5; xminPlot = -0.5; xmaxPlot = 4.5;}
     else if(thePlot >=  21 && thePlot <=  26) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
-    TH1D* histos = new TH1D("histos", "histos", nBinPlot, xminPlot, xmaxPlot);
+    else if(thePlot >=  27 && thePlot <=  29) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
+    TH1D* histos;
+    if(thePlot != 27 && thePlot != 28 && thePlot != 29) histos = new TH1D("histos", "histos", nBinPlot, xminPlot, xmaxPlot);
+    else                                                histos = new TH1D("histos", "histos", nBinMVA, xbins);
     histos->Sumw2();
     for(int i=0; i<histBins; i++) histo[thePlot][i] = (TH1D*) histos->Clone(Form("histo%d",i));
     histos->Reset();histos->Clear();
@@ -176,7 +180,7 @@ unsigned int period = 0
       unsigned int countLeptonTight = 0;
       for(int i=0; i<thePandaFlat.nLooseLep; i++) {
         idLep.push_back(0);
-        if((looseLepSelBit[i] & kMedium) == kMedium) idLep[i] = 1;
+        if((looseLepSelBit[i] & kTight) == kTight && (looseLepSelBit[i] & kDxyz) == kDxyz) idLep[i] = 1;
 	countLeptonTight = countLeptonTight + (idLep[i] > 0);
 
         double thePDGMass = mass_mu;
@@ -254,7 +258,7 @@ unsigned int period = 0
       bool passAllButOneSel[7] = {
         passSel[0] &&               passSel[2] && passSel[3] && passSel[4] && passSel[5] && passSel[6] && passSel[7],
         passSel[0] && passSel[1] &&               passSel[3] && passSel[4] && passSel[5] && passSel[6] && passSel[7],
-	passSel[0] && passSel[1] && passSel[2]&&                passSel[4] && passSel[5] && passSel[6] && passSel[7],
+	passSel[0] && passSel[1] && passSel[2]&&                                            passSel[6] && passSel[7],
 	passSel[0] && passSel[1] && passSel[2] && passSel[3] &&               passSel[5] && passSel[6] && passSel[7],
 	passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[4] &&               passSel[6] && passSel[7],
 	passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[4] && passSel[5] &&               passSel[7],
@@ -299,13 +303,17 @@ unsigned int period = 0
         if     (infileCat_[ifile] == 3)                                                totalWeight = totalWeight * thePandaFlat.sf_wz;
 	else if(infileCat_[ifile] == 4 && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;
 
+        bool isRS = thePandaFlat.looseGenLep1PdgId > 0 && thePandaFlat.looseGenLep2PdgId > 0;
+        if(thePandaFlat.nLooseLep >= 3) isRS = isNotMCFake && thePandaFlat.looseGenLep3PdgId > 0;
+        if(thePandaFlat.nLooseLep >= 4) isRS = isNotMCFake && thePandaFlat.looseGenLep4PdgId > 0;
+	if(!isRS) theCategory = 6;
       }
 
       if(usePureMC == false && countLeptonTight != idLep.size()){
         double fakeSF = 1.0;
         for(unsigned int nl=0; nl<idLep.size(); nl++){
           if(idLep[nl] != 0) continue;
-          bool applyTight = false;
+          bool applyTight = true;
           if(nl == 0) fakeSF = fakeSF * fakeRateFactor(TMath::Min((double)looseLepPt[0],44.999),TMath::Abs(looseLepEta[0]),TMath::Abs(looseLepPdgId[0]),applyTight,histoFakeEffSelMediumEtaPt_m,histoFakeEffSelMediumEtaPt_e,histoFakeEffSelTightEtaPt_m,histoFakeEffSelTightEtaPt_e);
           if(nl == 1) fakeSF = fakeSF * fakeRateFactor(TMath::Min((double)looseLepPt[1],44.999),TMath::Abs(looseLepEta[1]),TMath::Abs(looseLepPdgId[1]),applyTight,histoFakeEffSelMediumEtaPt_m,histoFakeEffSelMediumEtaPt_e,histoFakeEffSelTightEtaPt_m,histoFakeEffSelTightEtaPt_e);
           if(nl == 2) fakeSF = fakeSF * fakeRateFactor(TMath::Min((double)looseLepPt[2],44.999),TMath::Abs(looseLepEta[2]),TMath::Abs(looseLepPdgId[2]),applyTight,histoFakeEffSelMediumEtaPt_m,histoFakeEffSelMediumEtaPt_e,histoFakeEffSelTightEtaPt_m,histoFakeEffSelTightEtaPt_e);
@@ -322,22 +330,18 @@ unsigned int period = 0
         else if(infileCat_[ifile] == 0 && countLeptonTight == idLep.size()-1) fakeSF = +1.0 * fakeSF; // single fake, data
         else printf("IMPOSSIBLE FAKE OPTION\n");
         totalWeight = totalWeight * fakeSF;
-
-        bool isRS = thePandaFlat.looseGenLep1PdgId > 0 && thePandaFlat.looseGenLep2PdgId > 0;
-        if(thePandaFlat.nLooseLep >= 3) isRS = isNotMCFake && thePandaFlat.looseGenLep3PdgId > 0;
-        if(thePandaFlat.nLooseLep >= 4) isRS = isNotMCFake && thePandaFlat.looseGenLep4PdgId > 0;
-	if(infileCat_[ifile] == 0 && !isRS) theCategory = 6;
       }
 
       if(passAllButOneSel[0])histo[lepType+  0][theCategory]->Fill(TMath::Min((vLoose1+vLoose2).M(),199.999),totalWeight);
       if(passAllButOneSel[1])histo[lepType+  3][theCategory]->Fill(TMath::Min(vMET.Pt(),199.999),totalWeight);
-      if(passAllButOneSel[1])histo[lepType+  6][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,5.499),totalWeight);
-      if(passAllButOneSel[2])histo[lepType+  9][theCategory]->Fill(TMath::Min(TMath::Abs(vJot1.Eta()-vJot2.Eta()),7.999),totalWeight);
-      if(passAllButOneSel[2])histo[lepType+ 12][theCategory]->Fill(TMath::Min((vJot1+vJot2).M(),1999.999),totalWeight);
-      if(passAllButOneSel[3])histo[lepType+ 15][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNBtags,4.499),totalWeight);
-      if(passAllButOneSel[3])histo[lepType+ 18][theCategory]->Fill(TMath::Min((double)thePandaFlat.nTau,4.499),totalWeight);
+      if(passAllButOneSel[2])histo[lepType+  6][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,5.499),totalWeight);
+      if(passAllButOneSel[3])histo[lepType+  9][theCategory]->Fill(TMath::Min(TMath::Abs(vJot1.Eta()-vJot2.Eta()),7.999),totalWeight);
+      if(passAllButOneSel[4])histo[lepType+ 12][theCategory]->Fill(TMath::Min((vJot1+vJot2).M(),1999.999),totalWeight);
+      if(passAllButOneSel[5])histo[lepType+ 15][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNBtags,4.499),totalWeight);
+      if(passAllButOneSel[6])histo[lepType+ 18][theCategory]->Fill(TMath::Min((double)thePandaFlat.nTau,4.499),totalWeight);
       if(passWWSel)          histo[lepType+ 21][theCategory]->Fill(TMath::Min(vLoose1.Pt(),199.999),totalWeight);
       if(passWWSel)          histo[lepType+ 24][theCategory]->Fill(TMath::Min(vLoose2.Pt(),199.999),totalWeight);
+      if(passWWSel)          histo[lepType+ 27][theCategory]->Fill(TMath::Min((vJot1+vJot2).M(),1999.999),totalWeight);
 
     } // end events loop
     the_input_file->Close();
