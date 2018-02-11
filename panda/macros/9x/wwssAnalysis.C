@@ -92,7 +92,7 @@ unsigned int period = 0
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 30;
+  const int allPlots = 37;
   const int histBins = 10;
   TH1D* histo[allPlots][histBins];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
@@ -100,12 +100,12 @@ unsigned int period = 0
     else if(thePlot >=   6 && thePlot <=   8) {nBinPlot =   5; xminPlot = -0.5; xmaxPlot = 4.5;}
     else if(thePlot >=   9 && thePlot <=  11) {nBinPlot =  80; xminPlot =  0.0; xmaxPlot = 8.0;}
     else if(thePlot >=  12 && thePlot <=  14) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot =2000;}
-    else if(thePlot >=  15 && thePlot <=  20) {nBinPlot =   5; xminPlot = -0.5; xmaxPlot = 4.5;}
-    else if(thePlot >=  21 && thePlot <=  26) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
-    else if(thePlot >=  27 && thePlot <=  29) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
+    else if(thePlot >=  15 && thePlot <=  17) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 1.0;}
+    else if(thePlot >=  15 && thePlot <=  23) {nBinPlot =   5; xminPlot = -0.5; xmaxPlot = 4.5;}
+    else if(thePlot >=  24 && thePlot <=  29) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
     TH1D* histos;
-    if(thePlot != 27 && thePlot != 28 && thePlot != 29) histos = new TH1D("histos", "histos", nBinPlot, xminPlot, xmaxPlot);
-    else                                                histos = new TH1D("histos", "histos", nBinMVA, xbins);
+    if(thePlot >=  30 && thePlot <=  36) histos = new TH1D("histos", "histos", nBinMVA, xbins);
+    else                                 histos = new TH1D("histos", "histos", nBinPlot, xminPlot, xmaxPlot);
     histos->Sumw2();
     for(int i=0; i<histBins; i++) histo[thePlot][i] = (TH1D*) histos->Clone(Form("histo%d",i));
     histos->Reset();histos->Clear();
@@ -137,10 +137,10 @@ unsigned int period = 0
                          (thePandaFlat.trigger & kSingleEleTrig) == kSingleEleTrig;
       if(passTrigger == false) continue;
 
-      if(thePandaFlat.nLooseLep != 2) continue;
+      if(thePandaFlat.nLooseLep < 2 || thePandaFlat.nLooseLep > 3) continue;
 
       vector<float>  looseLepPt,looseLepEta,looseLepPhi;
-      vector<int> looseLepSelBit,looseLepPdgId;
+      vector<int> looseLepSelBit,looseLepPdgId,looseLepTripleCharge,looseLepMissingHits;
       int ptSelCuts[3] = {0,0,0};
       for(int i=0; i<thePandaFlat.nLooseMuon; i++){
         looseLepPt.push_back(thePandaFlat.muonPt[i]);
@@ -148,6 +148,8 @@ unsigned int period = 0
         looseLepPhi.push_back(thePandaFlat.muonPhi[i]);
         looseLepSelBit.push_back(thePandaFlat.muonSelBit[i]);
         looseLepPdgId.push_back(thePandaFlat.muonPdgId[i]);
+        looseLepTripleCharge.push_back(1);
+        looseLepMissingHits.push_back(0);
 	if(thePandaFlat.muonPt[i] > 25) ptSelCuts[0]++;
 	if(thePandaFlat.muonPt[i] > 20) ptSelCuts[1]++;
 	if(thePandaFlat.muonPt[i] > 10) ptSelCuts[2]++;
@@ -158,6 +160,8 @@ unsigned int period = 0
         looseLepPhi.push_back(thePandaFlat.electronPhi[i]);
         looseLepSelBit.push_back(thePandaFlat.electronSelBit[i]);
         looseLepPdgId.push_back(thePandaFlat.electronPdgId[i]);
+        looseLepTripleCharge.push_back(thePandaFlat.electronTripleCharge[i]);
+        looseLepMissingHits.push_back(thePandaFlat.electronNMissingHits[i]);
 	if(thePandaFlat.electronPt[i] > 25) ptSelCuts[0]++;
 	if(thePandaFlat.electronPt[i] > 20) ptSelCuts[1]++;
 	if(thePandaFlat.electronPt[i] > 10) ptSelCuts[2]++;
@@ -180,7 +184,7 @@ unsigned int period = 0
       unsigned int countLeptonTight = 0;
       for(int i=0; i<thePandaFlat.nLooseLep; i++) {
         idLep.push_back(0);
-        if((looseLepSelBit[i] & kTight) == kTight && (looseLepSelBit[i] & kDxyz) == kDxyz) idLep[i] = 1;
+        if((looseLepSelBit[i] & kTight) == kTight && (looseLepSelBit[i] & kDxyz) == kDxyz && looseLepTripleCharge[i] == 1 && looseLepMissingHits[i] == 0) idLep[i] = 1;
 	countLeptonTight = countLeptonTight + (idLep[i] > 0);
 
         double thePDGMass = mass_mu;
@@ -223,46 +227,90 @@ unsigned int period = 0
         else {printf("Impossible dilepton combination: %d %d %d %d\n",looseLepPdgId[0],looseLepPdgId[1],looseLepPdgId[2],looseLepPdgId[3]); continue;}
       }
 
-      TLorentzVector vLoose1,vLoose2,vMET,vTrkMet;
+      TLorentzVector vMET,vTrkMet;
       vMET.SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
       vTrkMet.SetPtEtaPhiM(thePandaFlat.trkmet,0.0,thePandaFlat.trkmetphi,0.0);
-      double thePDGMass[2] = {mass_mu, mass_mu};
-      if(abs(looseLepPdgId[0])==11) thePDGMass[0] = mass_el;
-      if(abs(looseLepPdgId[1])==11) thePDGMass[1] = mass_el;
-      vLoose1.SetPtEtaPhiM(looseLepPt[0],looseLepEta[0],looseLepPhi[0],thePDGMass[0]);
-      vLoose2.SetPtEtaPhiM(looseLepPt[1],looseLepEta[1],looseLepPhi[1],thePDGMass[1]);
 
-      double dPhiLepMETMin = TMath::Min(TMath::Abs(vLoose1.DeltaPhi(vMET)), TMath::Abs(vLoose2.DeltaPhi(vMET)));
-      double dPhiLepTrackMETMin = TMath::Min(TMath::Abs(vLoose1.DeltaPhi(vTrkMet)), TMath::Abs(vLoose2.DeltaPhi(vTrkMet)));
+      double mllZ = 10000; double mllmin = 10000;
+      TLorentzVector vZ1l1,vZ1l2,vWln;
+      int whichWln = -1;
+      if     (vLoose.size() == 2){
+        vZ1l1  = vLoose[0];
+        vZ1l2  = vLoose[1];
+	mllZ   = (vLoose[0]+vLoose[1]).M();
+	mllmin = (vLoose[0]+vLoose[1]).M();
+	whichWln = 2;
+      }
+      else if(vLoose.size() == 3){
+	if(abs(looseLepPdgId[0]) == abs(looseLepPdgId[1]) && looseLepPdgId[0] != looseLepPdgId[1]) {
+          if((vLoose[0]+vLoose[1]).M() < mllmin) mllmin = (vLoose[0]+vLoose[1]).M();
+          if(fabs((vLoose[0]+vLoose[1]).M()-91.1876) < fabs(mllZ-91.1876)) {
+	    mllZ  = (vLoose[0]+vLoose[1]).M();
+	    vZ1l1 = vLoose[0];
+	    vZ1l2 = vLoose[1];
+	    vWln  = vLoose[2];
+	    whichWln = 2;
+	  }
+	}
+	if(abs(looseLepPdgId[0]) == abs(looseLepPdgId[2]) && looseLepPdgId[0] != looseLepPdgId[2]) {
+          if((vLoose[0]+vLoose[2]).M() < mllmin) mllmin = (vLoose[0]+vLoose[2]).M();
+          if(fabs((vLoose[0]+vLoose[2]).M()-91.1876) < fabs(mllZ-91.1876)) {
+            mllZ  = (vLoose[0]+vLoose[2]).M();
+	    vZ1l1 = vLoose[0];
+	    vZ1l2 = vLoose[2];
+	    vWln  = vLoose[1];
+	    whichWln = 1;
+	  }
+	}
+	if(abs(looseLepPdgId[1]) == abs(looseLepPdgId[2]) && looseLepPdgId[1] != looseLepPdgId[2]) {
+          if((vLoose[1]+vLoose[2]).M() < mllmin) mllmin = (vLoose[1]+vLoose[2]).M();
+          if(fabs((vLoose[1]+vLoose[2]).M()-91.1876) < fabs(mllZ-91.1876)) {
+            mllZ  = (vLoose[1]+vLoose[2]).M();
+	    vZ1l1 = vLoose[1];
+	    vZ1l2 = vLoose[2];
+	    vWln  = vLoose[0];
+	    whichWln = 0;
+	  }
+	}
+	if(whichWln >= 0) idLep[whichWln] = 2;
+      }
 
-      double PMET[1] = {vMET.Pt()};
-      double PTrackMET[1] = {vTrkMet.Pt()};
-      if(dPhiLepMETMin < TMath::Pi()/2) {PMET[0] = PMET[0] * sin(dPhiLepMETMin);}
-      if(dPhiLepTrackMETMin < TMath::Pi()/2) {PTrackMET[0] = PTrackMET[0] * sin(dPhiLepTrackMETMin);}
-      double minPMET[1] = {TMath::Min(PMET[0],PTrackMET[0])};
+      if(whichWln == -1) continue;
 
       TLorentzVector vJot1; vJot1.SetPtEtaPhiM(thePandaFlat.jot1Pt,thePandaFlat.jot1Eta,thePandaFlat.jot1Phi,0.0);
       TLorentzVector vJot2; vJot2.SetPtEtaPhiM(thePandaFlat.jot2Pt,thePandaFlat.jot2Eta,thePandaFlat.jot2Phi,0.0);
 
-      bool passMLL   = (vLoose1+vLoose2).M() > 20 && (fabs((vLoose1+vLoose2).M()-91.1876) > 15 || lepType == 2);
+      double deltaEtaJJ = TMath::Abs(vJot1.Eta()-vJot2.Eta());
+      bool passDEtaJJ = deltaEtaJJ > 2.5;
+      bool passMJJ = (vJot1+vJot2).M() > 500;
+
+      double theLeptonZ[2];
+      theLeptonZ[0] = TMath::Min(TMath::Abs(vZ1l1.Eta()-(vJot1.Eta()+vJot2.Eta())/2.)/deltaEtaJJ,0.999);
+      theLeptonZ[1] = TMath::Min(TMath::Abs(vZ1l2.Eta()-(vJot1.Eta()+vJot2.Eta())/2.)/deltaEtaJJ,0.999);
+      bool passZMax = TMath::Max(theLeptonZ[0],theLeptonZ[1]) < 0.75;
+
+      bool passMLL   = mllZ > 20 && (fabs(mllZ-91.1876) > 15 || lepType == 2);
       bool passMET   = vMET.Pt() > 40;
       bool passNjets = thePandaFlat.nJot >= 2;
-      bool passDEtaJJ = TMath::Abs(vJot1.Eta()-vJot2.Eta()) > 2.5;
-      bool passMJJ = (vJot1+vJot2).M() > 500;
       bool passBtagVeto = thePandaFlat.jetNMBtags == 0;
       bool passTauVeto = thePandaFlat.nTau == 0;
+      //                                                        0        1        2          3           4        5         6             7            8     
+      bool passSel[9] = {qTot != 0 && thePandaFlat.nLooseLep == 2, passMLL, passMET, passNjets, passDEtaJJ, passMJJ, passZMax, passBtagVeto, passTauVeto};
 
-      bool passSel[8] = {qTot != 0 && thePandaFlat.nLooseLep == 2, passMLL, passMET, passNjets, passDEtaJJ, passMJJ, passBtagVeto, passTauVeto};
-
-      bool passWWSel = passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[4] && passSel[5] && passSel[6] && passSel[7];
-      bool passAllButOneSel[7] = {
-        passSel[0] &&               passSel[2] && passSel[3] && passSel[4] && passSel[5] && passSel[6] && passSel[7],
-        passSel[0] && passSel[1] &&               passSel[3] && passSel[4] && passSel[5] && passSel[6] && passSel[7],
-	passSel[0] && passSel[1] && passSel[2]&&                                            passSel[6] && passSel[7],
-	passSel[0] && passSel[1] && passSel[2] && passSel[3] &&               passSel[5] && passSel[6] && passSel[7],
-	passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[4] &&               passSel[6] && passSel[7],
-	passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[4] && passSel[5] &&               passSel[7],
-	passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[4] && passSel[5] && passSel[6]
+      bool passWWSel = passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[4] && passSel[5] && passSel[6] && passSel[7] && passSel[8];
+      bool passWZSel = whichWln >= 0 && thePandaFlat.nLooseLep == 3 && 
+                       fabs(mllZ-91.1876) < 15 && mllmin > 4 &&
+		       vWln.Pt() > 20 &&
+		       passSel[2] && passSel[3] && passSel[4] && passSel[5] && passSel[7];
+      bool passAllButOneSel[8] = {
+        passSel[0] &&               passSel[2] && passSel[3] && passSel[4] && passSel[5] && passSel[6] && passSel[7] && passSel[8],
+        passSel[0] && passSel[1] &&               passSel[3] && passSel[4] && passSel[5] && passSel[6] && passSel[7] && passSel[8],
+	passSel[0] && passSel[1] && passSel[2]&&                                                          passSel[7] && passSel[8],
+	passSel[0] && passSel[1] && passSel[2] && passSel[3] &&               passSel[5] && passSel[6] && passSel[7] && passSel[8],
+	passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[4] &&               passSel[6] && passSel[7] && passSel[8],
+	passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[4] && passSel[5] &&               passSel[7] && passSel[8],
+	passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[4] && passSel[5] && passSel[6]               && passSel[8],
+	passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[4] && passSel[5] && passSel[6] && passSel[7]
       };
 
       double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0;
@@ -304,8 +352,8 @@ unsigned int period = 0
 	else if(infileCat_[ifile] == 4 && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;
 
         bool isRS = thePandaFlat.looseGenLep1PdgId > 0 && thePandaFlat.looseGenLep2PdgId > 0;
-        if(thePandaFlat.nLooseLep >= 3) isRS = isNotMCFake && thePandaFlat.looseGenLep3PdgId > 0;
-        if(thePandaFlat.nLooseLep >= 4) isRS = isNotMCFake && thePandaFlat.looseGenLep4PdgId > 0;
+        if(thePandaFlat.nLooseLep >= 3) isRS = isRS && thePandaFlat.looseGenLep3PdgId > 0;
+        if(thePandaFlat.nLooseLep >= 4) isRS = isRS && thePandaFlat.looseGenLep4PdgId > 0;
 	if(!isRS) theCategory = 6;
       }
 
@@ -332,16 +380,18 @@ unsigned int period = 0
         totalWeight = totalWeight * fakeSF;
       }
 
-      if(passAllButOneSel[0])histo[lepType+  0][theCategory]->Fill(TMath::Min((vLoose1+vLoose2).M(),199.999),totalWeight);
+      if(passAllButOneSel[0])histo[lepType+  0][theCategory]->Fill(TMath::Min(mllZ,199.999),totalWeight);
       if(passAllButOneSel[1])histo[lepType+  3][theCategory]->Fill(TMath::Min(vMET.Pt(),199.999),totalWeight);
       if(passAllButOneSel[2])histo[lepType+  6][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,5.499),totalWeight);
       if(passAllButOneSel[3])histo[lepType+  9][theCategory]->Fill(TMath::Min(TMath::Abs(vJot1.Eta()-vJot2.Eta()),7.999),totalWeight);
       if(passAllButOneSel[4])histo[lepType+ 12][theCategory]->Fill(TMath::Min((vJot1+vJot2).M(),1999.999),totalWeight);
-      if(passAllButOneSel[5])histo[lepType+ 15][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNBtags,4.499),totalWeight);
-      if(passAllButOneSel[6])histo[lepType+ 18][theCategory]->Fill(TMath::Min((double)thePandaFlat.nTau,4.499),totalWeight);
-      if(passWWSel)          histo[lepType+ 21][theCategory]->Fill(TMath::Min(vLoose1.Pt(),199.999),totalWeight);
-      if(passWWSel)          histo[lepType+ 24][theCategory]->Fill(TMath::Min(vLoose2.Pt(),199.999),totalWeight);
-      if(passWWSel)          histo[lepType+ 27][theCategory]->Fill(TMath::Min((vJot1+vJot2).M(),1999.999),totalWeight);
+      if(passAllButOneSel[5])histo[lepType+ 15][theCategory]->Fill(TMath::Min(TMath::Max(theLeptonZ[0],theLeptonZ[1]),0.999),totalWeight);
+      if(passAllButOneSel[6])histo[lepType+ 18][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNBtags,4.499),totalWeight);
+      if(passAllButOneSel[7])histo[lepType+ 21][theCategory]->Fill(TMath::Min((double)thePandaFlat.nTau,4.499),totalWeight);
+      if(passWWSel)          histo[lepType+ 24][theCategory]->Fill(TMath::Min(vZ1l1.Pt(),199.999),totalWeight);
+      if(passWWSel)          histo[lepType+ 27][theCategory]->Fill(TMath::Min(vZ1l2.Pt(),199.999),totalWeight);
+      if(passWWSel)          histo[lepType+ 30][theCategory]->Fill(TMath::Min((vJot1+vJot2).M(),1999.999),totalWeight);
+      if(passWZSel)          histo[lepType+ 33][theCategory]->Fill(TMath::Min((vJot1+vJot2).M(),1999.999),totalWeight);
 
     } // end events loop
     the_input_file->Close();

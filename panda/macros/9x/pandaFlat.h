@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Tue Feb  6 05:26:56 2018 by ROOT version 6.08/07
+// Thu Feb  8 10:34:45 2018 by ROOT version 6.08/07
 // from TTree events/events
 // found on file: /data/t3home000/ceballos/panda/v_007_0/qqZZ.root
 //////////////////////////////////////////////////////////
@@ -119,6 +119,7 @@ public :
    Float_t         muonCombIso[4];   //[nLooseMuon]
    Float_t         electronD0[4];   //[nLooseElectron]
    Float_t         electronDZ[4];   //[nLooseElectron]
+   Int_t           electronNMissingHits[4];   //[nLooseElectron]
    Int_t           electronTripleCharge[4];   //[nLooseElectron]
    Float_t         electronCombIso[4];   //[nLooseElectron]
    Float_t         sf_zz;
@@ -135,20 +136,25 @@ public :
    Float_t         genLep2Eta;
    Float_t         genLep2Phi;
    Int_t           genLep2PdgId;
+   Float_t         genLep3Pt;
+   Float_t         genLep3Eta;
+   Float_t         genLep3Phi;
+   Int_t           genLep3PdgId;
+   Float_t         genLep4Pt;
+   Float_t         genLep4Eta;
+   Float_t         genLep4Phi;
+   Int_t           genLep4PdgId;
    Int_t           looseGenLep1PdgId;
    Int_t           looseGenLep2PdgId;
    Int_t           looseGenLep3PdgId;
    Int_t           looseGenLep4PdgId;
    Int_t           loosePho1SelBit;
    Int_t           looseGenPho1PdgId;
-   Float_t         genFatJetPt;
    Float_t         trkmetphi;
    Int_t           whichRecoil;
    Int_t           badECALFilter;
    Int_t           jetNMBtags;
    Float_t         pfmetRaw;
-   Int_t           nAK8jet;
-   Int_t           isGS;
    Int_t           runNumber;
    Int_t           lumiNumber;
    ULong64_t       eventNumber;
@@ -191,36 +197,8 @@ public :
    Float_t         pfcalobalance;
    Float_t         sumET;
    Float_t         trkmet;
-   Float_t         puppiUWmag;
-   Float_t         puppiUWphi;
-   Float_t         puppiUZmag;
-   Float_t         puppiUZphi;
-   Float_t         puppiUAmag;
-   Float_t         puppiUAphi;
-   Float_t         puppiUperp;
-   Float_t         puppiUpara;
-   Float_t         puppiUmag;
-   Float_t         puppiUphi;
-   Float_t         pfUWmag;
-   Float_t         pfUWphi;
-   Float_t         pfUZmag;
-   Float_t         pfUZphi;
-   Float_t         pfUAmag;
-   Float_t         pfUAphi;
-   Float_t         pfUperp;
-   Float_t         pfUpara;
-   Float_t         pfUmag;
-   Float_t         pfUphi;
    Float_t         dphipfmet;
    Float_t         dphipuppimet;
-   Float_t         dphipuppiUW;
-   Float_t         dphipuppiUZ;
-   Float_t         dphipuppiUA;
-   Float_t         dphipfUW;
-   Float_t         dphipfUZ;
-   Float_t         dphipfUA;
-   Float_t         dphipuppiU;
-   Float_t         dphipfU;
    Float_t         trueGenBosonPt;
    Float_t         genBosonPt;
    Float_t         genBosonEta;
@@ -352,6 +330,7 @@ public :
    TBranch        *b_muonCombIso;   //!
    TBranch        *b_electronD0;   //!
    TBranch        *b_electronDZ;   //!
+   TBranch        *b_electronNMissingHits;   //!
    TBranch        *b_electronTripleCharge;   //!
    TBranch        *b_electronCombIso;   //!
    TBranch        *b_sf_zz;   //!
@@ -368,20 +347,25 @@ public :
    TBranch        *b_genLep2Eta;   //!
    TBranch        *b_genLep2Phi;   //!
    TBranch        *b_genLep2PdgId;   //!
+   TBranch        *b_genLep3Pt;   //!
+   TBranch        *b_genLep3Eta;   //!
+   TBranch        *b_genLep3Phi;   //!
+   TBranch        *b_genLep3PdgId;   //!
+   TBranch        *b_genLep4Pt;   //!
+   TBranch        *b_genLep4Eta;   //!
+   TBranch        *b_genLep4Phi;   //!
+   TBranch        *b_genLep4PdgId;   //!
    TBranch        *b_looseGenLep1PdgId;   //!
    TBranch        *b_looseGenLep2PdgId;   //!
    TBranch        *b_looseGenLep3PdgId;   //!
    TBranch        *b_looseGenLep4PdgId;   //!
    TBranch        *b_loosePho1SelBit;   //!
    TBranch        *b_looseGenPho1PdgId;   //!
-   TBranch        *b_genFatJetPt;   //!
    TBranch        *b_trkmetphi;   //!
    TBranch        *b_whichRecoil;   //!
    TBranch        *b_badECALFilter;   //!
    TBranch        *b_jetNMBtags;   //!
    TBranch        *b_pfmetRaw;   //!
-   TBranch        *b_nAK8jet;   //!
-   TBranch        *b_isGS;   //!
    TBranch        *b_runNumber;   //!
    TBranch        *b_lumiNumber;   //!
    TBranch        *b_eventNumber;   //!
@@ -424,36 +408,8 @@ public :
    TBranch        *b_pfcalobalance;   //!
    TBranch        *b_sumET;   //!
    TBranch        *b_trkmet;   //!
-   TBranch        *b_puppiUWmag;   //!
-   TBranch        *b_puppiUWphi;   //!
-   TBranch        *b_puppiUZmag;   //!
-   TBranch        *b_puppiUZphi;   //!
-   TBranch        *b_puppiUAmag;   //!
-   TBranch        *b_puppiUAphi;   //!
-   TBranch        *b_puppiUperp;   //!
-   TBranch        *b_puppiUpara;   //!
-   TBranch        *b_puppiUmag;   //!
-   TBranch        *b_puppiUphi;   //!
-   TBranch        *b_pfUWmag;   //!
-   TBranch        *b_pfUWphi;   //!
-   TBranch        *b_pfUZmag;   //!
-   TBranch        *b_pfUZphi;   //!
-   TBranch        *b_pfUAmag;   //!
-   TBranch        *b_pfUAphi;   //!
-   TBranch        *b_pfUperp;   //!
-   TBranch        *b_pfUpara;   //!
-   TBranch        *b_pfUmag;   //!
-   TBranch        *b_pfUphi;   //!
    TBranch        *b_dphipfmet;   //!
    TBranch        *b_dphipuppimet;   //!
-   TBranch        *b_dphipuppiUW;   //!
-   TBranch        *b_dphipuppiUZ;   //!
-   TBranch        *b_dphipuppiUA;   //!
-   TBranch        *b_dphipfUW;   //!
-   TBranch        *b_dphipfUZ;   //!
-   TBranch        *b_dphipfUA;   //!
-   TBranch        *b_dphipuppiU;   //!
-   TBranch        *b_dphipfU;   //!
    TBranch        *b_trueGenBosonPt;   //!
    TBranch        *b_genBosonPt;   //!
    TBranch        *b_genBosonEta;   //!
@@ -654,6 +610,7 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("muonCombIso", muonCombIso, &b_muonCombIso);
    fChain->SetBranchAddress("electronD0", electronD0, &b_electronD0);
    fChain->SetBranchAddress("electronDZ", electronDZ, &b_electronDZ);
+   fChain->SetBranchAddress("electronNMissingHits", electronNMissingHits, &b_electronNMissingHits);
    fChain->SetBranchAddress("electronTripleCharge", electronTripleCharge, &b_electronTripleCharge);
    fChain->SetBranchAddress("electronCombIso", electronCombIso, &b_electronCombIso);
    fChain->SetBranchAddress("sf_zz", &sf_zz, &b_sf_zz);
@@ -670,20 +627,25 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("genLep2Eta", &genLep2Eta, &b_genLep2Eta);
    fChain->SetBranchAddress("genLep2Phi", &genLep2Phi, &b_genLep2Phi);
    fChain->SetBranchAddress("genLep2PdgId", &genLep2PdgId, &b_genLep2PdgId);
+   fChain->SetBranchAddress("genLep3Pt", &genLep3Pt, &b_genLep3Pt);
+   fChain->SetBranchAddress("genLep3Eta", &genLep3Eta, &b_genLep3Eta);
+   fChain->SetBranchAddress("genLep3Phi", &genLep3Phi, &b_genLep3Phi);
+   fChain->SetBranchAddress("genLep3PdgId", &genLep3PdgId, &b_genLep3PdgId);
+   fChain->SetBranchAddress("genLep4Pt", &genLep4Pt, &b_genLep4Pt);
+   fChain->SetBranchAddress("genLep4Eta", &genLep4Eta, &b_genLep4Eta);
+   fChain->SetBranchAddress("genLep4Phi", &genLep4Phi, &b_genLep4Phi);
+   fChain->SetBranchAddress("genLep4PdgId", &genLep4PdgId, &b_genLep4PdgId);
    fChain->SetBranchAddress("looseGenLep1PdgId", &looseGenLep1PdgId, &b_looseGenLep1PdgId);
    fChain->SetBranchAddress("looseGenLep2PdgId", &looseGenLep2PdgId, &b_looseGenLep2PdgId);
    fChain->SetBranchAddress("looseGenLep3PdgId", &looseGenLep3PdgId, &b_looseGenLep3PdgId);
    fChain->SetBranchAddress("looseGenLep4PdgId", &looseGenLep4PdgId, &b_looseGenLep4PdgId);
    fChain->SetBranchAddress("loosePho1SelBit", &loosePho1SelBit, &b_loosePho1SelBit);
    fChain->SetBranchAddress("looseGenPho1PdgId", &looseGenPho1PdgId, &b_looseGenPho1PdgId);
-   fChain->SetBranchAddress("genFatJetPt", &genFatJetPt, &b_genFatJetPt);
    fChain->SetBranchAddress("trkmetphi", &trkmetphi, &b_trkmetphi);
    fChain->SetBranchAddress("whichRecoil", &whichRecoil, &b_whichRecoil);
    fChain->SetBranchAddress("badECALFilter", &badECALFilter, &b_badECALFilter);
    fChain->SetBranchAddress("jetNMBtags", &jetNMBtags, &b_jetNMBtags);
    fChain->SetBranchAddress("pfmetRaw", &pfmetRaw, &b_pfmetRaw);
-   fChain->SetBranchAddress("nAK8jet", &nAK8jet, &b_nAK8jet);
-   fChain->SetBranchAddress("isGS", &isGS, &b_isGS);
    fChain->SetBranchAddress("runNumber", &runNumber, &b_runNumber);
    fChain->SetBranchAddress("lumiNumber", &lumiNumber, &b_lumiNumber);
    fChain->SetBranchAddress("eventNumber", &eventNumber, &b_eventNumber);
@@ -726,36 +688,8 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("pfcalobalance", &pfcalobalance, &b_pfcalobalance);
    fChain->SetBranchAddress("sumET", &sumET, &b_sumET);
    fChain->SetBranchAddress("trkmet", &trkmet, &b_trkmet);
-   fChain->SetBranchAddress("puppiUWmag", &puppiUWmag, &b_puppiUWmag);
-   fChain->SetBranchAddress("puppiUWphi", &puppiUWphi, &b_puppiUWphi);
-   fChain->SetBranchAddress("puppiUZmag", &puppiUZmag, &b_puppiUZmag);
-   fChain->SetBranchAddress("puppiUZphi", &puppiUZphi, &b_puppiUZphi);
-   fChain->SetBranchAddress("puppiUAmag", &puppiUAmag, &b_puppiUAmag);
-   fChain->SetBranchAddress("puppiUAphi", &puppiUAphi, &b_puppiUAphi);
-   fChain->SetBranchAddress("puppiUperp", &puppiUperp, &b_puppiUperp);
-   fChain->SetBranchAddress("puppiUpara", &puppiUpara, &b_puppiUpara);
-   fChain->SetBranchAddress("puppiUmag", &puppiUmag, &b_puppiUmag);
-   fChain->SetBranchAddress("puppiUphi", &puppiUphi, &b_puppiUphi);
-   fChain->SetBranchAddress("pfUWmag", &pfUWmag, &b_pfUWmag);
-   fChain->SetBranchAddress("pfUWphi", &pfUWphi, &b_pfUWphi);
-   fChain->SetBranchAddress("pfUZmag", &pfUZmag, &b_pfUZmag);
-   fChain->SetBranchAddress("pfUZphi", &pfUZphi, &b_pfUZphi);
-   fChain->SetBranchAddress("pfUAmag", &pfUAmag, &b_pfUAmag);
-   fChain->SetBranchAddress("pfUAphi", &pfUAphi, &b_pfUAphi);
-   fChain->SetBranchAddress("pfUperp", &pfUperp, &b_pfUperp);
-   fChain->SetBranchAddress("pfUpara", &pfUpara, &b_pfUpara);
-   fChain->SetBranchAddress("pfUmag", &pfUmag, &b_pfUmag);
-   fChain->SetBranchAddress("pfUphi", &pfUphi, &b_pfUphi);
    fChain->SetBranchAddress("dphipfmet", &dphipfmet, &b_dphipfmet);
    fChain->SetBranchAddress("dphipuppimet", &dphipuppimet, &b_dphipuppimet);
-   fChain->SetBranchAddress("dphipuppiUW", &dphipuppiUW, &b_dphipuppiUW);
-   fChain->SetBranchAddress("dphipuppiUZ", &dphipuppiUZ, &b_dphipuppiUZ);
-   fChain->SetBranchAddress("dphipuppiUA", &dphipuppiUA, &b_dphipuppiUA);
-   fChain->SetBranchAddress("dphipfUW", &dphipfUW, &b_dphipfUW);
-   fChain->SetBranchAddress("dphipfUZ", &dphipfUZ, &b_dphipfUZ);
-   fChain->SetBranchAddress("dphipfUA", &dphipfUA, &b_dphipfUA);
-   fChain->SetBranchAddress("dphipuppiU", &dphipuppiU, &b_dphipuppiU);
-   fChain->SetBranchAddress("dphipfU", &dphipfU, &b_dphipfU);
    fChain->SetBranchAddress("trueGenBosonPt", &trueGenBosonPt, &b_trueGenBosonPt);
    fChain->SetBranchAddress("genBosonPt", &genBosonPt, &b_genBosonPt);
    fChain->SetBranchAddress("genBosonEta", &genBosonEta, &b_genBosonEta);
