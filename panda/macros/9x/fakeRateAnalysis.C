@@ -44,7 +44,7 @@ unsigned int period = 0
   infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));		       infileCat_.push_back(1);
   infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
   infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(2);
-  infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));   infileCat_.push_back(2);
+  infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));  infileCat_.push_back(2);
   infileName_.push_back(Form("%sWJets.root" ,filesPath.Data()));               infileCat_.push_back(3);
 
   TFile *fnpvWeights = TFile::Open(Form("MitAnalysisRunII/data/80x/npvWeights_2016_FakeTriggers.root"));
@@ -91,9 +91,13 @@ unsigned int period = 0
   TH2D* histoFakeNumSel0EtaPt[2][histBins];
   TH2D* histoFakeNumSel1EtaPt[2][histBins];
   TH2D* histoFakeNumSel2EtaPt[2][histBins];
+  TH2D* histoFakeNumSel3EtaPt[2][histBins];
+  TH2D* histoFakeNumSel4EtaPt[2][histBins];
   TH2D* histoFakeEffSel0EtaPt[2];
   TH2D* histoFakeEffSel1EtaPt[2];
   TH2D* histoFakeEffSel2EtaPt[2];
+  TH2D* histoFakeEffSel3EtaPt[2];
+  TH2D* histoFakeEffSel4EtaPt[2];
   for(int i=0; i<2; i++){
     for(int j=0; j<histBins; j++){
       histoZllPt[i][j] = new TH1D(Form("histoZllPt_%d_%d",i,j), Form("histoZllPt_%d_%d",i,j), 7, 10, 45);
@@ -102,10 +106,14 @@ unsigned int period = 0
       histoFakeNumSel0EtaPt[i][j] = new TH2D(Form("histoFakeNumSel0EtaPt_%d_%d",i,j), Form("histoFakeNumSel0EtaPt_%d_%d",i,j), 6, 0, 2.5, 7, 10, 45);
       histoFakeNumSel1EtaPt[i][j] = new TH2D(Form("histoFakeNumSel1EtaPt_%d_%d",i,j), Form("histoFakeNumSel1EtaPt_%d_%d",i,j), 6, 0, 2.5, 7, 10, 45);
       histoFakeNumSel2EtaPt[i][j] = new TH2D(Form("histoFakeNumSel2EtaPt_%d_%d",i,j), Form("histoFakeNumSel2EtaPt_%d_%d",i,j), 6, 0, 2.5, 7, 10, 45);
+      histoFakeNumSel3EtaPt[i][j] = new TH2D(Form("histoFakeNumSel3EtaPt_%d_%d",i,j), Form("histoFakeNumSel3EtaPt_%d_%d",i,j), 6, 0, 2.5, 7, 10, 45);
+      histoFakeNumSel4EtaPt[i][j] = new TH2D(Form("histoFakeNumSel4EtaPt_%d_%d",i,j), Form("histoFakeNumSel4EtaPt_%d_%d",i,j), 6, 0, 2.5, 7, 10, 45);
       if(j==0){
       histoFakeEffSel0EtaPt[i] = new TH2D(Form("histoFakeEffSel0EtaPt_%d",i), Form("histoFakeEffSel0EtaPt_%d",i), 6, 0, 2.5, 7, 10, 45);
       histoFakeEffSel1EtaPt[i] = new TH2D(Form("histoFakeEffSel1EtaPt_%d",i), Form("histoFakeEffSel1EtaPt_%d",i), 6, 0, 2.5, 7, 10, 45);
       histoFakeEffSel2EtaPt[i] = new TH2D(Form("histoFakeEffSel2EtaPt_%d",i), Form("histoFakeEffSel2EtaPt_%d",i), 6, 0, 2.5, 7, 10, 45);
+      histoFakeEffSel3EtaPt[i] = new TH2D(Form("histoFakeEffSel3EtaPt_%d",i), Form("histoFakeEffSel3EtaPt_%d",i), 6, 0, 2.5, 7, 10, 45);
+      histoFakeEffSel4EtaPt[i] = new TH2D(Form("histoFakeEffSel4EtaPt_%d",i), Form("histoFakeEffSel4EtaPt_%d",i), 6, 0, 2.5, 7, 10, 45);
       }
     }
   }
@@ -130,7 +138,7 @@ unsigned int period = 0
       if(infileCat_[ifile] == 0 && ((period == 1 && thePandaFlat.runNumber > 278802) || (period == 2 && thePandaFlat.runNumber <= 278802))) continue;
 
       vector<float>  looseLepPt,looseLepEta,looseLepPhi;
-      vector<int> looseLepSelBit,looseLepPdgId;
+      vector<int> looseLepSelBit,looseLepPdgId,looseLepTripleCharge,looseLepMissingHits;
       int ptSelCuts[3] = {0,0,0};
       for(int i=0; i<thePandaFlat.nLooseMuon; i++){
         looseLepPt.push_back(thePandaFlat.muonPt[i]);
@@ -138,6 +146,8 @@ unsigned int period = 0
         looseLepPhi.push_back(thePandaFlat.muonPhi[i]);
         looseLepSelBit.push_back(thePandaFlat.muonSelBit[i]);
         looseLepPdgId.push_back(thePandaFlat.muonPdgId[i]);
+        looseLepTripleCharge.push_back(1);
+        looseLepMissingHits.push_back(0);
 	if(thePandaFlat.muonPt[i] > 25) ptSelCuts[0]++;
 	if(thePandaFlat.muonPt[i] > 20) ptSelCuts[1]++;
 	if(thePandaFlat.muonPt[i] > 10) ptSelCuts[2]++;
@@ -148,6 +158,8 @@ unsigned int period = 0
         looseLepPhi.push_back(thePandaFlat.electronPhi[i]);
         looseLepSelBit.push_back(thePandaFlat.electronSelBit[i]);
         looseLepPdgId.push_back(thePandaFlat.electronPdgId[i]);
+        looseLepTripleCharge.push_back(thePandaFlat.electronTripleCharge[i]);
+        looseLepMissingHits.push_back(thePandaFlat.electronNMissingHits[i]);
 	if(thePandaFlat.electronPt[i] > 25) ptSelCuts[0]++;
 	if(thePandaFlat.electronPt[i] > 20) ptSelCuts[1]++;
 	if(thePandaFlat.electronPt[i] > 10) ptSelCuts[2]++;
@@ -155,20 +167,34 @@ unsigned int period = 0
 
       if((int)looseLepPt.size() != thePandaFlat.nLooseLep) printf("IMPOSSIBLE\n");
 
-      bool passFakeTrigger = ((thePandaFlat.trigger & kMuFakeTrig) == kMuFakeTrig || (thePandaFlat.trigger & kEleFakeTrig) == kEleFakeTrig);
+      int lepType = -1;
+      TLorentzVector vLoose1,vLoose2;
+      bool passFakeTrigger = (thePandaFlat.trigger & (1<<kMuFakeTrig)) != 0 || (thePandaFlat.trigger & (1<<kEleFakeTrig)) != 0;
       bool passPresel = false;
+      double mll = 0.0;
       if(passFakeTrigger == true){
-        double mll = 0.0;
-	if(thePandaFlat.nLooseLep == 2){
-          TLorentzVector lep1;
-          lep1.SetPtEtaPhiM(looseLepEta[0],looseLepEta[0],looseLepPhi[0],0.0);
-          TLorentzVector lep2;
-          lep2.SetPtEtaPhiM(looseLepEta[1],looseLepEta[1],looseLepPhi[1],0.0);
-	  mll = (lep1 + lep2).M();
+	if(thePandaFlat.nLooseLep == 2 && looseLepPdgId[0]+looseLepPdgId[1] == 0){
+          if     (abs(looseLepPdgId[0])==13 && abs(looseLepPdgId[1])==13 && looseLepPdgId[0]*looseLepPdgId[1]<0) lepType = 0;
+          else if(abs(looseLepPdgId[0])==11 && abs(looseLepPdgId[1])==11 && looseLepPdgId[0]*looseLepPdgId[1]<0) lepType = 1;
+          else if(abs(looseLepPdgId[0])==13 && abs(looseLepPdgId[1])==11 && looseLepPdgId[0]*looseLepPdgId[1]<0) lepType = 2;
+          else if(abs(looseLepPdgId[0])==11 && abs(looseLepPdgId[1])==13 && looseLepPdgId[0]*looseLepPdgId[1]<0) lepType = 2;
+          else if(abs(looseLepPdgId[0])==13 && abs(looseLepPdgId[1])==13 && looseLepPdgId[0]*looseLepPdgId[1]>0) lepType = 3;
+          else if(abs(looseLepPdgId[0])==11 && abs(looseLepPdgId[1])==11 && looseLepPdgId[0]*looseLepPdgId[1]>0) lepType = 4;
+          else if(abs(looseLepPdgId[0])==13 && abs(looseLepPdgId[1])==11 && looseLepPdgId[0]*looseLepPdgId[1]>0) lepType = 5;
+          else if(abs(looseLepPdgId[0])==11 && abs(looseLepPdgId[1])==13 && looseLepPdgId[0]*looseLepPdgId[1]>0) lepType = 5;
+          else {printf("Impossible dilepton combination: %d %d\n",looseLepPdgId[0],looseLepPdgId[1]); continue;}
+          double thePDGMass[2] = {mass_mu, mass_mu};
+          if     (lepType == 1) {thePDGMass[0] = mass_el; thePDGMass[1] = mass_el;}
+          else if(lepType == 2 && abs(looseLepPdgId[0])==11) {thePDGMass[0] = mass_el;}
+          else if(lepType == 2 && abs(looseLepPdgId[1])==11) {thePDGMass[1] = mass_el;}
+          vLoose1.SetPtEtaPhiM(looseLepPt[0],looseLepEta[0],looseLepPhi[0],thePDGMass[0]);
+          vLoose2.SetPtEtaPhiM(looseLepPt[1],looseLepEta[1],looseLepPhi[1],thePDGMass[1]);
+	  mll = (vLoose1+vLoose2).M();
         }
         if(mll > 70.0 || thePandaFlat.nLooseLep == 1) passPresel = true;
       }
-      if(passPresel == false) printf("IMPOSSIBLE\n");
+      if(passPresel == false) {printf("IMPOSSIBLE\n"); printf("%f %d %f\n",mll,thePandaFlat.nLooseLep,thePandaFlat.diLepMass);}
+      if(passPresel == false) return;
       if(passPresel == false) continue;
 
       int theCategory = infileCat_[ifile];
@@ -176,27 +202,10 @@ unsigned int period = 0
                          (thePandaFlat.nLooseLep == 2 && thePandaFlat.looseGenLep1PdgId != 0 && thePandaFlat.looseGenLep2PdgId != 0);
       if(theCategory != 0 && isNotMCFake == false) continue;
 
-      int lepType = -1;
       bool passMllSel = false;
-      TLorentzVector vLoose1,vLoose2,vMet;
+      TLorentzVector vMet;
       vMet.SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
       if(thePandaFlat.nLooseLep == 2) {
-        if     (abs(looseLepPdgId[0])==13 && abs(looseLepPdgId[1])==13 && looseLepPdgId[0]*looseLepPdgId[1]<0) lepType = 0;
-        else if(abs(looseLepPdgId[0])==11 && abs(looseLepPdgId[1])==11 && looseLepPdgId[0]*looseLepPdgId[1]<0) lepType = 1;
-        else if(abs(looseLepPdgId[0])==13 && abs(looseLepPdgId[1])==11 && looseLepPdgId[0]*looseLepPdgId[1]<0) lepType = 2;
-        else if(abs(looseLepPdgId[0])==11 && abs(looseLepPdgId[1])==13 && looseLepPdgId[0]*looseLepPdgId[1]<0) lepType = 2;
-        else if(abs(looseLepPdgId[0])==13 && abs(looseLepPdgId[1])==13 && looseLepPdgId[0]*looseLepPdgId[1]>0) lepType = 3;
-        else if(abs(looseLepPdgId[0])==11 && abs(looseLepPdgId[1])==11 && looseLepPdgId[0]*looseLepPdgId[1]>0) lepType = 4;
-        else if(abs(looseLepPdgId[0])==13 && abs(looseLepPdgId[1])==11 && looseLepPdgId[0]*looseLepPdgId[1]>0) lepType = 5;
-        else if(abs(looseLepPdgId[0])==11 && abs(looseLepPdgId[1])==13 && looseLepPdgId[0]*looseLepPdgId[1]>0) lepType = 5;
-        else {printf("Impossible dilepton combination: %d %d\n",looseLepPdgId[0],looseLepPdgId[1]); continue;}
-
-        double thePDGMass[2] = {mass_mu, mass_mu};
-        if     (lepType == 1) {thePDGMass[0] = mass_el; thePDGMass[1] = mass_el;}
-        else if(lepType == 2 && abs(looseLepPdgId[0])==11) {thePDGMass[0] = mass_el;}
-        else if(lepType == 2 && abs(looseLepPdgId[1])==11) {thePDGMass[1] = mass_el;}
-        vLoose1.SetPtEtaPhiM(looseLepEta[0],looseLepEta[0],looseLepPhi[0],thePDGMass[0]);
-        vLoose2.SetPtEtaPhiM(looseLepEta[1],looseLepEta[1],looseLepPhi[1],thePDGMass[1]);
         passMllSel = TMath::Abs((vLoose1+vLoose2).M()-91.1876) < 15 && lepType <= 1;
       }
       else if(thePandaFlat.nLooseLep == 1) {
@@ -204,7 +213,7 @@ unsigned int period = 0
         else if(abs(looseLepPdgId[0])==11) lepType = 1;
         double thePDGMass[1] = {mass_mu};
         if     (abs(lepType) == 1) {thePDGMass[0] = mass_el;}
-        vLoose1.SetPtEtaPhiM(looseLepEta[0],looseLepEta[0],looseLepPhi[0],thePDGMass[0]);
+        vLoose1.SetPtEtaPhiM(looseLepPt[0],looseLepEta[0],looseLepPhi[0],thePDGMass[0]);
       }
 
       bool passJetSel = kFALSE;
@@ -279,6 +288,15 @@ unsigned int period = 0
         if((looseLepSelBit[0] & kFake)   == kFake &&
 	   (looseLepSelBit[0] & kTight) == kTight &&
 	   (looseLepSelBit[0] & kDxyz) == kDxyz)     histoFakeNumSel2EtaPt[lepType][theCategory]->Fill(TMath::Min(TMath::Abs(vLoose1.Eta()),2.499),TMath::Min(vLoose1.Pt(),44.999),totalWeight);
+        if((looseLepSelBit[0] & kFake)   == kFake &&
+	   (looseLepSelBit[0] & kTight) == kTight &&
+	   (looseLepSelBit[0] & kDxyz) == kDxyz   &&
+	    looseLepMissingHits[0] == 0)             histoFakeNumSel3EtaPt[lepType][theCategory]->Fill(TMath::Min(TMath::Abs(vLoose1.Eta()),2.499),TMath::Min(vLoose1.Pt(),44.999),totalWeight);
+        if((looseLepSelBit[0] & kFake)   == kFake &&
+	   (looseLepSelBit[0] & kTight) == kTight &&
+	   (looseLepSelBit[0] & kDxyz) == kDxyz   &&
+	    looseLepMissingHits[0] == 0           &&
+	    looseLepTripleCharge[0] == 1)            histoFakeNumSel4EtaPt[lepType][theCategory]->Fill(TMath::Min(TMath::Abs(vLoose1.Eta()),2.499),TMath::Min(vLoose1.Pt(),44.999),totalWeight);
       }
 
     } // end events loop
@@ -379,12 +397,39 @@ unsigned int period = 0
           }
           histoFakeEffSel2EtaPt[thePlot]->SetBinContent(i,j,eff);
           histoFakeEffSel2EtaPt[thePlot]->SetBinError  (i,j,unc);
-	  printf("(%d,%d): %9.1f %9.1f %9.1f %9.1f / %9.1f %9.1f %9.1f %9.1f / %9.1f %9.1f %9.1f %9.1f / %9.1f %9.1f %9.1f %9.1f = %5.3f %5.3f %5.3f - %7.5f\n",i,j,
-	  histoFakeDenEtaPt[thePlot][0]->GetBinContent(i,j),histoFakeNumSel0EtaPt[thePlot][0]->GetBinContent(i,j),histoFakeNumSel1EtaPt[thePlot][0]->GetBinContent(i,j),histoFakeNumSel2EtaPt[thePlot][0]->GetBinContent(i,j),
-	  histoFakeDenEtaPt[thePlot][1]->GetBinContent(i,j),histoFakeNumSel0EtaPt[thePlot][1]->GetBinContent(i,j),histoFakeNumSel1EtaPt[thePlot][1]->GetBinContent(i,j),histoFakeNumSel2EtaPt[thePlot][1]->GetBinContent(i,j),
-	  histoFakeDenEtaPt[thePlot][2]->GetBinContent(i,j),histoFakeNumSel0EtaPt[thePlot][2]->GetBinContent(i,j),histoFakeNumSel1EtaPt[thePlot][2]->GetBinContent(i,j),histoFakeNumSel2EtaPt[thePlot][2]->GetBinContent(i,j),
-	  histoFakeDenEtaPt[thePlot][3]->GetBinContent(i,j),histoFakeNumSel0EtaPt[thePlot][3]->GetBinContent(i,j),histoFakeNumSel1EtaPt[thePlot][3]->GetBinContent(i,j),histoFakeNumSel2EtaPt[thePlot][3]->GetBinContent(i,j),
-          histoFakeEffSel0EtaPt[thePlot]->GetBinContent(i,j),histoFakeEffSel1EtaPt[thePlot]->GetBinContent(i,j),histoFakeEffSel2EtaPt[thePlot]->GetBinContent(i,j),
+
+          num = histoFakeNumSel3EtaPt[thePlot][0]->GetBinContent(i,j) - (histoFakeNumSel3EtaPt[thePlot][1]->GetBinContent(i,j)+histoFakeNumSel3EtaPt[thePlot][2]->GetBinContent(i,j)+histoFakeNumSel3EtaPt[thePlot][3]->GetBinContent(i,j))*prescales[thePlot][j-1];
+          eff = 1.0; unc = 0.0;
+          if(den > 0 && num > 0){
+            eff = num / den;
+            unc = sqrt(eff*(1-eff)/den);
+	  }
+          else if(den > 0){
+            eff = 0.0;
+            unc = TMath::Min(sqrt(1.0/den),0.999);
+          }
+          histoFakeEffSel3EtaPt[thePlot]->SetBinContent(i,j,eff);
+          histoFakeEffSel3EtaPt[thePlot]->SetBinError  (i,j,unc);
+
+          num = histoFakeNumSel4EtaPt[thePlot][0]->GetBinContent(i,j) - (histoFakeNumSel4EtaPt[thePlot][1]->GetBinContent(i,j)+histoFakeNumSel4EtaPt[thePlot][2]->GetBinContent(i,j)+histoFakeNumSel4EtaPt[thePlot][3]->GetBinContent(i,j))*prescales[thePlot][j-1];
+          eff = 1.0; unc = 0.0;
+          if(den > 0 && num > 0){
+            eff = num / den;
+            unc = sqrt(eff*(1-eff)/den);
+	  }
+          else if(den > 0){
+            eff = 0.0;
+            unc = TMath::Min(sqrt(1.0/den),0.999);
+          }
+          histoFakeEffSel4EtaPt[thePlot]->SetBinContent(i,j,eff);
+          histoFakeEffSel4EtaPt[thePlot]->SetBinError  (i,j,unc);
+
+	  printf("(%d,%d): %9.1f %9.1f %9.1f %9.1f %9.1f %9.1f / %9.1f %9.1f %9.1f %9.1f %9.1f %9.1f / %9.1f %9.1f %9.1f %9.1f %9.1f %9.1f / %9.1f %9.1f %9.1f %9.1f %9.1f %9.1f = %5.3f %5.3f %5.3f %5.3f %5.3f - %7.5f\n",i,j,
+	  histoFakeDenEtaPt[thePlot][0]->GetBinContent(i,j),histoFakeNumSel0EtaPt[thePlot][0]->GetBinContent(i,j),histoFakeNumSel1EtaPt[thePlot][0]->GetBinContent(i,j),histoFakeNumSel2EtaPt[thePlot][0]->GetBinContent(i,j),histoFakeNumSel3EtaPt[thePlot][0]->GetBinContent(i,j),histoFakeNumSel4EtaPt[thePlot][0]->GetBinContent(i,j),
+	  histoFakeDenEtaPt[thePlot][1]->GetBinContent(i,j),histoFakeNumSel0EtaPt[thePlot][1]->GetBinContent(i,j),histoFakeNumSel1EtaPt[thePlot][1]->GetBinContent(i,j),histoFakeNumSel2EtaPt[thePlot][1]->GetBinContent(i,j),histoFakeNumSel3EtaPt[thePlot][1]->GetBinContent(i,j),histoFakeNumSel4EtaPt[thePlot][1]->GetBinContent(i,j),
+	  histoFakeDenEtaPt[thePlot][2]->GetBinContent(i,j),histoFakeNumSel0EtaPt[thePlot][2]->GetBinContent(i,j),histoFakeNumSel1EtaPt[thePlot][2]->GetBinContent(i,j),histoFakeNumSel2EtaPt[thePlot][2]->GetBinContent(i,j),histoFakeNumSel3EtaPt[thePlot][2]->GetBinContent(i,j),histoFakeNumSel4EtaPt[thePlot][2]->GetBinContent(i,j),
+	  histoFakeDenEtaPt[thePlot][3]->GetBinContent(i,j),histoFakeNumSel0EtaPt[thePlot][3]->GetBinContent(i,j),histoFakeNumSel1EtaPt[thePlot][3]->GetBinContent(i,j),histoFakeNumSel2EtaPt[thePlot][3]->GetBinContent(i,j),histoFakeNumSel3EtaPt[thePlot][3]->GetBinContent(i,j),histoFakeNumSel4EtaPt[thePlot][3]->GetBinContent(i,j),
+          histoFakeEffSel0EtaPt[thePlot]->GetBinContent(i,j),histoFakeEffSel1EtaPt[thePlot]->GetBinContent(i,j),histoFakeEffSel2EtaPt[thePlot]->GetBinContent(i,j),histoFakeEffSel3EtaPt[thePlot]->GetBinContent(i,j),histoFakeEffSel4EtaPt[thePlot]->GetBinContent(i,j),
 	  prescales[thePlot][j-1]);
         }
       }
@@ -392,9 +437,13 @@ unsigned int period = 0
       for(int np=0; np<histBins; np++) histoFakeNumSel0EtaPt[thePlot][np]->Write();
       for(int np=0; np<histBins; np++) histoFakeNumSel1EtaPt[thePlot][np]->Write();
       for(int np=0; np<histBins; np++) histoFakeNumSel2EtaPt[thePlot][np]->Write();
+      for(int np=0; np<histBins; np++) histoFakeNumSel3EtaPt[thePlot][np]->Write();
+      for(int np=0; np<histBins; np++) histoFakeNumSel4EtaPt[thePlot][np]->Write();
       histoFakeEffSel0EtaPt[thePlot]->Write();
       histoFakeEffSel1EtaPt[thePlot]->Write();
       histoFakeEffSel2EtaPt[thePlot]->Write();
+      histoFakeEffSel3EtaPt[thePlot]->Write();
+      histoFakeEffSel4EtaPt[thePlot]->Write();
     }
     outFilePlotsNote->Close();
   }
