@@ -107,9 +107,9 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false)
       nb = thePandaFlat.fChain->GetEntry(jentry);   nbytes += nb;
       if (jentry%1000000 == 0) printf("--- reading event %8lld (%8lld) of %8lld\n",jentry,ientry,nentries);
 
-      bool passTrigger = (thePandaFlat.trigger & kEMuTrig)       == kEMuTrig        || (thePandaFlat.trigger & kDoubleMuTrig)  == kDoubleMuTrig  ||
-                         (thePandaFlat.trigger & kSingleMuTrig)  == kSingleMuTrig   || (thePandaFlat.trigger & kDoubleEleTrig) == kDoubleEleTrig ||
-                         (thePandaFlat.trigger & kSingleEleTrig) == kSingleEleTrig;
+      bool passTrigger = (thePandaFlat.trigger & (1<<kEMuTrig)) != 0       || (thePandaFlat.trigger & (1<<kDoubleMuTrig)) != 0  ||
+                         (thePandaFlat.trigger & (1<<kSingleMuTrig)) != 0  || (thePandaFlat.trigger & (1<<kDoubleEleTrig)) != 0 ||
+                         (thePandaFlat.trigger & (1<<kSingleEleTrig)) != 0;
       if(passTrigger == false) continue;
      
       if(thePandaFlat.nLooseLep != 2) continue;

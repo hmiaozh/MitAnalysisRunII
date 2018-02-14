@@ -110,9 +110,9 @@ unsigned int period = 0
 
       if(infileCat_[ifile] == 0 && ((period == 1 && thePandaFlat.runNumber > 278802) || (period == 2 && thePandaFlat.runNumber <= 278802))) continue;
 
-      bool passTrigger = (thePandaFlat.trigger & kEMuTrig)       == kEMuTrig        || (thePandaFlat.trigger & kDoubleMuTrig)  == kDoubleMuTrig  ||
-                         (thePandaFlat.trigger & kSingleMuTrig)  == kSingleMuTrig   || (thePandaFlat.trigger & kDoubleEleTrig) == kDoubleEleTrig ||
-                         (thePandaFlat.trigger & kSingleEleTrig) == kSingleEleTrig;
+      bool passTrigger = (thePandaFlat.trigger & (1<<kEMuTrig)) != 0       || (thePandaFlat.trigger & (1<<kDoubleMuTrig)) != 0  ||
+                         (thePandaFlat.trigger & (1<<kSingleMuTrig)) != 0  || (thePandaFlat.trigger & (1<<kDoubleEleTrig)) != 0 ||
+                         (thePandaFlat.trigger & (1<<kSingleEleTrig)) != 0;
       if(passTrigger == false) continue;
 
       if(thePandaFlat.nLooseLep != 3) continue;
