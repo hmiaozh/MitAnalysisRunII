@@ -16,16 +16,17 @@ enum PhoSelectionBit {
 };
 
 enum TriggerBits {
-    kMETTrig	  =(1<<0),
-    kSingleEleTrig=(1<<1),
-    kSinglePhoTrig=(1<<2),
-    kSingleMuTrig =(1<<3),
-    kDoubleMuTrig =(1<<4),
-    kDoubleEleTrig=(1<<5),
-    kEMuTrig	  =(1<<6),
-    kJetHTTrig    =(1<<7),
-    kMuFakeTrig   =(1<<8),
-    kEleFakeTrig  =(1<<9)
+    kMETTrig	   = 0,
+    kSingleEleTrig,
+    kSinglePhoTrig,
+    kSingleMuTrig,
+    kDoubleMuTrig,
+    kDoubleEleTrig,
+    kEMuTrig,
+    kJetHTTrig,
+    kMuFakeTrig,
+    kEleFakeTrig,
+    kNTrig
 };
 
 const double mass_el = 0.000510998928;
