@@ -51,7 +51,7 @@ const bool usePUPPI = false;
 const bool useTopCR = true;
 const bool useDYCR = false;
 
-const bool debug = 0;
+const int debug = 0;
 
 double topNorm[3]  = {0.81,0.95,1.00};
 double topNormE[3] = {0.09,0.11,0.01};
@@ -63,6 +63,8 @@ void wwAnalysis(
  TString typeLepSel = "defaultTight",
  bool isMIT = true
  ){
+
+  if(debug != 0) usePureMC = true;
 
   // File instances on EOS
   TString filesPathDA  = "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/ceballos/Nero/output_80x/met_";
@@ -971,8 +973,6 @@ void wwAnalysis(
 
       the_input_tree->GetEntry(i);
  
-      //if(debug == 1 && eventEvent.lumiNum > 260545) continue;
-
       int initPDFTag = 0;
       if((*eventMonteCarlo.pdfRwgt).size() == 0) initPDFTag = -1;
 
@@ -1257,17 +1257,6 @@ void wwAnalysis(
         totalSel = totalSel && passFilter[isel];
 	if(totalSel == kTRUE) sumEvol[typeSel]++;
       }
-      if(totalSel && debug == 1){
-      printf("EVENT %d %llu %d %d %f %f %f %f %f %f %f %f %f %f %f %d ",eventEvent.runNum,eventEvent.eventNum,eventEvent.lumiNum,typeSel,
-      ((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Pt(),((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Eta(),((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Phi(),
-      ((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Pt(),((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Eta(),((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Phi(),
-      theMET.Pt(),(double)eventMet.trackMet->Pt(),dPhiLepMETMin,dPhiLepTrackMETMin,minPMET[0],(int)idJet.size());
-      if(idJet.size()>0) printf("%f %f %f %f ",((TLorentzVector*)(*eventJets.p4)[idJet[0]])->Pt(),((TLorentzVector*)(*eventJets.p4)[idJet[0]])->Eta(),((TLorentzVector*)(*eventJets.p4)[idJet[0]])->Phi(),(float)(*eventJets.bDiscr)[idJet[0]]);
-      else               printf("0.0 0.0 0.0 0.0 ");
-      if(idJet.size()>1) printf("%f %f %f %f ",((TLorentzVector*)(*eventJets.p4)[idJet[1]])->Pt(),((TLorentzVector*)(*eventJets.p4)[idJet[1]])->Eta(),((TLorentzVector*)(*eventJets.p4)[idJet[1]])->Phi(),(float)(*eventJets.bDiscr)[idJet[1]]);
-      else               printf("0.0 0.0 0.0 0.0 ");
-      printf("\n");
-      }
       bool passSameSignRegion = goodSameSign  && passFilter[1] && passFilter[2] && passFilter[3] && passFilter[4] && passFilter[5] &&  passFilter[6] &&   passFilter[7] &&  passFilter[8]  && passFilter[9];
       bool passTopRegion      = passFilter[0] && passFilter[1] && passFilter[2] && passFilter[3] && passFilter[4] && passFilter[5] &&  passFilter[6] && (!passFilter[7] || !passFilter[8]) && passFilter[9];
       bool passDYRegion       = passFilter[0] && passFilter[1] && passFilter[2] && passFilter[3] && passFilter[4] && passFilter[5] && !passFilter[6] &&   passFilter[7] &&  passFilter[8]  && passFilter[9];
@@ -1460,8 +1449,22 @@ void wwAnalysis(
       double btaglCorr[2] = {(total_bjetl_probLOOSEUP[1]  /total_bjetl_probLOOSEUP[0]  )/(total_bjetl_probLOOSE[1]/total_bjetl_probLOOSE[0]),
                              (total_bjetl_probLOOSEDOWN[1]/total_bjetl_probLOOSEDOWN[0])/(total_bjetl_probLOOSE[1]/total_bjetl_probLOOSE[0])};
 
-      //if(passAllCuts[SIGSEL]) printf("AAA %d %d %lld %f %f %f %f %f %f %f %f %f\n",eventEvent.runNum,eventEvent.lumiNum,eventEvent.eventNum,totalWeight,mcWeight,theLumi,puWeight,effSF,fakeSF,thePtwwWeight[0],total_bjetb_probLOOSE[1]/total_bjetb_probLOOSE[0],total_bjetl_probLOOSE[1]/total_bjetl_probLOOSE[0]);
-
+      if(typeSel == 2 && ((totalSel && debug == 1) || debug == 2)){
+      printf("EVTSEL %d %llu %d %d  %d  %d %d %d %d %d %d %d %d %d %d\n",eventEvent.runNum,eventEvent.eventNum,eventEvent.lumiNum,typeSel,
+       totalSel,passFilter[0],passFilter[1],passFilter[2],passFilter[3],passFilter[4],passFilter[5],passFilter[6],passFilter[7],passFilter[8],passFilter[9]);
+      printf("EVENT %d %llu %d %d %f %f %f %f %f %f %f %f %f %f %f %d ",eventEvent.runNum,eventEvent.eventNum,eventEvent.lumiNum,typeSel,
+      ((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Pt(),((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Eta(),((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Phi(),
+      ((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Pt(),((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Eta(),((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Phi(),
+      theMET.Pt(),(double)eventMet.trackMet->Pt(),dPhiLepMETMin,dPhiLepTrackMETMin,minPMET[0],(int)idJet.size());
+      if(idJet.size()>0) printf("%f %f %f %f ",((TLorentzVector*)(*eventJets.p4)[idJet[0]])->Pt(),((TLorentzVector*)(*eventJets.p4)[idJet[0]])->Eta(),((TLorentzVector*)(*eventJets.p4)[idJet[0]])->Phi(),(float)(*eventJets.bDiscr)[idJet[0]]);
+      else               printf("0.0 0.0 0.0 0.0 ");
+      if(idJet.size()>1) printf("%f %f %f %f ",((TLorentzVector*)(*eventJets.p4)[idJet[1]])->Pt(),((TLorentzVector*)(*eventJets.p4)[idJet[1]])->Eta(),((TLorentzVector*)(*eventJets.p4)[idJet[1]])->Phi(),(float)(*eventJets.bDiscr)[idJet[1]]);
+      else               printf("0.0 0.0 0.0 0.0 ");
+      printf("\n");
+      }
+      if(typeSel == 2 && totalSel && debug == 3){
+      printf("WEIGHTS %d %d %lld %f %f %f %f %f %f %f %f %f\n",eventEvent.runNum,eventEvent.lumiNum,eventEvent.eventNum,totalWeight,mcWeight,theLumi,puWeight,effSF,fakeSF,thePtwwWeight[0],total_bjetb_probLOOSE[1]/total_bjetb_probLOOSE[0],total_bjetl_probLOOSE[1]/total_bjetl_probLOOSE[0]);
+      }
       if(totalWeight == 0) continue;
       // end event weighting
 
