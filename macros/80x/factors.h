@@ -311,6 +311,11 @@ double nPUScaleFactor(TH1D *fhDPU, float npu){
 double weightZHEWKCorr(TH1D *fhDEWK, float pt){
   double mypt = TMath::Min(pt,(float)499.999);
   Int_t ptxbin = fhDEWK->GetXaxis()->FindBin(mypt);
+  return (26.66*fhDEWK->GetBinContent(ptxbin)+0.31+0.11)/(26.66*(1-0.053)+0.31+0.11);
+}
+double weightZHEWKCorrWRONG(TH1D *fhDEWK, float pt){
+  double mypt = TMath::Min(pt,(float)499.999);
+  Int_t ptxbin = fhDEWK->GetXaxis()->FindBin(mypt);
   return (fhDEWK->GetBinContent(ptxbin)+0.31+0.11)/((1-0.053)+0.31+0.11);
 }
 
