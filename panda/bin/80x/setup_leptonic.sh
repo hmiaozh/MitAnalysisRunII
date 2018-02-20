@@ -8,12 +8,12 @@ export PANDA="${CMSSW_BASE}/src/PandaAnalysis"
 #export PANDA_CFG="http://t3serv001.mit.edu/~ceballos/histcatalog/20170419_all.cfg" 
 #export PANDA_CFG="http://t3serv001.mit.edu/~ceballos/histcatalog/20170502_signals.cfg" 
 export PANDA_CFG="http://t3serv001.mit.edu/~ceballos/ceballos/catalog/test.cfg"
-export PANDA_FLATDIR="/export/data/t3home000/ceballos/panda/v_006_0/"
+export PANDA_FLATDIR="/export/data/t3home000/ceballos/panda/v_001_0/"
 mkdir -p $PANDA_FLATDIR
 
 export SUBMIT_TMPL="skim_lep_tmpl.py"
 #export SUBMIT_TMPL="skim_lepfake_tmpl.py"
-export SUBMIT_NAME="v_006_0"
+export SUBMIT_NAME="v_001_0"
 export SUBMIT_WORKDIR="/data/t3serv014/ceballos/condor/"${SUBMIT_NAME}"/work/"
 export SUBMIT_LOGDIR="/data/t3serv014/ceballos/condor/"${SUBMIT_NAME}"/logs/"
 export SUBMIT_OUTDIR="/data/t3serv014/ceballos/panda/"${SUBMIT_NAME}"/batch/"
@@ -29,4 +29,4 @@ export PRIVATE_CFGDIR="${HOME}/cms/condor/monotop_private_panda/"
 export PANDA_FIT=/data/t3serv014/ceballos/CMSSW_7_4_7/
 export PANDA_XSECS=/home/ceballos/cms/cmssw/analysis/MonoTop_Xsec/
 export PANDA_FITTING=${PANDA_FLATDIR}/fitting/
-mkdir -p $PANDA_FITTING/scans/ $PANDA_FITTING/logs/
+#mkdir -p $PANDA_FITTING/scans/ $PANDA_FITTING/logs/

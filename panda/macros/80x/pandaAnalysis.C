@@ -41,8 +41,8 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   //*******************************************************
   //Input Files
   //*******************************************************
-  TString filesPath    = "/data/t3home000/ceballos/panda/v_006_0/";
-  if(isMIT == false) filesPath = "/afs/cern.ch/work/c/ceballos/public/samples/panda/v_006_0/";
+  TString filesPath    = "/data/t3home000/ceballos/panda/v_001_0/";
+  if(isMIT == false) filesPath = "/afs/cern.ch/work/c/ceballos/public/samples/panda/v_001_0/";
   vector<TString> infileName_;
   vector<Int_t> infileCat_;
   
@@ -238,11 +238,11 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   const int nBinEtaPlot = 26; Float_t xbinsEtaPlot[nBinEtaPlot+1] = {-2.4,-2.3,-2.2,-2.0,-1.8,-1.63,-1.566,-1.4442,-1.2,-1.0,-0.6,-0.4,-0.2,0.0,
                                                                      0.2,0.4,0.6,1.0,1.2,1.4442,1.566,1.63,1.8,2.0,2.2,2.3,2.4};
 
-  const int muBinxX = scalefactors_Medium_Muon_stat_error_hi->GetNbinsX();
-  const int muBinxY = scalefactors_Medium_Muon_stat_error_hi->GetNbinsY();
+  const int muBinxX = 0;//scalefactors_Medium_Muon_stat_error_hi->GetNbinsX();
+  const int muBinxY = 0;//scalefactors_Medium_Muon_stat_error_hi->GetNbinsY();
   const int nMuSFBins = muBinxX*muBinxY;
-  const int elBinxX = scalefactors_Medium_Electron_stat_error_hi->GetNbinsX();
-  const int elBinxY = scalefactors_Medium_Electron_stat_error_hi->GetNbinsY();
+  const int elBinxX = 0;//scalefactors_Medium_Electron_stat_error_hi->GetNbinsX();
+  const int elBinxY = 0;//scalefactors_Medium_Electron_stat_error_hi->GetNbinsY();
   const int nElSFBins = elBinxX*elBinxY;
   const int nRecNuisances = 1;
   const int nEffNuisances = 8+nMuSFBins;

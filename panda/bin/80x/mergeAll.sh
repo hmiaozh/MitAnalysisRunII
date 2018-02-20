@@ -38,3 +38,5 @@ PandaAnalysis/T3/merging/merge_Leptonic.py MET
 #PandaAnalysis/T3/merging/merge_Leptonic.py DoubleEG     
 #PandaAnalysis/T3/merging/merge_Leptonic.py DoubleMuon
 PandaAnalysis/T3/merging/merge_Leptonic.py data_overlaps
+
+root -q -l -b MitAnalysisRunII/panda/macros/9x/makeGoodRunSample.C+'("${PANDA_FLATDIR}/data_overlaps.root","${PANDA_FLATDIR}/data.root")'

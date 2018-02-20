@@ -1,5 +1,5 @@
 void anaWWSSGen(int nsel = 0) {
-TString inputPandaFolder = "/data/t3home000/ceballos/panda/v_006_0";
+TString inputPandaFolder = "/data/t3home000/ceballos/panda/v_001_0";
 TString inputNeroFolder = "/home/ceballos/cms/cmssw/047/CMSSW_8_0_26_patch1/src/inputs_wwssgen";
 
 const int nFiles = 2;

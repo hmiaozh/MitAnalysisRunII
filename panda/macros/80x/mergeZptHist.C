@@ -1,5 +1,5 @@
 void mergeZptHist(int nsel = 0) {
-TString inputFolder = "/data/t3home000/ceballos/panda/v_006_0";
+TString inputFolder = "/data/t3home000/ceballos/panda/v_001_0";
 
 if(nsel == 0){ // NLO
 const int nFiles = 6;
