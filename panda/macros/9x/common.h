@@ -56,8 +56,8 @@ double nPUScaleFactor(TH1D *fhDPU, float npu){
 }
 
 double electronToPhotonSF(double pt){
-double effDA = 0.0292 + 0.131 / (pt - 12.80);
-double effMD = 0.0147 + 0.208 / (pt + 10.89);
+double effDA = (0.0052 + 1.114 * TMath::Power(pt + 122.84, -0.75));
+double effMD = (0.0050 + 2.922 * TMath::Power(pt +  87.23, -1.18));
 
 //printf("electronToPhotonSF: %f/%f=%f\n",effDA,effMD,effDA/effMD);
 
