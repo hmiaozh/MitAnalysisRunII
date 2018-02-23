@@ -37,8 +37,30 @@ fi
 
 export theRND=file_testskim_$RANDOM;
 
-#find $INPUTDIR/* -name '000?'| awk '{split($1,a,ENVIRON["INPUTDIR"]);print a[2]}' > ${theRND}.txt
-find $INPUTDIR/* -name '000?'| grep -v TT_TuneCUETP8M2T4_13TeV|awk '{split($1,a,ENVIRON["INPUTDIR"]);print a[2]}' > ${theRND}.txt
+find $INPUTDIR/* -name '000?'| awk '{split($1,a,ENVIRON["INPUTDIR"]);print a[2]}' > ${theRND}.txt
+#find $INPUTDIR/* -name '000?'| grep -v TT_TuneCUETP8M2T4_13TeV|awk '{split($1,a,ENVIRON["INPUTDIR"]);print a[2]}' > ${theRND}.txt
+awk '{printf("ls -l %s%s/*.root\n",ENVIRON["INPUTDIR"],$1)}' ${theRND}.txt > ${theRND}_sh1.sh; chmod a+x ${theRND}_sh1.sh;
+awk '{printf("ls -l %s%s/*.root\n",ENVIRON["SKIMDIR"],$1)}' ${theRND}.txt > ${theRND}_sh2.sh;  chmod a+x ${theRND}_sh2.sh;
+
+./${theRND}_sh1.sh|awk '{sp=ENVIRON["INPUTDIR"];split($9,a,sp);print a[2];}' |sort -u > ${theRND}_comp_inp.txt;
+./${theRND}_sh2.sh|awk '{sp=ENVIRON["SKIMDIR"]; split($9,a,sp);print a[2];}' |sort -u > ${theRND}_comp_out.txt;
+wc ${theRND}_comp_inp.txt ${theRND}_comp_out.txt;
+diff ${theRND}_comp_inp.txt ${theRND}_comp_out.txt|grep "<"|awk '{split($2,a,"NeroNtuples_");printf("./MitAnalysisRunII/skimming/80x/cern/skim_batch.sh %s %s %s NeroNtuples_%s dm\n",ENVIRON["INPUTDIR"],ENVIRON["SKIMDIR"],a[1],a[2])}' > diff_${theRND}.sh;
+diff ${theRND}_comp_inp.txt ${theRND}_comp_out.txt|grep ">";
+
+sed -i 's|/eos/cms|cms|' diff_${theRND}.sh;
+sed -i 's|/eos/cms|cms|' diff_${theRND}.sh;
+chmod a+x diff_${theRND}.sh;
+rm -f ${theRND}*;
+
+elif [ $# == 2 ] && [ $1 == 3 ]; then
+
+export INPUTDIR=/eos/cms/store/user/jsalfeld/Nero/v0.2;
+export SKIMDIR=/eos/cms/store/caf/user/ceballos/Nero/skim_jsalfeld_80x;
+
+export theRND=file_testskim_$RANDOM;
+
+find $INPUTDIR/* -name '*pythia8'| awk '{split($1,a,ENVIRON["INPUTDIR"]);print a[2]}' > ${theRND}.txt
 awk '{printf("ls -l %s%s/*.root\n",ENVIRON["INPUTDIR"],$1)}' ${theRND}.txt > ${theRND}_sh1.sh; chmod a+x ${theRND}_sh1.sh;
 awk '{printf("ls -l %s%s/*.root\n",ENVIRON["SKIMDIR"],$1)}' ${theRND}.txt > ${theRND}_sh2.sh;  chmod a+x ${theRND}_sh2.sh;
 

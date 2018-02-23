@@ -10,6 +10,9 @@ if [ $# == 1 ] && [ $1 == 1 ]; then
 elif [ $# == 1 ] && [ $1 == 2 ]; then
   export SKIMDIR=/data/t3home000/ceballos/Nero/skim_80x;
   export MERGINGDIR=/data/t3home000/ceballos/Nero/merging_80x;
+elif [ $# == 1 ] && [ $1 == 3 ]; then
+  export SKIMDIR=/eos/cms/store/caf/user/ceballos/Nero/skim_jsalfeld_80x;
+  export MERGINGDIR=/eos/cms/store/caf/user/ceballos/Nero/merging_jsalfeld_80x;
 fi
 
 mkdir -p $MERGINGDIR;
