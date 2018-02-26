@@ -33,7 +33,7 @@ void zhgAnalysis(
   //*******************************************************
   //Input Files
   //*******************************************************
-  TString filesPath    = "/data/t3home000/ceballos/panda/v_007_0/";
+  TString filesPath    = "/data/t3home000/ceballos/panda/v_002_0/";
   vector<TString> infileName_;
   vector<int> infileCat_;
 

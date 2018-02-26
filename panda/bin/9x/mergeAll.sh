@@ -38,4 +38,4 @@ PandaAnalysis/T3/merging/merge.py --cfg leptonic WpWp_QCD
 #PandaAnalysis/T3/merging/merge.py --cfg leptonic DoubleMuon
 PandaAnalysis/T3/merging/merge.py --cfg leptonic data_overlaps
 
-root -q -l -b MitAnalysisRunII/panda/macros/9x/makeGoodRunSample.C+'("/data/t3home000/ceballos/panda/v_007_0/data_overlaps.root","/data/t3home000/ceballos/panda/v_007_0/data.root")'
+root -q -l -b MitAnalysisRunII/panda/macros/9x/makeGoodRunSample.C+'("${PANDA_FLATDIR}/data_overlaps.root","${PANDA_FLATDIR}/data.root")'
