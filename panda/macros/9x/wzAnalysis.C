@@ -306,7 +306,7 @@ unsigned int period = 0
 	  sfWeightLepEff[2] = scalefactors_Medium_Electron->GetBinContent(binXT,binYT_c);
         }
 
-        totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu * the_eta_sf[0] * the_eta_sf[1] * the_eta_sf[2] * sfWeightLepEff[0] * sfWeightLepEff[1] * sfWeightLepEff[2] * theMCPrescale;
+        totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu * the_eta_sf[0] * the_eta_sf[1] * the_eta_sf[2] * sfWeightLepEff[0] * sfWeightLepEff[1] * sfWeightLepEff[2] * thePandaFlat.sf_btag0 * theMCPrescale;
 
         if     (infileCat_[ifile] == 3)                                                totalWeight = totalWeight * thePandaFlat.sf_wz;
 	else if(infileCat_[ifile] == 4 && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;

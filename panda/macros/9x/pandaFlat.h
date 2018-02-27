@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Thu Feb  8 10:34:45 2018 by ROOT version 6.08/07
+// Tue Feb 27 03:17:49 2018 by ROOT version 6.10/09
 // from TTree events/events
-// found on file: /data/t3home000/ceballos/panda/v_007_0/qqZZ.root
+// found on file: /data/t3home000/ceballos/panda/v_002_0/qqZZ.root
 //////////////////////////////////////////////////////////
 
 #ifndef pandaFlat_h
@@ -26,26 +26,10 @@ public :
    Int_t           nJot;
    Int_t           nJot_jesUp;
    Int_t           nJot_jesDown;
-   Int_t           nJet_jesUp;
-   Int_t           nJet_jesDown;
    Float_t         jot1PhiUp;
    Float_t         jot1PhiDown;
    Float_t         jot2PhiUp;
    Float_t         jot2PhiDown;
-   Float_t         jot1Phi;
-   Float_t         jot1Eta;
-   Float_t         jot1Pt;
-   Float_t         jot2Phi;
-   Float_t         jot2Eta;
-   Float_t         jot2Pt;
-   Float_t         jot1EtaUp;
-   Float_t         jot1EtaDown;
-   Float_t         jot1PtUp;
-   Float_t         jot1PtDown;
-   Float_t         jot2EtaUp;
-   Float_t         jot2EtaDown;
-   Float_t         jot2PtUp;
-   Float_t         jot2PtDown;
    Int_t           nLooseLep;
    Int_t           nLooseElectron;
    Int_t           nLooseMuon;
@@ -62,6 +46,22 @@ public :
    Float_t         electronPhi[4];   //[nLooseElectron]
    Int_t           electronSelBit[4];   //[nLooseElectron]
    Int_t           electronPdgId[4];   //[nLooseElectron]
+   Int_t           nJet_jesUp;
+   Int_t           nJet_jesDown;
+   Float_t         jot1Phi;
+   Float_t         jot1Eta;
+   Float_t         jot1Pt;
+   Float_t         jot2Phi;
+   Float_t         jot2Eta;
+   Float_t         jot2Pt;
+   Float_t         jot1EtaUp;
+   Float_t         jot1EtaDown;
+   Float_t         jot1PtUp;
+   Float_t         jot1PtDown;
+   Float_t         jot2EtaUp;
+   Float_t         jot2EtaDown;
+   Float_t         jot2PtUp;
+   Float_t         jot2PtDown;
    Float_t         scale[6];
    Float_t         sf_btag0;
    Float_t         sf_btag1;
@@ -125,9 +125,9 @@ public :
    Float_t         sf_zz;
    Float_t         sf_zzUnc;
    Float_t         sf_wz;
-   Float_t         sf_zh;
-   Float_t         sf_zhUp;
-   Float_t         sf_zhDown;
+   Float_t         sf_vh;
+   Float_t         sf_vhUp;
+   Float_t         sf_vhDown;
    Float_t         genLep1Pt;
    Float_t         genLep1Eta;
    Float_t         genLep1Phi;
@@ -150,6 +150,10 @@ public :
    Int_t           looseGenLep4PdgId;
    Int_t           loosePho1SelBit;
    Int_t           looseGenPho1PdgId;
+   Int_t           genFatJetNProngs;
+   Float_t         genMjj;
+   Float_t         genFatJetPt;
+   Int_t           isGS;
    Float_t         trkmetphi;
    Int_t           whichRecoil;
    Int_t           badECALFilter;
@@ -198,7 +202,6 @@ public :
    Float_t         sumET;
    Float_t         trkmet;
    Float_t         dphipfmet;
-   Float_t         dphipuppimet;
    Float_t         trueGenBosonPt;
    Float_t         genBosonPt;
    Float_t         genBosonEta;
@@ -237,26 +240,10 @@ public :
    TBranch        *b_nJot;   //!
    TBranch        *b_nJot_jesUp;   //!
    TBranch        *b_nJot_jesDown;   //!
-   TBranch        *b_nJet_jesUp;   //!
-   TBranch        *b_nJet_jesDown;   //!
    TBranch        *b_jot1PhiUp;   //!
    TBranch        *b_jot1PhiDown;   //!
    TBranch        *b_jot2PhiUp;   //!
    TBranch        *b_jot2PhiDown;   //!
-   TBranch        *b_jot1Phi;   //!
-   TBranch        *b_jot1Eta;   //!
-   TBranch        *b_jot1Pt;   //!
-   TBranch        *b_jot2Phi;   //!
-   TBranch        *b_jot2Eta;   //!
-   TBranch        *b_jot2Pt;   //!
-   TBranch        *b_jot1EtaUp;   //!
-   TBranch        *b_jot1EtaDown;   //!
-   TBranch        *b_jot1PtUp;   //!
-   TBranch        *b_jot1PtDown;   //!
-   TBranch        *b_jot2EtaUp;   //!
-   TBranch        *b_jot2EtaDown;   //!
-   TBranch        *b_jot2PtUp;   //!
-   TBranch        *b_jot2PtDown;   //!
    TBranch        *b_nLooseLep;   //!
    TBranch        *b_nLooseElectron;   //!
    TBranch        *b_nLooseMuon;   //!
@@ -273,6 +260,22 @@ public :
    TBranch        *b_electronPhi;   //!
    TBranch        *b_electronSelBit;   //!
    TBranch        *b_electronPdgId;   //!
+   TBranch        *b_nJet_jesUp;   //!
+   TBranch        *b_nJet_jesDown;   //!
+   TBranch        *b_jot1Phi;   //!
+   TBranch        *b_jot1Eta;   //!
+   TBranch        *b_jot1Pt;   //!
+   TBranch        *b_jot2Phi;   //!
+   TBranch        *b_jot2Eta;   //!
+   TBranch        *b_jot2Pt;   //!
+   TBranch        *b_jot1EtaUp;   //!
+   TBranch        *b_jot1EtaDown;   //!
+   TBranch        *b_jot1PtUp;   //!
+   TBranch        *b_jot1PtDown;   //!
+   TBranch        *b_jot2EtaUp;   //!
+   TBranch        *b_jot2EtaDown;   //!
+   TBranch        *b_jot2PtUp;   //!
+   TBranch        *b_jot2PtDown;   //!
    TBranch        *b_scale;   //!
    TBranch        *b_sf_btag0;   //!
    TBranch        *b_sf_btag1;   //!
@@ -336,9 +339,9 @@ public :
    TBranch        *b_sf_zz;   //!
    TBranch        *b_sf_zzUnc;   //!
    TBranch        *b_sf_wz;   //!
-   TBranch        *b_sf_zh;   //!
-   TBranch        *b_sf_zhUp;   //!
-   TBranch        *b_sf_zhDown;   //!
+   TBranch        *b_sf_vh;   //!
+   TBranch        *b_sf_vhUp;   //!
+   TBranch        *b_sf_vhDown;   //!
    TBranch        *b_genLep1Pt;   //!
    TBranch        *b_genLep1Eta;   //!
    TBranch        *b_genLep1Phi;   //!
@@ -361,6 +364,10 @@ public :
    TBranch        *b_looseGenLep4PdgId;   //!
    TBranch        *b_loosePho1SelBit;   //!
    TBranch        *b_looseGenPho1PdgId;   //!
+   TBranch        *b_genFatJetNProngs;   //!
+   TBranch        *b_genMjj;   //!
+   TBranch        *b_genFatJetPt;   //!
+   TBranch        *b_isGS;   //!
    TBranch        *b_trkmetphi;   //!
    TBranch        *b_whichRecoil;   //!
    TBranch        *b_badECALFilter;   //!
@@ -409,7 +416,6 @@ public :
    TBranch        *b_sumET;   //!
    TBranch        *b_trkmet;   //!
    TBranch        *b_dphipfmet;   //!
-   TBranch        *b_dphipuppimet;   //!
    TBranch        *b_trueGenBosonPt;   //!
    TBranch        *b_genBosonPt;   //!
    TBranch        *b_genBosonEta;   //!
@@ -462,9 +468,9 @@ pandaFlat::pandaFlat(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/t3home000/ceballos/panda/v_007_0/qqZZ.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/t3home000/ceballos/panda/v_002_0/qqZZ.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/data/t3home000/ceballos/panda/v_007_0/qqZZ.root");
+         f = new TFile("/data/t3home000/ceballos/panda/v_002_0/qqZZ.root");
       }
       f->GetObject("events",tree);
 
@@ -517,26 +523,10 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("nJot", &nJot, &b_nJot);
    fChain->SetBranchAddress("nJot_jesUp", &nJot_jesUp, &b_nJot_jesUp);
    fChain->SetBranchAddress("nJot_jesDown", &nJot_jesDown, &b_nJot_jesDown);
-   fChain->SetBranchAddress("nJet_jesUp", &nJet_jesUp, &b_nJet_jesUp);
-   fChain->SetBranchAddress("nJet_jesDown", &nJet_jesDown, &b_nJet_jesDown);
    fChain->SetBranchAddress("jot1PhiUp", &jot1PhiUp, &b_jot1PhiUp);
    fChain->SetBranchAddress("jot1PhiDown", &jot1PhiDown, &b_jot1PhiDown);
    fChain->SetBranchAddress("jot2PhiUp", &jot2PhiUp, &b_jot2PhiUp);
    fChain->SetBranchAddress("jot2PhiDown", &jot2PhiDown, &b_jot2PhiDown);
-   fChain->SetBranchAddress("jot1Phi", &jot1Phi, &b_jot1Phi);
-   fChain->SetBranchAddress("jot1Eta", &jot1Eta, &b_jot1Eta);
-   fChain->SetBranchAddress("jot1Pt", &jot1Pt, &b_jot1Pt);
-   fChain->SetBranchAddress("jot2Phi", &jot2Phi, &b_jot2Phi);
-   fChain->SetBranchAddress("jot2Eta", &jot2Eta, &b_jot2Eta);
-   fChain->SetBranchAddress("jot2Pt", &jot2Pt, &b_jot2Pt);
-   fChain->SetBranchAddress("jot1EtaUp", &jot1EtaUp, &b_jot1EtaUp);
-   fChain->SetBranchAddress("jot1EtaDown", &jot1EtaDown, &b_jot1EtaDown);
-   fChain->SetBranchAddress("jot1PtUp", &jot1PtUp, &b_jot1PtUp);
-   fChain->SetBranchAddress("jot1PtDown", &jot1PtDown, &b_jot1PtDown);
-   fChain->SetBranchAddress("jot2EtaUp", &jot2EtaUp, &b_jot2EtaUp);
-   fChain->SetBranchAddress("jot2EtaDown", &jot2EtaDown, &b_jot2EtaDown);
-   fChain->SetBranchAddress("jot2PtUp", &jot2PtUp, &b_jot2PtUp);
-   fChain->SetBranchAddress("jot2PtDown", &jot2PtDown, &b_jot2PtDown);
    fChain->SetBranchAddress("nLooseLep", &nLooseLep, &b_nLooseLep);
    fChain->SetBranchAddress("nLooseElectron", &nLooseElectron, &b_nLooseElectron);
    fChain->SetBranchAddress("nLooseMuon", &nLooseMuon, &b_nLooseMuon);
@@ -553,6 +543,22 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("electronPhi", electronPhi, &b_electronPhi);
    fChain->SetBranchAddress("electronSelBit", electronSelBit, &b_electronSelBit);
    fChain->SetBranchAddress("electronPdgId", electronPdgId, &b_electronPdgId);
+   fChain->SetBranchAddress("nJet_jesUp", &nJet_jesUp, &b_nJet_jesUp);
+   fChain->SetBranchAddress("nJet_jesDown", &nJet_jesDown, &b_nJet_jesDown);
+   fChain->SetBranchAddress("jot1Phi", &jot1Phi, &b_jot1Phi);
+   fChain->SetBranchAddress("jot1Eta", &jot1Eta, &b_jot1Eta);
+   fChain->SetBranchAddress("jot1Pt", &jot1Pt, &b_jot1Pt);
+   fChain->SetBranchAddress("jot2Phi", &jot2Phi, &b_jot2Phi);
+   fChain->SetBranchAddress("jot2Eta", &jot2Eta, &b_jot2Eta);
+   fChain->SetBranchAddress("jot2Pt", &jot2Pt, &b_jot2Pt);
+   fChain->SetBranchAddress("jot1EtaUp", &jot1EtaUp, &b_jot1EtaUp);
+   fChain->SetBranchAddress("jot1EtaDown", &jot1EtaDown, &b_jot1EtaDown);
+   fChain->SetBranchAddress("jot1PtUp", &jot1PtUp, &b_jot1PtUp);
+   fChain->SetBranchAddress("jot1PtDown", &jot1PtDown, &b_jot1PtDown);
+   fChain->SetBranchAddress("jot2EtaUp", &jot2EtaUp, &b_jot2EtaUp);
+   fChain->SetBranchAddress("jot2EtaDown", &jot2EtaDown, &b_jot2EtaDown);
+   fChain->SetBranchAddress("jot2PtUp", &jot2PtUp, &b_jot2PtUp);
+   fChain->SetBranchAddress("jot2PtDown", &jot2PtDown, &b_jot2PtDown);
    fChain->SetBranchAddress("scale", scale, &b_scale);
    fChain->SetBranchAddress("sf_btag0", &sf_btag0, &b_sf_btag0);
    fChain->SetBranchAddress("sf_btag1", &sf_btag1, &b_sf_btag1);
@@ -616,9 +622,9 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("sf_zz", &sf_zz, &b_sf_zz);
    fChain->SetBranchAddress("sf_zzUnc", &sf_zzUnc, &b_sf_zzUnc);
    fChain->SetBranchAddress("sf_wz", &sf_wz, &b_sf_wz);
-   fChain->SetBranchAddress("sf_zh", &sf_zh, &b_sf_zh);
-   fChain->SetBranchAddress("sf_zhUp", &sf_zhUp, &b_sf_zhUp);
-   fChain->SetBranchAddress("sf_zhDown", &sf_zhDown, &b_sf_zhDown);
+   fChain->SetBranchAddress("sf_vh", &sf_vh, &b_sf_vh);
+   fChain->SetBranchAddress("sf_vhUp", &sf_vhUp, &b_sf_vhUp);
+   fChain->SetBranchAddress("sf_vhDown", &sf_vhDown, &b_sf_vhDown);
    fChain->SetBranchAddress("genLep1Pt", &genLep1Pt, &b_genLep1Pt);
    fChain->SetBranchAddress("genLep1Eta", &genLep1Eta, &b_genLep1Eta);
    fChain->SetBranchAddress("genLep1Phi", &genLep1Phi, &b_genLep1Phi);
@@ -641,6 +647,10 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("looseGenLep4PdgId", &looseGenLep4PdgId, &b_looseGenLep4PdgId);
    fChain->SetBranchAddress("loosePho1SelBit", &loosePho1SelBit, &b_loosePho1SelBit);
    fChain->SetBranchAddress("looseGenPho1PdgId", &looseGenPho1PdgId, &b_looseGenPho1PdgId);
+   fChain->SetBranchAddress("genFatJetNProngs", &genFatJetNProngs, &b_genFatJetNProngs);
+   fChain->SetBranchAddress("genMjj", &genMjj, &b_genMjj);
+   fChain->SetBranchAddress("genFatJetPt", &genFatJetPt, &b_genFatJetPt);
+   fChain->SetBranchAddress("isGS", &isGS, &b_isGS);
    fChain->SetBranchAddress("trkmetphi", &trkmetphi, &b_trkmetphi);
    fChain->SetBranchAddress("whichRecoil", &whichRecoil, &b_whichRecoil);
    fChain->SetBranchAddress("badECALFilter", &badECALFilter, &b_badECALFilter);
@@ -689,7 +699,6 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("sumET", &sumET, &b_sumET);
    fChain->SetBranchAddress("trkmet", &trkmet, &b_trkmet);
    fChain->SetBranchAddress("dphipfmet", &dphipfmet, &b_dphipfmet);
-   fChain->SetBranchAddress("dphipuppimet", &dphipuppimet, &b_dphipuppimet);
    fChain->SetBranchAddress("trueGenBosonPt", &trueGenBosonPt, &b_trueGenBosonPt);
    fChain->SetBranchAddress("genBosonPt", &genBosonPt, &b_genBosonPt);
    fChain->SetBranchAddress("genBosonEta", &genBosonEta, &b_genBosonEta);

@@ -30,36 +30,21 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false)
   infileName_.push_back(Form("%sdata.root",filesPath.Data()));                 infileCat_.push_back(0);
   infileName_.push_back(Form("%sdata.root",filesPathOld.Data()));              infileCat_.push_back(1);
 
-/*
-  //infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));                infileCat_.push_back(1);
-  //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data()));                infileCat_.push_back(1);
-  if     (whichDY == 0)
- {infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root" ,filesPath.Data()));  infileCat_.push_back(2);}
-  else if(whichDY == 1)
- {infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));  infileCat_.push_back(2);}
-  else if(whichDY == 2)
- {infileName_.push_back(Form("%sDYJetsToLL_POWHEG.root",filesPath.Data()));    infileCat_.push_back(2);}
-  else if(whichDY == 3)
- {infileName_.push_back(Form("%sDYJetsToLL_Pt0To50.root",filesPath.Data()));   infileCat_.push_back(2);
-  infileName_.push_back(Form("%sDYJetsToLL_Pt50To100.root",filesPath.Data())); infileCat_.push_back(2);
-  infileName_.push_back(Form("%sDYJetsToLL_Pt100To250.root",filesPath.Data()));infileCat_.push_back(2);
-  infileName_.push_back(Form("%sDYJetsToLL_Pt250To400.root",filesPath.Data()));infileCat_.push_back(2);
-  infileName_.push_back(Form("%sDYJetsToLL_Pt400To650.root",filesPath.Data()));infileCat_.push_back(2);
-  infileName_.push_back(Form("%sDYJetsToLL_Pt650ToInf.root",filesPath.Data()));infileCat_.push_back(2);
-  }
+  infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
+  infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
   infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(2);
-  //infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));                infileCat_.push_back(3);
-  //infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                  infileCat_.push_back(3);
+  infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));   infileCat_.push_back(2);
+  infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));                infileCat_.push_back(3);
+  infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                  infileCat_.push_back(3);
 
   infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data()));                infileCat_.push_back(4);
   infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data()));                infileCat_.push_back(4);
   infileName_.push_back(Form("%sWZ.root" ,filesPath.Data()));                  infileCat_.push_back(4);
   infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));                 infileCat_.push_back(4);
   infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));                 infileCat_.push_back(4);
-  //infileName_.push_back(Form("%sWGstar.root" ,filesPath.Data()));              infileCat_.push_back(4);
-  //infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));                  infileCat_.push_back(6);
-  //infileName_.push_back(Form("%sH125.root" ,filesPath.Data()));                infileCat_.push_back(7);
-*/
+  infileName_.push_back(Form("%sWGstar.root" ,filesPath.Data()));	       infileCat_.push_back(4);
+  infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));		       infileCat_.push_back(6);
+  infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	       infileCat_.push_back(7);
 
   TFile *fPUFile = TFile::Open(Form("MitAnalysisRunII/data/90x/puWeights_90x.root"));
   TH1D *fhDPU = (TH1D*)(fPUFile->Get("puWeights")); assert(fhDPU); fhDPU->SetDirectory(0);

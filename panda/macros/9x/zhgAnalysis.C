@@ -147,11 +147,13 @@ void zhgAnalysis(
   char PDFName[20]; sprintf(PDFName,"pdf");
   char effMName[20]; sprintf(effMName,"CMS_eff_m");
   char effEName[20]; sprintf(effEName,"CMS_eff_e");
+  char effPName[20]; sprintf(effPName,"CMS_eff_photon");
   char METName[20]; sprintf(METName,"CMS_met");
   char JESName[20]; sprintf(JESName,"CMS_jes");
   char PUName[20]; sprintf(PUName,"CMS_pu");
   char BTAGBName[20]; sprintf(BTAGBName,"CMS_btagb");
   char BTAGLName[20]; sprintf(BTAGLName,"CMS_btagl");
+  char ELTOPHRATEName[20]; sprintf(ELTOPHRATEName,"CMS_fake_el");
 
   TH1D* histo_EM_CMS_QCDScaleBounding[6];
   TH1D* histo_VG_CMS_QCDScaleBounding[6];
@@ -230,6 +232,21 @@ void zhgAnalysis(
   TH1D* histo_Higgs_CMS_MVALepEffMBoundingDown= new TH1D( Form("histo_Higgs_%sDown",effMName)  , Form("histo_Higgs_%sDown",effMName)  , nBinMVA, xbins); histo_Higgs_CMS_MVALepEffMBoundingDown  ->Sumw2();
   TH1D* histo_ZH_CMS_MVALepEffMBoundingDown   = new TH1D( Form("histo_ZH_%sDown",effMName)  , Form("histo_ZH_%sDown",effMName)  , nBinMVA, xbins); histo_ZH_CMS_MVALepEffMBoundingDown  ->Sumw2();
 
+  TH1D* histo_EM_CMS_MVAPhoEffBoundingUp   = new TH1D( Form("histo_EM_%sUp",effPName)  , Form("histo_EM_%sUp",effPName)  , nBinMVA, xbins); histo_EM_CMS_MVAPhoEffBoundingUp  ->Sumw2();
+  TH1D* histo_VG_CMS_MVAPhoEffBoundingUp   = new TH1D( Form("histo_VG_%sUp",effPName)  , Form("histo_VG_%sUp",effPName)  , nBinMVA, xbins); histo_VG_CMS_MVAPhoEffBoundingUp  ->Sumw2();
+  TH1D* histo_WZ_CMS_MVAPhoEffBoundingUp   = new TH1D( Form("histo_WZ_%sUp",effPName)  , Form("histo_WZ_%sUp",effPName)  , nBinMVA, xbins); histo_WZ_CMS_MVAPhoEffBoundingUp  ->Sumw2();
+  TH1D* histo_ZZ_CMS_MVAPhoEffBoundingUp   = new TH1D( Form("histo_ZZ_%sUp",effPName)  , Form("histo_ZZ_%sUp",effPName)  , nBinMVA, xbins); histo_ZZ_CMS_MVAPhoEffBoundingUp  ->Sumw2();
+  TH1D* histo_VVV_CMS_MVAPhoEffBoundingUp  = new TH1D( Form("histo_VVV_%sUp",effPName)  , Form("histo_VVV_%sUp",effPName)  , nBinMVA, xbins); histo_VVV_CMS_MVAPhoEffBoundingUp  ->Sumw2();
+  TH1D* histo_Higgs_CMS_MVAPhoEffBoundingUp= new TH1D( Form("histo_Higgs_%sUp",effPName)  , Form("histo_Higgs_%sUp",effPName)  , nBinMVA, xbins); histo_Higgs_CMS_MVAPhoEffBoundingUp  ->Sumw2();
+  TH1D* histo_ZH_CMS_MVAPhoEffBoundingUp   = new TH1D( Form("histo_ZH_%sUp",effPName)  , Form("histo_ZH_%sUp",effPName)  , nBinMVA, xbins); histo_ZH_CMS_MVAPhoEffBoundingUp  ->Sumw2();
+  TH1D* histo_EM_CMS_MVAPhoEffBoundingDown   = new TH1D( Form("histo_EM_%sDown",effPName)  , Form("histo_EM_%sDown",effPName)  , nBinMVA, xbins); histo_EM_CMS_MVAPhoEffBoundingDown  ->Sumw2();
+  TH1D* histo_VG_CMS_MVAPhoEffBoundingDown   = new TH1D( Form("histo_VG_%sDown",effPName)  , Form("histo_VG_%sDown",effPName)  , nBinMVA, xbins); histo_VG_CMS_MVAPhoEffBoundingDown  ->Sumw2();
+  TH1D* histo_WZ_CMS_MVAPhoEffBoundingDown   = new TH1D( Form("histo_WZ_%sDown",effPName)  , Form("histo_WZ_%sDown",effPName)  , nBinMVA, xbins); histo_WZ_CMS_MVAPhoEffBoundingDown  ->Sumw2();
+  TH1D* histo_ZZ_CMS_MVAPhoEffBoundingDown   = new TH1D( Form("histo_ZZ_%sDown",effPName)  , Form("histo_ZZ_%sDown",effPName)  , nBinMVA, xbins); histo_ZZ_CMS_MVAPhoEffBoundingDown  ->Sumw2();
+  TH1D* histo_VVV_CMS_MVAPhoEffBoundingDown  = new TH1D( Form("histo_VVV_%sDown",effPName)  , Form("histo_VVV_%sDown",effPName)  , nBinMVA, xbins); histo_VVV_CMS_MVAPhoEffBoundingDown  ->Sumw2();
+  TH1D* histo_Higgs_CMS_MVAPhoEffBoundingDown= new TH1D( Form("histo_Higgs_%sDown",effPName)  , Form("histo_Higgs_%sDown",effPName)  , nBinMVA, xbins); histo_Higgs_CMS_MVAPhoEffBoundingDown  ->Sumw2();
+  TH1D* histo_ZH_CMS_MVAPhoEffBoundingDown   = new TH1D( Form("histo_ZH_%sDown",effPName)  , Form("histo_ZH_%sDown",effPName)  , nBinMVA, xbins); histo_ZH_CMS_MVAPhoEffBoundingDown  ->Sumw2();
+
   TH1D* histo_EM_CMS_MVAMETBoundingUp   = new TH1D( Form("histo_EM_%sUp",METName)  , Form("histo_EM_%sUp",METName)  , nBinMVA, xbins); histo_EM_CMS_MVAMETBoundingUp  ->Sumw2();
   TH1D* histo_VG_CMS_MVAMETBoundingUp   = new TH1D( Form("histo_VG_%sUp",METName)  , Form("histo_VG_%sUp",METName)  , nBinMVA, xbins); histo_VG_CMS_MVAMETBoundingUp  ->Sumw2();
   TH1D* histo_WZ_CMS_MVAMETBoundingUp   = new TH1D( Form("histo_WZ_%sUp",METName)  , Form("histo_WZ_%sUp",METName)  , nBinMVA, xbins); histo_WZ_CMS_MVAMETBoundingUp  ->Sumw2();
@@ -304,6 +321,21 @@ void zhgAnalysis(
   TH1D* histo_VVV_CMS_MVABTAGLBoundingDown  = new TH1D( Form("histo_VVV_%sDown",BTAGLName)  , Form("histo_VVV_%sDown",BTAGLName)  , nBinMVA, xbins); histo_VVV_CMS_MVABTAGLBoundingDown  ->Sumw2();
   TH1D* histo_Higgs_CMS_MVABTAGLBoundingDown= new TH1D( Form("histo_Higgs_%sDown",BTAGLName)  , Form("histo_Higgs_%sDown",BTAGLName)  , nBinMVA, xbins); histo_Higgs_CMS_MVABTAGLBoundingDown  ->Sumw2();
   TH1D* histo_ZH_CMS_MVABTAGLBoundingDown   = new TH1D( Form("histo_ZH_%sDown",BTAGLName)  , Form("histo_ZH_%sDown",BTAGLName)  , nBinMVA, xbins); histo_ZH_CMS_MVABTAGLBoundingDown  ->Sumw2();
+
+  TH1D* histo_EM_CMS_ElToPhRateBoundingUp   = new TH1D( Form("histo_EM_%sUp",ELTOPHRATEName)  , Form("histo_EM_%sUp",ELTOPHRATEName)  , nBinMVA, xbins); histo_EM_CMS_ElToPhRateBoundingUp  ->Sumw2();
+  TH1D* histo_VG_CMS_ElToPhRateBoundingUp   = new TH1D( Form("histo_VG_%sUp",ELTOPHRATEName)  , Form("histo_VG_%sUp",ELTOPHRATEName)  , nBinMVA, xbins); histo_VG_CMS_ElToPhRateBoundingUp  ->Sumw2();
+  TH1D* histo_WZ_CMS_ElToPhRateBoundingUp   = new TH1D( Form("histo_WZ_%sUp",ELTOPHRATEName)  , Form("histo_WZ_%sUp",ELTOPHRATEName)  , nBinMVA, xbins); histo_WZ_CMS_ElToPhRateBoundingUp  ->Sumw2();
+  TH1D* histo_ZZ_CMS_ElToPhRateBoundingUp   = new TH1D( Form("histo_ZZ_%sUp",ELTOPHRATEName)  , Form("histo_ZZ_%sUp",ELTOPHRATEName)  , nBinMVA, xbins); histo_ZZ_CMS_ElToPhRateBoundingUp  ->Sumw2();
+  TH1D* histo_VVV_CMS_ElToPhRateBoundingUp  = new TH1D( Form("histo_VVV_%sUp",ELTOPHRATEName)  , Form("histo_VVV_%sUp",ELTOPHRATEName)  , nBinMVA, xbins); histo_VVV_CMS_ElToPhRateBoundingUp  ->Sumw2();
+  TH1D* histo_Higgs_CMS_ElToPhRateBoundingUp= new TH1D( Form("histo_Higgs_%sUp",ELTOPHRATEName)  , Form("histo_Higgs_%sUp",ELTOPHRATEName)  , nBinMVA, xbins); histo_Higgs_CMS_ElToPhRateBoundingUp  ->Sumw2();
+  TH1D* histo_ZH_CMS_ElToPhRateBoundingUp   = new TH1D( Form("histo_ZH_%sUp",ELTOPHRATEName)  , Form("histo_ZH_%sUp",ELTOPHRATEName)  , nBinMVA, xbins); histo_ZH_CMS_ElToPhRateBoundingUp  ->Sumw2();
+  TH1D* histo_EM_CMS_ElToPhRateBoundingDown   = new TH1D( Form("histo_EM_%sDown",ELTOPHRATEName)  , Form("histo_EM_%sDown",ELTOPHRATEName)  , nBinMVA, xbins); histo_EM_CMS_ElToPhRateBoundingDown  ->Sumw2();
+  TH1D* histo_VG_CMS_ElToPhRateBoundingDown   = new TH1D( Form("histo_VG_%sDown",ELTOPHRATEName)  , Form("histo_VG_%sDown",ELTOPHRATEName)  , nBinMVA, xbins); histo_VG_CMS_ElToPhRateBoundingDown  ->Sumw2();
+  TH1D* histo_WZ_CMS_ElToPhRateBoundingDown   = new TH1D( Form("histo_WZ_%sDown",ELTOPHRATEName)  , Form("histo_WZ_%sDown",ELTOPHRATEName)  , nBinMVA, xbins); histo_WZ_CMS_ElToPhRateBoundingDown  ->Sumw2();
+  TH1D* histo_ZZ_CMS_ElToPhRateBoundingDown   = new TH1D( Form("histo_ZZ_%sDown",ELTOPHRATEName)  , Form("histo_ZZ_%sDown",ELTOPHRATEName)  , nBinMVA, xbins); histo_ZZ_CMS_ElToPhRateBoundingDown  ->Sumw2();
+  TH1D* histo_VVV_CMS_ElToPhRateBoundingDown  = new TH1D( Form("histo_VVV_%sDown",ELTOPHRATEName)  , Form("histo_VVV_%sDown",ELTOPHRATEName)  , nBinMVA, xbins); histo_VVV_CMS_ElToPhRateBoundingDown  ->Sumw2();
+  TH1D* histo_Higgs_CMS_ElToPhRateBoundingDown= new TH1D( Form("histo_Higgs_%sDown",ELTOPHRATEName)  , Form("histo_Higgs_%sDown",ELTOPHRATEName)  , nBinMVA, xbins); histo_Higgs_CMS_ElToPhRateBoundingDown  ->Sumw2();
+  TH1D* histo_ZH_CMS_ElToPhRateBoundingDown   = new TH1D( Form("histo_ZH_%sDown",ELTOPHRATEName)  , Form("histo_ZH_%sDown",ELTOPHRATEName)  , nBinMVA, xbins); histo_ZH_CMS_ElToPhRateBoundingDown  ->Sumw2();
 
   TH1D* histo_WZ_CMS_EWKWZCorrUp    	    = new TH1D( Form("histo_WZ_EWKWZCorrUp")  , Form("histo_WZ_EWKWZCorrUp")  , nBinMVA, xbins); histo_WZ_CMS_EWKWZCorrUp  ->Sumw2();
   TH1D* histo_WZ_CMS_EWKWZCorrDown          = new TH1D( Form("histo_WZ_EWKWZCorrDown"), Form("histo_WZ_EWKWZCorrDown"), nBinMVA, xbins); histo_WZ_CMS_EWKWZCorrDown->Sumw2();
@@ -651,6 +683,7 @@ void zhgAnalysis(
                                     };
      for(int i=0; i<10; i++) passNMinusOne[i] = mllmin > 4.0 && theMinSelType == 0 && lepType != 2 && passNMinusOne[i];
 
+      double photonSFUnc[2] = {1.0, 1.0};
       double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0;
       if(theCategory != 0){
         puWeight     = nPUScaleFactor(fhDPU,    thePandaFlat.pu);
@@ -692,10 +725,10 @@ void zhgAnalysis(
 	if(passPhoSel == true) {
           double photonSF = 1.0;
           if     (thePandaFlat.looseGenPho1PdgId == 1) {
-            photonSF = electronToPhotonSF(vPhoton.Pt());
+            photonSF = electronToPhotonSF(vPhoton.Pt()); photonSFUnc[1] = 1.10;
 	  }
           else if(thePandaFlat.looseGenPho1PdgId == 3) {
-            photonSF = effhDPhotonScaleFactor(vPhoton.Pt(), vPhoton.Eta(), "medium", fhDPhotonSF, fhDElectronVetoSF);
+            photonSF = effhDPhotonScaleFactor(vPhoton.Pt(), vPhoton.Eta(), "medium", fhDPhotonSF, fhDElectronVetoSF); photonSFUnc[0] = 1.02;
 	  }
 	  totalWeight = totalWeight * photonSF;
 	}
@@ -777,6 +810,10 @@ void zhgAnalysis(
             histo_EM_CMS_MVABTAGBBoundingDown->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0BDown/thePandaFlat.sf_btag0);
             histo_EM_CMS_MVABTAGLBoundingUp  ->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MUp  /thePandaFlat.sf_btag0);
             histo_EM_CMS_MVABTAGLBoundingDown->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MDown/thePandaFlat.sf_btag0);
+	    histo_EM_CMS_MVAPhoEffBoundingUp   ->Fill(MVAVar,totalWeight*photonSFUnc[0]);
+	    histo_EM_CMS_MVAPhoEffBoundingDown ->Fill(MVAVar,totalWeight/photonSFUnc[0]);
+	    histo_EM_CMS_ElToPhRateBoundingUp  ->Fill(MVAVar,totalWeight*photonSFUnc[1]);
+	    histo_EM_CMS_ElToPhRateBoundingDown->Fill(MVAVar,totalWeight/photonSFUnc[1]);
 	  }
           if(passSystCuts[JESUP])  histo_EM_CMS_MVAJESBoundingUp  ->Fill(MVAVar,totalWeight);
           if(passSystCuts[JESDOWN])histo_EM_CMS_MVAJESBoundingDown->Fill(MVAVar,totalWeight);
@@ -804,6 +841,10 @@ void zhgAnalysis(
             histo_VG_CMS_MVABTAGBBoundingDown->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0BDown/thePandaFlat.sf_btag0);
             histo_VG_CMS_MVABTAGLBoundingUp  ->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MUp  /thePandaFlat.sf_btag0);
             histo_VG_CMS_MVABTAGLBoundingDown->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MDown/thePandaFlat.sf_btag0);
+	    histo_VG_CMS_MVAPhoEffBoundingUp   ->Fill(MVAVar,totalWeight*photonSFUnc[0]);
+	    histo_VG_CMS_MVAPhoEffBoundingDown ->Fill(MVAVar,totalWeight/photonSFUnc[0]);
+	    histo_VG_CMS_ElToPhRateBoundingUp  ->Fill(MVAVar,totalWeight*photonSFUnc[1]);
+	    histo_VG_CMS_ElToPhRateBoundingDown->Fill(MVAVar,totalWeight/photonSFUnc[1]);
 	  }
           if(passSystCuts[JESUP])  histo_VG_CMS_MVAJESBoundingUp  ->Fill(MVAVar,totalWeight);
           if(passSystCuts[JESDOWN])histo_VG_CMS_MVAJESBoundingDown->Fill(MVAVar,totalWeight);
@@ -833,6 +874,10 @@ void zhgAnalysis(
             histo_WZ_CMS_MVABTAGBBoundingDown->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0BDown/thePandaFlat.sf_btag0);
             histo_WZ_CMS_MVABTAGLBoundingUp  ->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MUp  /thePandaFlat.sf_btag0);
             histo_WZ_CMS_MVABTAGLBoundingDown->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MDown/thePandaFlat.sf_btag0);
+	    histo_WZ_CMS_MVAPhoEffBoundingUp   ->Fill(MVAVar,totalWeight*photonSFUnc[0]);
+	    histo_WZ_CMS_MVAPhoEffBoundingDown ->Fill(MVAVar,totalWeight/photonSFUnc[0]);
+	    histo_WZ_CMS_ElToPhRateBoundingUp  ->Fill(MVAVar,totalWeight*photonSFUnc[1]);
+	    histo_WZ_CMS_ElToPhRateBoundingDown->Fill(MVAVar,totalWeight/photonSFUnc[1]);
 	  }
           if(passSystCuts[JESUP])  histo_WZ_CMS_MVAJESBoundingUp  ->Fill(MVAVar,totalWeight);
           if(passSystCuts[JESDOWN])histo_WZ_CMS_MVAJESBoundingDown->Fill(MVAVar,totalWeight);
@@ -871,6 +916,10 @@ void zhgAnalysis(
             histo_ZZ_CMS_MVABTAGBBoundingDown->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0BDown/thePandaFlat.sf_btag0);
             histo_ZZ_CMS_MVABTAGLBoundingUp  ->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MUp  /thePandaFlat.sf_btag0);
             histo_ZZ_CMS_MVABTAGLBoundingDown->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MDown/thePandaFlat.sf_btag0);
+	    histo_ZZ_CMS_MVAPhoEffBoundingUp   ->Fill(MVAVar,totalWeight*photonSFUnc[0]);
+	    histo_ZZ_CMS_MVAPhoEffBoundingDown ->Fill(MVAVar,totalWeight/photonSFUnc[0]);
+	    histo_ZZ_CMS_ElToPhRateBoundingUp  ->Fill(MVAVar,totalWeight*photonSFUnc[1]);
+	    histo_ZZ_CMS_ElToPhRateBoundingDown->Fill(MVAVar,totalWeight/photonSFUnc[1]);
 	  }
           if(passSystCuts[JESUP])  histo_ZZ_CMS_MVAJESBoundingUp  ->Fill(MVAVar,totalWeight);
           if(passSystCuts[JESDOWN])histo_ZZ_CMS_MVAJESBoundingDown->Fill(MVAVar,totalWeight);
@@ -898,6 +947,10 @@ void zhgAnalysis(
             histo_VVV_CMS_MVABTAGBBoundingDown->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0BDown/thePandaFlat.sf_btag0);
             histo_VVV_CMS_MVABTAGLBoundingUp  ->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MUp  /thePandaFlat.sf_btag0);
             histo_VVV_CMS_MVABTAGLBoundingDown->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MDown/thePandaFlat.sf_btag0);
+	    histo_VVV_CMS_MVAPhoEffBoundingUp   ->Fill(MVAVar,totalWeight*photonSFUnc[0]);
+	    histo_VVV_CMS_MVAPhoEffBoundingDown ->Fill(MVAVar,totalWeight/photonSFUnc[0]);
+	    histo_VVV_CMS_ElToPhRateBoundingUp  ->Fill(MVAVar,totalWeight*photonSFUnc[1]);
+	    histo_VVV_CMS_ElToPhRateBoundingDown->Fill(MVAVar,totalWeight/photonSFUnc[1]);
 	  }
           if(passSystCuts[JESUP])  histo_VVV_CMS_MVAJESBoundingUp  ->Fill(MVAVar,totalWeight);
           if(passSystCuts[JESDOWN])histo_VVV_CMS_MVAJESBoundingDown->Fill(MVAVar,totalWeight);
@@ -925,6 +978,10 @@ void zhgAnalysis(
             histo_Higgs_CMS_MVABTAGBBoundingDown->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0BDown/thePandaFlat.sf_btag0);
             histo_Higgs_CMS_MVABTAGLBoundingUp  ->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MUp  /thePandaFlat.sf_btag0);
             histo_Higgs_CMS_MVABTAGLBoundingDown->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MDown/thePandaFlat.sf_btag0);
+	    histo_Higgs_CMS_MVAPhoEffBoundingUp   ->Fill(MVAVar,totalWeight*photonSFUnc[0]);
+	    histo_Higgs_CMS_MVAPhoEffBoundingDown ->Fill(MVAVar,totalWeight/photonSFUnc[0]);
+	    histo_Higgs_CMS_ElToPhRateBoundingUp  ->Fill(MVAVar,totalWeight*photonSFUnc[1]);
+	    histo_Higgs_CMS_ElToPhRateBoundingDown->Fill(MVAVar,totalWeight/photonSFUnc[1]);
 	  }
           if(passSystCuts[JESUP])  histo_Higgs_CMS_MVAJESBoundingUp  ->Fill(MVAVar,totalWeight);
           if(passSystCuts[JESDOWN])histo_Higgs_CMS_MVAJESBoundingDown->Fill(MVAVar,totalWeight);
@@ -952,6 +1009,10 @@ void zhgAnalysis(
             histo_ZH_CMS_MVABTAGBBoundingDown->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0BDown/thePandaFlat.sf_btag0);
             histo_ZH_CMS_MVABTAGLBoundingUp  ->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MUp  /thePandaFlat.sf_btag0);
             histo_ZH_CMS_MVABTAGLBoundingDown->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MDown/thePandaFlat.sf_btag0);
+	    histo_ZH_CMS_MVAPhoEffBoundingUp   ->Fill(MVAVar,totalWeight*photonSFUnc[0]);
+	    histo_ZH_CMS_MVAPhoEffBoundingDown ->Fill(MVAVar,totalWeight/photonSFUnc[0]);
+	    histo_ZH_CMS_ElToPhRateBoundingUp  ->Fill(MVAVar,totalWeight*photonSFUnc[1]);
+	    histo_ZH_CMS_ElToPhRateBoundingDown->Fill(MVAVar,totalWeight/photonSFUnc[1]);
 	  }
           if(passSystCuts[JESUP])  histo_ZH_CMS_MVAJESBoundingUp  ->Fill(MVAVar,totalWeight);
           if(passSystCuts[JESDOWN])histo_ZH_CMS_MVAJESBoundingDown->Fill(MVAVar,totalWeight);
@@ -1105,6 +1166,23 @@ void zhgAnalysis(
     for(int i=1; i<=histo_Higgs->GetNbinsX(); i++) {if(histo_Higgs->GetBinContent(i)>0)printf("%5.1f ",histo_Higgs_CMS_MVALepEffMBoundingDown->GetBinContent(i)/histo_Higgs->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     for(int i=1; i<=histo_ZH   ->GetNbinsX(); i++) {if(histo_ZH   ->GetBinContent(i)>0)printf("%5.1f ",histo_ZH_CMS_MVALepEffMBoundingDown   ->GetBinContent(i)/histo_ZH   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
 
+    printf("uncertainties PHOEFFUp\n");
+    for(int i=1; i<=histo_EM   ->GetNbinsX(); i++) {if(histo_EM   ->GetBinContent(i)>0)printf("%5.1f ",histo_EM_CMS_MVAPhoEffBoundingUp   ->GetBinContent(i)/histo_EM   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_VG   ->GetNbinsX(); i++) {if(histo_VG   ->GetBinContent(i)>0)printf("%5.1f ",histo_VG_CMS_MVAPhoEffBoundingUp   ->GetBinContent(i)/histo_VG   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_WZ   ->GetNbinsX(); i++) {if(histo_WZ   ->GetBinContent(i)>0)printf("%5.1f ",histo_WZ_CMS_MVAPhoEffBoundingUp   ->GetBinContent(i)/histo_WZ   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_ZZ   ->GetNbinsX(); i++) {if(histo_ZZ   ->GetBinContent(i)>0)printf("%5.1f ",histo_ZZ_CMS_MVAPhoEffBoundingUp   ->GetBinContent(i)/histo_ZZ   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_VVV  ->GetNbinsX(); i++) {if(histo_VVV  ->GetBinContent(i)>0)printf("%5.1f ",histo_VVV_CMS_MVAPhoEffBoundingUp  ->GetBinContent(i)/histo_VVV  ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_Higgs->GetNbinsX(); i++) {if(histo_Higgs->GetBinContent(i)>0)printf("%5.1f ",histo_Higgs_CMS_MVAPhoEffBoundingUp->GetBinContent(i)/histo_Higgs->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_ZH   ->GetNbinsX(); i++) {if(histo_ZH   ->GetBinContent(i)>0)printf("%5.1f ",histo_ZH_CMS_MVAPhoEffBoundingUp   ->GetBinContent(i)/histo_ZH   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    printf("uncertainties PHOEFFDown\n");
+    for(int i=1; i<=histo_EM   ->GetNbinsX(); i++) {if(histo_EM   ->GetBinContent(i)>0)printf("%5.1f ",histo_EM_CMS_MVAPhoEffBoundingDown   ->GetBinContent(i)/histo_EM   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_VG   ->GetNbinsX(); i++) {if(histo_VG   ->GetBinContent(i)>0)printf("%5.1f ",histo_VG_CMS_MVAPhoEffBoundingDown   ->GetBinContent(i)/histo_VG   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_WZ   ->GetNbinsX(); i++) {if(histo_WZ   ->GetBinContent(i)>0)printf("%5.1f ",histo_WZ_CMS_MVAPhoEffBoundingDown   ->GetBinContent(i)/histo_WZ   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_ZZ   ->GetNbinsX(); i++) {if(histo_ZZ   ->GetBinContent(i)>0)printf("%5.1f ",histo_ZZ_CMS_MVAPhoEffBoundingDown   ->GetBinContent(i)/histo_ZZ   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_VVV  ->GetNbinsX(); i++) {if(histo_VVV  ->GetBinContent(i)>0)printf("%5.1f ",histo_VVV_CMS_MVAPhoEffBoundingDown  ->GetBinContent(i)/histo_VVV  ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_Higgs->GetNbinsX(); i++) {if(histo_Higgs->GetBinContent(i)>0)printf("%5.1f ",histo_Higgs_CMS_MVAPhoEffBoundingDown->GetBinContent(i)/histo_Higgs->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_ZH   ->GetNbinsX(); i++) {if(histo_ZH   ->GetBinContent(i)>0)printf("%5.1f ",histo_ZH_CMS_MVAPhoEffBoundingDown   ->GetBinContent(i)/histo_ZH   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+
     printf("uncertainties METUp\n");
     for(int i=1; i<=histo_EM   ->GetNbinsX(); i++) {if(histo_EM   ->GetBinContent(i)>0)printf("%5.1f ",histo_EM_CMS_MVAMETBoundingUp   ->GetBinContent(i)/histo_EM   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     for(int i=1; i<=histo_VG   ->GetNbinsX(); i++) {if(histo_VG   ->GetBinContent(i)>0)printf("%5.1f ",histo_VG_CMS_MVAMETBoundingUp   ->GetBinContent(i)/histo_VG   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
@@ -1189,6 +1267,23 @@ void zhgAnalysis(
     for(int i=1; i<=histo_VVV  ->GetNbinsX(); i++) {if(histo_VVV  ->GetBinContent(i)>0)printf("%5.1f ",histo_VVV_CMS_MVABTAGLBoundingDown  ->GetBinContent(i)/histo_VVV  ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     for(int i=1; i<=histo_Higgs->GetNbinsX(); i++) {if(histo_Higgs->GetBinContent(i)>0)printf("%5.1f ",histo_Higgs_CMS_MVABTAGLBoundingDown->GetBinContent(i)/histo_Higgs->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     for(int i=1; i<=histo_ZH   ->GetNbinsX(); i++) {if(histo_ZH   ->GetBinContent(i)>0)printf("%5.1f ",histo_ZH_CMS_MVABTAGLBoundingDown   ->GetBinContent(i)/histo_ZH   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+
+    printf("uncertainties ElToPhRateUp\n");
+    for(int i=1; i<=histo_EM   ->GetNbinsX(); i++) {if(histo_EM   ->GetBinContent(i)>0)printf("%5.1f ",histo_EM_CMS_ElToPhRateBoundingUp   ->GetBinContent(i)/histo_EM   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_VG   ->GetNbinsX(); i++) {if(histo_VG   ->GetBinContent(i)>0)printf("%5.1f ",histo_VG_CMS_ElToPhRateBoundingUp   ->GetBinContent(i)/histo_VG   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_WZ   ->GetNbinsX(); i++) {if(histo_WZ   ->GetBinContent(i)>0)printf("%5.1f ",histo_WZ_CMS_ElToPhRateBoundingUp   ->GetBinContent(i)/histo_WZ   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_ZZ   ->GetNbinsX(); i++) {if(histo_ZZ   ->GetBinContent(i)>0)printf("%5.1f ",histo_ZZ_CMS_ElToPhRateBoundingUp   ->GetBinContent(i)/histo_ZZ   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_VVV  ->GetNbinsX(); i++) {if(histo_VVV  ->GetBinContent(i)>0)printf("%5.1f ",histo_VVV_CMS_ElToPhRateBoundingUp  ->GetBinContent(i)/histo_VVV  ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_Higgs->GetNbinsX(); i++) {if(histo_Higgs->GetBinContent(i)>0)printf("%5.1f ",histo_Higgs_CMS_ElToPhRateBoundingUp->GetBinContent(i)/histo_Higgs->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_ZH   ->GetNbinsX(); i++) {if(histo_ZH   ->GetBinContent(i)>0)printf("%5.1f ",histo_ZH_CMS_ElToPhRateBoundingUp   ->GetBinContent(i)/histo_ZH   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    printf("uncertainties ElToPhRateDown\n");
+    for(int i=1; i<=histo_EM   ->GetNbinsX(); i++) {if(histo_EM   ->GetBinContent(i)>0)printf("%5.1f ",histo_EM_CMS_ElToPhRateBoundingDown   ->GetBinContent(i)/histo_EM   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_VG   ->GetNbinsX(); i++) {if(histo_VG   ->GetBinContent(i)>0)printf("%5.1f ",histo_VG_CMS_ElToPhRateBoundingDown   ->GetBinContent(i)/histo_VG   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_WZ   ->GetNbinsX(); i++) {if(histo_WZ   ->GetBinContent(i)>0)printf("%5.1f ",histo_WZ_CMS_ElToPhRateBoundingDown   ->GetBinContent(i)/histo_WZ   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_ZZ   ->GetNbinsX(); i++) {if(histo_ZZ   ->GetBinContent(i)>0)printf("%5.1f ",histo_ZZ_CMS_ElToPhRateBoundingDown   ->GetBinContent(i)/histo_ZZ   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_VVV  ->GetNbinsX(); i++) {if(histo_VVV  ->GetBinContent(i)>0)printf("%5.1f ",histo_VVV_CMS_ElToPhRateBoundingDown  ->GetBinContent(i)/histo_VVV  ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_Higgs->GetNbinsX(); i++) {if(histo_Higgs->GetBinContent(i)>0)printf("%5.1f ",histo_Higgs_CMS_ElToPhRateBoundingDown->GetBinContent(i)/histo_Higgs->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    for(int i=1; i<=histo_ZH   ->GetNbinsX(); i++) {if(histo_ZH   ->GetBinContent(i)>0)printf("%5.1f ",histo_ZH_CMS_ElToPhRateBoundingDown   ->GetBinContent(i)/histo_ZH   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
 
     printf("uncertainties THEORYUp\n");
     for(int i=1; i<=histo_WZ   ->GetNbinsX(); i++) {if(histo_WZ   ->GetBinContent(i)>0)printf("%5.1f ",histo_WZ_CMS_EWKWZCorrUp     ->GetBinContent(i)/histo_WZ   ->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
@@ -1279,6 +1374,22 @@ void zhgAnalysis(
   histo_Higgs_CMS_MVALepEffMBoundingDown->Write();
   histo_ZH_CMS_MVALepEffMBoundingDown   ->Write();
 
+  histo_EM_CMS_MVAPhoEffBoundingUp   ->Write();
+  histo_VG_CMS_MVAPhoEffBoundingUp   ->Write();
+  histo_WZ_CMS_MVAPhoEffBoundingUp   ->Write();
+  histo_ZZ_CMS_MVAPhoEffBoundingUp   ->Write();
+  histo_VVV_CMS_MVAPhoEffBoundingUp  ->Write();
+  histo_Higgs_CMS_MVAPhoEffBoundingUp->Write();
+  histo_ZH_CMS_MVAPhoEffBoundingUp   ->Write();
+
+  histo_EM_CMS_MVAPhoEffBoundingDown   ->Write();
+  histo_VG_CMS_MVAPhoEffBoundingDown   ->Write();
+  histo_WZ_CMS_MVAPhoEffBoundingDown   ->Write();
+  histo_ZZ_CMS_MVAPhoEffBoundingDown   ->Write();
+  histo_VVV_CMS_MVAPhoEffBoundingDown  ->Write();
+  histo_Higgs_CMS_MVAPhoEffBoundingDown->Write();
+  histo_ZH_CMS_MVAPhoEffBoundingDown   ->Write();
+
   histo_EM_CMS_MVAMETBoundingDown   ->Write();
   histo_VG_CMS_MVAMETBoundingDown   ->Write();
   histo_WZ_CMS_MVAMETBoundingDown   ->Write();
@@ -1351,6 +1462,22 @@ void zhgAnalysis(
   histo_Higgs_CMS_MVABTAGLBoundingDown->Write();
   histo_ZH_CMS_MVABTAGLBoundingDown   ->Write();
 
+  histo_EM_CMS_ElToPhRateBoundingUp   ->Write();
+  histo_VG_CMS_ElToPhRateBoundingUp   ->Write();
+  histo_WZ_CMS_ElToPhRateBoundingUp   ->Write();
+  histo_ZZ_CMS_ElToPhRateBoundingUp   ->Write();
+  histo_VVV_CMS_ElToPhRateBoundingUp  ->Write();
+  histo_Higgs_CMS_ElToPhRateBoundingUp->Write();
+  histo_ZH_CMS_ElToPhRateBoundingUp   ->Write();
+
+  histo_EM_CMS_ElToPhRateBoundingDown   ->Write();
+  histo_VG_CMS_ElToPhRateBoundingDown   ->Write();
+  histo_WZ_CMS_ElToPhRateBoundingDown   ->Write();
+  histo_ZZ_CMS_ElToPhRateBoundingDown   ->Write();
+  histo_VVV_CMS_ElToPhRateBoundingDown  ->Write();
+  histo_Higgs_CMS_ElToPhRateBoundingDown->Write();
+  histo_ZH_CMS_ElToPhRateBoundingDown   ->Write();
+
   histo_WZ_CMS_EWKWZCorrUp    ->Write();
   histo_WZ_CMS_EWKWZCorrDown  ->Write();
   histo_ZZ_CMS_EWKqqZZCorrUp  ->Write();
@@ -1416,8 +1543,6 @@ void zhgAnalysis(
   }
   newcardShape << Form("\n");
 
-  newcardShape << Form("CMS_eff_photon   lnN   -  1.02 -    -     -   -   1.02\n");
-  newcardShape << Form("CMS_fake_el      lnN   -   -  1.10 1.10 1.10 1.10  -  \n");
   newcardShape << Form("UEPS             lnN   -   -   -    -     -   -   1.02\n");
   newcardShape << Form("QCDscaleTotal_ZH lnN   -   -   -    -     -   -   %7.5f\n",1.0+qcdScaleTotal[0]);  
   newcardShape << Form("EWKWZCorr    shape     -   -  1.0   -     -   -    -  \n");
@@ -1447,6 +1572,18 @@ void zhgAnalysis(
   newcardShape << Form("\n");
 
   newcardShape << Form("%s    shape     ",effEName);
+  for (int i=0; i<histBins-1; i++){
+    newcardShape << Form("1.0 ");
+  }
+  newcardShape << Form("\n");
+
+  newcardShape << Form("%s    shape     ",effPName);
+  for (int i=0; i<histBins-1; i++){
+    newcardShape << Form("1.0 ");
+  }
+  newcardShape << Form("\n");
+
+  newcardShape << Form("%s    shape     ",ELTOPHRATEName);
   for (int i=0; i<histBins-1; i++){
     newcardShape << Form("1.0 ");
   }

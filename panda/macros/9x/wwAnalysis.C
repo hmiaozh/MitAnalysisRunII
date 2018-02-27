@@ -59,8 +59,8 @@ unsigned int period = 0
   TFile *fLepton_Fakes = TFile::Open(Form("MitAnalysisRunII/data/80x/histoFakeEtaPt_80x_37ifb.root"));
   TH2D* histoFakeEffSelMediumEtaPt_m = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel0EtaPt_0"); histoFakeEffSelMediumEtaPt_m->SetDirectory(0);
   TH2D* histoFakeEffSelMediumEtaPt_e = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel0EtaPt_1"); histoFakeEffSelMediumEtaPt_e->SetDirectory(0);
-  TH2D* histoFakeEffSelTightEtaPt_m  = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel2EtaPt_0"); histoFakeEffSelTightEtaPt_m ->SetDirectory(0);
-  TH2D* histoFakeEffSelTightEtaPt_e  = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel2EtaPt_1"); histoFakeEffSelTightEtaPt_e ->SetDirectory(0);
+  TH2D* histoFakeEffSelTightEtaPt_m  = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel3EtaPt_0"); histoFakeEffSelTightEtaPt_m ->SetDirectory(0);
+  TH2D* histoFakeEffSelTightEtaPt_e  = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel3EtaPt_1"); histoFakeEffSelTightEtaPt_e ->SetDirectory(0);
   fLepton_Fakes->Close();
 
   TFile *fLepton_Eta_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_eta_sf_37ifb_period%d.root",period));
@@ -130,7 +130,7 @@ unsigned int period = 0
       if(thePandaFlat.nLooseLep != 2) continue;
 
       vector<float>  looseLepPt,looseLepEta,looseLepPhi;
-      vector<int> looseLepSelBit,looseLepPdgId;
+      vector<int> looseLepSelBit,looseLepPdgId,looseLepTripleCharge,looseLepMissingHits;
       int ptSelCuts[3] = {0,0,0};
       for(int i=0; i<thePandaFlat.nLooseMuon; i++){
         looseLepPt.push_back(thePandaFlat.muonPt[i]);
@@ -138,6 +138,8 @@ unsigned int period = 0
         looseLepPhi.push_back(thePandaFlat.muonPhi[i]);
         looseLepSelBit.push_back(thePandaFlat.muonSelBit[i]);
         looseLepPdgId.push_back(thePandaFlat.muonPdgId[i]);
+        looseLepTripleCharge.push_back(1);
+        looseLepMissingHits.push_back(0);
 	if(thePandaFlat.muonPt[i] > 25) ptSelCuts[0]++;
 	if(thePandaFlat.muonPt[i] > 20) ptSelCuts[1]++;
 	if(thePandaFlat.muonPt[i] > 10) ptSelCuts[2]++;
@@ -148,6 +150,8 @@ unsigned int period = 0
         looseLepPhi.push_back(thePandaFlat.electronPhi[i]);
         looseLepSelBit.push_back(thePandaFlat.electronSelBit[i]);
         looseLepPdgId.push_back(thePandaFlat.electronPdgId[i]);
+        looseLepTripleCharge.push_back(thePandaFlat.electronTripleCharge[i]);
+        looseLepMissingHits.push_back(thePandaFlat.electronNMissingHits[i]);
 	if(thePandaFlat.electronPt[i] > 25) ptSelCuts[0]++;
 	if(thePandaFlat.electronPt[i] > 20) ptSelCuts[1]++;
 	if(thePandaFlat.electronPt[i] > 10) ptSelCuts[2]++;
@@ -155,20 +159,18 @@ unsigned int period = 0
 
       if((int)looseLepPt.size() != thePandaFlat.nLooseLep) printf("IMPOSSIBLE\n");
 
-      if(TMath::Abs(looseLepEta[0]) >= 2.4 || TMath::Abs(looseLepEta[1]) >= 2.4) continue;
-
-      if(!(ptSelCuts[0] >= 1 && ptSelCuts[1] >= 2)) continue;
+      if(!(ptSelCuts[0] >= 1 && ptSelCuts[1] >= 2 && ptSelCuts[2] >= thePandaFlat.nLooseLep)) continue;
 
       int theCategory = infileCat_[ifile];
       bool isNotMCFake = thePandaFlat.looseGenLep1PdgId != 0 && thePandaFlat.looseGenLep2PdgId != 0;
-      if(theCategory != 0 && theCategory != 2 && isNotMCFake == false && usePureMC == false) continue;
+      if(theCategory != 0 && theCategory != 7 && isNotMCFake == false && usePureMC == false) continue;
 
       vector<int> idLep; idLep.push_back(0); idLep.push_back(0);
       bool passLooseLepId = ((looseLepSelBit[0] & kFake) == kFake) && ((looseLepSelBit[1] & kFake) == kFake);
       if(passLooseLepId == false) continue;
 
-      if((looseLepSelBit[0] & kTight) == kTight && (looseLepSelBit[0] & kDxyz) == kDxyz) idLep[0] = 1;
-      if((looseLepSelBit[1] & kTight) == kTight && (looseLepSelBit[1] & kDxyz) == kDxyz) idLep[1] = 1;
+      if((looseLepSelBit[0] & kTight) == kTight && (looseLepSelBit[0] & kDxyz) == kDxyz && looseLepMissingHits[0] == 0) idLep[0] = 1;
+      if((looseLepSelBit[1] & kTight) == kTight && (looseLepSelBit[1] & kDxyz) == kDxyz && looseLepMissingHits[1] == 0) idLep[1] = 1;
 
       int qTot = abs(looseLepPdgId[0])/looseLepPdgId[0] + abs(looseLepPdgId[1])/looseLepPdgId[1];
 
@@ -261,7 +263,7 @@ unsigned int period = 0
 	  sfWeightLepEff[1] = scalefactors_Medium_Electron->GetBinContent(binXT,binYT_c);
         }
 
-        totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu * the_eta_sf[0] * the_eta_sf[1] * sfWeightLepEff[0] * sfWeightLepEff[1] * theMCPrescale;
+        totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu * the_eta_sf[0] * the_eta_sf[1] * sfWeightLepEff[0] * sfWeightLepEff[1] * thePandaFlat.sf_btag0 * theMCPrescale;
 
       }
 
@@ -291,11 +293,11 @@ unsigned int period = 0
       if(passWWSel)          histo[lepType+ 54][theCategory]->Fill(TMath::Min(vLoose1.Pt(),199.999),totalWeight);
       if(passWWSel)          histo[lepType+ 63][theCategory]->Fill(TMath::Min(vLoose2.Pt(),199.999),totalWeight);
       if(passWWSel)          histo[lepType+ 72][theCategory]->Fill(TMath::Min((vLoose1+vLoose2).M(),199.999),totalWeight);
-      if(passWWSel)          histo[lepType+ 81][theCategory]->Fill(TMath::Abs(vLoose1.DeltaPhi(vMet))*180/TMath::Pi(),totalWeight);
+      if(passWWSel)          histo[lepType+ 81][theCategory]->Fill(TMath::Abs(vLoose1.DeltaPhi(vLoose2))*180/TMath::Pi(),totalWeight);
       if(passSSSel)          histo[lepType+ 90][theCategory]->Fill(TMath::Min(vLoose1.Pt(),199.999),totalWeight);
       if(passSSSel)          histo[lepType+ 99][theCategory]->Fill(TMath::Min(vLoose2.Pt(),199.999),totalWeight);
       if(passSSSel)          histo[lepType+108][theCategory]->Fill(TMath::Min((vLoose1+vLoose2).M(),199.999),totalWeight);
-      if(passSSSel)          histo[lepType+117][theCategory]->Fill(TMath::Abs(vLoose1.DeltaPhi(vMet))*180/TMath::Pi(),totalWeight);
+      if(passSSSel)          histo[lepType+117][theCategory]->Fill(TMath::Abs(vLoose1.DeltaPhi(vLoose2))*180/TMath::Pi(),totalWeight);
       if(passTopSel)         histo[lepType+126][theCategory]->Fill(TMath::Min(vLoose1.Pt(),199.999),totalWeight);
       if(passTopSel)         histo[lepType+135][theCategory]->Fill(TMath::Min(vLoose2.Pt(),199.999),totalWeight);
       if(passTopSel)         histo[lepType+144][theCategory]->Fill(TMath::Min((vLoose1+vLoose2).M(),199.999),totalWeight);
