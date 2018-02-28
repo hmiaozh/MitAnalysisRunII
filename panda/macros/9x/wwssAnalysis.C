@@ -16,6 +16,7 @@
 
 const double mcPrescale = 1;
 const bool usePureMC = false;
+const int debug = 0;
 
 void wwssAnalysis(
 unsigned int period = 0
@@ -118,6 +119,8 @@ unsigned int period = 0
     printf("sampleNames(%d): %s\n",ifile,infileName_[ifile].Data());
     TFile *the_input_file = TFile::Open(infileName_[ifile].Data());
     TTree *the_input_tree = (TTree*)the_input_file->FindObjectAny("events");
+
+    if(debug != 0 && infileCat_[ifile] != 0) return;
     
     pandaFlat thePandaFlat(the_input_tree);
     double theMCPrescale = 1.0; if(infileCat_[ifile] != 0) theMCPrescale = mcPrescale;
@@ -130,14 +133,66 @@ unsigned int period = 0
       if (jentry%1000000 == 0) printf("--- reading event %8lld (%8lld) of %8lld\n",jentry,ientry,nentries);
       if (infileCat_[ifile] != 0 && jentry%(int)theMCPrescale != 0) continue;
 
+/*
+      bool thePass = 
+thePandaFlat.eventNumber==1025531578||
+thePandaFlat.eventNumber==1106346517||
+thePandaFlat.eventNumber==1107000932||
+thePandaFlat.eventNumber==1120935894||
+thePandaFlat.eventNumber==1362462045||
+thePandaFlat.eventNumber==1477447549||
+thePandaFlat.eventNumber==14922993||
+thePandaFlat.eventNumber==156554433||
+thePandaFlat.eventNumber==168600482||
+thePandaFlat.eventNumber==171252139||
+thePandaFlat.eventNumber==194278287||
+thePandaFlat.eventNumber==201072338||
+thePandaFlat.eventNumber==220352201||
+thePandaFlat.eventNumber==2378805578||
+thePandaFlat.eventNumber==2430712569||
+thePandaFlat.eventNumber==2483823317||
+thePandaFlat.eventNumber==2525037200||
+thePandaFlat.eventNumber==255112868||
+thePandaFlat.eventNumber==256349102||
+thePandaFlat.eventNumber==257610842||
+thePandaFlat.eventNumber==270384226||
+thePandaFlat.eventNumber==275980633||
+thePandaFlat.eventNumber==3181264902||
+thePandaFlat.eventNumber==330584857||
+thePandaFlat.eventNumber==331539711||
+thePandaFlat.eventNumber==341944318||
+thePandaFlat.eventNumber==3426009362||
+thePandaFlat.eventNumber==37040930||
+thePandaFlat.eventNumber==387590979||
+thePandaFlat.eventNumber==391681141||
+thePandaFlat.eventNumber==395496974||
+thePandaFlat.eventNumber==409879368||
+thePandaFlat.eventNumber==412643666||
+thePandaFlat.eventNumber==4762850171||
+thePandaFlat.eventNumber==484129863||
+thePandaFlat.eventNumber==522190092||
+thePandaFlat.eventNumber==564507384||
+thePandaFlat.eventNumber==691413995||
+thePandaFlat.eventNumber==750424129||
+thePandaFlat.eventNumber==766727802||
+thePandaFlat.eventNumber==802191129||
+thePandaFlat.eventNumber==838885397||
+thePandaFlat.eventNumber==899428150||
+thePandaFlat.eventNumber==913523305;
+      if(debug == 2 && thePass == false) continue;
+*/
+      if(debug == 2) printf("STEP1 %llu\n",thePandaFlat.eventNumber);
+
       if(infileCat_[ifile] == 0 && ((period == 1 && thePandaFlat.runNumber > 278802) || (period == 2 && thePandaFlat.runNumber <= 278802))) continue;
 
       bool passTrigger = (thePandaFlat.trigger & (1<<kEMuTrig)) != 0       || (thePandaFlat.trigger & (1<<kDoubleMuTrig)) != 0  ||
                          (thePandaFlat.trigger & (1<<kSingleMuTrig)) != 0  || (thePandaFlat.trigger & (1<<kDoubleEleTrig)) != 0 ||
                          (thePandaFlat.trigger & (1<<kSingleEleTrig)) != 0;
       if(passTrigger == false) continue;
+      if(debug == 2) printf("STEP2 %llu\n",thePandaFlat.eventNumber);
 
       if(thePandaFlat.nLooseLep < 2 || thePandaFlat.nLooseLep > 3) continue;
+      if(debug == 2) printf("STEP3 %llu\n",thePandaFlat.eventNumber);
 
       vector<float>  looseLepPt,looseLepEta,looseLepPhi;
       vector<int> looseLepSelBit,looseLepPdgId,looseLepTripleCharge,looseLepMissingHits;
@@ -196,8 +251,10 @@ unsigned int period = 0
 
         passLooseLepId = passLooseLepId && ((looseLepSelBit[i] & kFake) == kFake);
       }
+      if(debug == 2) printf("STEP4 %llu %d %d %d %zu\n",thePandaFlat.eventNumber,passLooseLepId,qTot,countLeptonTight,idLep.size());
       if(passLooseLepId == false) continue;
       if(usePureMC == true && countLeptonTight != idLep.size()) continue;
+      if(debug == 2) printf("STEP5 %llu\n",thePandaFlat.eventNumber);
 
       int lepType = -1;
       if     (thePandaFlat.nLooseLep == 2){
@@ -281,15 +338,15 @@ unsigned int period = 0
       TLorentzVector vJot2; vJot2.SetPtEtaPhiM(thePandaFlat.jot2Pt,thePandaFlat.jot2Eta,thePandaFlat.jot2Phi,0.0);
 
       double deltaEtaJJ = TMath::Abs(vJot1.Eta()-vJot2.Eta());
-      bool passDEtaJJ = deltaEtaJJ > 2.5;
-      bool passMJJ = (vJot1+vJot2).M() > 500;
+      bool passDEtaJJ = thePandaFlat.nJot >= 2 && deltaEtaJJ > 2.5;
+      bool passMJJ = thePandaFlat.nJot >= 2 && (vJot1+vJot2).M() > 500;
 
       double theLeptonZ[2];
       theLeptonZ[0] = TMath::Min(TMath::Abs(vZ1l1.Eta()-(vJot1.Eta()+vJot2.Eta())/2.)/deltaEtaJJ,0.999);
       theLeptonZ[1] = TMath::Min(TMath::Abs(vZ1l2.Eta()-(vJot1.Eta()+vJot2.Eta())/2.)/deltaEtaJJ,0.999);
-      bool passZMax = TMath::Max(theLeptonZ[0],theLeptonZ[1]) < 0.75;
+      bool passZMax = thePandaFlat.nJot >= 2 && TMath::Max(theLeptonZ[0],theLeptonZ[1]) < 0.75;
 
-      bool passMLL   = mllZ > 20 && (fabs(mllZ-91.1876) > 15 || lepType == 2);
+      bool passMLL   = mllZ > 20 && (fabs(mllZ-91.1876) > 15 || lepType != 1);
       bool passMET   = vMET.Pt() > 40;
       bool passNjets = thePandaFlat.nJot >= 2;
       bool passBtagVeto = thePandaFlat.jetNMBtags == 0;
@@ -392,6 +449,13 @@ unsigned int period = 0
       if(passWWSel)          histo[lepType+ 27][theCategory]->Fill(TMath::Min(vZ1l2.Pt(),199.999),totalWeight);
       if(passWWSel)          histo[lepType+ 30][theCategory]->Fill(TMath::Min((vJot1+vJot2).M(),1999.999),totalWeight);
       if(passWZSel)          histo[lepType+ 33][theCategory]->Fill(TMath::Min((vJot1+vJot2).M(),1999.999),totalWeight);
+
+      if((theCategory == 0 && passWWSel && debug == 1) || debug == 2){
+        printf("DATA %d %d %llu | %d %d | %d -> %d %d %d %d %d %d %d %d %d | %f %f %f %f %f %f %f\n",
+	thePandaFlat.runNumber,thePandaFlat.lumiNumber,thePandaFlat.eventNumber,theCategory,lepType,
+	passWWSel,passSel[0],passSel[1],passSel[2],passSel[3],passSel[4],passSel[5],passSel[6],passSel[7],passSel[8],
+	mllZ,vMET.Pt(),vJot1.Pt(),vJot2.Pt(),TMath::Abs(vJot1.Eta()-vJot2.Eta()),(vJot1+vJot2).M(),TMath::Max(theLeptonZ[0],theLeptonZ[1]));
+      }
 
     } // end events loop
     the_input_file->Close();
