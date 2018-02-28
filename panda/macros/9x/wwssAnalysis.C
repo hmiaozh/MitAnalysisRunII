@@ -72,6 +72,7 @@ unsigned int period = 0
   TH2D* histoFakeEffSelTightEtaPt_e  = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel4EtaPt_1"); histoFakeEffSelTightEtaPt_e ->SetDirectory(0);
   fLepton_Fakes->Close();
 
+/*
   TFile *fLepton_Eta_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_eta_sf_37ifb_period%d.root",period));
   TH1D* scalefactors_Muon_Eta = (TH1D*)fLepton_Eta_SF->Get("scalefactors_Muon_Eta"); scalefactors_Muon_Eta->SetDirectory(0);
   TH1D* scalefactors_Electron_Eta = (TH1D*)fLepton_Eta_SF->Get("scalefactors_Electron_Eta"); scalefactors_Electron_Eta->SetDirectory(0);
@@ -84,10 +85,44 @@ unsigned int period = 0
   TFile *fLepton_SF_el_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period%d.root",period));
   TH2D* scalefactors_Medium_Electron = (TH2D*)fLepton_SF_el_central->Get("scalefactors_Medium_Electron"); scalefactors_Medium_Electron->SetDirectory(0);
   fLepton_SF_el_central->Close();
+*/
 
+  TFile *fTrackElectronReco_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_egpog_37ifb.root"));
+  TH2D *fhDeltrksf= (TH2D*)(fTrackElectronReco_SF->Get("scalefactors_Reco_Electron")); assert(fhDeltrksf); fhDeltrksf->SetDirectory(0);
+  delete fTrackElectronReco_SF;
+
+  TFile *fElSF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_egpog_37ifb.root"));
+  TH2D *fhDElMediumSF = (TH2D*)(fElSF->Get("scalefactors_Medium_Electron"));
+  TH2D *fhDElTightSF = (TH2D*)(fElSF->Get("scalefactors_Tight_Electron"));
+  assert(fhDElMediumSF);
+  assert(fhDElTightSF);
+  fhDElMediumSF->SetDirectory(0);
+  fhDElTightSF->SetDirectory(0);
+  delete fElSF;
+
+  TFile *fElVeryTightSF = TFile::Open(Form("MitAnalysisRunII/data/80x/veryTightSF_37ifb.root"));
+  TH1D *fhDVeryTightSF = (TH1D*)(fElVeryTightSF->Get("veryTightSF"));
+  assert(fhDVeryTightSF);
+  fhDVeryTightSF->SetDirectory(0);
+  delete fElVeryTightSF;
+
+  TFile *fTrackMuonReco_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/Tracking_EfficienciesAndSF_BCDEFGH.root"));
+  TH1D *fhDmutrksfptg10 = (TH1D*)(fTrackMuonReco_SF->Get("ratio_eff_eta3_dr030e030_corr")); assert(fhDmutrksfptg10); fhDmutrksfptg10->SetDirectory(0);
+  delete fTrackMuonReco_SF;
+
+  TFile *fMuSF = TFile::Open(Form("MitAnalysisRunII/data/80x/muon_scalefactors_37ifb.root"));
+  TH2D *fhDMuMediumSF = (TH2D*)(fMuSF->Get("scalefactors_TightId_Muon")); assert(fhDMuMediumSF); fhDMuMediumSF->SetDirectory(0);
+  delete fMuSF;
+
+  TFile *fMuIsoSF = TFile::Open(Form("MitAnalysisRunII/data/80x/muon_scalefactors_37ifb.root"));
+  TH2D *fhDMuIsoSF = (TH2D*)(fMuIsoSF->Get("scalefactors_Iso_MuonTightId")); assert(fhDMuIsoSF); fhDMuIsoSF->SetDirectory(0);
+  delete fMuIsoSF;
+
+/*
   double getMaxPtForSFs[2] = {scalefactors_Medium_Muon                  ->GetYaxis()->GetBinCenter(scalefactors_Medium_Muon		     ->GetNbinsY()),
                               scalefactors_Medium_Electron              ->GetYaxis()->GetBinCenter(scalefactors_Medium_Electron		     ->GetNbinsY())
 		              };
+*/
 
   const int nBinMVA = 4; Float_t xbins[nBinMVA+1] = {500, 800, 1100, 1500, 2000};
   int nBinPlot      = 200;
@@ -358,7 +393,7 @@ thePandaFlat.eventNumber==913523305;
       bool passWZSel = whichWln >= 0 && thePandaFlat.nLooseLep == 3 && 
                        fabs(mllZ-91.1876) < 15 && mllmin > 4 &&
 		       vWln.Pt() > 20 &&
-		       passSel[2] && passSel[3] && passSel[4] && passSel[5] && passSel[7];
+		       passSel[2] && passSel[3] && passSel[4] && passSel[5] && passSel[7] && passSel[8];
       bool passAllButOneSel[8] = {
         passSel[0] &&               passSel[2] && passSel[3] && passSel[4] && passSel[5] && passSel[6] && passSel[7] && passSel[8],
         passSel[0] && passSel[1] &&               passSel[3] && passSel[4] && passSel[5] && passSel[6] && passSel[7] && passSel[8],
@@ -378,6 +413,11 @@ thePandaFlat.eventNumber==913523305;
         double the_eta_sf[4] = {1.0, 1.0, 1.0, 1.0};
         double sfWeightLepEff[4] = {1.0, 1.0, 1.0, 1.0};
 	for(unsigned int i=0; i<vLoose.size(); i++){
+           sfWeightLepEff[i] = effhDScaleFactor(looseLepPt[i],
+	        looseLepEta[i],TMath::Abs(looseLepPdgId[i]),
+	  	"verytight",fhDMuMediumSF,fhDElMediumSF,fhDElTightSF,fhDmutrksfptg10,fhDeltrksf,thePandaFlat.npv,true,fhDMuIsoSF,fhDVeryTightSF,true);
+
+/*
           if(abs(looseLepPdgId[i])==13){
             double etal = looseLepEta[i]; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
             int binEta = scalefactors_Muon_Eta->GetXaxis()->FindFixBin(etal);
@@ -398,6 +438,7 @@ thePandaFlat.eventNumber==913523305;
             int binYT_c = scalefactors_Medium_Electron->GetYaxis()->FindFixBin(TMath::Min((double)looseLepPt[i],getMaxPtForSFs[1]));
 	    sfWeightLepEff[i] = scalefactors_Medium_Electron->GetBinContent(binXT,binYT_c);
           }
+*/
         }
 
         totalWeight = thePandaFlat.normalizedWeight * lumi * puWeight * 

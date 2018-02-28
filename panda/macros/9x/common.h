@@ -88,3 +88,78 @@ double effhDPhotonScaleFactor(double pt, double eta, TString type, TH2D *fhDIdSF
 
   return idSF*vetoSF;
 }
+
+double effhDScaleFactor(double pt, double eta, int nsel, TString type, TH2D *fhDMuMediumSF, TH2D *fhDElMediumSF, TH2D *fhDElTightSF, 
+TH1D *fhDMuTrkSF, TH2D *fhDElTrkSF, int npv, bool useMuIsoSF, TH2D *fhDMuIsoSF, TH1D *fhDVeryTightSF, bool applyTrkSF = true){
+
+  if     (pt>=100 && TMath::Abs(nsel) == 13) pt =  +99.999;
+  else if(pt>=200 && TMath::Abs(nsel) == 11) pt = +199.999;
+
+  if     (eta>=+2.4) eta = +2.399;
+  else if(eta<=-2.4) eta = -2.399;
+
+  double trkSF = 1.0;
+  if(TMath::Abs(nsel) == 13){
+    Int_t binXT = fhDMuTrkSF->GetXaxis()->FindFixBin(eta);
+    if(applyTrkSF) trkSF = fhDMuTrkSF->GetBinContent(binXT);
+    if(trkSF <= 0) printf("trkSF <= 0! %f %d - %f %f\n",trkSF,binXT,pt,eta);
+  }
+  else if(TMath::Abs(nsel) == 11){
+    Int_t binXT = fhDElTrkSF->GetXaxis()->FindFixBin(eta);
+    Int_t binYT = fhDElTrkSF->GetYaxis()->FindFixBin(200.0);
+    if(applyTrkSF) trkSF = fhDElTrkSF->GetBinContent(binXT,binYT);
+    if(trkSF <= 0) printf("trkSF <= 0! %f %d %d - %f %f %d\n",trkSF,binXT,binYT,pt,eta,npv);
+    //Int_t binXT = fhDElTrkSF->GetXaxis()->FindFixBin(eta);
+    //Int_t binYT = fhDElTrkSF->GetYaxis()->FindFixBin(npv);
+    //if(applyTrkSF) trkSF = fhDElTrkSF->GetBinContent(binXT,binYT);
+    //if(trkSF <= 0) printf("trkSF <= 0! %f %d %d - %f %f %d\n",trkSF,binXT,binYT,pt,eta,npv);
+  }
+  if(trkSF <= 0) trkSF = 1.0;
+
+  if(TMath::Abs(nsel) == 13) eta = abs(eta);
+  if(TMath::Abs(nsel) == 13 && useMuIsoSF == true && pt <= 20) pt = 20.001;
+
+  Int_t binXA = 0;
+  Int_t binYA = 0;
+  Int_t binXB = 0;
+  Int_t binYB = 0;
+
+  if     (TMath::Abs(nsel) == 13 && (type== "medium" || type== "default"   || type== "defaultTight"   || type== "verytight" || type== "veryverytight" || type== "medium_mva" || type== "default_mva"))  {binXA = fhDMuMediumSF->GetXaxis()->FindFixBin(eta);binYA = fhDMuMediumSF->GetYaxis()->FindFixBin(pt);}
+  else if(TMath::Abs(nsel) == 11 && (type== "medium" || type== "medium_mva"))                                                                                                                           {binXA = fhDElMediumSF->GetXaxis()->FindFixBin(eta);binYA = fhDElMediumSF->GetYaxis()->FindFixBin(pt);}
+  else if(TMath::Abs(nsel) == 11 && (type== "default"||type== "defaultTight" || type== "verytight" || type== "veryverytight" || type== "default_mva"))                                                  {binXA = fhDElTightSF ->GetXaxis()->FindFixBin(eta);binYA = fhDElTightSF ->GetYaxis()->FindFixBin(pt);}
+  else    printf("PROBLEM WITH BINS\n");
+
+  double result = 0.0;
+  if     (TMath::Abs(nsel) == 13 && (type== "medium" || type== "default"   || type== "defaultTight"   || type== "verytight" || type== "veryverytight" || type== "medium_mva" || type== "default_mva")) result = fhDMuMediumSF->GetBinContent(binXA, binYA);
+  else if(TMath::Abs(nsel) == 11 && (type== "medium" || type== "medium_mva"))                                                                                                                          result = fhDElMediumSF->GetBinContent(binXA, binYA);
+  else if(TMath::Abs(nsel) == 11 &&( type== "default"|| type== "defaultTight"   || type== "verytight" || type== "veryverytight" || type== "default_mva"))                                              result = fhDElTightSF ->GetBinContent(binXA, binYA);
+
+  if(result <= 0) printf("Result <= 0! %f %d %d %d - %f %f\n",result,nsel,binXA,binYA,pt,eta);
+  if(result <= 0) result = 1.0;
+
+  double isoSF = 1.0;
+  if(useMuIsoSF == true && TMath::Abs(nsel) == 13) {
+    binXB = fhDMuIsoSF->GetXaxis()->FindFixBin(eta);binYB = fhDMuIsoSF->GetYaxis()->FindFixBin(pt);
+    isoSF = fhDMuIsoSF->GetBinContent(binXB, binYB);
+    if(isoSF <= 0) printf("IsoSF <= 0! %f %d %d %d - %f %f\n",isoSF,nsel,binXA,binYA,pt,eta);
+    if(isoSF <= 0) isoSF = 1.0;
+  }
+
+  double effVeryTight = 1.0;
+  if     (TMath::Abs(nsel) == 11 && (type== "verytight" || type== "veryverytight")) {
+    Int_t binXT = fhDVeryTightSF->GetXaxis()->FindFixBin(eta);
+    effVeryTight = fhDVeryTightSF->GetBinContent(binXT);
+  }
+  //else if(TMath::Abs(nsel) == 13 && (type== "verytight" || type== "veryverytight")) {
+  //  if     (pt <  30) effVeryTight = 0.992754;
+  //  else if(pt <  40) effVeryTight = 0.993588;
+  //  else if(pt <  50) effVeryTight = 0.994453;
+  //  else if(pt <  60) effVeryTight = 0.995199;
+  //  else if(pt <  80) effVeryTight = 0.996272;
+  //  else if(pt < 100) effVeryTight = 0.996282;
+  //  else              effVeryTight = 0.996406;
+  //}
+  //printf("eff: %f %f %f - %f %f - %d %d %d %d\n",result,trkSF,isoSF,pt,eta,binXA,binYA,binXB,binYB);
+
+  return result*trkSF*isoSF*effVeryTight;
+}
