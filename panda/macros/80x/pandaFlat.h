@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Sun Dec 10 12:46:46 2017 by ROOT version 6.06/01
+// Thu Mar  8 04:14:21 2018 by ROOT version 6.06/01
 // from TTree events/events
-// found on file: /data/t3home000/ceballos/panda/v_006_0/qqWW.root
+// found on file: /data/t3home000/ceballos/panda/v_001_0/qqZZ.root
 //////////////////////////////////////////////////////////
 
 #ifndef pandaFlat_h
@@ -354,9 +354,9 @@ pandaFlat::pandaFlat(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/t3home000/ceballos/panda/v_006_0/qqWW.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/t3home000/ceballos/panda/v_001_0/qqZZ.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/data/t3home000/ceballos/panda/v_006_0/qqWW.root");
+         f = new TFile("/data/t3home000/ceballos/panda/v_001_0/qqZZ.root");
       }
       f->GetObject("events",tree);
 

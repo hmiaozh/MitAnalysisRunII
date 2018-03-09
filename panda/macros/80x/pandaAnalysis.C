@@ -238,14 +238,14 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   const int nBinEtaPlot = 26; Float_t xbinsEtaPlot[nBinEtaPlot+1] = {-2.4,-2.3,-2.2,-2.0,-1.8,-1.63,-1.566,-1.4442,-1.2,-1.0,-0.6,-0.4,-0.2,0.0,
                                                                      0.2,0.4,0.6,1.0,1.2,1.4442,1.566,1.63,1.8,2.0,2.2,2.3,2.4};
 
-  const int muBinxX = 0;//scalefactors_Medium_Muon_stat_error_hi->GetNbinsX();
-  const int muBinxY = 0;//scalefactors_Medium_Muon_stat_error_hi->GetNbinsY();
+  const int muBinxX = scalefactors_Medium_Muon_stat_error_hi->GetNbinsX();
+  const int muBinxY = scalefactors_Medium_Muon_stat_error_hi->GetNbinsY();
   const int nMuSFBins = muBinxX*muBinxY;
-  const int elBinxX = 0;//scalefactors_Medium_Electron_stat_error_hi->GetNbinsX();
-  const int elBinxY = 0;//scalefactors_Medium_Electron_stat_error_hi->GetNbinsY();
+  const int elBinxX = scalefactors_Medium_Electron_stat_error_hi->GetNbinsX();
+  const int elBinxY = scalefactors_Medium_Electron_stat_error_hi->GetNbinsY();
   const int nElSFBins = elBinxX*elBinxY;
   const int nRecNuisances = 1;
-  const int nEffNuisances = 8+nMuSFBins;
+  const int nEffNuisances = 8+nElSFBins;
   const int nMomNuisances = 5;
 
   printf("getMaxPtForSFs mu central: %f, el central: %f, mu syst: %f, el syst: %f mu hlt: %f el hlt: %f\n",getMaxPtForSFs[0],getMaxPtForSFs[1],getMaxPtForSFs[2],getMaxPtForSFs[3],getMaxPtForSFs[4],getMaxPtForSFs[5]);
@@ -306,7 +306,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   TH1D* histoTotRecEM[2];
   TH1D* histoTotRecVV[2];
   TH1D* histoTotRecDY_RecEff[2][nRecNuisances];
-  TH1D* histoTotRecVV_RecEff[2][nEffNuisances];
+  TH1D* histoTotRecVV_RecEff[2][nRecNuisances];
   TH1D* histoTotRecDY_LepEff[2][nEffNuisances];
   TH1D* histoTotRecVV_LepEff[2][nEffNuisances];
   TH1D* histoTotRecDA_MomRes[2][nMomNuisances];
@@ -370,7 +370,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   TH1D* histoPtRecEM[2];
   TH1D* histoPtRecVV[2];
   TH1D* histoPtRecDY_RecEff[2][nRecNuisances];
-  TH1D* histoPtRecVV_RecEff[2][nEffNuisances];
+  TH1D* histoPtRecVV_RecEff[2][nRecNuisances];
   TH1D* histoPtRecDY_LepEff[2][nEffNuisances];
   TH1D* histoPtRecVV_LepEff[2][nEffNuisances];
   TH1D* histoPtRecDA_MomRes[2][nMomNuisances];
@@ -434,7 +434,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   TH1D* histoRapRecEM[2];
   TH1D* histoRapRecVV[2];
   TH1D* histoRapRecDY_RecEff[2][nRecNuisances];
-  TH1D* histoRapRecVV_RecEff[2][nEffNuisances];
+  TH1D* histoRapRecVV_RecEff[2][nRecNuisances];
   TH1D* histoRapRecDY_LepEff[2][nEffNuisances];
   TH1D* histoRapRecVV_LepEff[2][nEffNuisances];
   TH1D* histoRapRecDA_MomRes[2][nMomNuisances];
@@ -498,7 +498,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   TH1D* histoPhiStarRecEM[2];
   TH1D* histoPhiStarRecVV[2];
   TH1D* histoPhiStarRecDY_RecEff[2][nRecNuisances];
-  TH1D* histoPhiStarRecVV_RecEff[2][nEffNuisances];
+  TH1D* histoPhiStarRecVV_RecEff[2][nRecNuisances];
   TH1D* histoPhiStarRecDY_LepEff[2][nEffNuisances];
   TH1D* histoPhiStarRecVV_LepEff[2][nEffNuisances];
   TH1D* histoPhiStarRecDA_MomRes[2][nMomNuisances];
@@ -562,7 +562,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   TH1D* histoPtRap0RecEM[2];
   TH1D* histoPtRap0RecVV[2];
   TH1D* histoPtRap0RecDY_RecEff[2][nRecNuisances];
-  TH1D* histoPtRap0RecVV_RecEff[2][nEffNuisances];
+  TH1D* histoPtRap0RecVV_RecEff[2][nRecNuisances];
   TH1D* histoPtRap0RecDY_LepEff[2][nEffNuisances];
   TH1D* histoPtRap0RecVV_LepEff[2][nEffNuisances];
   TH1D* histoPtRap0RecDA_MomRes[2][nMomNuisances];
@@ -626,7 +626,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   TH1D* histoPtRap1RecEM[2];
   TH1D* histoPtRap1RecVV[2];
   TH1D* histoPtRap1RecDY_RecEff[2][nRecNuisances];
-  TH1D* histoPtRap1RecVV_RecEff[2][nEffNuisances];
+  TH1D* histoPtRap1RecVV_RecEff[2][nRecNuisances];
   TH1D* histoPtRap1RecDY_LepEff[2][nEffNuisances];
   TH1D* histoPtRap1RecVV_LepEff[2][nEffNuisances];
   TH1D* histoPtRap1RecDA_MomRes[2][nMomNuisances];
@@ -690,7 +690,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   TH1D* histoPtRap2RecEM[2];
   TH1D* histoPtRap2RecVV[2];
   TH1D* histoPtRap2RecDY_RecEff[2][nRecNuisances];
-  TH1D* histoPtRap2RecVV_RecEff[2][nEffNuisances];
+  TH1D* histoPtRap2RecVV_RecEff[2][nRecNuisances];
   TH1D* histoPtRap2RecDY_LepEff[2][nEffNuisances];
   TH1D* histoPtRap2RecVV_LepEff[2][nEffNuisances];
   TH1D* histoPtRap2RecDA_MomRes[2][nMomNuisances];
@@ -754,7 +754,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   TH1D* histoPtRap3RecEM[2];
   TH1D* histoPtRap3RecVV[2];
   TH1D* histoPtRap3RecDY_RecEff[2][nRecNuisances];
-  TH1D* histoPtRap3RecVV_RecEff[2][nEffNuisances];
+  TH1D* histoPtRap3RecVV_RecEff[2][nRecNuisances];
   TH1D* histoPtRap3RecDY_LepEff[2][nEffNuisances];
   TH1D* histoPtRap3RecVV_LepEff[2][nEffNuisances];
   TH1D* histoPtRap3RecDA_MomRes[2][nMomNuisances];
@@ -818,7 +818,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   TH1D* histoPtRap4RecEM[2];
   TH1D* histoPtRap4RecVV[2];
   TH1D* histoPtRap4RecDY_RecEff[2][nRecNuisances];
-  TH1D* histoPtRap4RecVV_RecEff[2][nEffNuisances];
+  TH1D* histoPtRap4RecVV_RecEff[2][nRecNuisances];
   TH1D* histoPtRap4RecDY_LepEff[2][nEffNuisances];
   TH1D* histoPtRap4RecVV_LepEff[2][nEffNuisances];
   TH1D* histoPtRap4RecDA_MomRes[2][nMomNuisances];
@@ -1216,7 +1216,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           sfSystWeightLepEff[0][5] = scalefactors_Medium_Muon_tagBiasTNP	->GetBinContent(binXT,binYT_s);
           sfSystWeightLepEff[0][6] = scalefactors_Medium_Muon_generatorChoiceTNP->GetBinContent(binXT,binYT_s);
           sfSystWeightLepEff[0][7] = the_trigger_sf_unc;
-	  if(nMuSFBins == muBinxX*muBinxY) sfSystWeightLepEff[0][muBinxX*(binXT-1)+(binYT_s-1)+8] = scalefactors_Medium_Muon_stat_error_hi->GetBinContent(binXT,binYT_s);
+	  if(nMuSFBins == muBinxX*muBinxY) sfSystWeightLepEff[0][muBinxY*(binXT-1)+(binYT_s-1)+8] = scalefactors_Medium_Muon_stat_error_hi->GetBinContent(binXT,binYT_s);
         } else {
           double etal = thePandaFlat.looseLep1Eta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
           int binXT   = scalefactors_Medium_Electron->GetXaxis()->FindFixBin(etal);
@@ -1231,7 +1231,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           sfSystWeightLepEff[0][5] = scalefactors_Medium_Electron_tagBiasTNP	    ->GetBinContent(binXT,binYT_s);
           sfSystWeightLepEff[0][6] = scalefactors_Medium_Electron_generatorChoiceTNP->GetBinContent(binXT,binYT_s);
           sfSystWeightLepEff[0][7] = the_trigger_sf_unc;
-	  if(nElSFBins == elBinxX*elBinxY) sfSystWeightLepEff[0][elBinxX*(binXT-1)+(binYT_s-1)+8] = scalefactors_Medium_Electron_stat_error_hi->GetBinContent(binXT,binYT_s);
+	  if(nElSFBins == elBinxX*elBinxY) sfSystWeightLepEff[0][elBinxY*(binXT-1)+(binYT_s-1)+8] = scalefactors_Medium_Electron_stat_error_hi->GetBinContent(binXT,binYT_s);
         }
         if(abs(thePandaFlat.looseLep2PdgId)==13){
           double etal = thePandaFlat.looseLep2Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
@@ -1247,7 +1247,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           sfSystWeightLepEff[1][5] = scalefactors_Medium_Muon_tagBiasTNP	->GetBinContent(binXT,binYT_s);
           sfSystWeightLepEff[1][6] = scalefactors_Medium_Muon_generatorChoiceTNP->GetBinContent(binXT,binYT_s);
           sfSystWeightLepEff[1][7] = 0.0;
-	  if(nMuSFBins == muBinxX*muBinxY) sfSystWeightLepEff[1][muBinxX*(binXT-1)+(binYT_s-1)+8] = scalefactors_Medium_Muon_stat_error_hi->GetBinContent(binXT,binYT_s);
+	  if(nMuSFBins == muBinxX*muBinxY) sfSystWeightLepEff[1][muBinxY*(binXT-1)+(binYT_s-1)+8] = scalefactors_Medium_Muon_stat_error_hi->GetBinContent(binXT,binYT_s);
         } else {
           double etal = thePandaFlat.looseLep2Eta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
           int binXT   = scalefactors_Medium_Electron->GetXaxis()->FindFixBin(etal);
@@ -1262,7 +1262,8 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           sfSystWeightLepEff[1][5] = scalefactors_Medium_Electron_tagBiasTNP	    ->GetBinContent(binXT,binYT_s);
           sfSystWeightLepEff[1][6] = scalefactors_Medium_Electron_generatorChoiceTNP->GetBinContent(binXT,binYT_s);
           sfSystWeightLepEff[1][7] = 0.0;
-	  if(nElSFBins == elBinxX*elBinxY) sfSystWeightLepEff[1][elBinxX*(binXT-1)+(binYT_s-1)+8] = scalefactors_Medium_Electron_stat_error_hi->GetBinContent(binXT,binYT_s);
+	  if(elBinxY*(binXT-1)+(binYT_s-1)+8 >= nEffNuisances) printf("PROBLEM WITH sfSystWeightLepEff\n");
+	  if(nElSFBins == elBinxX*elBinxY) sfSystWeightLepEff[1][elBinxY*(binXT-1)+(binYT_s-1)+8] = scalefactors_Medium_Electron_stat_error_hi->GetBinContent(binXT,binYT_s);
         }
 
         totalWeight = thePandaFlat.normalizedWeight * lumi * puWeight *
