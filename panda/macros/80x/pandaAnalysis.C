@@ -1120,7 +1120,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           the_eta_sf[0] = scalefactors_Muon_Eta->GetBinContent(binEta);
 	  the_eta_sf_unc[0] = scalefactors_Muon_Eta->GetBinError(binEta)/scalefactors_Muon_Eta->GetBinContent(binEta);
         } else {
-          double etal = thePandaFlat.looseLep1SCEta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
+          double etal = thePandaFlat.looseLep1SCEta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
           int binEta = scalefactors_Electron_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[0] = scalefactors_Electron_Eta->GetBinContent(binEta);
 	  the_eta_sf_unc[0] = scalefactors_Electron_Eta->GetBinError(binEta)/scalefactors_Electron_Eta->GetBinContent(binEta);
@@ -1132,7 +1132,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           the_eta_sf[1] = scalefactors_Muon_Eta->GetBinContent(binEta);
 	  the_eta_sf_unc[1] = scalefactors_Muon_Eta->GetBinError(binEta)/scalefactors_Muon_Eta->GetBinContent(binEta);
         } else {
-          double etal = thePandaFlat.looseLep2SCEta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
+          double etal = thePandaFlat.looseLep2SCEta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
           int binEta = scalefactors_Electron_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[1] = scalefactors_Electron_Eta->GetBinContent(binEta);
 	  the_eta_sf_unc[1] = scalefactors_Electron_Eta->GetBinError(binEta)/scalefactors_Electron_Eta->GetBinContent(binEta);
@@ -1155,7 +1155,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
 	    trigEff_MC[0]  = eff_HLT_Muon_MC[nEvtRap]->GetBinContent(binXT,binYT);
             trigEffE_MC[0] = eff_HLT_Muon_MC[nEvtRap]->GetBinError  (binXT,binYT);
           } else {
-            double etal = thePandaFlat.looseLep1Eta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
+            double etal = thePandaFlat.looseLep1Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
             int binXT = eff_HLT_Electron_DA[nEvtRap]->GetXaxis()->FindFixBin(etal);
             int binYT = eff_HLT_Electron_DA[nEvtRap]->GetYaxis()->FindFixBin(TMath::Min((double)thePandaFlat.looseLep1Pt,getMaxPtForSFs[5]));
 	    trigEff_DA[0]  = eff_HLT_Electron_DA[nEvtRap]->GetBinContent(binXT,binYT);
@@ -1172,7 +1172,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
 	    trigEff_MC[1]  = eff_HLT_Muon_MC[nEvtRap]->GetBinContent(binXT,binYT);
             trigEffE_MC[1] = eff_HLT_Muon_MC[nEvtRap]->GetBinError  (binXT,binYT);
           } else {
-            double etal = thePandaFlat.looseLep2Eta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
+            double etal = thePandaFlat.looseLep2Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
             int binXT = eff_HLT_Electron_DA[nEvtRap]->GetXaxis()->FindFixBin(etal);
             int binYT = eff_HLT_Electron_DA[nEvtRap]->GetYaxis()->FindFixBin(TMath::Min((double)thePandaFlat.looseLep2Pt,getMaxPtForSFs[5]));
 	    trigEff_DA[1]  = eff_HLT_Electron_DA[nEvtRap]->GetBinContent(binXT,binYT);
@@ -1218,7 +1218,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           sfSystWeightLepEff[0][7] = the_trigger_sf_unc;
 	  if(nMuSFBins == muBinxX*muBinxY) sfSystWeightLepEff[0][muBinxY*(binXT-1)+(binYT_s-1)+8] = scalefactors_Medium_Muon_stat_error_hi->GetBinContent(binXT,binYT_s);
         } else {
-          double etal = thePandaFlat.looseLep1Eta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
+          double etal = thePandaFlat.looseLep1Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
           int binXT   = scalefactors_Medium_Electron->GetXaxis()->FindFixBin(etal);
           int binYT_c = scalefactors_Medium_Electron->GetYaxis()->FindFixBin(TMath::Min((double)thePandaFlat.looseLep1Pt,getMaxPtForSFs[1]));
           int binYT_s = scalefactors_Medium_Electron->GetYaxis()->FindFixBin(TMath::Min((double)thePandaFlat.looseLep1Pt,getMaxPtForSFs[3]));
@@ -1249,7 +1249,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           sfSystWeightLepEff[1][7] = 0.0;
 	  if(nMuSFBins == muBinxX*muBinxY) sfSystWeightLepEff[1][muBinxY*(binXT-1)+(binYT_s-1)+8] = scalefactors_Medium_Muon_stat_error_hi->GetBinContent(binXT,binYT_s);
         } else {
-          double etal = thePandaFlat.looseLep2Eta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
+          double etal = thePandaFlat.looseLep2Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
           int binXT   = scalefactors_Medium_Electron->GetXaxis()->FindFixBin(etal);
           int binYT_c = scalefactors_Medium_Electron->GetYaxis()->FindFixBin(TMath::Min((double)thePandaFlat.looseLep2Pt,getMaxPtForSFs[1]));
           int binYT_s = scalefactors_Medium_Electron->GetYaxis()->FindFixBin(TMath::Min((double)thePandaFlat.looseLep2Pt,getMaxPtForSFs[3]));
@@ -1262,7 +1262,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           sfSystWeightLepEff[1][5] = scalefactors_Medium_Electron_tagBiasTNP	    ->GetBinContent(binXT,binYT_s);
           sfSystWeightLepEff[1][6] = scalefactors_Medium_Electron_generatorChoiceTNP->GetBinContent(binXT,binYT_s);
           sfSystWeightLepEff[1][7] = 0.0;
-	  if(elBinxY*(binXT-1)+(binYT_s-1)+8 >= nEffNuisances) printf("PROBLEM WITH sfSystWeightLepEff\n");
+	  if(elBinxY > 0 && elBinxY*(binXT-1)+(binYT_s-1)+8 >= nEffNuisances) printf("PROBLEM WITH sfSystWeightLepEff\n");
 	  if(nElSFBins == elBinxX*elBinxY) sfSystWeightLepEff[1][elBinxY*(binXT-1)+(binYT_s-1)+8] = scalefactors_Medium_Electron_stat_error_hi->GetBinContent(binXT,binYT_s);
         }
 

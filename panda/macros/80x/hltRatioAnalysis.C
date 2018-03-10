@@ -100,7 +100,7 @@ int typeAna = 1
           int binEta = scalefactors_Muon_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[0] = scalefactors_Muon_Eta->GetBinContent(binEta);
         } else {
-          double etal = thePandaFlat.looseLep1Eta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
+          double etal = thePandaFlat.looseLep1Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
           int binEta = scalefactors_Electron_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[0] = scalefactors_Electron_Eta->GetBinContent(binEta);
         }        
@@ -109,7 +109,7 @@ int typeAna = 1
           int binEta = scalefactors_Muon_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[1] = scalefactors_Muon_Eta->GetBinContent(binEta);
         } else {
-          double etal = thePandaFlat.looseLep2Eta; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
+          double etal = thePandaFlat.looseLep2Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
           int binEta = scalefactors_Electron_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[1] = scalefactors_Electron_Eta->GetBinContent(binEta);
         }
