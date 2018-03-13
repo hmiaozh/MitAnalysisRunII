@@ -21,7 +21,7 @@
 const bool isSingleLeptonAna = true;
 const double mcPrescale = 1;
 
-void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 0, bool isMIT=true)
+void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 0, double dileptonPtCut = 0, bool isMIT=true)
 {
 
   double lumi = 35.8;
@@ -102,10 +102,35 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
     else {return;}
   }
 
-  const double dileptonPtCut = 0.0;
   const int nBinTot = 1; Float_t xbinsTot[nBinTot+1] = {0,1};
-  const int nBinPt = 36; Float_t xbinsPt[nBinPt+1] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,18,20,22,25,28,32,37,43,52,65,85,120,160,190,220,250,300,400,500,800,1500};
-  //const int nBinPt = 5; Float_t xbinsPt[nBinPt+1] = {200,300,400,500,800,1500};
+
+  int thePtValueBins[2] = {36, 72};
+  if(dileptonPtCut == 200){
+    printf("Modifying thePtValueBins\n");
+    thePtValueBins[0] = 5; thePtValueBins[1] = 10;
+    isNoDYName = isNoDYName + "_ptllcut";
+  }
+  const int nBinPt = thePtValueBins[0]; Float_t xbinsPt[nBinPt+1];
+  const int nBinRecoPt = thePtValueBins[1]; Float_t xbinsRecoPt[nBinRecoPt+1];
+  if(dileptonPtCut == 200){
+    const int nBinPtAux = 5;
+    const int nBinRecoPtAux = 10;
+    Float_t xbinsPtAux[nBinPtAux+1] = {200,300,400,500,800,1500};
+    Float_t xbinsRecoPtAux[nBinRecoPtAux+1] = {200,250,300,350,400,450,500,650,800,1150,1500};
+    for(int i=0; i<nBinPt+1; i++) xbinsPt[i] = xbinsPtAux[i];
+    for(int i=0; i<nBinRecoPt+1; i++) xbinsRecoPt[i] = xbinsRecoPtAux[i];
+  } else {
+    const int nBinPtAux = 36;
+    const int nBinRecoPtAux = 72;
+    Float_t xbinsPtAux[nBinPtAux+1] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,18,20,22,25,28,32,37,43,52,65,85,120,160,190,220,250,300,400,500,800,1500};
+    Float_t xbinsRecoPtAux[nBinRecoPtAux+1] = { 0, 0.5,  1, 1.5,  2, 2.5, 3, 3.5,  4,4.5,  5,5.5,  6,6.5,  7,7.5,  8, 8.5, 9, 9.5,
+  					     10,10.5, 11,11.5, 12,12.5,13,13.5, 14, 15, 16, 17, 18, 19, 20, 21, 22,23.5,  25,26.5,
+  					     28,  30, 32,  35, 37,  40,43,  48, 52, 59, 65, 75, 85,100,120,140,160, 175, 190, 205,
+  					    220, 235,250, 275,300, 350,400,450,500,650,800,1150,1500};
+    for(int i=0; i<nBinPt+1; i++) xbinsPt[i] = xbinsPtAux[i];
+    for(int i=0; i<nBinRecoPt+1; i++) xbinsRecoPt[i] = xbinsRecoPtAux[i];
+  }
+
   const int nBinRap = 12; Float_t xbinsRap[nBinRap+1] = {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4};
   const int nBinPhiStar = 34; Float_t xbinsPhiStar[nBinPhiStar+1] = {
                                          1e-3, 2e-3, 3e-3, 4e-3, 5e-3, 6e-3, 7e-3, 8e-3, 9e-3,
@@ -119,11 +144,6 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   const int nBinPtRap4 = 34; Float_t xbinsPtRap4[nBinPtRap4+1] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,18,20,22,25,28,32,37,43,52,65,85,120,160,190,220,250,300,400,1500};
 
   const int nBinRecoTot = 1; Float_t xbinsRecoTot[nBinRecoTot+1] = {0,1};
-  const int nBinRecoPt     = 72; Float_t xbinsRecoPt[nBinRecoPt+1]     = { 0, 0.5,  1, 1.5,  2, 2.5, 3, 3.5,  4,4.5,  5,5.5,  6,6.5,  7,7.5,  8, 8.5, 9, 9.5,
-  								      10,10.5, 11,11.5, 12,12.5,13,13.5, 14, 15, 16, 17, 18, 19, 20, 21, 22,23.5,  25,26.5,
-  								      28,  30, 32,  35, 37,  40,43,  48, 52, 59, 65, 75, 85,100,120,140,160, 175, 190, 205,
-  								     220, 235,250, 275,300, 350,400,450,500,650,800,1150,1500};
-  //const int nBinRecoPt     = 10; Float_t xbinsRecoPt[nBinRecoPt+1]         = {200,250,300,350,400,450,500,650,800,1150,1500};
 
   const int nBinRecoRap = 24; Float_t xbinsRecoRap[nBinRecoRap+1] = {0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4};
 
@@ -904,7 +924,9 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
 
       if(thePandaFlat.nLooseLep != 2) continue;
 
-      if(TMath::Abs(thePandaFlat.looseLep1Eta) >= 2.4 || TMath::Abs(thePandaFlat.looseLep2Eta) >= 2.4) continue;
+      bool passEtaCut = TMath::Abs(thePandaFlat.looseLep1Eta) < 2.4 && (TMath::Abs(thePandaFlat.looseLep1PdgId) == 13 || TMath::Abs(thePandaFlat.looseLep1SCEta) < 2.4) &&
+                        TMath::Abs(thePandaFlat.looseLep2Eta) < 2.4 && (TMath::Abs(thePandaFlat.looseLep2PdgId) == 13 || TMath::Abs(thePandaFlat.looseLep2SCEta) < 2.4);
+      if(passEtaCut == false) continue;
 
       int theCategory = infileCat_[ifile];
 

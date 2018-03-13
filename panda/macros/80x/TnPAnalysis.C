@@ -147,7 +147,9 @@ bool useZRap = true
 
       if(TMath::Abs(thePandaFlat.looseLep1PdgId)!=TMath::Abs(thePandaFlat.looseLep2PdgId))continue;
 
-      if(TMath::Abs(thePandaFlat.looseLep1Eta) >= 2.4 || TMath::Abs(thePandaFlat.looseLep2Eta) >= 2.4) continue;
+      bool passEtaCut = TMath::Abs(thePandaFlat.looseLep1Eta) < 2.4 && (TMath::Abs(thePandaFlat.looseLep1PdgId) == 13 || TMath::Abs(thePandaFlat.looseLep1SCEta) < 2.4) &&
+                        TMath::Abs(thePandaFlat.looseLep2Eta) < 2.4 && (TMath::Abs(thePandaFlat.looseLep2PdgId) == 13 || TMath::Abs(thePandaFlat.looseLep2SCEta) < 2.4);
+      if(passEtaCut == false) continue;
 
       if(thePandaFlat.looseLep1Pt <= 20 || thePandaFlat.looseLep2Pt <= 20)continue;
 
@@ -345,7 +347,8 @@ bool useZRap = true
   }
 
   char output[200];
-  sprintf(output,"histo_hlttrigger_dy%d_period%d.root",whichDY,period);	
+  if(whichDY != 3) sprintf(output,"histo_hlttrigger_dy%d_period%d.root",whichDY,period);
+  else             sprintf(output,"efficiency_hlt_80x_period%d.root",period);
   TFile* outFilePlotsHistos = new TFile(output,"recreate");
   outFilePlotsHistos->cd();
   eff_HLT_Rap->Write();
