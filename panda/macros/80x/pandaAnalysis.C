@@ -926,6 +926,9 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
 
       bool passEtaCut = TMath::Abs(thePandaFlat.looseLep1Eta) < 2.4 && (TMath::Abs(thePandaFlat.looseLep1PdgId) == 13 || TMath::Abs(thePandaFlat.looseLep1SCEta) < 2.4) &&
                         TMath::Abs(thePandaFlat.looseLep2Eta) < 2.4 && (TMath::Abs(thePandaFlat.looseLep2PdgId) == 13 || TMath::Abs(thePandaFlat.looseLep2SCEta) < 2.4);
+      //passEtaCut = passEtaCut && 
+      //             (TMath::Abs(thePandaFlat.looseLep1SCEta) < 1.4442 || TMath::Abs(thePandaFlat.looseLep1SCEta) > 1.5660) &&
+      //             (TMath::Abs(thePandaFlat.looseLep2SCEta) < 1.4442 || TMath::Abs(thePandaFlat.looseLep2SCEta) > 1.5660);
       if(passEtaCut == false) continue;
 
       int theCategory = infileCat_[ifile];
