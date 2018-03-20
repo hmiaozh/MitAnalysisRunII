@@ -2972,6 +2972,21 @@ void wwAnalysis(
     for(int i=0; i<nGenBins; i++) histoOneBin_FidqqWW[i]->SetBinContent(1, TMath::Max(histo_qqWWBins[i]->GetBinContent(nb),0.0));
     for(int i=0; i<nGenBins; i++) histoOneBin_FidggWW[i]->SetBinContent(1, TMath::Max(histo_ggWWBins[i]->GetBinContent(nb),0.0));
 
+    histoOneBin_Data  ->SetBinError(1,	    histo_Data  ->GetBinError(nb));
+    histoOneBin_qqWW  ->SetBinError(1, TMath::Max(histo_qqWW  ->GetBinError(nb),0.0));
+    histoOneBin_ggWW  ->SetBinError(1, TMath::Max(histo_ggWW  ->GetBinError(nb),0.0));
+    histoOneBin_Top   ->SetBinError(1, TMath::Max(histo_Top ->GetBinError(nb),0.0));
+    histoOneBin_DY    ->SetBinError(1, TMath::Max(histo_DY->GetBinError(nb)*DYtautauSF,0.0));
+    histoOneBin_VV    ->SetBinError(1, TMath::Max(histo_VV  ->GetBinError(nb),0.0));
+    histoOneBin_VVV   ->SetBinError(1, TMath::Max(histo_VVV ->GetBinError(nb),0.0));
+    histoOneBin_WG    ->SetBinError(1, TMath::Max(histo_WG  ->GetBinError(nb),0.0));
+    histoOneBin_WGS   ->SetBinError(1, TMath::Max(histo_WGS ->GetBinError(nb),0.0));
+    histoOneBin_WjetsM->SetBinError(1, TMath::Max(histo_WjetsM->GetBinError(nb),0.0));
+    histoOneBin_WjetsE->SetBinError(1, TMath::Max(histo_WjetsE->GetBinError(nb),0.0));
+    histoOneBin_Higgs ->SetBinError(1, TMath::Max(histo_Higgs ->GetBinError(nb),0.0));
+    for(int i=0; i<nGenBins; i++) histoOneBin_FidqqWW[i]->SetBinError(1, TMath::Max(histo_qqWWBins[i]->GetBinError(nb),0.0));
+    for(int i=0; i<nGenBins; i++) histoOneBin_FidggWW[i]->SetBinError(1, TMath::Max(histo_ggWWBins[i]->GetBinError(nb),0.0));
+
     histoOneBin_Data  ->Write();
     histoOneBin_qqWW  ->Write();
     histoOneBin_ggWW  ->Write();
