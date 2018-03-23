@@ -1100,9 +1100,6 @@ void wwAnalysis(
       double jetPtCut = 30.0;
       if     (shapeAnaType ==  7) jetPtCut = 25.0;
       else if(shapeAnaType ==  8) jetPtCut = 35.0;
-      else if(shapeAnaType ==  9) jetPtCut = 50.0;
-      else if(shapeAnaType == 10) jetPtCut = 100.0;
-      else if(shapeAnaType == 11) jetPtCut = 30000.0;
       vector<int> idJet,idJesUp,idJesDown,idJerUp,idJerDown;
       bool isBtag = kFALSE;
       double bDiscrMax = 0.0; double bDiscrMaxJESUp = 0.0; double bDiscrMaxJESDown = 0.0;double bDiscrMaxJERUp = 0.0; double bDiscrMaxJERDown = 0.0;
@@ -1254,7 +1251,7 @@ void wwAnalysis(
       if(bDiscrMax < bTagCuts[0]) passFilter[7] = kTRUE;
       //if(idSoft.size() == 0) passFilter[8] = kTRUE;
       passFilter[8] = kTRUE;
-      if(idJet.size() == nJetsType) passFilter[9] = kTRUE;
+      if(idJet.size() == nJetsType || shapeAnaType == 9) passFilter[9] = kTRUE;
 
       bool passBtagJES[2] = {bDiscrMaxJESUp < bTagCuts[0], bDiscrMaxJESDown < bTagCuts[0]};
       bool passBtagJER[2] = {bDiscrMaxJERUp < bTagCuts[0], bDiscrMaxJERDown < bTagCuts[0]};
@@ -1551,6 +1548,9 @@ void wwAnalysis(
 	else if(shapeAnaType == 4 && theControlRegion == 0){
           MVAVar =  TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Pt(),149.999);
         }
+	else if(shapeAnaType == 9){
+          MVAVar =  TMath::Min((double)idJet.size(),2.499);
+        }
 
         // Avoid QCD scale and PDF weights that are anomalous high
         double maxQCDscale = (TMath::Abs((double)eventMonteCarlo.r1f2)+TMath::Abs((double)eventMonteCarlo.r1f5)+TMath::Abs((double)eventMonteCarlo.r2f1)+
@@ -1613,9 +1613,9 @@ void wwAnalysis(
 	    }
 	  }
 
+	  vector<int> idGenJet30;
 	  if(countSelectedGenLeptons >= 2){
 	    passFiducial[0] = true;
-	    vector<int> idGenJet30;
 	    for(int njetgen=0; njetgen<eventMonteCarlo.jetP4->GetEntriesFast(); njetgen++) {
               if(TMath::Abs(((TLorentzVector*)(*eventMonteCarlo.jetP4)[njetgen])->Eta()) >= 5.0) continue;
               bool isGenLepton = false;
@@ -1644,11 +1644,16 @@ void wwAnalysis(
           else if(shapeAnaType == 4){
             MVAGenVar = TMath::Min(lepMinGen.Pt(),149.999);
           }
+          else if(shapeAnaType == 9){
+            MVAGenVar = TMath::Min((double)idGenJet30.size(),2.499);
+          }
           int genbin = histoGenMVA->GetXaxis()->FindBin(MVAGenVar)-1;
 	  if     (genbin == -1) {/*printf("%d %d %f\n",genbin,passFiducial[0],MVAGenVar);*/ genbin = nGenBins - 1;}
 	  else if(genbin >= nGenBins) {printf("PROBLEM %d %d %f\n",genbin,passFiducial[0],MVAGenVar);}
-	  if     (shapeAnaType <= 5 && passFiducial[0] == false) genbin = nGenBins - 1;
-	  else if(shapeAnaType >  5 && passFiducial[1] == false) genbin = nGenBins - 1;
+	  if     (shapeAnaType == 9 && passFiducial[0] == false) genbin = nGenBins - 1;
+	  else if(shapeAnaType <= 5 && passFiducial[0] == false) genbin = nGenBins - 1;
+	  else if(shapeAnaType >  5 && 
+	          shapeAnaType != 9 && passFiducial[1] == false) genbin = nGenBins - 1;
 	  // End gen fiducial selection
 	  if((passAllCuts[SIGSEL] && theControlRegion == 0) || (passAllCuts[TOPSEL] && theControlRegion == 1) || (passAllCuts[DYSEL] && theControlRegion == 2)) {
 	    histo_qqWW->Fill(MVAVar,totalWeight);
@@ -3102,7 +3107,12 @@ void wwAnalysis(
       newcardShape << Form("QCDscale_qqVV                          lnN    -	-   %7.5f   -	%7.5f %7.5f   -	   -    -    -     -     -     -     -     -     -     -     -     -\n",systQCDScale[4],systQCDScale[6],systQCDScale[7]);  	
       newcardShape << Form("QCDscale_ggH		           lnN    -	-     -     -	  -    -   %7.5f   -    -    -     -     -     -     -     -     -     -     -     -\n",systQCDScale[8]); 	
       newcardShape << Form("QCDscale_Top		           lnN  %7.5f	-     -     -	  -    -      -    -    -    -     -     -     -     -     -     -     -     -     -\n",systQCDScale[2]); 	
-      newcardShape << Form("CMS_ww_Topnorm_jet%d rateParam  * Top 1 [0.1,10]\n",nJetsType);         
+      if(shapeAnaType != 9){
+      newcardShape << Form("CMS_ww_Topnorm_jet%d rateParam  * Top 1 [0.1,10]\n",nJetsType);
+      }
+      else {
+      newcardShape << Form("CMS_ww_Topnorm_jet%d rateParam  * Top 1 [0.1,10]\n",nb-1);
+      }
       if(useDYCR == true) {
       newcardShape << Form("CMS_ww_DYnorm_jet%d rateParam  * DY 1 [0.1,10]\n",nJetsType);         
       }
@@ -3150,64 +3160,64 @@ void wwAnalysis(
 
   // delete garbage
   system(Form("rm -f %s",outputLimitsAll));
-  if     (shapeAnaType == 0 || theControlRegion != 0){
+  if     (shapeAnaType == 0 || (theControlRegion != 0 && shapeAnaType != 9)){
     for(int i=1; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+      system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
   else if(shapeAnaType == 1){
     for(int i=12; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+      system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
   else if(shapeAnaType == 2){
     for(int i=18; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+      system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
   else if(shapeAnaType == 3){
     for(int i=17; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+      system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
   else if(shapeAnaType == 4){
     for(int i=9; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+      system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
   else if(shapeAnaType == 5){ // lep fiducial
     for(int i=1; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+      system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
   else if(shapeAnaType == 6){ // lep and jet fiducial, ptjet<30
     for(int i=1; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+      system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
   else if(shapeAnaType == 7){ // lep and jet fiducial, ptjet<25
     for(int i=1; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+      system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
   else if(shapeAnaType == 8){ // lep and jet fiducial, ptjet<35
     for(int i=1; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+      system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
-  else if(shapeAnaType == 9){ // lep and jet fiducial, ptjet<50
-    for(int i=1; i<nRecBins; i++){
+  else if(shapeAnaType == 9){ // lep fiducial, njets
+    for(int i=3; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
-    }
-  }
-  else if(shapeAnaType == 10){ // lep and jet fiducial, ptjet<100
-    for(int i=1; i<nRecBins; i++){
-      system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
-    }
-  }
-  else if(shapeAnaType == 11){ // lep and jet fiducial, ptjet<30000
-    for(int i=1; i<nRecBins; i++){
-      system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+      system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
 }
