@@ -1533,7 +1533,7 @@ void wwAnalysis(
        }
 
       if(1) {
-	double MVAVar    = (double)typePair;
+	double MVAVar = (double)typePair; double MVAVarSyst[4];
         if(typePair == 1) passAllCuts[TOPSEL] = false;
         if(typePair == 1 && shapeAnaType != 0) passAllCuts[SIGSEL] = false;
 	if     (shapeAnaType == 1 && theControlRegion == 0){
@@ -1551,6 +1551,37 @@ void wwAnalysis(
 	else if(shapeAnaType == 9){
           MVAVar =  TMath::Min((double)idJet.size(),2.499);
         }
+
+        // Variables for jes/jer systematics
+        if(shapeAnaType == 9){
+          MVAVarSyst[0] =  TMath::Min((double)idJesUp.size(),2.499);
+          MVAVarSyst[1] =  TMath::Min((double)idJesDown.size(),2.499);
+          MVAVarSyst[2] =  TMath::Min((double)idJerUp.size(),2.499);
+          MVAVarSyst[3] =  TMath::Min((double)idJerDown.size(),2.499);
+	  if     (theControlRegion == 0) {
+	    passSystCuts[JESUP]   = passAllCuts[SIGSEL];
+	    passSystCuts[JESDOWN] = passAllCuts[SIGSEL];
+            passSystCuts[JERUP]   = passAllCuts[SIGSEL];
+            passSystCuts[JERDOWN] = passAllCuts[SIGSEL];
+	  }
+	  else if(theControlRegion == 1) {
+	    passSystCuts[JESUP]   = passAllCuts[TOPSEL];
+	    passSystCuts[JESDOWN] = passAllCuts[TOPSEL];
+            passSystCuts[JERUP]   = passAllCuts[TOPSEL];
+            passSystCuts[JERDOWN] = passAllCuts[TOPSEL];
+	  }
+	  else if(theControlRegion == 2) {
+	    passSystCuts[JESUP]   = passAllCuts[DYSEL];
+	    passSystCuts[JESDOWN] = passAllCuts[DYSEL];
+            passSystCuts[JERUP]   = passAllCuts[DYSEL];
+            passSystCuts[JERDOWN] = passAllCuts[DYSEL];
+	  }
+	} else {
+          MVAVarSyst[0] = MVAVar;
+          MVAVarSyst[1] = MVAVar;
+          MVAVarSyst[2] = MVAVar;
+          MVAVarSyst[3] = MVAVar;
+	}
 
         // Avoid QCD scale and PDF weights that are anomalous high
         double maxQCDscale = (TMath::Abs((double)eventMonteCarlo.r1f2)+TMath::Abs((double)eventMonteCarlo.r1f5)+TMath::Abs((double)eventMonteCarlo.r2f1)+
@@ -1719,18 +1750,18 @@ void wwAnalysis(
             histo_qqWW_CMS_MVABTAGLBoundingBinsDown[genbin]  ->Fill(MVAVar,totalWeight*btaglCorr[1]);
 
 	  }
-          if(passSystCuts[JESUP])  histo_qqWW_CMS_MVAJESBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JESDOWN])histo_qqWW_CMS_MVAJESBoundingDown->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JESUP])  histo_qqWW_CMS_MVAJESBoundingUp  ->Fill(MVAVarSyst[0],totalWeight);
+          if(passSystCuts[JESDOWN])histo_qqWW_CMS_MVAJESBoundingDown->Fill(MVAVarSyst[1],totalWeight);
           if(passSystCuts[METUP])  histo_qqWW_CMS_MVAMETBoundingUp  ->Fill(MVAVar,totalWeight);
           if(passSystCuts[METDOWN])histo_qqWW_CMS_MVAMETBoundingDown->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERUP])  histo_qqWW_CMS_MVAJERBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERDOWN])histo_qqWW_CMS_MVAJERBoundingDown->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JESUP])  histo_qqWW_CMS_MVAJESBoundingBinsUp[genbin]  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JESDOWN])histo_qqWW_CMS_MVAJESBoundingBinsDown[genbin]->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JERUP])  histo_qqWW_CMS_MVAJERBoundingUp  ->Fill(MVAVarSyst[2],totalWeight);
+          if(passSystCuts[JERDOWN])histo_qqWW_CMS_MVAJERBoundingDown->Fill(MVAVarSyst[3],totalWeight);
+          if(passSystCuts[JESUP])  histo_qqWW_CMS_MVAJESBoundingBinsUp[genbin]  ->Fill(MVAVarSyst[0],totalWeight);
+          if(passSystCuts[JESDOWN])histo_qqWW_CMS_MVAJESBoundingBinsDown[genbin]->Fill(MVAVarSyst[1],totalWeight);
           if(passSystCuts[METUP])  histo_qqWW_CMS_MVAMETBoundingBinsUp[genbin]  ->Fill(MVAVar,totalWeight);
           if(passSystCuts[METDOWN])histo_qqWW_CMS_MVAMETBoundingBinsDown[genbin]->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERUP])  histo_qqWW_CMS_MVAJERBoundingBinsUp[genbin]  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERDOWN])histo_qqWW_CMS_MVAJERBoundingBinsDown[genbin]->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JERUP])  histo_qqWW_CMS_MVAJERBoundingBinsUp[genbin]  ->Fill(MVAVarSyst[2],totalWeight);
+          if(passSystCuts[JERDOWN])histo_qqWW_CMS_MVAJERBoundingBinsDown[genbin]->Fill(MVAVarSyst[3],totalWeight);
 	  if(passAllCuts[PRESEL]){
 	    histoPresel_qqWW->Fill(MVAVar,totalWeight);
 	    histoPresel_qqWWBins[genbin]->Fill(MVAVar,totalWeight);
@@ -1770,12 +1801,12 @@ void wwAnalysis(
              histo_ggWW_CMS_MVABTAGLBoundingDown  ->Fill(MVAVar,totalWeight*btaglCorr[1]);
 
 	  }
-          if(passSystCuts[JESUP])  histo_ggWW_CMS_MVAJESBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JESDOWN])histo_ggWW_CMS_MVAJESBoundingDown->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JESUP])  histo_ggWW_CMS_MVAJESBoundingUp  ->Fill(MVAVarSyst[0],totalWeight);
+          if(passSystCuts[JESDOWN])histo_ggWW_CMS_MVAJESBoundingDown->Fill(MVAVarSyst[1],totalWeight);
           if(passSystCuts[METUP])  histo_ggWW_CMS_MVAMETBoundingUp  ->Fill(MVAVar,totalWeight);
           if(passSystCuts[METDOWN])histo_ggWW_CMS_MVAMETBoundingDown->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERUP])  histo_ggWW_CMS_MVAJERBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERDOWN])histo_ggWW_CMS_MVAJERBoundingDown->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JERUP])  histo_ggWW_CMS_MVAJERBoundingUp  ->Fill(MVAVarSyst[2],totalWeight);
+          if(passSystCuts[JERDOWN])histo_ggWW_CMS_MVAJERBoundingDown->Fill(MVAVarSyst[3],totalWeight);
 	  if(passAllCuts[PRESEL]){
 	    histoPresel_ggWW->Fill(MVAVar,totalWeight);
             histo_ggWW_CMS_PUPRESELUp  ->Fill(MVAVar,totalWeight*puWeightUp  /puWeight);
@@ -1809,12 +1840,12 @@ void wwAnalysis(
              histo_Top_CMS_MVABTAGLBoundingUp  ->Fill(MVAVar,totalWeight*btaglCorr[0]);
              histo_Top_CMS_MVABTAGLBoundingDown->Fill(MVAVar,totalWeight*btaglCorr[1]);
 	  }
-          if(passSystCuts[JESUP])  histo_Top_CMS_MVAJESBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JESDOWN])histo_Top_CMS_MVAJESBoundingDown->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JESUP])  histo_Top_CMS_MVAJESBoundingUp  ->Fill(MVAVarSyst[0],totalWeight);
+          if(passSystCuts[JESDOWN])histo_Top_CMS_MVAJESBoundingDown->Fill(MVAVarSyst[1],totalWeight);
           if(passSystCuts[METUP])  histo_Top_CMS_MVAMETBoundingUp  ->Fill(MVAVar,totalWeight);
           if(passSystCuts[METDOWN])histo_Top_CMS_MVAMETBoundingDown->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERUP])  histo_Top_CMS_MVAJERBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERDOWN])histo_Top_CMS_MVAJERBoundingDown->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JERUP])  histo_Top_CMS_MVAJERBoundingUp  ->Fill(MVAVarSyst[2],totalWeight);
+          if(passSystCuts[JERDOWN])histo_Top_CMS_MVAJERBoundingDown->Fill(MVAVarSyst[3],totalWeight);
 	  if(passAllCuts[PRESEL]){
 	    histoPresel_Top->Fill(MVAVar,totalWeight);
             histo_Top_CMS_PUPRESELUp  ->Fill(MVAVar,totalWeight*puWeightUp  /puWeight);
@@ -1848,12 +1879,12 @@ void wwAnalysis(
              histo_DY_CMS_MVABTAGLBoundingUp  ->Fill(MVAVar,totalWeight*btaglCorr[0]);
              histo_DY_CMS_MVABTAGLBoundingDown->Fill(MVAVar,totalWeight*btaglCorr[1]);
 	  }
-          if(passSystCuts[JESUP])  histo_DY_CMS_MVAJESBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JESDOWN])histo_DY_CMS_MVAJESBoundingDown->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JESUP])  histo_DY_CMS_MVAJESBoundingUp  ->Fill(MVAVarSyst[0],totalWeight);
+          if(passSystCuts[JESDOWN])histo_DY_CMS_MVAJESBoundingDown->Fill(MVAVarSyst[1],totalWeight);
           if(passSystCuts[METUP])  histo_DY_CMS_MVAMETBoundingUp  ->Fill(MVAVar,totalWeight);
           if(passSystCuts[METDOWN])histo_DY_CMS_MVAMETBoundingDown->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERUP])  histo_DY_CMS_MVAJERBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERDOWN])histo_DY_CMS_MVAJERBoundingDown->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JERUP])  histo_DY_CMS_MVAJERBoundingUp  ->Fill(MVAVarSyst[2],totalWeight);
+          if(passSystCuts[JERDOWN])histo_DY_CMS_MVAJERBoundingDown->Fill(MVAVarSyst[3],totalWeight);
 	  if(passAllCuts[PRESEL]){
 	    histoPresel_DY->Fill(MVAVar,totalWeight);
             histo_DY_CMS_PUPRESELUp  ->Fill(MVAVar,totalWeight*puWeightUp  /puWeight);
@@ -1887,12 +1918,12 @@ void wwAnalysis(
              histo_VV_CMS_MVABTAGLBoundingUp  ->Fill(MVAVar,totalWeight*btaglCorr[0]);
              histo_VV_CMS_MVABTAGLBoundingDown->Fill(MVAVar,totalWeight*btaglCorr[1]);
 	  }
-          if(passSystCuts[JESUP])  histo_VV_CMS_MVAJESBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JESDOWN])histo_VV_CMS_MVAJESBoundingDown->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JESUP])  histo_VV_CMS_MVAJESBoundingUp  ->Fill(MVAVarSyst[0],totalWeight);
+          if(passSystCuts[JESDOWN])histo_VV_CMS_MVAJESBoundingDown->Fill(MVAVarSyst[1],totalWeight);
           if(passSystCuts[METUP])  histo_VV_CMS_MVAMETBoundingUp  ->Fill(MVAVar,totalWeight);
           if(passSystCuts[METDOWN])histo_VV_CMS_MVAMETBoundingDown->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERUP])  histo_VV_CMS_MVAJERBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERDOWN])histo_VV_CMS_MVAJERBoundingDown->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JERUP])  histo_VV_CMS_MVAJERBoundingUp  ->Fill(MVAVarSyst[2],totalWeight);
+          if(passSystCuts[JERDOWN])histo_VV_CMS_MVAJERBoundingDown->Fill(MVAVarSyst[3],totalWeight);
 	  if(passAllCuts[PRESEL]){
 	    histoPresel_VV->Fill(MVAVar,totalWeight);
             histo_VV_CMS_PUPRESELUp  ->Fill(MVAVar,totalWeight*puWeightUp  /puWeight);
@@ -1926,12 +1957,12 @@ void wwAnalysis(
              histo_VVV_CMS_MVABTAGLBoundingUp  ->Fill(MVAVar,totalWeight*btaglCorr[0]);
              histo_VVV_CMS_MVABTAGLBoundingDown->Fill(MVAVar,totalWeight*btaglCorr[1]);
 	  }
-          if(passSystCuts[JESUP])  histo_VVV_CMS_MVAJESBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JESDOWN])histo_VVV_CMS_MVAJESBoundingDown->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JESUP])  histo_VVV_CMS_MVAJESBoundingUp  ->Fill(MVAVarSyst[0],totalWeight);
+          if(passSystCuts[JESDOWN])histo_VVV_CMS_MVAJESBoundingDown->Fill(MVAVarSyst[1],totalWeight);
           if(passSystCuts[METUP])  histo_VVV_CMS_MVAMETBoundingUp  ->Fill(MVAVar,totalWeight);
           if(passSystCuts[METDOWN])histo_VVV_CMS_MVAMETBoundingDown->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERUP])  histo_VVV_CMS_MVAJERBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERDOWN])histo_VVV_CMS_MVAJERBoundingDown->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JERUP])  histo_VVV_CMS_MVAJERBoundingUp  ->Fill(MVAVarSyst[2],totalWeight);
+          if(passSystCuts[JERDOWN])histo_VVV_CMS_MVAJERBoundingDown->Fill(MVAVarSyst[3],totalWeight);
 	  if(passAllCuts[PRESEL]){
 	    histoPresel_VVV->Fill(MVAVar,totalWeight);
             histo_VVV_CMS_PUPRESELUp  ->Fill(MVAVar,totalWeight*puWeightUp  /puWeight);
@@ -1965,12 +1996,12 @@ void wwAnalysis(
              histo_WG_CMS_MVABTAGLBoundingUp  ->Fill(MVAVar,totalWeight*btaglCorr[0]);
              histo_WG_CMS_MVABTAGLBoundingDown->Fill(MVAVar,totalWeight*btaglCorr[1]);
 	  }
-          if(passSystCuts[JESUP])  histo_WG_CMS_MVAJESBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JESDOWN])histo_WG_CMS_MVAJESBoundingDown->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JESUP])  histo_WG_CMS_MVAJESBoundingUp  ->Fill(MVAVarSyst[0],totalWeight);
+          if(passSystCuts[JESDOWN])histo_WG_CMS_MVAJESBoundingDown->Fill(MVAVarSyst[1],totalWeight);
           if(passSystCuts[METUP])  histo_WG_CMS_MVAMETBoundingUp  ->Fill(MVAVar,totalWeight);
           if(passSystCuts[METDOWN])histo_WG_CMS_MVAMETBoundingDown->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERUP])  histo_WG_CMS_MVAJERBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERDOWN])histo_WG_CMS_MVAJERBoundingDown->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JERUP])  histo_WG_CMS_MVAJERBoundingUp  ->Fill(MVAVarSyst[2],totalWeight);
+          if(passSystCuts[JERDOWN])histo_WG_CMS_MVAJERBoundingDown->Fill(MVAVarSyst[3],totalWeight);
 	  if(passAllCuts[PRESEL]){
 	    histoPresel_WG->Fill(MVAVar,totalWeight);
             histo_WG_CMS_PUPRESELUp  ->Fill(MVAVar,totalWeight*puWeightUp  /puWeight);
@@ -2004,12 +2035,12 @@ void wwAnalysis(
              histo_WGS_CMS_MVABTAGLBoundingUp  ->Fill(MVAVar,totalWeight*btaglCorr[0]);
              histo_WGS_CMS_MVABTAGLBoundingDown->Fill(MVAVar,totalWeight*btaglCorr[1]);
 	  }
-          if(passSystCuts[JESUP])  histo_WGS_CMS_MVAJESBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JESDOWN])histo_WGS_CMS_MVAJESBoundingDown->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JESUP])  histo_WGS_CMS_MVAJESBoundingUp  ->Fill(MVAVarSyst[0],totalWeight);
+          if(passSystCuts[JESDOWN])histo_WGS_CMS_MVAJESBoundingDown->Fill(MVAVarSyst[1],totalWeight);
           if(passSystCuts[METUP])  histo_WGS_CMS_MVAMETBoundingUp  ->Fill(MVAVar,totalWeight);
           if(passSystCuts[METDOWN])histo_WGS_CMS_MVAMETBoundingDown->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERUP])  histo_WGS_CMS_MVAJERBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERDOWN])histo_WGS_CMS_MVAJERBoundingDown->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JERUP])  histo_WGS_CMS_MVAJERBoundingUp  ->Fill(MVAVarSyst[2],totalWeight);
+          if(passSystCuts[JERDOWN])histo_WGS_CMS_MVAJERBoundingDown->Fill(MVAVarSyst[3],totalWeight);
 	  if(passAllCuts[PRESEL]){
 	    histoPresel_WGS->Fill(MVAVar,totalWeight);
             histo_WGS_CMS_PUPRESELUp  ->Fill(MVAVar,totalWeight*puWeightUp  /puWeight);
@@ -2053,12 +2084,12 @@ void wwAnalysis(
              histo_Higgs_CMS_MVABTAGLBoundingUp  ->Fill(MVAVar,totalWeight*btaglCorr[0]);
              histo_Higgs_CMS_MVABTAGLBoundingDown->Fill(MVAVar,totalWeight*btaglCorr[1]);
 	  }
-          if(passSystCuts[JESUP])  histo_Higgs_CMS_MVAJESBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JESDOWN])histo_Higgs_CMS_MVAJESBoundingDown->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JESUP])  histo_Higgs_CMS_MVAJESBoundingUp  ->Fill(MVAVarSyst[0],totalWeight);
+          if(passSystCuts[JESDOWN])histo_Higgs_CMS_MVAJESBoundingDown->Fill(MVAVarSyst[1],totalWeight);
           if(passSystCuts[METUP])  histo_Higgs_CMS_MVAMETBoundingUp  ->Fill(MVAVar,totalWeight);
           if(passSystCuts[METDOWN])histo_Higgs_CMS_MVAMETBoundingDown->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERUP])  histo_Higgs_CMS_MVAJERBoundingUp  ->Fill(MVAVar,totalWeight);
-          if(passSystCuts[JERDOWN])histo_Higgs_CMS_MVAJERBoundingDown->Fill(MVAVar,totalWeight);
+          if(passSystCuts[JERUP])  histo_Higgs_CMS_MVAJERBoundingUp  ->Fill(MVAVarSyst[2],totalWeight);
+          if(passSystCuts[JERDOWN])histo_Higgs_CMS_MVAJERBoundingDown->Fill(MVAVarSyst[3],totalWeight);
 	  if(passAllCuts[PRESEL]){
 	    histoPresel_Higgs->Fill(MVAVar,totalWeight);
             histo_Higgs_CMS_PUPRESELUp  ->Fill(MVAVar,totalWeight*puWeightUp  /puWeight);
@@ -3113,7 +3144,7 @@ void wwAnalysis(
       else {
       newcardShape << Form("CMS_ww_Topnorm_jet%d rateParam  * Top 1 [0.1,10]\n",nb-1);
       }
-      if(useDYCR == true) {
+      if(useDYCR == true && shapeAnaType != 9) {
       newcardShape << Form("CMS_ww_DYnorm_jet%d rateParam  * DY 1 [0.1,10]\n",nJetsType);         
       }
       newcardShape << Form("QCDscale_DY		                   lnN    -   %7.5f   -     -	  -	-     -    -	-    -     -     -     -     -     -     -     -     -     -\n",systQCDScale[3]);	
