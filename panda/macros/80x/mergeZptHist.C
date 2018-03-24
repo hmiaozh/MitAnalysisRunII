@@ -551,6 +551,7 @@ TH1D *hDIWWMLL[nFiles];     TH1D *hDIWWMLL_PDF[nFiles];	   TH1D *hDIWWMLL_QCD[nF
 TH1D *hDIWWPTL1[nFiles];    TH1D *hDIWWPTL1_PDF[nFiles];   TH1D *hDIWWPTL1_QCD[nFiles];	 
 TH1D *hDIWWPTL2[nFiles];    TH1D *hDIWWPTL2_PDF[nFiles];   TH1D *hDIWWPTL2_QCD[nFiles];   
 TH1D *hDIWWDPHILL[nFiles];  TH1D *hDIWWDPHILL_PDF[nFiles]; TH1D *hDIWWDPHILL_QCD[nFiles];   
+TH1D *hDIWWNJET[nFiles];    TH1D *hDIWWNJET_PDF[nFiles];   TH1D *hDIWWNJET_QCD[nFiles];   
 
 for(int i=0; i<nFiles; i++){
   hDITotalMCWeight[i] = (TH1D*)_file[i]->Get("hDTotalMCWeight");	 
@@ -559,48 +560,57 @@ for(int i=0; i<nFiles; i++){
   hDIWWPTL1[i]      = (TH1D*)_file[i]->Get("hDWWPTL1");   hDIWWPTL1[i]->Sumw2();   hDIWWPTL1[i]    ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
   hDIWWPTL2[i]      = (TH1D*)_file[i]->Get("hDWWPTL2");   hDIWWPTL2[i]->Sumw2();   hDIWWPTL2[i]    ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
   hDIWWDPHILL[i]    = (TH1D*)_file[i]->Get("hDWWDPHILL"); hDIWWDPHILL[i]->Sumw2(); hDIWWDPHILL[i]  ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
+  hDIWWNJET[i]      = (TH1D*)_file[i]->Get("hDWWNJET");   hDIWWNJET[i]->Sumw2();   hDIWWNJET[i]    ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
 
   hDIWWMLL_PDF[i]       = (TH1D*)_file[i]->Get("hDWWMLL_PDF");    hDIWWMLL_PDF[i]     ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
   hDIWWPTL1_PDF[i]      = (TH1D*)_file[i]->Get("hDWWPTL1_PDF");   hDIWWPTL1_PDF[i]    ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
   hDIWWPTL2_PDF[i]      = (TH1D*)_file[i]->Get("hDWWPTL2_PDF");   hDIWWPTL2_PDF[i]    ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
   hDIWWDPHILL_PDF[i]    = (TH1D*)_file[i]->Get("hDWWDPHILL_PDF"); hDIWWDPHILL_PDF[i]  ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
+  hDIWWNJET_PDF[i]      = (TH1D*)_file[i]->Get("hDWWNJET_PDF");   hDIWWNJET_PDF[i]    ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
 
   hDIWWMLL_QCD[i]       = (TH1D*)_file[i]->Get("hDWWMLL_QCD");    hDIWWMLL_QCD[i]     ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
-  hDIWWPTL1_QCD[i]      = (TH1D*)_file[i]->Get("hDWWPTL1_QCD");   hDIWWPTL1_QCD[i]	->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
+  hDIWWPTL1_QCD[i]      = (TH1D*)_file[i]->Get("hDWWPTL1_QCD");   hDIWWPTL1_QCD[i]    ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
   hDIWWPTL2_QCD[i]      = (TH1D*)_file[i]->Get("hDWWPTL2_QCD");   hDIWWPTL2_QCD[i]    ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
   hDIWWDPHILL_QCD[i]    = (TH1D*)_file[i]->Get("hDWWDPHILL_QCD"); hDIWWDPHILL_QCD[i]  ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
+  hDIWWNJET_QCD[i]      = (TH1D*)_file[i]->Get("hDWWNJET_QCD");   hDIWWNJET_QCD[i]    ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
 }
 
 TH1D *hDWWMLL          = (TH1D*)hDIWWMLL     [0]->Clone();
 TH1D *hDWWPTL1         = (TH1D*)hDIWWPTL1    [0]->Clone();
 TH1D *hDWWPTL2         = (TH1D*)hDIWWPTL2    [0]->Clone();
 TH1D *hDWWDPHILL       = (TH1D*)hDIWWDPHILL  [0]->Clone();
+TH1D *hDWWNJET         = (TH1D*)hDIWWNJET    [0]->Clone();
 
 TH1D *hDWWMLL_PDF      = (TH1D*)hDIWWMLL_PDF     [0]->Clone();
 TH1D *hDWWPTL1_PDF     = (TH1D*)hDIWWPTL1_PDF    [0]->Clone();
 TH1D *hDWWPTL2_PDF     = (TH1D*)hDIWWPTL2_PDF    [0]->Clone();
 TH1D *hDWWDPHILL_PDF   = (TH1D*)hDIWWDPHILL_PDF  [0]->Clone();
+TH1D *hDWWNJET_PDF     = (TH1D*)hDIWWNJET_PDF    [0]->Clone();
 
 TH1D *hDWWMLL_QCD      = (TH1D*)hDIWWMLL_QCD     [0]->Clone();
 TH1D *hDWWPTL1_QCD     = (TH1D*)hDIWWPTL1_QCD    [0]->Clone();
 TH1D *hDWWPTL2_QCD     = (TH1D*)hDIWWPTL2_QCD    [0]->Clone();
 TH1D *hDWWDPHILL_QCD   = (TH1D*)hDIWWDPHILL_QCD  [0]->Clone();
+TH1D *hDWWNJET_QCD     = (TH1D*)hDIWWNJET_QCD    [0]->Clone();
 
 for(int i=1; i<nFiles; i++){
   hDWWMLL   	->Add(hDIWWMLL	    [i]);   
   hDWWPTL1   	->Add(hDIWWPTL1	    [i]);   
   hDWWPTL2  	->Add(hDIWWPTL2     [i]);  
   hDWWDPHILL	->Add(hDIWWDPHILL   [i]);  
+  hDWWNJET	->Add(hDIWWNJET     [i]);  
 
   hDWWMLL_PDF       ->Add(hDIWWMLL_PDF       [i]);   
   hDWWPTL1_PDF      ->Add(hDIWWPTL1_PDF      [i]);   
   hDWWPTL2_PDF      ->Add(hDIWWPTL2_PDF      [i]);  
   hDWWDPHILL_PDF    ->Add(hDIWWDPHILL_PDF    [i]);  
+  hDWWNJET_PDF      ->Add(hDIWWNJET_PDF      [i]);  
 
   hDWWMLL_QCD       ->Add(hDIWWMLL_QCD       [i]);   
   hDWWPTL1_QCD      ->Add(hDIWWPTL1_QCD      [i]);   
   hDWWPTL2_QCD      ->Add(hDIWWPTL2_QCD      [i]);  
   hDWWDPHILL_QCD    ->Add(hDIWWDPHILL_QCD    [i]);  
+  hDWWNJET_QCD      ->Add(hDIWWNJET_QCD      [i]);  
 }
 
 TFile myOutputFile("genWW.root","RECREATE");
@@ -608,16 +618,19 @@ TFile myOutputFile("genWW.root","RECREATE");
   hDWWPTL1	->Write(); 
   hDWWPTL2	->Write();
   hDWWDPHILL	->Write();
+  hDWWNJET	->Write();
 
   hDWWMLL_PDF     ->Write(); 
   hDWWPTL1_PDF    ->Write(); 
   hDWWPTL2_PDF    ->Write();
   hDWWDPHILL_PDF  ->Write();
+  hDWWNJET_PDF    ->Write();
 
   hDWWMLL_QCD     ->Write(); 
   hDWWPTL1_QCD    ->Write(); 
   hDWWPTL2_QCD    ->Write();
   hDWWDPHILL_QCD  ->Write();
+  hDWWNJET_QCD    ->Write();
 myOutputFile.Close();
 }
 }
