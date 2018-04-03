@@ -223,6 +223,11 @@ void wwAnalysis(
 
   LeptonScaleLookup trigLookup(Form("MitAnalysisRunII/data/76x/scalefactors_hww.root"));
 
+  TFile *fWWEWKCorrFile = TFile::Open(Form("MitAnalysisRunII/data/80x/WWEWKCorr/WW_EWK_Corr.root"));
+  TH1D *fhDWWEWKCorr = (TH1D*)(fWWEWKCorrFile->Get("ratio_Ptlm")); assert(fhDWWEWKCorr); fhDWWEWKCorr->SetDirectory(0);
+  //TH1D *fhDWWEWKCorr = (TH1D*)(fWWEWKCorrFile->Get("ratio_Mll")); assert(fhDWWEWKCorr); fhDWWEWKCorr->SetDirectory(0);
+  delete fWWEWKCorrFile;
+
   TFile *fPUFile = TFile::Open(Form("%s",puPath.Data()));
   TH1D *fhDPU     = (TH1D*)(fPUFile->Get("puWeights"));     assert(fhDPU);    fhDPU    ->SetDirectory(0);
   TH1D *fhDPUUp   = (TH1D*)(fPUFile->Get("puWeightsUp"));   assert(fhDPUUp);  fhDPUUp  ->SetDirectory(0);
@@ -478,6 +483,13 @@ void wwAnalysis(
   TH1D* histo_WjetsE_CMS_MVAWjetsEStatBoundingDown = new TH1D( Form("histo_WjetsE_CMS_ww%s_MVAWjetsEStatBounding_%sDown",finalStateName,ECMsb.Data()), Form("histo_WjetsE_CMS_ww%s_MVAWjetsEStatBounding_%sDown",finalStateName,ECMsb.Data()), nRecBins, xRecbins); histo_WjetsE_CMS_MVAWjetsEStatBoundingDown->Sumw2();
   TH1D* histo_Higgs_CMS_MVAHiggsStatBoundingUp     = new TH1D( Form("histo_Higgs_CMS_ww%s_MVAHiggsStatBounding_%sUp"  ,finalStateName,ECMsb.Data()), Form("histo_Higgs_CMS_ww%s_MVAHiggsStatBounding_%sUp"  ,finalStateName,ECMsb.Data()), nRecBins, xRecbins); histo_Higgs_CMS_MVAHiggsStatBoundingUp  ->Sumw2();
   TH1D* histo_Higgs_CMS_MVAHiggsStatBoundingDown   = new TH1D( Form("histo_Higgs_CMS_ww%s_MVAHiggsStatBounding_%sDown",finalStateName,ECMsb.Data()), Form("histo_Higgs_CMS_ww%s_MVAHiggsStatBounding_%sDown",finalStateName,ECMsb.Data()), nRecBins, xRecbins); histo_Higgs_CMS_MVAHiggsStatBoundingDown->Sumw2();
+
+  TH1D* histo_qqWW_EWKNoCorr       = new TH1D( Form("histo_qqWW_EWKNoCorr"),   Form("histo_qqWW_EWKNoCorr"),   nRecBins, xRecbins); histo_qqWW_EWKNoCorr  ->Sumw2();
+  TH1D* histo_qqWW_EWKCorrUp       = new TH1D( Form("histo_qqWW_EWKCorrUp"),   Form("histo_qqWW_EWKCorrUp"),   nRecBins, xRecbins); histo_qqWW_EWKCorrUp  ->Sumw2();
+  TH1D* histo_qqWW_EWKCorrDown     = new TH1D( Form("histo_qqWW_EWKCorrDown"), Form("histo_qqWW_EWKCorrDown"), nRecBins, xRecbins); histo_qqWW_EWKCorrDown->Sumw2();
+  TH1D* histo_ggWW_EWKNoCorr       = new TH1D( Form("histo_ggWW_EWKNoCorr"),   Form("histo_ggWW_EWKNoCorr"),   nRecBins, xRecbins); histo_ggWW_EWKNoCorr  ->Sumw2();
+  TH1D* histo_ggWW_EWKCorrUp       = new TH1D( Form("histo_ggWW_EWKCorrUp"),   Form("histo_ggWW_EWKCorrUp"),   nRecBins, xRecbins); histo_ggWW_EWKCorrUp  ->Sumw2();
+  TH1D* histo_ggWW_EWKCorrDown     = new TH1D( Form("histo_ggWW_EWKCorrDown"), Form("histo_ggWW_EWKCorrDown"), nRecBins, xRecbins); histo_ggWW_EWKCorrDown->Sumw2();
 
   TH1D* histo_qqWW_CMS_MVAWW_nlo       = new TH1D( Form("histo_qqWW_CMS_MVAWW_nlo"), Form("histo_qqWW_CMS_MVAWW_nlo"), nRecBins, xRecbins); histo_qqWW_CMS_MVAWW_nlo->Sumw2();
   TH1D* histo_qqWW_CMS_MVAWW_qup_nlo   = new TH1D( Form("histo_qqWW_CMS_MVAWW_qup_nlo"), Form("histo_qqWW_CMS_MVAWW_qup_nlo"), nRecBins, xRecbins); histo_qqWW_CMS_MVAWW_qup_nlo->Sumw2();
@@ -768,6 +780,10 @@ void wwAnalysis(
   TH1D* histo_Higgs_CMS_PUBoundingDown 	         = new TH1D( Form("histo_Higgs_CMS_puDown"), Form("histo_Higgs_CMS_puDown"), nRecBins, xRecbins); histo_Higgs_CMS_PUBoundingDown->Sumw2();
 
   // Histograms for differential cross section measurements
+  TH1D* histo_qqWW_EWKCorrUpBins[nGenBins];
+  TH1D* histo_qqWW_EWKCorrDownBins[nGenBins];
+  TH1D* histo_ggWW_EWKCorrUpBins[nGenBins];
+  TH1D* histo_ggWW_EWKCorrDownBins[nGenBins];
   TH1D* histo_qqWW_CMS_MVAWW_nloBins[nGenBins];
   TH1D* histo_qqWW_CMS_MVAWW_qup_nloBins[nGenBins];
   TH1D* histo_qqWW_CMS_MVAWW_qdown_nloBins[nGenBins];
@@ -827,6 +843,10 @@ void wwAnalysis(
   TH1D* histo_ggWW_CMS_PUBoundingBinsDown[nGenBins];
 
   for(int i=0; i<nGenBins; i++){
+    histo_qqWW_EWKCorrUpBins[i]	  = new TH1D( Form("histo_qqWW_EWKCorrUpBins_%d",i),   Form("histo_qqWW_EWKCorrUpBins_%d",i),   nRecBins, xRecbins); histo_qqWW_EWKCorrUpBins[i]  ->Sumw2();
+    histo_qqWW_EWKCorrDownBins[i] = new TH1D( Form("histo_qqWW_EWKCorrDownBins_%d",i), Form("histo_qqWW_EWKCorrDownBins_%d",i), nRecBins, xRecbins); histo_qqWW_EWKCorrDownBins[i]->Sumw2();
+    histo_ggWW_EWKCorrUpBins[i]	  = new TH1D( Form("histo_ggWW_EWKCorrUpBins_%d",i),   Form("histo_ggWW_EWKCorrUpBins_%d",i),   nRecBins, xRecbins); histo_ggWW_EWKCorrUpBins[i]  ->Sumw2();
+    histo_ggWW_EWKCorrDownBins[i] = new TH1D( Form("histo_ggWW_EWKCorrDownBins_%d",i), Form("histo_ggWW_EWKCorrDownBins_%d",i), nRecBins, xRecbins); histo_ggWW_EWKCorrDownBins[i]->Sumw2();
     histoPresel_qqWWBins[i] = (TH1D*) histoMVA->Clone(Form("histoPresel_qqWWBins_%d",i)); 
     histoPresel_ggWWBins[i] = (TH1D*) histoMVA->Clone(Form("histoPresel_ggWWBins_%d",i));
     histo_qqWWBins[i] = (TH1D*) histoMVA->Clone(Form("histo_qqWWBins_%d",i)); 
@@ -1301,7 +1321,11 @@ void wwAnalysis(
       vector<int>wBoson;
       vector<int>zBoson;
       int numberQuarks[2] = {0,0};
+      TLorentzVector lepNegGen(0,0,0,0);
       for(int ngen0=0; ngen0<eventMonteCarlo.p4->GetEntriesFast(); ngen0++) {
+
+        if((int)(*eventMonteCarlo.pdgId)[ngen0] == 11 || (int)(*eventMonteCarlo.pdgId)[ngen0] == 13) lepNegGen = ( *(TLorentzVector*)(eventMonteCarlo.p4->At(ngen0)) );
+
         if(TMath::Abs((int)(*eventMonteCarlo.pdgId)[ngen0]) == 4 && ((TLorentzVector*)(*eventMonteCarlo.p4)[ngen0])->Pt() > 15) numberQuarks[0]++;
         if(TMath::Abs((int)(*eventMonteCarlo.pdgId)[ngen0]) == 5 && ((TLorentzVector*)(*eventMonteCarlo.p4)[ngen0])->Pt() > 15) numberQuarks[1]++;
         if(TMath::Abs((int)(*eventMonteCarlo.pdgId)[ngen0]) == 24) {
@@ -1321,6 +1345,13 @@ void wwAnalysis(
       for(int ngen=0; ngen<eventMonteCarlo.p4->GetEntriesFast(); ngen++) {
 	  if(isGenDupl[ngen] == 1) continue;
           genLep++;
+      }
+
+      double theEWKCorr = 1.0; double theEWKCorrE = 1.0;
+      if((infilecatv[ifile] == 1 || infilecatv[ifile] == 2) && lepNegGen.Pt() > 0){
+        Int_t EWKValbin = fhDWWEWKCorr->GetXaxis()->FindBin(TMath::Min(lepNegGen.Pt(),499.999));
+	if(EWKValbin >= 0) theEWKCorr  = fhDWWEWKCorr->GetBinContent(EWKValbin);
+	if(EWKValbin >= 0) theEWKCorrE = 1.0+fhDWWEWKCorr->GetBinError(EWKValbin)/fhDWWEWKCorr->GetBinContent(EWKValbin);
       }
 
       double thePtwwWeight[5] = {1.0,1.0,1.0,1.0,1.0};
@@ -1428,7 +1459,7 @@ void wwAnalysis(
       }
       double mcWeight = eventMonteCarlo.mcWeight;
       if(infilecatv[ifile] == 0) mcWeight = 1.0;
-      double totalWeight = mcWeight*theLumi*puWeight*effSF*fakeSF*theMCPrescale*trigEff*thePtwwWeight[0];
+      double totalWeight = mcWeight*theLumi*puWeight*effSF*fakeSF*theMCPrescale*trigEff*thePtwwWeight[0]*theEWKCorr;
       //double totalWeight = mcWeight*theLumi*puWeight*effSF*fakeSF*theMCPrescale*trigEff;
 
       // top-quark estimation
@@ -1622,6 +1653,7 @@ void wwAnalysis(
 	  vector<int> idGenLep;
 	  for(int ngen0=0; ngen0<eventMonteCarlo.p4->GetEntriesFast(); ngen0++) {
 	    if(TMath::Abs((int)(*eventMonteCarlo.pdgId)[ngen0]) != 11 && TMath::Abs((int)(*eventMonteCarlo.pdgId)[ngen0]) != 13) continue;
+
 	    bool isGoodFlags = ((*eventMonteCarlo.flags)[ngen0] & BareMonteCarlo::PromptFinalState) == BareMonteCarlo::PromptFinalState ||
           		       ((*eventMonteCarlo.flags)[ngen0] & BareMonteCarlo::DirectPromptTauDecayProductFinalState) == BareMonteCarlo::DirectPromptTauDecayProductFinalState;
 	    if(!isGoodFlags) continue;
@@ -1634,6 +1666,7 @@ void wwAnalysis(
                ((TLorentzVector*)(*eventMonteCarlo.p4)[ngen0])->Pt() > 20;
 	    if(passSelLepton) {
 	      countSelectedGenLeptons++; dilepGen = dilepGen + ( *(TLorentzVector*)(eventMonteCarlo.p4->At(ngen0)) );
+
 	      if      (((TLorentzVector*)(*eventMonteCarlo.p4)[ngen0])->Pt() > lepMaxGen.Pt()) {
 	        lepMinGen = lepMaxGen;
 		lepMaxGen = ( *(TLorentzVector*)(eventMonteCarlo.p4->At(ngen0)) );
@@ -1686,9 +1719,17 @@ void wwAnalysis(
 	  else if(shapeAnaType >  5 && 
 	          shapeAnaType != 9 && passFiducial[1] == false) genbin = nGenBins - 1;
 	  // End gen fiducial selection
+
 	  if((passAllCuts[SIGSEL] && theControlRegion == 0) || (passAllCuts[TOPSEL] && theControlRegion == 1) || (passAllCuts[DYSEL] && theControlRegion == 2)) {
 	    histo_qqWW->Fill(MVAVar,totalWeight);
 	    histo_qqWWBins[genbin]->Fill(MVAVar,totalWeight);
+
+            histo_qqWW_EWKNoCorr  ->Fill(MVAVar,totalWeight/theEWKCorr);
+
+            histo_qqWW_EWKCorrUp  ->Fill(MVAVar,totalWeight*theEWKCorrE);
+            histo_qqWW_EWKCorrDown->Fill(MVAVar,totalWeight/theEWKCorrE);
+            histo_qqWW_EWKCorrUpBins[genbin]  ->Fill(MVAVar,totalWeight*theEWKCorrE);
+            histo_qqWW_EWKCorrDownBins[genbin]->Fill(MVAVar,totalWeight/theEWKCorrE);
 
             histo_qqWW_CMS_MVAWW_nlo	  ->Fill(MVAVar,totalWeight);
             histo_qqWW_CMS_MVAWW_qup_nlo  ->Fill(MVAVar,totalWeight*thePtwwWeight[1]);
@@ -1774,6 +1815,11 @@ void wwAnalysis(
         else if(theCategory == 2){ // ggWW
 	  if((passAllCuts[SIGSEL] && theControlRegion == 0) || (passAllCuts[TOPSEL] && theControlRegion == 1) || (passAllCuts[DYSEL] && theControlRegion == 2)) {
 	     histo_ggWW->Fill(MVAVar,totalWeight);
+
+             histo_ggWW_EWKNoCorr  ->Fill(MVAVar,totalWeight/theEWKCorr);
+
+             histo_ggWW_EWKCorrUp  ->Fill(MVAVar,totalWeight*theEWKCorrE);
+             histo_ggWW_EWKCorrDown->Fill(MVAVar,totalWeight/theEWKCorrE);
 
 	     histo_ggWW_CMS_QCDScaleBounding[0]->Fill(MVAVar,totalWeight*TMath::Abs((double)eventMonteCarlo.r1f2)/maxQCDscale);
 	     histo_ggWW_CMS_QCDScaleBounding[1]->Fill(MVAVar,totalWeight*TMath::Abs((double)eventMonteCarlo.r1f5)/maxQCDscale);
@@ -2554,6 +2600,19 @@ void wwAnalysis(
   histo_qqWW_CMS_MVAWW_sup_nloBins[nb]	->Write(); for(int i=1; i<=histo_qqWW->GetNbinsX(); i++) {if(histo_qqWWBins[nb]->GetBinContent(i)>0)printf("%5.1f ",histo_qqWW_CMS_MVAWW_sup_nloBins[nb]  ->GetBinContent(i)/histo_qqWWBins[nb]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
   histo_qqWW_CMS_MVAWW_sdown_nloBins[nb]->Write(); for(int i=1; i<=histo_qqWW->GetNbinsX(); i++) {if(histo_qqWWBins[nb]->GetBinContent(i)>0)printf("%5.1f ",histo_qqWW_CMS_MVAWW_sdown_nloBins[nb]->GetBinContent(i)/histo_qqWWBins[nb]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
   }
+  printf("uncertainties qqWW EWK Corr\n");
+  histo_qqWW_EWKNoCorr	->Write(); for(int i=1; i<=histo_qqWW->GetNbinsX(); i++) {if(histo_qqWW->GetBinContent(i)>0)printf("%5.1f ",histo_qqWW_EWKNoCorr  ->GetBinContent(i)/histo_qqWW->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+  histo_qqWW_EWKCorrUp	->Write(); for(int i=1; i<=histo_qqWW->GetNbinsX(); i++) {if(histo_qqWW->GetBinContent(i)>0)printf("%5.1f ",histo_qqWW_EWKCorrUp  ->GetBinContent(i)/histo_qqWW->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+  histo_qqWW_EWKCorrDown->Write(); for(int i=1; i<=histo_qqWW->GetNbinsX(); i++) {if(histo_qqWW->GetBinContent(i)>0)printf("%5.1f ",histo_qqWW_EWKCorrDown->GetBinContent(i)/histo_qqWW->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+  printf("-----------------------------\n");
+  for(int nb=0; nb<nGenBins; nb++){
+  histo_qqWW_EWKCorrUpBins[nb]	->Write(); for(int i=1; i<=histo_qqWW->GetNbinsX(); i++) {if(histo_qqWWBins[nb]->GetBinContent(i)>0)printf("%5.1f ",histo_qqWW_EWKCorrUpBins[nb]  ->GetBinContent(i)/histo_qqWWBins[nb]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+  histo_qqWW_EWKCorrDownBins[nb]->Write(); for(int i=1; i<=histo_qqWW->GetNbinsX(); i++) {if(histo_qqWWBins[nb]->GetBinContent(i)>0)printf("%5.1f ",histo_qqWW_EWKCorrDownBins[nb]->GetBinContent(i)/histo_qqWWBins[nb]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+  }
+  printf("uncertainties ggWW EWK Corr\n");
+  histo_ggWW_EWKNoCorr	->Write(); for(int i=1; i<=histo_ggWW->GetNbinsX(); i++) {if(histo_ggWW->GetBinContent(i)>0)printf("%5.1f ",histo_ggWW_EWKNoCorr  ->GetBinContent(i)/histo_ggWW->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+  histo_ggWW_EWKCorrUp	->Write(); for(int i=1; i<=histo_ggWW->GetNbinsX(); i++) {if(histo_ggWW->GetBinContent(i)>0)printf("%5.1f ",histo_ggWW_EWKCorrUp  ->GetBinContent(i)/histo_ggWW->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+  histo_ggWW_EWKCorrDown->Write(); for(int i=1; i<=histo_ggWW->GetNbinsX(); i++) {if(histo_ggWW->GetBinContent(i)>0)printf("%5.1f ",histo_ggWW_EWKCorrDown->GetBinContent(i)/histo_ggWW->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
   outFileLimits->Close();
                         // qqWW   ggWW   hWW
   double theUEPSUp  [3] = {0.962/0.975, 0.962/0.975, 0.973/0.982};
@@ -2973,6 +3032,20 @@ void wwAnalysis(
       if(histo_qqWWBins[i]->GetBinContent(nb) > 0 && histo_qqWW_CMS_MVAWW_sdown_nloBins[i]->GetBinContent(nb) > 0) systWWNNLOBinsDown[1][i] = histo_qqWW_CMS_MVAWW_sdown_nloBins[i]->GetBinContent(nb)/histo_qqWWBins[i]->GetBinContent(nb)/ww_norm_unc_ptwei[3];
     }
 
+    double systWWEWKCorrUp[2]   = {1.0,1.0};
+    double systWWEWKCorrDown[2] = {1.0,1.0};
+    if(histo_qqWW->GetBinContent(nb) > 0 && histo_qqWW_EWKCorrUp  ->GetBinContent(nb) > 0) systWWEWKCorrUp[0]   = histo_qqWW_EWKCorrUp  ->GetBinContent(nb)/histo_qqWW->GetBinContent(nb);
+    if(histo_qqWW->GetBinContent(nb) > 0 && histo_qqWW_EWKCorrDown->GetBinContent(nb) > 0) systWWEWKCorrDown[0] = histo_qqWW_EWKCorrDown->GetBinContent(nb)/histo_qqWW->GetBinContent(nb);
+    if(histo_ggWW->GetBinContent(nb) > 0 && histo_ggWW_EWKCorrUp  ->GetBinContent(nb) > 0) systWWEWKCorrUp[1]   = histo_ggWW_EWKCorrUp  ->GetBinContent(nb)/histo_ggWW->GetBinContent(nb);
+    if(histo_ggWW->GetBinContent(nb) > 0 && histo_ggWW_EWKCorrDown->GetBinContent(nb) > 0) systWWEWKCorrDown[1] = histo_ggWW_EWKCorrDown->GetBinContent(nb)/histo_ggWW->GetBinContent(nb);
+
+    double systWWEWKCorrBinsUp[1][nGenBins]; for(int i=0; i<1; i++) for(int j=0; j<nGenBins; j++) systWWEWKCorrBinsUp[i][j] = 1.0;
+    double systWWEWKCorrBinsDown[1][nGenBins]; for(int i=0; i<1; i++) for(int j=0; j<nGenBins; j++) systWWEWKCorrBinsDown[i][j] = 1.0;
+    for(int i=0; i<nGenBins; i++){
+      if(histo_qqWWBins[i]->GetBinContent(nb) > 0 && histo_qqWW_EWKCorrUpBins[i]  ->GetBinContent(nb) > 0) systWWEWKCorrBinsUp[0][i]   = histo_qqWW_EWKCorrUpBins[i]  ->GetBinContent(nb)/histo_qqWWBins[i]->GetBinContent(nb);
+      if(histo_qqWWBins[i]->GetBinContent(nb) > 0 && histo_qqWW_EWKCorrDownBins[i]->GetBinContent(nb) > 0) systWWEWKCorrBinsDown[0][i] = histo_qqWW_EWKCorrDownBins[i]->GetBinContent(nb)/histo_qqWWBins[i]->GetBinContent(nb);
+    }
+
     char outputLimits[200];
     sprintf(outputLimits,"ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,nb-1);
     TFile* outFileLimits = new TFile(outputLimits,"recreate");
@@ -3088,6 +3161,7 @@ void wwAnalysis(
       newcardShape << Form("norm_WGS		                 lnN    -     -     -     -     -     -     -   %7.5f   -    -    -  \n",1.30);	    
       newcardShape << Form("norm_WjetsM		                 lnN    -     -     -     -     -     -     -     -     -   %7.5f -  \n",1.30);	    
       newcardShape << Form("norm_WjetsE		                 lnN    -     -     -     -     -     -     -     -     -    -  %7.5f\n",1.30);	    
+      newcardShape << Form("WWEWKCorr		                   lnN  %7.5f/%7.5f  %7.5f/%7.5f     -	  -	-     -     -	  -	  -    -    -  \n",systWWEWKCorrUp[0],systWWEWKCorrDown[0],systWWEWKCorrUp[1],systWWEWKCorrDown[1]);        
       newcardShape << Form("WWNNLO_scale		           lnN  %7.5f/%7.5f   -     -	  -	-     -     -	  -	  -    -    -  \n",systWWNNLOUp[0],systWWNNLODown[0]);        
       newcardShape << Form("WWNNLO_resum		           lnN  %7.5f/%7.5f   -     -     -	-     -     -     -	  -    -    -  \n",systWWNNLOUp[1],systWWNNLODown[1]);        
       newcardShape << Form("UEPS                                   lnN  %7.5f/%7.5f %7.5f/%7.5f   -     -     -     -     -     -   %7.5f/%7.5f  -    -  \n",theUEPSUp[0],theUEPSDown[0],theUEPSUp[1],theUEPSDown[1],theUEPSUp[2],theUEPSDown[2]);	    
@@ -3151,6 +3225,7 @@ void wwAnalysis(
       newcardShape << Form("norm_WGS		                   lnN    -	-     -     -	  -   %7.5f   -    -	-    -     -     -     -     -     -     -     -     -     -\n",1.30);		
       newcardShape << Form("norm_WjetsM		                   lnN    -	-     -     -	  -	-     -  %7.5f  -    -     -     -     -     -     -     -     -     -     -\n",1.30);		
       newcardShape << Form("norm_WjetsE		                   lnN    -	-     -     -	  -	-     -    -  %7.5f  -     -     -     -     -     -     -     -     -     -\n",1.30);		
+      newcardShape << Form("WWEWKCorr			           lnN    -	-     -     -	  -	-     -    -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",systWWEWKCorrBinsUp[0][0],systWWEWKCorrBinsDown[0][0],systWWEWKCorrBinsUp[0][1],systWWEWKCorrBinsDown[0][1],systWWEWKCorrBinsUp[0][2],systWWEWKCorrBinsDown[0][2],systWWEWKCorrBinsUp[0][3],systWWEWKCorrBinsDown[0][3],systWWEWKCorrBinsUp[0][4],systWWEWKCorrBinsDown[0][4],systWWEWKCorrBinsUp[0][5],systWWEWKCorrBinsDown[0][5],systWWEWKCorrBinsUp[0][6],systWWEWKCorrBinsDown[0][6],systWWEWKCorrBinsUp[0][7],systWWEWKCorrBinsDown[0][7],systWWEWKCorrBinsUp[0][8],systWWEWKCorrBinsDown[0][8],systWWEWKCorrBinsUp[0][9],systWWEWKCorrBinsDown[0][9]);        
       newcardShape << Form("WWNNLO_scale			   lnN    -	-     -     -	  -	-     -    -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",systWWNNLOBinsUp[0][0],systWWNNLOBinsDown[0][0],systWWNNLOBinsUp[0][1],systWWNNLOBinsDown[0][1],systWWNNLOBinsUp[0][2],systWWNNLOBinsDown[0][2],systWWNNLOBinsUp[0][3],systWWNNLOBinsDown[0][3],systWWNNLOBinsUp[0][4],systWWNNLOBinsDown[0][4],systWWNNLOBinsUp[0][5],systWWNNLOBinsDown[0][5],systWWNNLOBinsUp[0][6],systWWNNLOBinsDown[0][6],systWWNNLOBinsUp[0][7],systWWNNLOBinsDown[0][7],systWWNNLOBinsUp[0][8],systWWNNLOBinsDown[0][8],systWWNNLOBinsUp[0][9],systWWNNLOBinsDown[0][9]);        
       newcardShape << Form("WWNNLO_resum			   lnN    -	-     -     -	  -	-     -    -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",systWWNNLOBinsUp[1][0],systWWNNLOBinsDown[1][0],systWWNNLOBinsUp[1][1],systWWNNLOBinsDown[1][1],systWWNNLOBinsUp[1][2],systWWNNLOBinsDown[1][2],systWWNNLOBinsUp[1][3],systWWNNLOBinsDown[1][3],systWWNNLOBinsUp[1][4],systWWNNLOBinsDown[1][4],systWWNNLOBinsUp[1][5],systWWNNLOBinsDown[1][5],systWWNNLOBinsUp[1][6],systWWNNLOBinsDown[1][6],systWWNNLOBinsUp[1][7],systWWNNLOBinsDown[1][7],systWWNNLOBinsUp[1][8],systWWNNLOBinsDown[1][8],systWWNNLOBinsUp[1][9],systWWNNLOBinsDown[1][9]);      
       newcardShape << Form("UEPS                                   lnN    -	-     -     -	  -	- %7.5f/%7.5f -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",theUEPSUp[2],theUEPSDown[2],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0]);
