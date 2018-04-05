@@ -1317,7 +1317,7 @@ void wwAnalysis(
       }
 
       // begin event weighting
-      vector<bool> isGenDupl;
+      vector<bool> isGenDupl; vector<bool> isNeuDupl;
       vector<int>wBoson;
       vector<int>zBoson;
       int numberQuarks[2] = {0,0};
@@ -1334,21 +1334,34 @@ void wwAnalysis(
         if(TMath::Abs((int)(*eventMonteCarlo.pdgId)[ngen0]) == 23) {
 	  zBoson.push_back(ngen0);
 	}
+        // begin neutrinos
+        isNeuDupl.push_back(0);
+	bool isGoodNFlags = ((*eventMonteCarlo.flags)[ngen0] & BareMonteCarlo::PromptFinalState) == BareMonteCarlo::PromptFinalState ||
+            		   ((*eventMonteCarlo.flags)[ngen0] & BareMonteCarlo::DirectPromptTauDecayProductFinalState) == BareMonteCarlo::DirectPromptTauDecayProductFinalState;
+        isGoodNFlags = isGoodNFlags && (TMath::Abs((int)(*eventMonteCarlo.pdgId)[ngen0]) == 12 || TMath::Abs((int)(*eventMonteCarlo.pdgId)[ngen0]) == 14 || TMath::Abs((int)(*eventMonteCarlo.pdgId)[ngen0]) == 16);
+        if(isGoodNFlags == false) isNeuDupl[ngen0] = 1;
+
         isGenDupl.push_back(0);
+        // begin charged leptons
 	bool isGoodFlags = ((*eventMonteCarlo.flags)[ngen0] & BareMonteCarlo::PromptFinalState) == BareMonteCarlo::PromptFinalState ||
             		   ((*eventMonteCarlo.flags)[ngen0] & BareMonteCarlo::DirectPromptTauDecayProductFinalState) == BareMonteCarlo::DirectPromptTauDecayProductFinalState;
         isGoodFlags = isGoodFlags && (TMath::Abs((int)(*eventMonteCarlo.pdgId)[ngen0]) == 11 || TMath::Abs((int)(*eventMonteCarlo.pdgId)[ngen0]) == 13);
         if(isGoodFlags == false) isGenDupl[ngen0] = 1;
       }
 
+      TLorentzVector the_rhoP4(0,0,0,0);
       int genLep = 0;
       for(int ngen=0; ngen<eventMonteCarlo.p4->GetEntriesFast(); ngen++) {
-	  if(isGenDupl[ngen] == 1) continue;
-          genLep++;
+        if(isNeuDupl[ngen] == 0 || isGenDupl[ngen] == 0) {
+	  the_rhoP4 = the_rhoP4 + *(TLorentzVector*)(*eventMonteCarlo.p4)[ngen];
+	}
+	if(isGenDupl[ngen] == 1) continue;
+        genLep++;
       }
 
       double theEWKCorr = 1.0; double theEWKCorrE = 1.0;
-      if((infilecatv[ifile] == 1 || infilecatv[ifile] == 2) && lepNegGen.Pt() > 0){
+      double the_rho = 0.0; if(the_rhoP4.P() > 0) the_rho = the_rhoP4.Pt()/the_rhoP4.P();
+      if((infilecatv[ifile] == 1 || infilecatv[ifile] == 2) && lepNegGen.Pt() > 0 && the_rho <= 0.3){
         Int_t EWKValbin = fhDWWEWKCorr->GetXaxis()->FindBin(TMath::Min(lepNegGen.Pt(),499.999));
 	if(EWKValbin >= 0) theEWKCorr  = fhDWWEWKCorr->GetBinContent(EWKValbin);
 	if(EWKValbin >= 0) theEWKCorrE = 1.0+fhDWWEWKCorr->GetBinError(EWKValbin)/fhDWWEWKCorr->GetBinContent(EWKValbin);
