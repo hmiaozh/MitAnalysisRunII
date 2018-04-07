@@ -1349,19 +1349,20 @@ void wwAnalysis(
         if(isGoodFlags == false) isGenDupl[ngen0] = 1;
       }
 
-      TLorentzVector the_rhoP4(0,0,0,0);
+      TLorentzVector the_rhoP4(0,0,0,0); double theLeptonHT = 0.0;
       int genLep = 0;
       for(int ngen=0; ngen<eventMonteCarlo.p4->GetEntriesFast(); ngen++) {
         if(isNeuDupl[ngen] == 0 || isGenDupl[ngen] == 0) {
 	  the_rhoP4 = the_rhoP4 + *(TLorentzVector*)(*eventMonteCarlo.p4)[ngen];
+	  theLeptonHT = theLeptonHT + ((TLorentzVector*)(*eventMonteCarlo.p4)[ngen])->Pt();
 	}
 	if(isGenDupl[ngen] == 1) continue;
         genLep++;
       }
 
       double theEWKCorr = 1.0; double theEWKCorrE = 1.0;
-      double the_rho = 0.0; if(the_rhoP4.P() > 0) the_rho = the_rhoP4.Pt()/the_rhoP4.P();
-      if((infilecatv[ifile] == 1 || infilecatv[ifile] == 2) && lepNegGen.Pt() > 0 && the_rho <= 0.3){
+      double the_rhoWW = 0.0; if(theLeptonHT > 0) the_rhoWW = the_rhoP4.Pt()/theLeptonHT;
+      if((infilecatv[ifile] == 1 || infilecatv[ifile] == 2) && lepNegGen.Pt() > 0 && the_rhoWW <= 0.3){
         Int_t EWKValbin = fhDWWEWKCorr->GetXaxis()->FindBin(TMath::Min(lepNegGen.Pt(),499.999));
 	if(EWKValbin >= 0) theEWKCorr  = fhDWWEWKCorr->GetBinContent(EWKValbin);
 	if(EWKValbin >= 0) theEWKCorrE = 1.0+fhDWWEWKCorr->GetBinError(EWKValbin)/fhDWWEWKCorr->GetBinContent(EWKValbin);
