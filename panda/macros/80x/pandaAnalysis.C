@@ -21,7 +21,7 @@
 const bool isSingleLeptonAna = true;
 const double mcPrescale = 1;
 
-void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 0, double dileptonPtCut = 0, bool isMIT=true)
+void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 0, double dileptonPtCut = 0, bool isMIT = true)
 {
 
   double lumi = 35.8;
@@ -104,11 +104,22 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
 
   const int nBinTot = 1; Float_t xbinsTot[nBinTot+1] = {0,1};
 
+  TFile *fVJetsKfactorFile = TFile::Open(Form("MitAnalysisRunII/data/80x/kfactors_vjets.root"));
+  TH1D *fhDVjetsNum = (TH1D*)(fVJetsKfactorFile->Get("EWKcorr/Z"));
+  TH1D *fhDVjetsDen = (TH1D*)(fVJetsKfactorFile->Get("ZJets_01j_NLO/nominal"));
+  assert(fhDVjetsNum);
+  assert(fhDVjetsDen);
+  fhDVjetsNum->SetDirectory(0);
+  fhDVjetsDen->SetDirectory(0);
+  delete fVJetsKfactorFile;
+
   int thePtValueBins[2] = {36, 72};
+  double genLeptonPtCut = 25.0;
   if(dileptonPtCut == 200){
     printf("Modifying thePtValueBins\n");
     thePtValueBins[0] = 5; thePtValueBins[1] = 10;
     isNoDYName = isNoDYName + "_ptllcut";
+    genLeptonPtCut = 0.0;
   }
   const int nBinPt = thePtValueBins[0]; Float_t xbinsPt[nBinPt+1];
   const int nBinRecoPt = thePtValueBins[1]; Float_t xbinsRecoPt[nBinRecoPt+1];
@@ -247,12 +258,14 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
 
   fLepton_SF->Close();
 
-  double getMaxPtForSFs[6] = {scalefactors_Medium_Muon                  ->GetYaxis()->GetBinCenter(scalefactors_Medium_Muon		     ->GetNbinsY()),
+  double getMaxPtForSFs[8] = {scalefactors_Medium_Muon                  ->GetYaxis()->GetBinCenter(scalefactors_Medium_Muon		     ->GetNbinsY()),
                               scalefactors_Medium_Electron              ->GetYaxis()->GetBinCenter(scalefactors_Medium_Electron		     ->GetNbinsY()),
                               scalefactors_Medium_Muon_stat_error_hi    ->GetYaxis()->GetBinCenter(scalefactors_Medium_Muon_stat_error_hi    ->GetNbinsY()),
 		              scalefactors_Medium_Electron_stat_error_hi->GetYaxis()->GetBinCenter(scalefactors_Medium_Electron_stat_error_hi->GetNbinsY()),
 			      eff_HLT_Muon_DA[0]                       ->GetYaxis()->GetBinCenter(eff_HLT_Muon_DA[0]			     ->GetNbinsY()),
-			      eff_HLT_Electron_DA[0]                   ->GetYaxis()->GetBinCenter(eff_HLT_Electron_DA[0]		     ->GetNbinsY())
+			      eff_HLT_Electron_DA[0]                   ->GetYaxis()->GetBinCenter(eff_HLT_Electron_DA[0]		     ->GetNbinsY()),
+			      fhDVjetsNum                              ->GetXaxis()->GetBinCenter(fhDVjetsNum		   	   	     ->GetNbinsX()),
+			      fhDVjetsDen                              ->GetXaxis()->GetBinCenter(fhDVjetsDen		    	   	     ->GetNbinsX())
 		              };
 
   const int nBinEtaPlot = 26; Float_t xbinsEtaPlot[nBinEtaPlot+1] = {-2.4,-2.3,-2.2,-2.0,-1.8,-1.63,-1.566,-1.4442,-1.2,-1.0,-0.6,-0.4,-0.2,0.0,
@@ -264,11 +277,11 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   const int elBinxX = scalefactors_Medium_Electron_stat_error_hi->GetNbinsX();
   const int elBinxY = scalefactors_Medium_Electron_stat_error_hi->GetNbinsY();
   const int nElSFBins = elBinxX*elBinxY;
-  const int nRecNuisances = 1;
+  const int nRecNuisances = 3;
   const int nEffNuisances = 8+nElSFBins;
   const int nMomNuisances = 5;
 
-  printf("getMaxPtForSFs mu central: %f, el central: %f, mu syst: %f, el syst: %f mu hlt: %f el hlt: %f\n",getMaxPtForSFs[0],getMaxPtForSFs[1],getMaxPtForSFs[2],getMaxPtForSFs[3],getMaxPtForSFs[4],getMaxPtForSFs[5]);
+  printf("getMaxPtForSFs mu central: %f, el central: %f, mu syst: %f, el syst: %f mu hlt: %f el hlt: %f znumpt: %f zdenpt: %f\n",getMaxPtForSFs[0],getMaxPtForSFs[1],getMaxPtForSFs[2],getMaxPtForSFs[3],getMaxPtForSFs[4],getMaxPtForSFs[5],getMaxPtForSFs[6],getMaxPtForSFs[7]);
   printf("getnMuSFBins: %d(%d x %d) nElSFBins: %d(%d x %d)\n",nMuSFBins,muBinxX,muBinxY,nElSFBins,elBinxX,elBinxY);
 
   double trgEff[2][2][nTrgBinPt1][nTrgBinPt2][nTrgBinEta1][nTrgBinEta2];
@@ -1135,7 +1148,8 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
 
       // Begin tracking and trigger efficiency corrections and uncertainties + zPos
       double the_trigger_sf = 1.0; double the_trigger_sf_unc = 0.0; double trigEff_DA[2] = {1.0, 1.0}; 
-      double the_eta_sf[2] = {1.0, 1.0}; double the_eta_sf_unc[2] = {0.0, 0.0}; double zPos_SF = 1.0;
+      double the_eta_sf[2] = {1.0, 1.0}; double the_eta_sf_unc[2][nRecNuisances]; double zPos_SF = 1.0;
+      for(int i=0; i<2; i++) for(int j=0; j<nRecNuisances; j++) the_eta_sf_unc[i][j] = 0.0;
       if(theCategory != 0 && theCategory != 5){
         //int binZPos = hDzPos_SF->GetXaxis()->FindFixBin(thePandaFlat.zPos);
 	//zPos_SF = hDzPos_SF->GetBinContent(binZPos);
@@ -1143,25 +1157,31 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           double etal = thePandaFlat.looseLep1Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
           int binEta = scalefactors_Muon_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[0] = scalefactors_Muon_Eta->GetBinContent(binEta);
-	  the_eta_sf_unc[0] = scalefactors_Muon_Eta->GetBinError(binEta)/scalefactors_Muon_Eta->GetBinContent(binEta);
+	  the_eta_sf_unc[0][0] = scalefactors_Muon_Eta->GetBinError(binEta)/scalefactors_Muon_Eta->GetBinContent(binEta);
+	  the_eta_sf_unc[0][1] = 0;
+	  the_eta_sf_unc[0][2] = 0;
         } else {
           double etal = thePandaFlat.looseLep1SCEta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
           int binEta = scalefactors_Electron_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[0] = scalefactors_Electron_Eta->GetBinContent(binEta);
-	  the_eta_sf_unc[0] = scalefactors_Electron_Eta->GetBinError(binEta)/scalefactors_Electron_Eta->GetBinContent(binEta);
-	  if(thePandaFlat.looseLep1Pt < 20 || thePandaFlat.looseLep1Pt > 80) the_eta_sf_unc[0] = sqrt(the_eta_sf_unc[0]*the_eta_sf_unc[0] + 0.01*0.01);
+	  the_eta_sf_unc[0][0] = scalefactors_Electron_Eta->GetBinError(binEta)/scalefactors_Electron_Eta->GetBinContent(binEta);
+	  the_eta_sf_unc[0][1] = 0;
+	  the_eta_sf_unc[0][2] = 0;
         }        
         if(abs(thePandaFlat.looseLep2PdgId)==13){
           double etal = thePandaFlat.looseLep2Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
           int binEta = scalefactors_Muon_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[1] = scalefactors_Muon_Eta->GetBinContent(binEta);
-	  the_eta_sf_unc[1] = scalefactors_Muon_Eta->GetBinError(binEta)/scalefactors_Muon_Eta->GetBinContent(binEta);
+	  the_eta_sf_unc[1][0] = scalefactors_Muon_Eta->GetBinError(binEta)/scalefactors_Muon_Eta->GetBinContent(binEta);
+	  the_eta_sf_unc[1][1] = 0;
+	  the_eta_sf_unc[1][2] = 0;
         } else {
           double etal = thePandaFlat.looseLep2SCEta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
           int binEta = scalefactors_Electron_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[1] = scalefactors_Electron_Eta->GetBinContent(binEta);
-	  the_eta_sf_unc[1] = scalefactors_Electron_Eta->GetBinError(binEta)/scalefactors_Electron_Eta->GetBinContent(binEta);
-	  if(thePandaFlat.looseLep2Pt < 20 || thePandaFlat.looseLep2Pt > 80) the_eta_sf_unc[1] = sqrt(the_eta_sf_unc[1]*the_eta_sf_unc[1] + 0.01*0.01);
+	  the_eta_sf_unc[1][0] = scalefactors_Electron_Eta->GetBinError(binEta)/scalefactors_Electron_Eta->GetBinContent(binEta);
+	  the_eta_sf_unc[1][1] = 0;
+	  the_eta_sf_unc[1][2] = 0;
         }
 
         if(isSingleLeptonAna == false){
@@ -1226,6 +1246,15 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
       for(int ni=0; ni<2; ni++) for(int nj=0; nj<nEffNuisances; nj++) sfSystWeightLepEff[ni][nj] = 0.0;
 
       if(theCategory != 0 && theCategory != 5){
+        double weightEWK = 1.0;
+        if(dileptonPtCut == 200){
+          TLorentzVector vGen1,vGen2;
+          vGen1.SetPtEtaPhiM(thePandaFlat.genLep1Pt,thePandaFlat.genLep1Eta,thePandaFlat.genLep1Phi,thePDGMass[0]);
+          vGen2.SetPtEtaPhiM(thePandaFlat.genLep2Pt,thePandaFlat.genLep2Eta,thePandaFlat.genLep2Phi,thePDGMass[1]);
+	  int binNum   = fhDVjetsNum->GetXaxis()->FindFixBin(TMath::Min((double)(vGen1+vGen2).Pt(),getMaxPtForSFs[6]));
+	  int binDen   = fhDVjetsDen->GetXaxis()->FindFixBin(TMath::Min((double)(vGen1+vGen2).Pt(),getMaxPtForSFs[7]));
+	  weightEWK = fhDVjetsNum->GetBinContent(binNum)/fhDVjetsDen->GetBinContent(binDen);
+	}
 
         if(abs(thePandaFlat.looseLep1PdgId)==13){
           double etal = thePandaFlat.looseLep1Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
@@ -1294,7 +1323,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
         totalWeight = thePandaFlat.normalizedWeight * lumi * puWeight *
 		      the_eta_sf[0] * sfWeightLepEff[0] *
 		      the_eta_sf[1] * sfWeightLepEff[1] *
-		      the_trigger_sf * theMCPrescale * zPos_SF;
+		      the_trigger_sf * theMCPrescale * zPos_SF * weightEWK;
 
       }
       // End lepton selection efficiency corrections and uncertainties
@@ -1360,8 +1389,8 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
 
       double ZGenTot = 0; double ZGenPt = 0; double ZGenPhiStar = 0; double ZGenRap = 0; bool passPtFid = false; bool passRapFid = false; bool passPtRapFid[5] = {false, false, false, false, false}; 
       if(thePandaFlat.looseGenLep1PdgId != 0 && thePandaFlat.looseGenLep2PdgId != 0 &&
-         thePandaFlat.genLep1Pt > 25 && TMath::Abs(thePandaFlat.genLep1Eta) < 2.4 && TMath::Abs(thePandaFlat.genLep1PdgId) != 15 &&
-         thePandaFlat.genLep2Pt > 25 && TMath::Abs(thePandaFlat.genLep2Eta) < 2.4 && TMath::Abs(thePandaFlat.genLep2PdgId) != 15){
+         thePandaFlat.genLep1Pt > genLeptonPtCut && TMath::Abs(thePandaFlat.genLep1Eta) < 2.4 && TMath::Abs(thePandaFlat.genLep1PdgId) != 15 &&
+         thePandaFlat.genLep2Pt > genLeptonPtCut && TMath::Abs(thePandaFlat.genLep2Eta) < 2.4 && TMath::Abs(thePandaFlat.genLep2PdgId) != 15){
         TLorentzVector vGen1,vGen2;
         vGen1.SetPtEtaPhiM(thePandaFlat.genLep1Pt,thePandaFlat.genLep1Eta,thePandaFlat.genLep1Phi,thePDGMass[0]);
         vGen2.SetPtEtaPhiM(thePandaFlat.genLep2Pt,thePandaFlat.genLep2Eta,thePandaFlat.genLep2Phi,thePDGMass[1]);
@@ -1646,7 +1675,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
 	if     (theCategory == 2){ // DY
           // Tot
           histoTotRecDY        [lepType]   ->Fill(ZRecTot,totalWeight);
-          for(int nj=0; nj<nRecNuisances; nj++) histoTotRecDY_RecEff[lepType][nj]->Fill(ZRecTot,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+          for(int nj=0; nj<nRecNuisances; nj++) histoTotRecDY_RecEff[lepType][nj]->Fill(ZRecTot,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
           for(int nj=0; nj<nEffNuisances; nj++) histoTotRecDY_LepEff[lepType][nj]->Fill(ZRecTot,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
           histoTotRecDY_PDF    [lepType]   ->Fill(ZRecTot,totalWeight*thePandaFlat.pdfUp);
           histoTotRecDY_QCDPart[lepType][0]->Fill(ZRecTot,totalWeight*TMath::Abs(1+thePandaFlat.scale[0])/maxQCDscale);
@@ -1657,7 +1686,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           histoTotRecDY_QCDPart[lepType][5]->Fill(ZRecTot,totalWeight*TMath::Abs(1+thePandaFlat.scale[5])/maxQCDscale);
           // Pt
           histoPtRecDY        [lepType]   ->Fill(ZRecPt,totalWeight);
-          for(int nj=0; nj<nRecNuisances; nj++) histoPtRecDY_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+          for(int nj=0; nj<nRecNuisances; nj++) histoPtRecDY_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
           for(int nj=0; nj<nEffNuisances; nj++) histoPtRecDY_LepEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
           histoPtRecDY_PDF    [lepType]   ->Fill(ZRecPt,totalWeight*thePandaFlat.pdfUp);
           histoPtRecDY_QCDPart[lepType][0]->Fill(ZRecPt,totalWeight*TMath::Abs(1+thePandaFlat.scale[0])/maxQCDscale);
@@ -1668,7 +1697,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           histoPtRecDY_QCDPart[lepType][5]->Fill(ZRecPt,totalWeight*TMath::Abs(1+thePandaFlat.scale[5])/maxQCDscale);
           // PhiStar
           histoPhiStarRecDY        [lepType]   ->Fill(ZRecPhiStar,totalWeight);
-          for(int nj=0; nj<nRecNuisances; nj++) histoPhiStarRecDY_RecEff[lepType][nj]->Fill(ZRecPhiStar,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+          for(int nj=0; nj<nRecNuisances; nj++) histoPhiStarRecDY_RecEff[lepType][nj]->Fill(ZRecPhiStar,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
           for(int nj=0; nj<nEffNuisances; nj++) histoPhiStarRecDY_LepEff[lepType][nj]->Fill(ZRecPhiStar,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
           histoPhiStarRecDY_PDF    [lepType]   ->Fill(ZRecPhiStar,totalWeight*thePandaFlat.pdfUp);
           histoPhiStarRecDY_QCDPart[lepType][0]->Fill(ZRecPhiStar,totalWeight*TMath::Abs(1+thePandaFlat.scale[0])/maxQCDscale);
@@ -1680,7 +1709,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           // Rap
           if(ZRecRap < 2.4){
             histoRapRecDY        [lepType]   ->Fill(ZRecRap,totalWeight);
-            for(int nj=0; nj<nRecNuisances; nj++) histoRapRecDY_RecEff[lepType][nj]->Fill(ZRecRap,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+            for(int nj=0; nj<nRecNuisances; nj++) histoRapRecDY_RecEff[lepType][nj]->Fill(ZRecRap,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
             for(int nj=0; nj<nEffNuisances; nj++) histoRapRecDY_LepEff[lepType][nj]->Fill(ZRecRap,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
             histoRapRecDY_PDF    [lepType]   ->Fill(ZRecRap,totalWeight*thePandaFlat.pdfUp);
             histoRapRecDY_QCDPart[lepType][0]->Fill(ZRecRap,totalWeight*TMath::Abs(1+thePandaFlat.scale[0])/maxQCDscale);
@@ -1693,7 +1722,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           // PtRap0
           if      (ZRecRap < 0.4){
             histoPtRap0RecDY        [lepType]   ->Fill(ZRecPt,totalWeight);
-            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap0RecDY_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap0RecDY_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
             for(int nj=0; nj<nEffNuisances; nj++) histoPtRap0RecDY_LepEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
             histoPtRap0RecDY_PDF    [lepType]   ->Fill(ZRecPt,totalWeight*thePandaFlat.pdfUp);
             histoPtRap0RecDY_QCDPart[lepType][0]->Fill(ZRecPt,totalWeight*TMath::Abs(1+thePandaFlat.scale[0])/maxQCDscale);
@@ -1705,7 +1734,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           }
           else if(ZRecRap < 0.8){
             histoPtRap1RecDY        [lepType]   ->Fill(ZRecPt,totalWeight);
-            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap1RecDY_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap1RecDY_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
             for(int nj=0; nj<nEffNuisances; nj++) histoPtRap1RecDY_LepEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
             histoPtRap1RecDY_PDF    [lepType]   ->Fill(ZRecPt,totalWeight*thePandaFlat.pdfUp);
             histoPtRap1RecDY_QCDPart[lepType][0]->Fill(ZRecPt,totalWeight*TMath::Abs(1+thePandaFlat.scale[0])/maxQCDscale);
@@ -1717,7 +1746,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           }
           else if(ZRecRap < 1.2){
             histoPtRap2RecDY	    [lepType]	->Fill(ZRecPt,totalWeight);
-            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap2RecDY_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap2RecDY_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
             for(int nj=0; nj<nEffNuisances; nj++) histoPtRap2RecDY_LepEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
             histoPtRap2RecDY_PDF    [lepType]	->Fill(ZRecPt,totalWeight*thePandaFlat.pdfUp);
             histoPtRap2RecDY_QCDPart[lepType][0]->Fill(ZRecPt,totalWeight*TMath::Abs(1+thePandaFlat.scale[0])/maxQCDscale);
@@ -1729,7 +1758,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           }
           else if(ZRecRap < 1.6){
             histoPtRap3RecDY	    [lepType]	->Fill(ZRecPt,totalWeight);
-            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap3RecDY_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap3RecDY_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
             for(int nj=0; nj<nEffNuisances; nj++) histoPtRap3RecDY_LepEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
             histoPtRap3RecDY_PDF    [lepType]	->Fill(ZRecPt,totalWeight*thePandaFlat.pdfUp);
             histoPtRap3RecDY_QCDPart[lepType][0]->Fill(ZRecPt,totalWeight*TMath::Abs(1+thePandaFlat.scale[0])/maxQCDscale);
@@ -1741,7 +1770,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           }
           else if(ZRecRap < 2.4){
             histoPtRap4RecDY	    [lepType]	->Fill(ZRecPt,totalWeight);
-            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap4RecDY_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap4RecDY_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
             for(int nj=0; nj<nEffNuisances; nj++) histoPtRap4RecDY_LepEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
             histoPtRap4RecDY_PDF    [lepType]	->Fill(ZRecPt,totalWeight*thePandaFlat.pdfUp);
             histoPtRap4RecDY_QCDPart[lepType][0]->Fill(ZRecPt,totalWeight*TMath::Abs(1+thePandaFlat.scale[0])/maxQCDscale);
@@ -1815,7 +1844,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
 	else { // VV
           // Tot
           histoTotRecVV        [lepType]->Fill(ZRecTot,totalWeight);
-          for(int nj=0; nj<nRecNuisances; nj++) histoTotRecVV_RecEff[lepType][nj]->Fill(ZRecTot,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+          for(int nj=0; nj<nRecNuisances; nj++) histoTotRecVV_RecEff[lepType][nj]->Fill(ZRecTot,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
           for(int nj=0; nj<nEffNuisances; nj++) histoTotRecVV_LepEff[lepType][nj]->Fill(ZRecTot,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
           histoTotRecVV_PDF    [lepType]->Fill(ZRecTot,totalWeight*thePandaFlat.pdfUp);
           if(thePandaFlat.scale[0] != -1){
@@ -1835,7 +1864,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           }
           // Pt
           histoPtRecVV        [lepType]->Fill(ZRecPt,totalWeight);
-          for(int nj=0; nj<nRecNuisances; nj++) histoPtRecVV_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+          for(int nj=0; nj<nRecNuisances; nj++) histoPtRecVV_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
           for(int nj=0; nj<nEffNuisances; nj++) histoPtRecVV_LepEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
           histoPtRecVV_PDF    [lepType]->Fill(ZRecPt,totalWeight*thePandaFlat.pdfUp);
           if(thePandaFlat.scale[0] != -1){
@@ -1855,7 +1884,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           }
           // PhiStar
           histoPhiStarRecVV        [lepType]->Fill(ZRecPhiStar,totalWeight);
-          for(int nj=0; nj<nRecNuisances; nj++) histoPhiStarRecVV_RecEff[lepType][nj]->Fill(ZRecPhiStar,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+          for(int nj=0; nj<nRecNuisances; nj++) histoPhiStarRecVV_RecEff[lepType][nj]->Fill(ZRecPhiStar,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
           for(int nj=0; nj<nEffNuisances; nj++) histoPhiStarRecVV_LepEff[lepType][nj]->Fill(ZRecPhiStar,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
           histoPhiStarRecVV_PDF    [lepType]->Fill(ZRecPhiStar,totalWeight*thePandaFlat.pdfUp);
           if(thePandaFlat.scale[0] != -1){
@@ -1876,7 +1905,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           // Rap
           if(ZRecRap < 2.4){
             histoRapRecVV        [lepType]     ->Fill(ZRecRap,totalWeight);
-            for(int nj=0; nj<nRecNuisances; nj++) histoRapRecVV_RecEff[lepType][nj]->Fill(ZRecRap,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+            for(int nj=0; nj<nRecNuisances; nj++) histoRapRecVV_RecEff[lepType][nj]->Fill(ZRecRap,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
             for(int nj=0; nj<nEffNuisances; nj++) histoRapRecVV_LepEff[lepType][nj]->Fill(ZRecRap,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
             histoRapRecVV_PDF    [lepType]     ->Fill(ZRecRap,totalWeight*thePandaFlat.pdfUp);
             if(thePandaFlat.scale[0] != -1){
@@ -1898,7 +1927,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           // PtRap0
           if     (ZRecRap < 0.4){
             histoPtRap0RecVV        [lepType]     ->Fill(ZRecPt,totalWeight);
-            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap0RecVV_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap0RecVV_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
             for(int nj=0; nj<nEffNuisances; nj++) histoPtRap0RecVV_LepEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
             histoPtRap0RecVV_PDF    [lepType]     ->Fill(ZRecPt,totalWeight*thePandaFlat.pdfUp);
             if(thePandaFlat.scale[0] != -1){
@@ -1919,7 +1948,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           }
           else if(ZRecRap < 0.8){
             histoPtRap1RecVV        [lepType]     ->Fill(ZRecPt,totalWeight);
-            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap1RecVV_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap1RecVV_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
             for(int nj=0; nj<nEffNuisances; nj++) histoPtRap1RecVV_LepEff [lepType][nj]->Fill(ZRecPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
             histoPtRap1RecVV_PDF    [lepType]     ->Fill(ZRecPt,totalWeight*thePandaFlat.pdfUp);
             if(thePandaFlat.scale[0] != -1){
@@ -1940,7 +1969,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           }
           else if(ZRecRap < 1.2){
             histoPtRap2RecVV        [lepType]     ->Fill(ZRecPt,totalWeight);
-            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap2RecVV_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap2RecVV_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
             for(int nj=0; nj<nEffNuisances; nj++) histoPtRap2RecVV_LepEff [lepType][nj]->Fill(ZRecPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
             histoPtRap2RecVV_PDF    [lepType]     ->Fill(ZRecPt,totalWeight*thePandaFlat.pdfUp);
             if(thePandaFlat.scale[0] != -1){
@@ -1961,7 +1990,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           }
           else if(ZRecRap < 1.6){
             histoPtRap3RecVV        [lepType]     ->Fill(ZRecPt,totalWeight);
-            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap3RecVV_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap3RecVV_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
             for(int nj=0; nj<nEffNuisances; nj++) histoPtRap3RecVV_LepEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
             histoPtRap3RecVV_PDF    [lepType]     ->Fill(ZRecPt,totalWeight*thePandaFlat.pdfUp);
             if(thePandaFlat.scale[0] != -1){
@@ -1982,7 +2011,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           }
           else if(ZRecRap < 2.4){
             histoPtRap4RecVV        [lepType]     ->Fill(ZRecPt,totalWeight);
-            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap4RecVV_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+            for(int nj=0; nj<nRecNuisances; nj++) histoPtRap4RecVV_RecEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
             for(int nj=0; nj<nEffNuisances; nj++) histoPtRap4RecVV_LepEff[lepType][nj]->Fill(ZRecPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
             histoPtRap4RecVV_PDF    [lepType]     ->Fill(ZRecPt,totalWeight*thePandaFlat.pdfUp);
             if(thePandaFlat.scale[0] != -1){
@@ -2005,45 +2034,45 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
 
 	if(theCategory == 2 && passPtFid == true){
           histoTotRecGen       [lepType] ->Fill(ZRecTot,ZGenTot,totalWeight);
-          for(int nj=0; nj<nRecNuisances; nj++) histoTotRecGen_RecEff [lepType][nj]->Fill(ZRecTot,ZGenTot,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+          for(int nj=0; nj<nRecNuisances; nj++) histoTotRecGen_RecEff [lepType][nj]->Fill(ZRecTot,ZGenTot,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
           for(int nj=0; nj<nEffNuisances; nj++) histoTotRecGen_LepEff [lepType][nj]->Fill(ZRecTot,ZGenTot,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
 
           histoPtRecGen       [lepType] ->Fill(ZRecPt,ZGenPt,totalWeight);
-          for(int nj=0; nj<nRecNuisances; nj++) histoPtRecGen_RecEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+          for(int nj=0; nj<nRecNuisances; nj++) histoPtRecGen_RecEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
           for(int nj=0; nj<nEffNuisances; nj++) histoPtRecGen_LepEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
 
           histoPhiStarRecGen       [lepType] ->Fill(ZRecPhiStar,ZGenPhiStar,totalWeight);
-          for(int nj=0; nj<nRecNuisances; nj++) histoPhiStarRecGen_RecEff [lepType][nj]->Fill(ZRecPhiStar,ZGenPhiStar,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+          for(int nj=0; nj<nRecNuisances; nj++) histoPhiStarRecGen_RecEff [lepType][nj]->Fill(ZRecPhiStar,ZGenPhiStar,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
           for(int nj=0; nj<nEffNuisances; nj++) histoPhiStarRecGen_LepEff [lepType][nj]->Fill(ZRecPhiStar,ZGenPhiStar,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
 	}
 	if(theCategory == 2 && passRapFid == true && ZRecRap < 2.4){
           histoRapRecGen       [lepType]->Fill(ZRecRap,ZGenRap,totalWeight);
-          for(int nj=0; nj<nRecNuisances; nj++) histoRapRecGen_RecEff [lepType][nj]->Fill(ZRecRap,ZGenRap,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+          for(int nj=0; nj<nRecNuisances; nj++) histoRapRecGen_RecEff [lepType][nj]->Fill(ZRecRap,ZGenRap,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
           for(int nj=0; nj<nEffNuisances; nj++) histoRapRecGen_LepEff [lepType][nj]->Fill(ZRecRap,ZGenRap,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
 	}
 	if(theCategory == 2 && passPtRapFid[0] == true && ZRecRap >= 0.0 && ZRecRap < 0.4){
           histoPtRap0RecGen       [lepType]->Fill(ZRecPt,ZGenPt,totalWeight);
-          for(int nj=0; nj<nRecNuisances; nj++) histoPtRap0RecGen_RecEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+          for(int nj=0; nj<nRecNuisances; nj++) histoPtRap0RecGen_RecEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
           for(int nj=0; nj<nEffNuisances; nj++) histoPtRap0RecGen_LepEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
 	}
 	if(theCategory == 2 && passPtRapFid[1] == true && ZRecRap >= 0.4 && ZRecRap < 0.8){
           histoPtRap1RecGen       [lepType]->Fill(ZRecPt,ZGenPt,totalWeight);
-          for(int nj=0; nj<nRecNuisances; nj++) histoPtRap1RecGen_RecEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+          for(int nj=0; nj<nRecNuisances; nj++) histoPtRap1RecGen_RecEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
           for(int nj=0; nj<nEffNuisances; nj++) histoPtRap1RecGen_LepEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
 	}
 	if(theCategory == 2 && passPtRapFid[2] == true && ZRecRap >= 0.8 && ZRecRap < 1.2){
           histoPtRap2RecGen       [lepType]->Fill(ZRecPt,ZGenPt,totalWeight);
-          for(int nj=0; nj<nRecNuisances; nj++) histoPtRap2RecGen_RecEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+          for(int nj=0; nj<nRecNuisances; nj++) histoPtRap2RecGen_RecEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
           for(int nj=0; nj<nEffNuisances; nj++) histoPtRap2RecGen_LepEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
 	}
 	if(theCategory == 2 && passPtRapFid[3] == true && ZRecRap >= 1.2 && ZRecRap < 1.6){
           histoPtRap3RecGen       [lepType]->Fill(ZRecPt,ZGenPt,totalWeight);
-          for(int nj=0; nj<nRecNuisances; nj++) histoPtRap3RecGen_RecEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+          for(int nj=0; nj<nRecNuisances; nj++) histoPtRap3RecGen_RecEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
           for(int nj=0; nj<nEffNuisances; nj++) histoPtRap3RecGen_LepEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
 	}
 	if(theCategory == 2 && passPtRapFid[4] == true && ZRecRap >= 1.6 && ZRecRap < 2.4){
           histoPtRap4RecGen       [lepType]->Fill(ZRecPt,ZGenPt,totalWeight);
-          for(int nj=0; nj<nRecNuisances; nj++) histoPtRap4RecGen_RecEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+the_eta_sf_unc[0])*(1+the_eta_sf_unc[1]));
+          for(int nj=0; nj<nRecNuisances; nj++) histoPtRap4RecGen_RecEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+the_eta_sf_unc[0][nj])*(1+the_eta_sf_unc[1][nj]));
           for(int nj=0; nj<nEffNuisances; nj++) histoPtRap4RecGen_LepEff [lepType][nj]->Fill(ZRecPt,ZGenPt,totalWeight*(1+sfSystWeightLepEff[0][nj])*(1+sfSystWeightLepEff[1][nj]));
 	}
       } // end passSel
