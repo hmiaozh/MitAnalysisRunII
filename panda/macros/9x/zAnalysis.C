@@ -14,26 +14,32 @@
 #include "MitAnalysisRunII/panda/macros/9x/pandaFlat.C"
 #include "MitAnalysisRunII/panda/macros/9x/common.h"
 
-void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false)
+const double mcPrescale = 1;
+
+void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int year = 2017, int debug = 0)
 {
   TString dirPathRM = TString(gSystem->Getenv("CMSSW_BASE")) + "/src/MitAnalysisRunII/data/80x/rcdata.2016.v3";
   double lumi = 35.8;
   double k_eff = 0.5 * sqrt(20285930./12446486.);
+  TString filesPath    = "/data/t3home000/ceballos/panda/v_004_0/";
+  TString pileUpName = "MitAnalysisRunII/data/90x/puWeights_90x.root";
+  TString fakeName = "MitAnalysisRunII/data/80x/histoFakeEtaPt_80x_37ifb.root";
+  TString muonRecoSFName = "MitAnalysisRunII/data/80x/scalefactors_80x_eta_sf_37ifb_period0.root";
+  TString electronRecoSFName = "MitAnalysisRunII/data/90x/scalefactors_90x_egpog_2017.root";
+  TString muonEffSFName = "MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period0.root";
+  TString electronEffSFName = "MitAnalysisRunII/data/90x/scalefactors_90x_egpog_2017.root";
+
   //*******************************************************
   //Input Files
   //*******************************************************
-  TString filesPathOld = "/data/t3home000/ceballos/panda/v_002_0/";
-  TString filesPath    = "/data/t3home000/ceballos/panda/v_002_0/";
-  if(isMIT == false) filesPath = "/afs/cern.ch/work/c/ceballos/public/samples/panda/v_002_0/";
   vector<TString> infileName_;
   vector<Int_t> infileCat_;
   infileName_.push_back(Form("%sdata.root",filesPath.Data()));                 infileCat_.push_back(0);
-  infileName_.push_back(Form("%sdata.root",filesPathOld.Data()));              infileCat_.push_back(1);
-
+  infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));  infileCat_.push_back(2);
+/*
   infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
   infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
   infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(2);
-  infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));   infileCat_.push_back(2);
   infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));                infileCat_.push_back(3);
   infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                  infileCat_.push_back(3);
 
@@ -45,10 +51,42 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false)
   infileName_.push_back(Form("%sWGstar.root" ,filesPath.Data()));	       infileCat_.push_back(4);
   infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));		       infileCat_.push_back(6);
   infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	       infileCat_.push_back(7);
+*/
 
-  TFile *fPUFile = TFile::Open(Form("MitAnalysisRunII/data/90x/puWeights_90x.root"));
+  TFile *fPUFile = TFile::Open(pileUpName.Data());
   TH1D *fhDPU = (TH1D*)(fPUFile->Get("puWeights")); assert(fhDPU); fhDPU->SetDirectory(0);
   delete fPUFile;
+
+  TFile *fLepton_Fakes = TFile::Open(fakeName.Data());
+  TH2D* histoFakeEffSelMediumEtaPt_m = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel0EtaPt_0"); histoFakeEffSelMediumEtaPt_m->SetDirectory(0);
+  TH2D* histoFakeEffSelMediumEtaPt_e = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel0EtaPt_1"); histoFakeEffSelMediumEtaPt_e->SetDirectory(0);
+  TH2D* histoFakeEffSelTightEtaPt_m  = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel2EtaPt_0"); histoFakeEffSelTightEtaPt_m ->SetDirectory(0);
+  TH2D* histoFakeEffSelTightEtaPt_e  = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel2EtaPt_1"); histoFakeEffSelTightEtaPt_e ->SetDirectory(0);
+  fLepton_Fakes->Close();
+
+  TFile *fMuon_Reco_SF = TFile::Open(muonRecoSFName.Data());
+  TH1D* scalefactors_Muon_Reco = (TH1D*)fMuon_Reco_SF->Get("scalefactors_Muon_Eta"); scalefactors_Muon_Reco->SetDirectory(0);
+  fMuon_Reco_SF->Close();
+
+  TFile *fElectron_Reco_SF = TFile::Open(electronRecoSFName.Data());
+  TH2D* scalefactors_Electron_Reco       = (TH2D*)fElectron_Reco_SF->Get("scalefactors_Reco_Electron");       scalefactors_Electron_Reco      ->SetDirectory(0);
+  TH2D* scalefactors_Electron_Reco_LowEt = (TH2D*)fElectron_Reco_SF->Get("scalefactors_Reco_lowEt_Electron"); scalefactors_Electron_Reco_LowEt->SetDirectory(0);
+  fElectron_Reco_SF->Close();
+
+  TFile *fMuonEffSF = TFile::Open(muonEffSFName.Data());
+  TH2D* scalefactors_Medium_Muon = (TH2D*)fMuonEffSF->Get("scalefactors_Medium_Muon"); scalefactors_Medium_Muon->SetDirectory(0);
+  fMuonEffSF->Close();
+
+  TFile *fElectronEffSF = TFile::Open(electronEffSFName.Data());
+  TH2D* scalefactors_Medium_Electron = (TH2D*)fElectronEffSF->Get("scalefactors_Medium_Electron"); scalefactors_Medium_Electron->SetDirectory(0);
+  TH2D* scalefactors_Tight_Electron  = (TH2D*)fElectronEffSF->Get("scalefactors_Tight_Electron");  scalefactors_Tight_Electron ->SetDirectory(0);
+  fElectronEffSF->Close();
+
+  double getMaxPtForSFs[4] = {scalefactors_Muon_Reco       ->GetYaxis()->GetBinCenter(scalefactors_Muon_Reco	   ->GetNbinsY()),
+                              scalefactors_Electron_Reco   ->GetYaxis()->GetBinCenter(scalefactors_Electron_Reco   ->GetNbinsY()),
+		              scalefactors_Medium_Muon     ->GetYaxis()->GetBinCenter(scalefactors_Medium_Muon     ->GetNbinsY()),
+                              scalefactors_Medium_Electron ->GetYaxis()->GetBinCenter(scalefactors_Medium_Electron ->GetNbinsY())
+		              };
 
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
@@ -84,6 +122,7 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false)
     TTree *the_input_tree = (TTree*)the_input_file->FindObjectAny("events");
     
     pandaFlat thePandaFlat(the_input_tree);
+    double theMCPrescale = 1.0; if(infileCat_[ifile] != 0) theMCPrescale = mcPrescale;
     Long64_t nentries = thePandaFlat.fChain->GetEntriesFast();
     Long64_t nbytes = 0, nb = 0;
     for (Long64_t jentry=0; jentry<nentries;jentry++) {
@@ -91,6 +130,7 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false)
       if (ientry < 0) break;
       nb = thePandaFlat.fChain->GetEntry(jentry);   nbytes += nb;
       if (jentry%1000000 == 0) printf("--- reading event %8lld (%8lld) of %8lld\n",jentry,ientry,nentries);
+      if (infileCat_[ifile] != 0 && jentry%(int)theMCPrescale != 0) continue;
 
       bool passTrigger = (thePandaFlat.trigger & (1<<kEMuTrig)) != 0       || (thePandaFlat.trigger & (1<<kDoubleMuTrig)) != 0  ||
                          (thePandaFlat.trigger & (1<<kSingleMuTrig)) != 0  || (thePandaFlat.trigger & (1<<kDoubleEleTrig)) != 0 ||
@@ -147,8 +187,8 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false)
       else if(abs(lepType) == 2 && abs(looseLepPdgId[0])==11) {thePDGMass[0] = mass_el;}
       else if(abs(lepType) == 2 && abs(looseLepPdgId[1])==11) {thePDGMass[1] = mass_el;}
       TLorentzVector v1,v2,metP4;
-      v1.SetPtEtaPhiM(looseLepEta[0],looseLepEta[0],looseLepPhi[0],thePDGMass[0]);
-      v2.SetPtEtaPhiM(looseLepEta[1],looseLepEta[1],looseLepPhi[1],thePDGMass[1]);
+      v1.SetPtEtaPhiM(looseLepPt[0],looseLepEta[0],looseLepPhi[0],thePDGMass[0]);
+      v2.SetPtEtaPhiM(looseLepPt[1],looseLepEta[1],looseLepPhi[1],thePDGMass[1]);
       TLorentzVector dilep = v1+v2;
       metP4.SetPtEtaPhiM(thePandaFlat.pfmet,0,thePandaFlat.pfmetphi,0);
 
@@ -165,12 +205,53 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false)
       if(passSel == false) continue;
 
       double totalWeight = 1.0;
-      if(theCategory != 0 && theCategory != 1){
-        totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu;
-      }
-      else if(theCategory == 1){
-        totalWeight = 0.773 * nPUScaleFactor(fhDPU,thePandaFlat.npv);
-        //totalWeight = 1.0;
+      if(theCategory != 0){
+        int nElectrons = 0;
+        double the_eta_sf[4] = {1.0, 1.0, 1.0, 1.0};
+        double sfWeightLepEff[4] = {1.0, 1.0, 1.0, 1.0};
+	for(int i=0; i<looseLepPdgId.size(); i++){
+          if(abs(looseLepPdgId[i])==13){
+            double etal = looseLepEta[i]; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
+            int binEta = scalefactors_Muon_Reco->GetXaxis()->FindFixBin(etal);
+            the_eta_sf[i] = scalefactors_Muon_Reco->GetBinContent(binEta);
+          } else {
+	    nElectrons++;
+            double etal = looseLepEta[i]; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
+	    if(looseLepPt[i] >= 20){
+              int binXT = scalefactors_Electron_Reco->GetXaxis()->FindFixBin(etal);
+              int binYT = scalefactors_Electron_Reco->GetYaxis()->FindFixBin(TMath::Min((double)looseLepPt[i],getMaxPtForSFs[1]));
+              the_eta_sf[i] = scalefactors_Electron_Reco->GetBinContent(binXT,binYT);
+	    }
+	    else {
+              int binXT = scalefactors_Electron_Reco_LowEt->GetXaxis()->FindFixBin(etal);
+              int binYT = scalefactors_Electron_Reco_LowEt->GetYaxis()->FindFixBin(looseLepPt[i]);
+              the_eta_sf[i] = scalefactors_Electron_Reco_LowEt->GetBinContent(binXT,binYT);
+	    }
+          }        
+          if(abs(looseLepPdgId[i])==13){
+            double etal = looseLepEta[i]; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
+            int binXT = scalefactors_Medium_Muon->GetXaxis()->FindFixBin(etal);
+            int binYT = scalefactors_Medium_Muon->GetYaxis()->FindFixBin(TMath::Min((double)looseLepPt[i],getMaxPtForSFs[2]));
+	    sfWeightLepEff[i] = scalefactors_Medium_Muon->GetBinContent(binXT,binYT);
+          } else {
+            double etal = looseLepEta[i]; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
+            int binXT = scalefactors_Medium_Electron->GetXaxis()->FindFixBin(etal);
+            int binYT = scalefactors_Medium_Electron->GetYaxis()->FindFixBin(TMath::Min((double)looseLepPt[i],getMaxPtForSFs[3]));
+	    sfWeightLepEff[i] = scalefactors_Medium_Electron->GetBinContent(binXT,binYT);
+          }
+        }
+        double sfPileUp = nPUScaleFactor(fhDPU,thePandaFlat.pu);
+
+        double specialWeight = 1.0;
+        if     (infileCat_[ifile] == 3)                                                specialWeight = thePandaFlat.sf_wz;
+	else if(infileCat_[ifile] == 4 && infileName_[ifile].Contains("qqZZ") == true) specialWeight = thePandaFlat.sf_zz;
+        if(nElectrons >= 1) specialWeight = specialWeight * 0.991;
+
+        totalWeight = thePandaFlat.normalizedWeight * lumi * sfPileUp * 
+	              the_eta_sf[0] * the_eta_sf[1] * the_eta_sf[2] * the_eta_sf[3] * 
+		      sfWeightLepEff[0] * sfWeightLepEff[1] * sfWeightLepEff[2] * sfWeightLepEff[3] * specialWeight * theMCPrescale;
+
+	if(debug == 1) printf("WEIGHTS: %f | %f %f %f %f %f %f %f %f %f %f %f %f\n",totalWeight,thePandaFlat.normalizedWeight,lumi,sfPileUp,the_eta_sf[0],the_eta_sf[1],the_eta_sf[2],the_eta_sf[3],sfWeightLepEff[0],sfWeightLepEff[1],sfWeightLepEff[2],sfWeightLepEff[3],specialWeight);
       }
 
       histo[lepType+ 0][theCategory]->Fill((v1+v2).M(),totalWeight);
@@ -191,8 +272,8 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false)
       histo[lepType+45][theCategory]->Fill(TMath::Min((double)thePandaFlat.npv,79.499),totalWeight);
       histo[lepType+48][theCategory]->Fill(looseLepEta[0],totalWeight);
       histo[lepType+51][theCategory]->Fill(looseLepEta[1],totalWeight);
-      histo[lepType+54][theCategory]->Fill(TMath::Min((double)looseLepEta[0], 224.999),totalWeight);
-      histo[lepType+57][theCategory]->Fill(TMath::Min((double)looseLepEta[1], 224.999),totalWeight);
+      histo[lepType+54][theCategory]->Fill(TMath::Min((double)looseLepPt[0], 224.999),totalWeight);
+      histo[lepType+57][theCategory]->Fill(TMath::Min((double)looseLepPt[1], 224.999),totalWeight);
 
     } // end event loop
   } // end samples loop

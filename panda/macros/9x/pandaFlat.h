@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Tue Feb 27 03:17:49 2018 by ROOT version 6.10/09
+// Fri May  4 05:40:59 2018 by ROOT version 6.10/09
 // from TTree events/events
-// found on file: /data/t3home000/ceballos/panda/v_002_0/qqZZ.root
+// found on file: /data/t3home000/ceballos/panda/v_004_0/DYJetsToLL_M-50_NLO.root
 //////////////////////////////////////////////////////////
 
 #ifndef pandaFlat_h
@@ -111,6 +111,8 @@ public :
    Float_t         electronSfLoose[4];   //[nLooseElectron]
    Float_t         electronSfMedium[4];   //[nLooseElectron]
    Float_t         electronSfTight[4];   //[nLooseElectron]
+   Float_t         electronSfMvaWP90[4];   //[nLooseElectron]
+   Float_t         electronSfMvaWP80[4];   //[nLooseElectron]
    Float_t         electronSfUnc[4];   //[nLooseElectron]
    Float_t         electronSfReco[4];   //[nLooseElectron]
    Float_t         muonD0[4];   //[nLooseMuon]
@@ -150,6 +152,8 @@ public :
    Int_t           looseGenLep4PdgId;
    Int_t           loosePho1SelBit;
    Int_t           looseGenPho1PdgId;
+   Float_t         lheHT;
+   Int_t           isData;
    Int_t           genFatJetNProngs;
    Float_t         genMjj;
    Float_t         genFatJetPt;
@@ -325,6 +329,8 @@ public :
    TBranch        *b_electronSfLoose;   //!
    TBranch        *b_electronSfMedium;   //!
    TBranch        *b_electronSfTight;   //!
+   TBranch        *b_electronSfMvaWP90;   //!
+   TBranch        *b_electronSfMvaWP80;   //!
    TBranch        *b_electronSfUnc;   //!
    TBranch        *b_electronSfReco;   //!
    TBranch        *b_muonD0;   //!
@@ -364,6 +370,8 @@ public :
    TBranch        *b_looseGenLep4PdgId;   //!
    TBranch        *b_loosePho1SelBit;   //!
    TBranch        *b_looseGenPho1PdgId;   //!
+   TBranch        *b_lheHT;   //!
+   TBranch        *b_isData;   //!
    TBranch        *b_genFatJetNProngs;   //!
    TBranch        *b_genMjj;   //!
    TBranch        *b_genFatJetPt;   //!
@@ -468,9 +476,9 @@ pandaFlat::pandaFlat(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/t3home000/ceballos/panda/v_002_0/qqZZ.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/t3home000/ceballos/panda/v_004_0/DYJetsToLL_M-50_NLO.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/data/t3home000/ceballos/panda/v_002_0/qqZZ.root");
+         f = new TFile("/data/t3home000/ceballos/panda/v_004_0/DYJetsToLL_M-50_NLO.root");
       }
       f->GetObject("events",tree);
 
@@ -608,6 +616,8 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("electronSfLoose", electronSfLoose, &b_electronSfLoose);
    fChain->SetBranchAddress("electronSfMedium", electronSfMedium, &b_electronSfMedium);
    fChain->SetBranchAddress("electronSfTight", electronSfTight, &b_electronSfTight);
+   fChain->SetBranchAddress("electronSfMvaWP90", electronSfMvaWP90, &b_electronSfMvaWP90);
+   fChain->SetBranchAddress("electronSfMvaWP80", electronSfMvaWP80, &b_electronSfMvaWP80);
    fChain->SetBranchAddress("electronSfUnc", electronSfUnc, &b_electronSfUnc);
    fChain->SetBranchAddress("electronSfReco", electronSfReco, &b_electronSfReco);
    fChain->SetBranchAddress("muonD0", muonD0, &b_muonD0);
@@ -647,6 +657,8 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("looseGenLep4PdgId", &looseGenLep4PdgId, &b_looseGenLep4PdgId);
    fChain->SetBranchAddress("loosePho1SelBit", &loosePho1SelBit, &b_loosePho1SelBit);
    fChain->SetBranchAddress("looseGenPho1PdgId", &looseGenPho1PdgId, &b_looseGenPho1PdgId);
+   fChain->SetBranchAddress("lheHT", &lheHT, &b_lheHT);
+   fChain->SetBranchAddress("isData", &isData, &b_isData);
    fChain->SetBranchAddress("genFatJetNProngs", &genFatJetNProngs, &b_genFatJetNProngs);
    fChain->SetBranchAddress("genMjj", &genMjj, &b_genMjj);
    fChain->SetBranchAddress("genFatJetPt", &genFatJetPt, &b_genFatJetPt);
