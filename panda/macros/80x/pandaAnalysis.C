@@ -104,9 +104,11 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
 
   const int nBinTot = 1; Float_t xbinsTot[nBinTot+1] = {0,1};
 
+  TString hDVjetsDenName = "ZJets_01j_NLO/nominal";
+  if(whichDY == 0) hDVjetsDenName = "ZJets_LO/inv_pt";
   TFile *fVJetsKfactorFile = TFile::Open(Form("MitAnalysisRunII/data/80x/kfactors_vjets.root"));
   TH1D *fhDVjetsNum = (TH1D*)(fVJetsKfactorFile->Get("EWKcorr/Z"));
-  TH1D *fhDVjetsDen = (TH1D*)(fVJetsKfactorFile->Get("ZJets_01j_NLO/nominal"));
+  TH1D *fhDVjetsDen = (TH1D*)(fVJetsKfactorFile->Get(hDVjetsDenName.Data()));
   assert(fhDVjetsNum);
   assert(fhDVjetsDen);
   fhDVjetsNum->SetDirectory(0);
@@ -235,6 +237,13 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   fLepton_SF_el_central->Close();
 
   TFile *fLepton_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period%d.root",period));
+
+  TFile *fRecoEfficiencies_Lep_Unc = TFile::Open(Form("MitAnalysisRunII/data/80x/recoEfficiencies_Lep_Unc_2016.root"));
+  TH1D* recoEfficiencies_Muon_Unc_Sig	  = (TH1D*)fRecoEfficiencies_Lep_Unc->Get("recoEfficiencies_Muon_Unc_Sig");     recoEfficiencies_Muon_Unc_Sig	 ->SetDirectory(0);
+  TH1D* recoEfficiencies_Muon_Unc_Bck	  = (TH1D*)fRecoEfficiencies_Lep_Unc->Get("recoEfficiencies_Muon_Unc_Bck");     recoEfficiencies_Muon_Unc_Bck	 ->SetDirectory(0);
+  TH1D* recoEfficiencies_Electron_Unc_Sig = (TH1D*)fRecoEfficiencies_Lep_Unc->Get("recoEfficiencies_Electron_Unc_Sig"); recoEfficiencies_Electron_Unc_Sig->SetDirectory(0);
+  TH1D* recoEfficiencies_Electron_Unc_Bck = (TH1D*)fRecoEfficiencies_Lep_Unc->Get("recoEfficiencies_Electron_Unc_Bck"); recoEfficiencies_Electron_Unc_Bck->SetDirectory(0);
+  fRecoEfficiencies_Lep_Unc->Close();
 
   TH2D* scalefactors_Medium_Muon_stat_error_hi      = (TH2D*)fLepton_SF->Get("scalefactors_Medium_Muon_stat_error_hi");      scalefactors_Medium_Muon_stat_error_hi     ->SetDirectory(0);
   TH2D* scalefactors_Medium_Muon_signalFsrTNP	    = (TH2D*)fLepton_SF->Get("scalefactors_Medium_Muon_signalFsrTNP");       scalefactors_Medium_Muon_signalFsrTNP      ->SetDirectory(0);
@@ -1158,30 +1167,34 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
           int binEta = scalefactors_Muon_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[0] = scalefactors_Muon_Eta->GetBinContent(binEta);
 	  the_eta_sf_unc[0][0] = scalefactors_Muon_Eta->GetBinError(binEta)/scalefactors_Muon_Eta->GetBinContent(binEta);
-	  the_eta_sf_unc[0][1] = 0;
-	  the_eta_sf_unc[0][2] = 0;
+          int binUncEta = recoEfficiencies_Muon_Unc_Sig->GetXaxis()->FindFixBin(etal);
+	  the_eta_sf_unc[0][1] = recoEfficiencies_Muon_Unc_Sig->GetBinContent(binUncEta);
+	  the_eta_sf_unc[0][2] = recoEfficiencies_Muon_Unc_Bck->GetBinContent(binUncEta);
         } else {
           double etal = thePandaFlat.looseLep1SCEta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
           int binEta = scalefactors_Electron_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[0] = scalefactors_Electron_Eta->GetBinContent(binEta);
 	  the_eta_sf_unc[0][0] = scalefactors_Electron_Eta->GetBinError(binEta)/scalefactors_Electron_Eta->GetBinContent(binEta);
-	  the_eta_sf_unc[0][1] = 0;
-	  the_eta_sf_unc[0][2] = 0;
+          int binUncEta = recoEfficiencies_Electron_Unc_Sig->GetXaxis()->FindFixBin(etal);
+	  the_eta_sf_unc[0][1] = recoEfficiencies_Electron_Unc_Sig->GetBinContent(binUncEta);
+	  the_eta_sf_unc[0][2] = recoEfficiencies_Electron_Unc_Bck->GetBinContent(binUncEta);
         }        
         if(abs(thePandaFlat.looseLep2PdgId)==13){
           double etal = thePandaFlat.looseLep2Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
           int binEta = scalefactors_Muon_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[1] = scalefactors_Muon_Eta->GetBinContent(binEta);
 	  the_eta_sf_unc[1][0] = scalefactors_Muon_Eta->GetBinError(binEta)/scalefactors_Muon_Eta->GetBinContent(binEta);
-	  the_eta_sf_unc[1][1] = 0;
-	  the_eta_sf_unc[1][2] = 0;
+          int binUncEta = recoEfficiencies_Muon_Unc_Sig->GetXaxis()->FindFixBin(etal);
+	  the_eta_sf_unc[1][1] = recoEfficiencies_Muon_Unc_Sig->GetBinContent(binUncEta);
+	  the_eta_sf_unc[1][2] = recoEfficiencies_Muon_Unc_Bck->GetBinContent(binUncEta);
         } else {
           double etal = thePandaFlat.looseLep2SCEta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
           int binEta = scalefactors_Electron_Eta->GetXaxis()->FindFixBin(etal);
           the_eta_sf[1] = scalefactors_Electron_Eta->GetBinContent(binEta);
 	  the_eta_sf_unc[1][0] = scalefactors_Electron_Eta->GetBinError(binEta)/scalefactors_Electron_Eta->GetBinContent(binEta);
-	  the_eta_sf_unc[1][1] = 0;
-	  the_eta_sf_unc[1][2] = 0;
+          int binUncEta = recoEfficiencies_Electron_Unc_Sig->GetXaxis()->FindFixBin(etal);
+	  the_eta_sf_unc[1][1] = recoEfficiencies_Electron_Unc_Sig->GetBinContent(binUncEta);
+	  the_eta_sf_unc[1][2] = recoEfficiencies_Electron_Unc_Bck->GetBinContent(binUncEta);
         }
 
         if(isSingleLeptonAna == false){
@@ -1242,18 +1255,21 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
 
       // Begin lepton selection efficiency corrections and uncertainties
       double totalWeight = 1.0; double sfWeightLepEff[2] = {1.0, 1.0};
+      double weightEWK = 1.0;
       double sfSystWeightLepEff[2][nEffNuisances];
       for(int ni=0; ni<2; ni++) for(int nj=0; nj<nEffNuisances; nj++) sfSystWeightLepEff[ni][nj] = 0.0;
 
       if(theCategory != 0 && theCategory != 5){
-        double weightEWK = 1.0;
-        if(dileptonPtCut == 200){
+        if(dileptonPtCut == 200 && theCategory == 2){
           TLorentzVector vGen1,vGen2;
           vGen1.SetPtEtaPhiM(thePandaFlat.genLep1Pt,thePandaFlat.genLep1Eta,thePandaFlat.genLep1Phi,thePDGMass[0]);
           vGen2.SetPtEtaPhiM(thePandaFlat.genLep2Pt,thePandaFlat.genLep2Eta,thePandaFlat.genLep2Phi,thePDGMass[1]);
 	  int binNum   = fhDVjetsNum->GetXaxis()->FindFixBin(TMath::Min((double)(vGen1+vGen2).Pt(),getMaxPtForSFs[6]));
 	  int binDen   = fhDVjetsDen->GetXaxis()->FindFixBin(TMath::Min((double)(vGen1+vGen2).Pt(),getMaxPtForSFs[7]));
-	  weightEWK = fhDVjetsNum->GetBinContent(binNum)/fhDVjetsDen->GetBinContent(binDen);
+	  if(binNum > 0 && binDen > 0){
+	    weightEWK = fhDVjetsNum->GetBinContent(binNum)/fhDVjetsDen->GetBinContent(binDen);
+	  }
+	  if(weightEWK <= 0.5 || weightEWK >= 1.5 || TMath::IsNaN(weightEWK)) printf("WARNING, UNUSUAL weightEWK(pt=%f): %f/%f = %f (%d/%d)\n",(vGen1+vGen2).Pt(),fhDVjetsNum->GetBinContent(binNum),fhDVjetsDen->GetBinContent(binDen),weightEWK,binNum,binDen);
 	}
 
         if(abs(thePandaFlat.looseLep1PdgId)==13){
@@ -1335,7 +1351,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
         double totalLooseWeight = 1.0;
         if(theCategory != 0 && theCategory != 5){
           totalLooseWeight = thePandaFlat.normalizedWeight * lumi * puWeight *
-		             the_eta_sf[0] * the_eta_sf[1] * sfWeightLepEff[0] * the_trigger_sf * theMCPrescale * zPos_SF;
+		             the_eta_sf[0] * the_eta_sf[1] * sfWeightLepEff[0] * the_trigger_sf * theMCPrescale * zPos_SF * weightEWK;
         }
         if(theCategory != 5){
 	  histo[lepType+22][theCategory]->Fill((v1+v2).Rapidity(),totalLooseWeight);
@@ -1355,7 +1371,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
         double totalLooseWeight = 1.0;
         if(theCategory != 0 && theCategory != 5){
           totalLooseWeight = thePandaFlat.normalizedWeight * lumi * puWeight *
-		             the_eta_sf[0] * the_eta_sf[1] * sfWeightLepEff[1] * the_trigger_sf * theMCPrescale * zPos_SF;
+		             the_eta_sf[0] * the_eta_sf[1] * sfWeightLepEff[1] * the_trigger_sf * theMCPrescale * zPos_SF * weightEWK;
         }
         if(theCategory != 5){
 	  histo[lepType+24][theCategory]->Fill((v1+v2).Rapidity(),totalLooseWeight);
