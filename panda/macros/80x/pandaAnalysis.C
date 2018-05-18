@@ -107,21 +107,27 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   TString hDVjetsDenName = "ZJets_01j_NLO/nominal";
   if(whichDY == 0) hDVjetsDenName = "ZJets_LO/inv_pt";
   TFile *fVJetsKfactorFile = TFile::Open(Form("MitAnalysisRunII/data/80x/kfactors_vjets.root"));
-  TH1D *fhDVjetsNum = (TH1D*)(fVJetsKfactorFile->Get("EWKcorr/Z"));
-  TH1D *fhDVjetsDen = (TH1D*)(fVJetsKfactorFile->Get(hDVjetsDenName.Data()));
+  TH1D *fhDVjetsNum  = (TH1D*)(fVJetsKfactorFile->Get("EWKcorr/Z"));
+  TH1D *fhDVjetsDen  = (TH1D*)(fVJetsKfactorFile->Get(hDVjetsDenName.Data()));
+  TH1D *fhDVjetsNorm = (TH1D*)(fVJetsKfactorFile->Get("ZJets_01j_NLO/nominal"));
   assert(fhDVjetsNum);
   assert(fhDVjetsDen);
+  assert(fhDVjetsNorm);
   fhDVjetsNum->SetDirectory(0);
   fhDVjetsDen->SetDirectory(0);
+  fhDVjetsNorm->SetDirectory(0);
   delete fVJetsKfactorFile;
+  fhDVjetsDen->Scale(fhDVjetsNorm->GetSumOfWeights()/fhDVjetsDen->GetSumOfWeights());
 
   int thePtValueBins[2] = {36, 72};
   double genLeptonPtCut = 25.0;
+  double genLeptonEtaCut = 2.4;
   if(dileptonPtCut == 200){
     printf("Modifying thePtValueBins\n");
     thePtValueBins[0] = 5; thePtValueBins[1] = 10;
     isNoDYName = isNoDYName + "_ptllcut";
     genLeptonPtCut = 0.0;
+    genLeptonEtaCut = 10.0;
   }
   const int nBinPt = thePtValueBins[0]; Float_t xbinsPt[nBinPt+1];
   const int nBinRecoPt = thePtValueBins[1]; Float_t xbinsRecoPt[nBinRecoPt+1];
@@ -239,10 +245,10 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   TFile *fLepton_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period%d.root",period));
 
   TFile *fRecoEfficiencies_Lep_Unc = TFile::Open(Form("MitAnalysisRunII/data/80x/recoEfficiencies_Lep_Unc_2016.root"));
-  TH1D* recoEfficiencies_Muon_Unc_Sig	  = (TH1D*)fRecoEfficiencies_Lep_Unc->Get("recoEfficiencies_Muon_Unc_Sig");     recoEfficiencies_Muon_Unc_Sig	 ->SetDirectory(0);
-  TH1D* recoEfficiencies_Muon_Unc_Bck	  = (TH1D*)fRecoEfficiencies_Lep_Unc->Get("recoEfficiencies_Muon_Unc_Bck");     recoEfficiencies_Muon_Unc_Bck	 ->SetDirectory(0);
-  TH1D* recoEfficiencies_Electron_Unc_Sig = (TH1D*)fRecoEfficiencies_Lep_Unc->Get("recoEfficiencies_Electron_Unc_Sig"); recoEfficiencies_Electron_Unc_Sig->SetDirectory(0);
-  TH1D* recoEfficiencies_Electron_Unc_Bck = (TH1D*)fRecoEfficiencies_Lep_Unc->Get("recoEfficiencies_Electron_Unc_Bck"); recoEfficiencies_Electron_Unc_Bck->SetDirectory(0);
+  TH1D* recoEfficiencies_Muon_Unc_Sig	  = (TH1D*)fRecoEfficiencies_Lep_Unc->Get("h_muEffSigSys"); recoEfficiencies_Muon_Unc_Sig    ->SetDirectory(0);
+  TH1D* recoEfficiencies_Muon_Unc_Bck	  = (TH1D*)fRecoEfficiencies_Lep_Unc->Get("h_muEffBkgSys"); recoEfficiencies_Muon_Unc_Bck    ->SetDirectory(0);
+  TH1D* recoEfficiencies_Electron_Unc_Sig = (TH1D*)fRecoEfficiencies_Lep_Unc->Get("h_elEffSigSys"); recoEfficiencies_Electron_Unc_Sig->SetDirectory(0);
+  TH1D* recoEfficiencies_Electron_Unc_Bck = (TH1D*)fRecoEfficiencies_Lep_Unc->Get("h_elEffBkgSys"); recoEfficiencies_Electron_Unc_Bck->SetDirectory(0);
   fRecoEfficiencies_Lep_Unc->Close();
 
   TH2D* scalefactors_Medium_Muon_stat_error_hi      = (TH2D*)fLepton_SF->Get("scalefactors_Medium_Muon_stat_error_hi");      scalefactors_Medium_Muon_stat_error_hi     ->SetDirectory(0);
@@ -1405,8 +1411,8 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
 
       double ZGenTot = 0; double ZGenPt = 0; double ZGenPhiStar = 0; double ZGenRap = 0; bool passPtFid = false; bool passRapFid = false; bool passPtRapFid[5] = {false, false, false, false, false}; 
       if(thePandaFlat.looseGenLep1PdgId != 0 && thePandaFlat.looseGenLep2PdgId != 0 &&
-         thePandaFlat.genLep1Pt > genLeptonPtCut && TMath::Abs(thePandaFlat.genLep1Eta) < 2.4 && TMath::Abs(thePandaFlat.genLep1PdgId) != 15 &&
-         thePandaFlat.genLep2Pt > genLeptonPtCut && TMath::Abs(thePandaFlat.genLep2Eta) < 2.4 && TMath::Abs(thePandaFlat.genLep2PdgId) != 15){
+         thePandaFlat.genLep1Pt > genLeptonPtCut && TMath::Abs(thePandaFlat.genLep1Eta) < genLeptonEtaCut && TMath::Abs(thePandaFlat.genLep1PdgId) != 15 &&
+         thePandaFlat.genLep2Pt > genLeptonPtCut && TMath::Abs(thePandaFlat.genLep2Eta) < genLeptonEtaCut && TMath::Abs(thePandaFlat.genLep2PdgId) != 15){
         TLorentzVector vGen1,vGen2;
         vGen1.SetPtEtaPhiM(thePandaFlat.genLep1Pt,thePandaFlat.genLep1Eta,thePandaFlat.genLep1Phi,thePDGMass[0]);
         vGen2.SetPtEtaPhiM(thePandaFlat.genLep2Pt,thePandaFlat.genLep2Eta,thePandaFlat.genLep2Phi,thePDGMass[1]);

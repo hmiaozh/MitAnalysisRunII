@@ -1662,7 +1662,7 @@ void wwAnalysis(
         else if(theCategory == 1 || (theCategory == 2 && shapeAnaType != 0)){ // qqWW
 	  // Begin gen fiducial selection
 	  TLorentzVector dilepGen(0,0,0,0),lepMaxGen(0,0,0,0),lepMinGen(0,0,0,0);
-          bool passFiducial[2] = {false, false};
+          bool passFiducial[3] = {false, false, false};
 	  Int_t countSelectedGenLeptons = 0;
 	  vector<int> idGenLep;
 	  for(int ngen0=0; ngen0<eventMonteCarlo.p4->GetEntriesFast(); ngen0++) {
@@ -1708,6 +1708,26 @@ void wwAnalysis(
 	    }
 
 	    if(idGenJet30.size() == nJetsType) passFiducial[1] = true;
+            // matching between reco jets and gen jets
+	    int nRecoGenJets = 0;
+	    for(unsigned int njetreco=0; njetreco<idJet.size(); njetreco++) {
+	      bool isGenJet = false;
+	      for(int njetgen=0; njetgen<eventMonteCarlo.jetP4->GetEntriesFast(); njetgen++) {
+                if(((TLorentzVector*)(*eventJets.p4)[idJet[njetreco]])->DeltaR(*((TLorentzVector*)(*eventMonteCarlo.jetP4)[njetgen])) < 0.4) {
+		  isGenJet = true;
+		  break;
+		}
+              }
+	      if(isGenJet == true) nRecoGenJets++;
+            }
+	    if(nRecoGenJets == idJet.size()) passFiducial[2] = true;
+	    /*if(nRecoGenJets != idJet.size()){
+	      printf("ddd %d %d %d\n",nRecoGenJets,idJet.size(),idGenJet30.size());
+              for(int nj=0; nj<eventJets.p4->GetEntriesFast(); nj++) printf("nrj %5.2f %5.2f %5.2f\n",((TLorentzVector*)(*eventJets.p4)[nj])->Pt(),((TLorentzVector*)(*eventJets.p4)[nj])->Eta(),((TLorentzVector*)(*eventJets.p4)[nj])->Phi());
+              for(int nj=0; nj<eventMonteCarlo.jetP4->GetEntriesFast(); nj++) printf("ng %5.2f %5.2f %5.2f\n",((TLorentzVector*)(*eventMonteCarlo.jetP4)[nj])->Pt(),((TLorentzVector*)(*eventMonteCarlo.jetP4)[nj])->Eta(),((TLorentzVector*)(*eventMonteCarlo.jetP4)[nj])->Phi());
+              for(unsigned int nglep = 0; nglep<idGenLep.size(); nglep++)  printf("nl %5.2f %5.2f %5.2f\n",((TLorentzVector*)(*eventMonteCarlo.p4)[idGenLep[nglep]])->Pt(),
+	         ((TLorentzVector*)(*eventMonteCarlo.p4)[idGenLep[nglep]])->Eta(),((TLorentzVector*)(*eventMonteCarlo.p4)[idGenLep[nglep]])->Phi());
+	    }*/
 	  }
 	  double MVAGenVar = (double)typePair;
           if     (shapeAnaType == 1){
@@ -1728,7 +1748,8 @@ void wwAnalysis(
           int genbin = histoGenMVA->GetXaxis()->FindBin(MVAGenVar)-1;
 	  if     (genbin == -1) {/*printf("%d %d %f\n",genbin,passFiducial[0],MVAGenVar);*/ genbin = nGenBins - 1;}
 	  else if(genbin >= nGenBins) {printf("PROBLEM %d %d %f\n",genbin,passFiducial[0],MVAGenVar);}
-	  if     (shapeAnaType == 9 && passFiducial[0] == false) genbin = nGenBins - 1;
+	  if     (shapeAnaType == 9 && passFiducial[0] == false) genbin = nGenBins - 1; // non leptonic fiducial
+	  else if(shapeAnaType == 9 && passFiducial[2] == false) genbin = nGenBins - 2; // non reco to gen jet matching
 	  else if(shapeAnaType <= 5 && passFiducial[0] == false) genbin = nGenBins - 1;
 	  else if(shapeAnaType >  5 && 
 	          shapeAnaType != 9 && passFiducial[1] == false) genbin = nGenBins - 1;
@@ -3280,31 +3301,31 @@ void wwAnalysis(
 
   // delete garbage
   system(Form("rm -f %s",outputLimitsAll));
-  if     (shapeAnaType == 0 || (theControlRegion != 0 && shapeAnaType != 9)){
+  if     (shapeAnaType == 0 || (theControlRegion != 0 && shapeAnaType != 9)){ // standard
     for(int i=1; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
-  else if(shapeAnaType == 1){
+  else if(shapeAnaType == 1){ // mll
     for(int i=12; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
-  else if(shapeAnaType == 2){
+  else if(shapeAnaType == 2){ // dphill
     for(int i=18; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
-  else if(shapeAnaType == 3){
+  else if(shapeAnaType == 3){ // ptl1
     for(int i=17; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
-  else if(shapeAnaType == 4){
+  else if(shapeAnaType == 4){ // ptl2
     for(int i=9; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
