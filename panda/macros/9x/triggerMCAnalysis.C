@@ -39,22 +39,29 @@ void triggerMCAnalysis()
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 48;
+  const int allPlots = 64;
   const int histBins = 9;
   TH1D* histo[allPlots][histBins];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     if     (thePlot >=  0 && thePlot <=  5) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
     else if(thePlot >=  6 && thePlot <= 11) {nBinPlot =  50; xminPlot =  0.0; xmaxPlot = 2.5;}
-    else if(thePlot >= 12 && thePlot <= 17) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
-    else if(thePlot >= 18 && thePlot <= 23) {nBinPlot =  50; xminPlot =  0.0; xmaxPlot = 2.5;}
-    else if(thePlot >= 24 && thePlot <= 29) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
-    else if(thePlot >= 30 && thePlot <= 35) {nBinPlot =  50; xminPlot =  0.0; xmaxPlot = 2.5;}
-    else if(thePlot >= 36 && thePlot <= 37) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
-    else if(thePlot >= 38 && thePlot <= 39) {nBinPlot =  50; xminPlot =  0.0; xmaxPlot = 2.5;}
-    else if(thePlot >= 40 && thePlot <= 41) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
-    else if(thePlot >= 42 && thePlot <= 43) {nBinPlot =  50; xminPlot =  0.0; xmaxPlot = 2.5;}
-    else if(thePlot >= 44 && thePlot <= 45) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
-    else if(thePlot >= 46 && thePlot <= 47) {nBinPlot =  50; xminPlot =  0.0; xmaxPlot = 2.5;}
+    else if(thePlot >= 12 && thePlot <= 14) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 400;}
+    else if(thePlot >= 15 && thePlot <= 20) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
+    else if(thePlot >= 21 && thePlot <= 26) {nBinPlot =  50; xminPlot =  0.0; xmaxPlot = 2.5;}
+    else if(thePlot >= 27 && thePlot <= 29) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 400;}
+    else if(thePlot >= 30 && thePlot <= 35) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
+    else if(thePlot >= 36 && thePlot <= 41) {nBinPlot =  50; xminPlot =  0.0; xmaxPlot = 2.5;}
+    else if(thePlot >= 42 && thePlot <= 44) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 400;}
+
+    else if(thePlot >= 46 && thePlot <= 47) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
+    else if(thePlot >= 48 && thePlot <= 49) {nBinPlot =  50; xminPlot =  0.0; xmaxPlot = 2.5;}
+    else if(thePlot >= 50 && thePlot <= 51) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 400;}
+    else if(thePlot >= 52 && thePlot <= 53) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
+    else if(thePlot >= 54 && thePlot <= 55) {nBinPlot =  50; xminPlot =  0.0; xmaxPlot = 2.5;}
+    else if(thePlot >= 56 && thePlot <= 57) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 400;}
+    else if(thePlot >= 58 && thePlot <= 59) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
+    else if(thePlot >= 60 && thePlot <= 61) {nBinPlot =  50; xminPlot =  0.0; xmaxPlot = 2.5;}
+    else if(thePlot >= 62 && thePlot <= 63) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 400;}
 
     TH1D* histos = new TH1D("histos", "histos", nBinPlot, xminPlot, xmaxPlot);
     histos->Sumw2();
@@ -135,29 +142,34 @@ void triggerMCAnalysis()
 	  histo[lepType+ 3][theCategory]->Fill(TMath::Min(v2.Pt(),199.999),totalWeight);
 	  histo[lepType+ 6][theCategory]->Fill(TMath::Abs(v1.Eta()),totalWeight);
 	  histo[lepType+ 9][theCategory]->Fill(TMath::Abs(v2.Eta()),totalWeight);
+	  histo[lepType+12][theCategory]->Fill(TMath::Min((v1+v2).Pt(),399.999),totalWeight);
 	  if(passFullTrigger == true){
-	    histo[lepType+12][theCategory]->Fill(TMath::Min(v1.Pt(),199.999),totalWeight);
-	    histo[lepType+15][theCategory]->Fill(TMath::Min(v2.Pt(),199.999),totalWeight);
-	    histo[lepType+18][theCategory]->Fill(TMath::Abs(v1.Eta()),totalWeight);
-	    histo[lepType+21][theCategory]->Fill(TMath::Abs(v2.Eta()),totalWeight);
+	    histo[lepType+15][theCategory]->Fill(TMath::Min(v1.Pt(),199.999),totalWeight);
+	    histo[lepType+18][theCategory]->Fill(TMath::Min(v2.Pt(),199.999),totalWeight);
+	    histo[lepType+21][theCategory]->Fill(TMath::Abs(v1.Eta()),totalWeight);
+	    histo[lepType+24][theCategory]->Fill(TMath::Abs(v2.Eta()),totalWeight);
+  	    histo[lepType+27][theCategory]->Fill(TMath::Min((v1+v2).Pt(),399.999),totalWeight);
 	  }
 	  if(lepType == 0 && (thePandaFlat.trigger & (1<<kDoubleMuTrig)) != 0){
-	    histo[24][theCategory]->Fill(TMath::Min(v1.Pt(),199.999),totalWeight);
-	    histo[27][theCategory]->Fill(TMath::Min(v2.Pt(),199.999),totalWeight);
-	    histo[30][theCategory]->Fill(TMath::Abs(v1.Eta()),totalWeight);
-	    histo[33][theCategory]->Fill(TMath::Abs(v2.Eta()),totalWeight);
+	    histo[30][theCategory]->Fill(TMath::Min(v1.Pt(),199.999),totalWeight);
+	    histo[33][theCategory]->Fill(TMath::Min(v2.Pt(),199.999),totalWeight);
+	    histo[36][theCategory]->Fill(TMath::Abs(v1.Eta()),totalWeight);
+	    histo[39][theCategory]->Fill(TMath::Abs(v2.Eta()),totalWeight);
+            histo[42][theCategory]->Fill(TMath::Min((v1+v2).Pt(),399.999),totalWeight);
 	  }
 	  if(lepType == 1 && (thePandaFlat.trigger & (1<<kDoubleEleTrig)) != 0){
-	    histo[25][theCategory]->Fill(TMath::Min(v1.Pt(),199.999),totalWeight);
-	    histo[28][theCategory]->Fill(TMath::Min(v2.Pt(),199.999),totalWeight);
-	    histo[31][theCategory]->Fill(TMath::Abs(v1.Eta()),totalWeight);
-	    histo[34][theCategory]->Fill(TMath::Abs(v2.Eta()),totalWeight);
+	    histo[31][theCategory]->Fill(TMath::Min(v1.Pt(),199.999),totalWeight);
+	    histo[34][theCategory]->Fill(TMath::Min(v2.Pt(),199.999),totalWeight);
+	    histo[37][theCategory]->Fill(TMath::Abs(v1.Eta()),totalWeight);
+	    histo[40][theCategory]->Fill(TMath::Abs(v2.Eta()),totalWeight);
+	    histo[43][theCategory]->Fill(TMath::Min((v1+v2).Pt(),399.999),totalWeight);
 	  }
 	  if(lepType == 1 && (thePandaFlat.trigger & (1<<kEMuTrig)) != 0){
-	    histo[26][theCategory]->Fill(TMath::Min(v1.Pt(),199.999),totalWeight);
-	    histo[29][theCategory]->Fill(TMath::Min(v2.Pt(),199.999),totalWeight);
-	    histo[32][theCategory]->Fill(TMath::Abs(v1.Eta()),totalWeight);
-	    histo[35][theCategory]->Fill(TMath::Abs(v2.Eta()),totalWeight);
+	    histo[32][theCategory]->Fill(TMath::Min(v1.Pt(),199.999),totalWeight);
+	    histo[35][theCategory]->Fill(TMath::Min(v2.Pt(),199.999),totalWeight);
+	    histo[38][theCategory]->Fill(TMath::Abs(v1.Eta()),totalWeight);
+	    histo[41][theCategory]->Fill(TMath::Abs(v2.Eta()),totalWeight);
+	    histo[44][theCategory]->Fill(TMath::Min((v1+v2).Pt(),399.999),totalWeight);
 	  }
 	}
       }
@@ -171,21 +183,26 @@ void triggerMCAnalysis()
           else if(abs(looseLepPdgId[0])==11) lepType = 1;
           double thePDGMass[1] = {mass_mu};
           if     (abs(lepType) == 1) {thePDGMass[0] = mass_el;}
-          TLorentzVector v1;
+          TLorentzVector v1,metP4;
           v1.SetPtEtaPhiM(looseLepPt[0],looseLepEta[0],looseLepPhi[0],thePDGMass[0]);
-	  histo[lepType+36][theCategory]->Fill(TMath::Min(v1.Pt(),199.999),totalWeight);
-	  histo[lepType+38][theCategory]->Fill(TMath::Abs(v1.Eta()),totalWeight);
+          metP4.SetPtEtaPhiM(thePandaFlat.pfmet,0,thePandaFlat.pfmetphi,0);
+	  histo[lepType+46][theCategory]->Fill(TMath::Min(v1.Pt(),199.999),totalWeight);
+	  histo[lepType+48][theCategory]->Fill(TMath::Abs(v1.Eta()),totalWeight);
+	  histo[lepType+50][theCategory]->Fill(TMath::Min((v1+metP4).Pt(),399.999),totalWeight);
 	  if(passFullTrigger == true){
-	    histo[lepType+40][theCategory]->Fill(TMath::Min(v1.Pt(),199.999),totalWeight);
-	    histo[lepType+42][theCategory]->Fill(TMath::Abs(v1.Eta()),totalWeight);
+	    histo[lepType+52][theCategory]->Fill(TMath::Min(v1.Pt(),199.999),totalWeight);
+	    histo[lepType+54][theCategory]->Fill(TMath::Abs(v1.Eta()),totalWeight);
+  	    histo[lepType+56][theCategory]->Fill(TMath::Min((v1+metP4).Pt(),399.999),totalWeight);
 	  }
 	  if(lepType == 0 && (thePandaFlat.trigger & (1<<kSingleMuTrig)) != 0){
-	    histo[44][theCategory]->Fill(TMath::Min(v1.Pt(),199.999),totalWeight);
-	    histo[46][theCategory]->Fill(TMath::Abs(v1.Eta()),totalWeight);
+	    histo[58][theCategory]->Fill(TMath::Min(v1.Pt(),199.999),totalWeight);
+	    histo[60][theCategory]->Fill(TMath::Abs(v1.Eta()),totalWeight);
+  	    histo[62][theCategory]->Fill(TMath::Min((v1+metP4).Pt(),399.999),totalWeight);
 	  }
 	  if(lepType == 1 && (thePandaFlat.trigger & (1<<kSingleEleTrig)) != 0){
-	    histo[45][theCategory]->Fill(TMath::Min(v1.Pt(),199.999),totalWeight);
-	    histo[47][theCategory]->Fill(TMath::Abs(v1.Eta()),totalWeight);
+	    histo[59][theCategory]->Fill(TMath::Min(v1.Pt(),199.999),totalWeight);
+	    histo[61][theCategory]->Fill(TMath::Abs(v1.Eta()),totalWeight);
+  	    histo[63][theCategory]->Fill(TMath::Min((v1+metP4).Pt(),399.999),totalWeight);
 	  }
 	}
       }

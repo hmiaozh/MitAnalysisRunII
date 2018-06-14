@@ -19,7 +19,7 @@ const double mcPrescale = 1;
 void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int year = 2017, int debug = 0)
 {
   TString dirPathRM = TString(gSystem->Getenv("CMSSW_BASE")) + "/src/MitAnalysisRunII/data/80x/rcdata.2016.v3";
-  double lumi = 35.8;
+  double lumi = 41.5;
   double k_eff = 0.5 * sqrt(20285930./12446486.);
   TString filesPath    = "/data/t3home000/ceballos/panda/v_004_0/";
   TString pileUpName = "MitAnalysisRunII/data/90x/puWeights_90x.root";
@@ -36,22 +36,25 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
   vector<Int_t> infileCat_;
   infileName_.push_back(Form("%sdata.root",filesPath.Data()));                 infileCat_.push_back(0);
   infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));  infileCat_.push_back(2);
-/*
+
   infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
-  infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
-  infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(2);
+  //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
+  //infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(2);
   infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));                infileCat_.push_back(3);
   infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                  infileCat_.push_back(3);
 
-  infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data()));                infileCat_.push_back(4);
-  infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data()));                infileCat_.push_back(4);
+  infileName_.push_back(Form("%sZZinc.root" ,filesPath.Data()));               infileCat_.push_back(4);
+  infileName_.push_back(Form("%sWZinc.root" ,filesPath.Data()));               infileCat_.push_back(4);
+
+  //infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data()));                infileCat_.push_back(4);
+  //infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data()));                infileCat_.push_back(4);
   infileName_.push_back(Form("%sWZ.root" ,filesPath.Data()));                  infileCat_.push_back(4);
   infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));                 infileCat_.push_back(4);
   infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));                 infileCat_.push_back(4);
-  infileName_.push_back(Form("%sWGstar.root" ,filesPath.Data()));	       infileCat_.push_back(4);
-  infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));		       infileCat_.push_back(6);
-  infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	       infileCat_.push_back(7);
-*/
+  //infileName_.push_back(Form("%sWGstar.root" ,filesPath.Data()));	       infileCat_.push_back(4);
+  //infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));		       infileCat_.push_back(6);
+  //infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	       infileCat_.push_back(7);
+
 
   TFile *fPUFile = TFile::Open(pileUpName.Data());
   TH1D *fhDPU = (TH1D*)(fPUFile->Get("puWeights")); assert(fhDPU); fhDPU->SetDirectory(0);
@@ -209,7 +212,7 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
         int nElectrons = 0;
         double the_eta_sf[4] = {1.0, 1.0, 1.0, 1.0};
         double sfWeightLepEff[4] = {1.0, 1.0, 1.0, 1.0};
-	for(int i=0; i<looseLepPdgId.size(); i++){
+	for(unsigned int i=0; i<looseLepPdgId.size(); i++){
           if(abs(looseLepPdgId[i])==13){
             double etal = looseLepEta[i]; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
             int binEta = scalefactors_Muon_Reco->GetXaxis()->FindFixBin(etal);
