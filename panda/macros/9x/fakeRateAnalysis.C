@@ -20,53 +20,35 @@ unsigned int period = 0
 
   double minLepPt[2] = {10.0, 12.0};
 
-  double lumi = 35.8;
-  if     (period == 1) lumi = 19.3;
-  else if(period == 2) lumi = 16.5;
+  double lumi = 41.7;
   //*******************************************************
   //Input Files
   //*******************************************************
-  TString filesPath    = "/data/t3home000/ceballos/panda/v_003_0/";
+  TString filesPath    = "/data/t3home000/ceballos/panda/v_005_0/";
   vector<TString> infileName_;
   vector<int> infileCat_;
 
   infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	       infileCat_.push_back(0);
   infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
-  infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
-  infileName_.push_back(Form("%sTT.root" ,filesPath.Data()));		       infileCat_.push_back(1);
+  //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
+  infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		       infileCat_.push_back(1);
+  infileName_.push_back(Form("%sTT1L.root" ,filesPath.Data()));		       infileCat_.push_back(1);
   infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));		       infileCat_.push_back(1);
   infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
   infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
   infileName_.push_back(Form("%sWZ.root" ,filesPath.Data()));		       infileCat_.push_back(1);
   infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));  	       infileCat_.push_back(1);
   infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	       infileCat_.push_back(1);
-  infileName_.push_back(Form("%sWGstar.root" ,filesPath.Data()));	       infileCat_.push_back(1);
-  infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));		       infileCat_.push_back(1);
-  infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
-  infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(2);
+  //infileName_.push_back(Form("%sWGstar.root" ,filesPath.Data()));	       infileCat_.push_back(1);
+  //infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));		       infileCat_.push_back(1);
+  //infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
+  //infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(2);
   infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));  infileCat_.push_back(2);
   infileName_.push_back(Form("%sWJets.root" ,filesPath.Data()));               infileCat_.push_back(3);
 
   TFile *fnpvWeights = TFile::Open(Form("MitAnalysisRunII/data/80x/npvWeights_2016_FakeTriggers.root"));
   TH1D* hDnpvWeights = (TH1D*)fnpvWeights->Get("npvWeights"); hDnpvWeights->SetDirectory(0);
   fnpvWeights->Close();
-
-  TFile *fLepton_Eta_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_eta_sf_37ifb_period%d.root",period));
-  TH1D* scalefactors_Muon_Eta = (TH1D*)fLepton_Eta_SF->Get("scalefactors_Muon_Eta"); scalefactors_Muon_Eta->SetDirectory(0);
-  TH1D* scalefactors_Electron_Eta = (TH1D*)fLepton_Eta_SF->Get("scalefactors_Electron_Eta"); scalefactors_Electron_Eta->SetDirectory(0);
-  fLepton_Eta_SF->Close();
-
-  TFile *fLepton_SF_mu_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period%d.root",period));
-  TH2D* scalefactors_Medium_Muon = (TH2D*)fLepton_SF_mu_central->Get("scalefactors_Medium_Muon"); scalefactors_Medium_Muon->SetDirectory(0);
-  fLepton_SF_mu_central->Close();
-
-  TFile *fLepton_SF_el_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period%d.root",period));
-  TH2D* scalefactors_Medium_Electron = (TH2D*)fLepton_SF_el_central->Get("scalefactors_Medium_Electron"); scalefactors_Medium_Electron->SetDirectory(0);
-  fLepton_SF_el_central->Close();
-
-  double getMaxPtForSFs[2] = {scalefactors_Medium_Muon                  ->GetYaxis()->GetBinCenter(scalefactors_Medium_Muon		     ->GetNbinsY()),
-                              scalefactors_Medium_Electron              ->GetYaxis()->GetBinCenter(scalefactors_Medium_Electron		     ->GetNbinsY())
-		              };
 
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
@@ -135,15 +117,16 @@ unsigned int period = 0
       nb = thePandaFlat.fChain->GetEntry(jentry);   nbytes += nb;
       if (jentry%1000000 == 0) printf("--- reading event %8lld (%8lld) of %8lld\n",jentry,ientry,nentries);
 
-      if(infileCat_[ifile] == 0 && ((period == 1 && thePandaFlat.runNumber > 278802) || (period == 2 && thePandaFlat.runNumber <= 278802))) continue;
+      //if(infileCat_[ifile] == 0 && ((period == 1 && thePandaFlat.runNumber > 278802) || (period == 2 && thePandaFlat.runNumber <= 278802))) continue;
 
-      vector<float>  looseLepPt,looseLepEta,looseLepPhi;
+      vector<float>  looseLepPt,looseLepEta,looseLepPhi,looseLepSF;
       vector<int> looseLepSelBit,looseLepPdgId,looseLepTripleCharge,looseLepMissingHits;
       int ptSelCuts[3] = {0,0,0};
       for(int i=0; i<thePandaFlat.nLooseMuon; i++){
         looseLepPt.push_back(thePandaFlat.muonPt[i]);
         looseLepEta.push_back(thePandaFlat.muonEta[i]);
         looseLepPhi.push_back(thePandaFlat.muonPhi[i]);
+        looseLepSF.push_back(thePandaFlat.muonSfReco[i] * thePandaFlat.muonSfTight[i]);
         looseLepSelBit.push_back(thePandaFlat.muonSelBit[i]);
         looseLepPdgId.push_back(thePandaFlat.muonPdgId[i]);
         looseLepTripleCharge.push_back(1);
@@ -158,6 +141,7 @@ unsigned int period = 0
         looseLepPhi.push_back(thePandaFlat.electronPhi[i]);
         looseLepSelBit.push_back(thePandaFlat.electronSelBit[i]);
         looseLepPdgId.push_back(thePandaFlat.electronPdgId[i]);
+        looseLepSF.push_back(thePandaFlat.electronSfReco[i] * thePandaFlat.electronSfTight[i]);
         looseLepTripleCharge.push_back(thePandaFlat.electronTripleCharge[i]);
         looseLepMissingHits.push_back(thePandaFlat.electronNMissingHits[i]);
 	if(thePandaFlat.electronPt[i] > 25) ptSelCuts[0]++;
@@ -237,29 +221,9 @@ unsigned int period = 0
       double totalWeight = 1.0;
       if(theCategory != 0){
         int binNpv = hDnpvWeights->GetXaxis()->FindFixBin(TMath::Min((double)thePandaFlat.npv,49.499));
-	double npvWeights = hDnpvWeights->GetBinContent(binNpv);
-        double the_eta_sf[2] = {1.0, 1.0};
-        if(abs(looseLepPdgId[0])==13){
-          double etal = looseLepEta[0]; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
-          int binEta = scalefactors_Muon_Eta->GetXaxis()->FindFixBin(etal);
-          the_eta_sf[0] = scalefactors_Muon_Eta->GetBinContent(binEta);
-        } else {
-          double etal = looseLepEta[0]; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
-          int binEta = scalefactors_Electron_Eta->GetXaxis()->FindFixBin(etal);
-          the_eta_sf[0] = scalefactors_Electron_Eta->GetBinContent(binEta);
-        }        
-        if(thePandaFlat.nLooseLep == 2){
-          if(abs(looseLepPdgId[1])==13){
-            double etal = looseLepEta[1]; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
-            int binEta = scalefactors_Muon_Eta->GetXaxis()->FindFixBin(etal);
-            the_eta_sf[1] = scalefactors_Muon_Eta->GetBinContent(binEta);
-          } else {
-            double etal = looseLepEta[1]; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
-            int binEta = scalefactors_Electron_Eta->GetXaxis()->FindFixBin(etal);
-            the_eta_sf[1] = scalefactors_Electron_Eta->GetBinContent(binEta);
-          }
-	}
-        totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu * the_eta_sf[0] * the_eta_sf[1] * npvWeights;
+	double npvWeights = 1;//hDnpvWeights->GetBinContent(binNpv);
+        
+        totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu * looseLepSF[0] * npvWeights;
       }
 
       int binPt = histoZllPt[0][0]->GetXaxis()->FindFixBin(TMath::Min(vLoose1.Pt(),44.999))-1;

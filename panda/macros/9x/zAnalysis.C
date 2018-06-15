@@ -19,7 +19,7 @@ const double mcPrescale = 1;
 void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int year = 2017, int debug = 0)
 {
   TString dirPathRM = TString(gSystem->Getenv("CMSSW_BASE")) + "/src/MitAnalysisRunII/data/80x/rcdata.2016.v3";
-  double lumi = 41.5;
+  double lumi = 41.7;
   double k_eff = 0.5 * sqrt(20285930./12446486.);
   TString filesPath    = "/data/t3home000/ceballos/panda/v_004_0/";
   TString pileUpName = "MitAnalysisRunII/data/90x/puWeights_90x.root";
@@ -43,18 +43,14 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
   infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));                infileCat_.push_back(3);
   infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                  infileCat_.push_back(3);
 
-  infileName_.push_back(Form("%sZZinc.root" ,filesPath.Data()));               infileCat_.push_back(4);
-  infileName_.push_back(Form("%sWZinc.root" ,filesPath.Data()));               infileCat_.push_back(4);
-
-  //infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data()));                infileCat_.push_back(4);
-  //infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data()));                infileCat_.push_back(4);
+  infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	       infileCat_.push_back(4);
+  infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data())); 	       infileCat_.push_back(4);
   infileName_.push_back(Form("%sWZ.root" ,filesPath.Data()));                  infileCat_.push_back(4);
   infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));                 infileCat_.push_back(4);
   infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));                 infileCat_.push_back(4);
   //infileName_.push_back(Form("%sWGstar.root" ,filesPath.Data()));	       infileCat_.push_back(4);
   //infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));		       infileCat_.push_back(6);
   //infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	       infileCat_.push_back(7);
-
 
   TFile *fPUFile = TFile::Open(pileUpName.Data());
   TH1D *fhDPU = (TH1D*)(fPUFile->Get("puWeights")); assert(fhDPU); fhDPU->SetDirectory(0);
@@ -203,8 +199,8 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
       double drll = sqrt(dphill*dphill+detall*detall);
       double mtW = TMath::Sqrt(2.0*dilep.Pt()*metP4.Pt()*(1.0 - TMath::Cos(dPhiDiLepMET)));
 
-      bool passSel = (TMath::Abs((v1+v2).M()-91.1876) < 15 || (lepType == 2 && (v1+v2).M() > 20)) && v1.Pt() > 25 && v2.Pt() > 25;
-      if(isTopSel == true) passSel = (TMath::Abs((v1+v2).M()-91.1876) > 15 || lepType == 2) && (v1+v2).M() > 20 && v1.Pt() > 25 && v2.Pt() > 25 && mtW > 50;
+      bool passSel = (TMath::Abs((v1+v2).M()-91.1876) < 15 || (lepType == 2 && (v1+v2).M() > 50)) && v1.Pt() > 25 && v2.Pt() > 25;
+      if(isTopSel == true) passSel = (TMath::Abs((v1+v2).M()-91.1876) > 15 || lepType == 2) && (v1+v2).M() > 50 && v1.Pt() > 25 && v2.Pt() > 25 && mtW > 50;
       if(passSel == false) continue;
 
       double totalWeight = 1.0;
@@ -259,7 +255,7 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
 
       histo[lepType+ 0][theCategory]->Fill((v1+v2).M(),totalWeight);
       histo[lepType+ 3][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJet, 9.4999),totalWeight);
-      histo[lepType+ 6][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,4.4999),totalWeight);
+      //histo[lepType+ 6][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,4.4999),totalWeight);
       histo[lepType+ 9][theCategory]->Fill(TMath::Min((v1+v2).Pt(), 999.999),totalWeight);
       histo[lepType+12][theCategory]->Fill(TMath::Min((double)thePandaFlat.pfmet, 499.999),totalWeight);
       histo[lepType+15][theCategory]->Fill(TMath::Min((double)thePandaFlat.puppimet, 499.999),totalWeight);

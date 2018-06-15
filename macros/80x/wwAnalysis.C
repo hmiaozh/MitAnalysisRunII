@@ -452,6 +452,8 @@ void wwAnalysis(
     histos->Reset();histos->Clear();
   }
 
+  TH1D* histoJetRes = new TH1D("histosJetRes", "histosJetRes", 50, -10, 10);
+
   char finalStateName[2],effMName[10],effEName[10],momMName[10],momEName[10];
   sprintf(effMName,"CMS_eff_m");sprintf(momMName,"CMS_scale_m");
   sprintf(effEName,"CMS_eff_e");sprintf(momEName,"CMS_scale_e");
@@ -1715,6 +1717,7 @@ void wwAnalysis(
 	      for(int njetgen=0; njetgen<eventMonteCarlo.jetP4->GetEntriesFast(); njetgen++) {
                 if(((TLorentzVector*)(*eventJets.p4)[idJet[njetreco]])->DeltaR(*((TLorentzVector*)(*eventMonteCarlo.jetP4)[njetgen])) < 0.4) {
 		  isGenJet = true;
+		  histoJetRes->Fill(((TLorentzVector*)(*eventMonteCarlo.jetP4)[njetgen])->Pt()-((TLorentzVector*)(*eventJets.p4)[idJet[njetreco]])->Pt(), totalWeight);
 		  break;
 		}
               }

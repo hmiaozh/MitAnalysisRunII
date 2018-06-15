@@ -3,20 +3,22 @@ enum LepSelectionBit {
  kFake    =(1<<1),
  kMedium  =(1<<2),
  kTight   =(1<<3),
- kDxyz    =(1<<4)
+ kDxyz    =(1<<4),
+ kEleMvaWP90=(1<<5),
+ kEleMvaWP80=(1<<6)
 };
 
 enum PhoSelectionBit {
- pMedium    =(1<<0),
- pTight     =(1<<1),
- pHighPt    =(1<<2),
+ pMedium  =(1<<0),
+ pTight   =(1<<1),
+ pHighPt  =(1<<2),
  pCsafeVeto =(1<<3),
  pPixelVeto =(1<<4),
  pTrkVeto   =(1<<5)
 };
 
 enum TriggerBits {
-    kMETTrig	   = 0,
+    kMETTrig     = 0,
     kSingleEleTrig,
     kSinglePhoTrig,
     kSingleMuTrig,
@@ -27,7 +29,7 @@ enum TriggerBits {
     kMuFakeTrig,
     kEleFakeTrig,
     kNTrig
-};
+  };
 
 const double mass_el = 0.000510998928;
 const double mass_mu = 0.10566;

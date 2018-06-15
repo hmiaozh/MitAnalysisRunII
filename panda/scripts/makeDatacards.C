@@ -2,6 +2,7 @@
 bool isVZbbAna = true;
 bool isVZbbAna = false;
 
+gSystem->Load("libPandaAnalysisFlat.so");
 .L MitVHBBAnalysis/macros/zllhAnalysis.C+g
 datacardsFromHistograms("zhbb/testcondor2016", kZllHSR,             true, 3, 0, 2016, isVZbbAna);
 datacardsFromHistograms("zhbb/testcondor2016", kZllHLightFlavorCR,  true, 3, 0, 2016, isVZbbAna);
