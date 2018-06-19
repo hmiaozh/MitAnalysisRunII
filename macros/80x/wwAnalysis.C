@@ -1711,7 +1711,7 @@ void wwAnalysis(
 
 	    if(idGenJet30.size() == nJetsType) passFiducial[1] = true;
             // matching between reco jets and gen jets
-	    int nRecoGenJets = 0;
+	    unsigned int nRecoGenJets = 0;
 	    for(unsigned int njetreco=0; njetreco<idJet.size(); njetreco++) {
 	      bool isGenJet = false;
 	      for(int njetgen=0; njetgen<eventMonteCarlo.jetP4->GetEntriesFast(); njetgen++) {
@@ -2253,6 +2253,14 @@ void wwAnalysis(
     printf("(.total): %9.2f +/- %7.2f | %9.2f +/- %7.2f | %9.2f +/- %7.2f\n",
            sumEventsBckType[0]+sumEventsSigType[0],sqrt(sumEventsBckTypeE[0]+sumEventsSigTypeE[0]),sumEventsBckType[1]+sumEventsSigType[1],sqrt(sumEventsBckTypeE[1]+sumEventsSigTypeE[1]),sumEventsBckType[2]+sumEventsSigType[2],sqrt(sumEventsBckTypeE[2]+sumEventsSigTypeE[2]));
     printf("--------------------------------------------------------------------------------\n");
+  }
+  {
+  char output[200];
+  sprintf(output,"histoww_JetRes.root");	  
+  TFile* outFilePlotsNote = new TFile(output,"recreate");
+  outFilePlotsNote->cd();
+  histoJetRes->Write();
+  outFilePlotsNote->Close();
   }
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     char output[200];
