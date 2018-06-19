@@ -14,6 +14,12 @@ nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2016",kZllHHeav
 nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2016",kZllH2TopCR,true,3,1,2016,0,1)' >& logzhbin1_kZllH2TopCR2016 &
 #nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2016",kZllHVZbbCR,true,3,1,2016,0,1)' >& logzhbin1_kZllHVZbbCR2016 &
 
+nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2016",kZllHSR,true,3,2,2016,0,1)' >& logzhbin2_kZllHSR2016 &
+nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2016",kZllHLightFlavorCR,true,3,2,2016,0,1)' >& logzhbin2_kZllHLightFlavorCR2016 &
+nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2016",kZllHHeavyFlavorCR,true,3,2,2016,0,1)' >& logzhbin2_kZllHHeavyFlavorCR2016 &
+nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2016",kZllH2TopCR,true,3,2,2016,0,1)' >& logzhbin2_kZllH2TopCR2016 &
+#nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2016",kZllHVZbbCR,true,3,2,2016,0,1)' >& logzhbin2_kZllHVZbbCR2016 &
+
 nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2016",kZllHFJSR,true,3,0,2016,0,1)' >& logzhbin0_kZllHFJSR2016 &
 nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2016",kZllHLightFlavorFJCR,true,3,0,2016,0,1)' >& logzhbin0_kZllHLightFlavorFJCR2016 &
 nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2016",kZllHHeavyFlavorFJCR,true,3,0,2016,0,1)' >& logzhbin0_kZllHHeavyFlavorFJCR2016 &
@@ -32,6 +38,12 @@ nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2017",kZllHLigh
 nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2017",kZllHHeavyFlavorCR,true,3,1,2017,0,1)' >& logzhbin1_kZllHHeavyFlavorCR2017 &
 nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2017",kZllH2TopCR,true,3,1,2017,0,1)' >& logzhbin1_kZllH2TopCR2017 &
 #nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2017",kZllHVZbbCR,true,3,1,2017,0,1)' >& logzhbin1_kZllHVZbbCR2017 &
+
+nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2017",kZllHSR,true,3,2,2017,0,1)' >& logzhbin2_kZllHSR2017 &
+nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2017",kZllHLightFlavorCR,true,3,2,2017,0,1)' >& logzhbin2_kZllHLightFlavorCR2017 &
+nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2017",kZllHHeavyFlavorCR,true,3,2,2017,0,1)' >& logzhbin2_kZllHHeavyFlavorCR2017 &
+nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2017",kZllH2TopCR,true,3,2,2017,0,1)' >& logzhbin2_kZllH2TopCR2017 &
+#nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2017",kZllHVZbbCR,true,3,2,2017,0,1)' >& logzhbin2_kZllHVZbbCR2017 &
 
 nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2017",kZllHFJSR,true,3,0,2017,0,1)' >& logzhbin0_kZllHFJSR2017 &
 nohup root -q -b -l MitVHBBAnalysis/macros/zllhAnalysis.C+'("test2017",kZllHLightFlavorFJCR,true,3,0,2017,0,1)' >& logzhbin0_kZllHLightFlavorFJCR2017 &
