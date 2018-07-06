@@ -35,11 +35,13 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
   vector<TString> infileName_;
   vector<Int_t> infileCat_;
   infileName_.push_back(Form("%sdata.root",filesPath.Data()));                 infileCat_.push_back(0);
-  infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));  infileCat_.push_back(2);
+  TH1D *fhDPU2;
 
+  if     (year == 2017){
   infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
   //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
   //infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(2);
+  infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));  infileCat_.push_back(2);
   infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));                infileCat_.push_back(3);
   infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                  infileCat_.push_back(3);
 
@@ -51,6 +53,16 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
   //infileName_.push_back(Form("%sWGstar.root" ,filesPath.Data()));	       infileCat_.push_back(4);
   //infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));		       infileCat_.push_back(6);
   //infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	       infileCat_.push_back(7);
+  } 
+  else if(year == 2018){
+  infileName_.push_back(Form("%sdata_2018.root","/data/t3home000/ceballos/panda/v_006_0/")); infileCat_.push_back(1);
+  pileUpName = "MitAnalysisRunII/data/90x/npvWeights_2018_to_2017.root";
+  infileName_.push_back(Form("%sdata.root","/data/t3home000/ceballos/panda/v_002_0/")); infileCat_.push_back(2);
+
+  TFile *fPUFile2 = TFile::Open("MitAnalysisRunII/data/90x/npvWeights_2016_to_2017.root");
+  fhDPU2 = (TH1D*)(fPUFile2->Get("puWeights")); assert(fhDPU2); fhDPU2->SetDirectory(0);
+  delete fPUFile2;
+  }
 
   TFile *fPUFile = TFile::Open(pileUpName.Data());
   TH1D *fhDPU = (TH1D*)(fPUFile->Get("puWeights")); assert(fhDPU); fhDPU->SetDirectory(0);
@@ -90,22 +102,22 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 60;
+  const int allPlots = 63;
   const int histBins = 9;
   TH1D* histo[allPlots][histBins];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     if     (thePlot >=  0 && thePlot <=  1) {nBinPlot = 120; xminPlot = 91.1876-15; xmaxPlot = 91.1876+15;}
     else if(thePlot >=  2 && thePlot <=  2) {nBinPlot = 200; xminPlot = 20.0; xmaxPlot = 220;}
-    else if(thePlot >=  3 && thePlot <=  5) {nBinPlot =  10; xminPlot = -0.5; xmaxPlot = 9.5;}
-    else if(thePlot >=  6 && thePlot <=  8) {nBinPlot =   5; xminPlot = -0.5; xmaxPlot = 4.5;}
+    else if(thePlot >=  3 && thePlot <=  8) {nBinPlot =  10; xminPlot = -0.5; xmaxPlot = 9.5;}
     else if(thePlot >=  9 && thePlot <= 11) {nBinPlot =1000; xminPlot =  0.0; xmaxPlot =1000;}
     else if(thePlot >= 12 && thePlot <= 26) {nBinPlot = 500; xminPlot =  0.0; xmaxPlot = 500;}
     else if(thePlot >= 27 && thePlot <= 32) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = TMath::Pi();}
-    else if(thePlot >= 33 && thePlot <= 38) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 2.0;}
+    else if(thePlot >= 33 && thePlot <= 38) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 5.0;}
     else if(thePlot >= 39 && thePlot <= 44) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 5.0;}
     else if(thePlot >= 45 && thePlot <= 47) {nBinPlot =  80; xminPlot = -0.5; xmaxPlot = 79.5;}
     else if(thePlot >= 48 && thePlot <= 53) {nBinPlot = 100; xminPlot = -2.5; xmaxPlot = 2.5;}
     else if(thePlot >= 54 && thePlot <= 59) {nBinPlot = 200; xminPlot = 25.0; xmaxPlot = 225;}
+    else if(thePlot >= 60 && thePlot <= 62) {nBinPlot =   5; xminPlot = -0.5; xmaxPlot = 4.5;}
     
     if(isTopSel == true && (thePlot >=  0 && thePlot <=  1)) {nBinPlot = 200; xminPlot = 20.0; xmaxPlot = 220;}
 
@@ -204,7 +216,7 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
       if(passSel == false) continue;
 
       double totalWeight = 1.0;
-      if(theCategory != 0){
+      if     (theCategory != 0 && year != 2018){
         int nElectrons = 0;
         double the_eta_sf[4] = {1.0, 1.0, 1.0, 1.0};
         double sfWeightLepEff[4] = {1.0, 1.0, 1.0, 1.0};
@@ -252,10 +264,18 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
 
 	if(debug == 1) printf("WEIGHTS: %f | %f %f %f %f %f %f %f %f %f %f %f %f\n",totalWeight,thePandaFlat.normalizedWeight,lumi,sfPileUp,the_eta_sf[0],the_eta_sf[1],the_eta_sf[2],the_eta_sf[3],sfWeightLepEff[0],sfWeightLepEff[1],sfWeightLepEff[2],sfWeightLepEff[3],specialWeight);
       }
+      else if(theCategory == 1 && year == 2018){
+        double sfPileUp = nPUScaleFactor(fhDPU,thePandaFlat.npv);
+        totalWeight = sfPileUp * 2.40;
+      }
+      else if(theCategory == 2 && year == 2018){
+        double sfPileUp = nPUScaleFactor(fhDPU2,thePandaFlat.npv);
+        totalWeight = sfPileUp * 1.21;
+      }
 
       histo[lepType+ 0][theCategory]->Fill((v1+v2).M(),totalWeight);
-      histo[lepType+ 3][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJet, 9.4999),totalWeight);
-      //histo[lepType+ 6][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,4.4999),totalWeight);
+      histo[lepType+ 3][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJet,9.4999),totalWeight);
+      histo[lepType+ 6][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,9.4999),totalWeight);
       histo[lepType+ 9][theCategory]->Fill(TMath::Min((v1+v2).Pt(), 999.999),totalWeight);
       histo[lepType+12][theCategory]->Fill(TMath::Min((double)thePandaFlat.pfmet, 499.999),totalWeight);
       histo[lepType+15][theCategory]->Fill(TMath::Min((double)thePandaFlat.puppimet, 499.999),totalWeight);
@@ -264,8 +284,8 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
       histo[lepType+24][theCategory]->Fill(TMath::Min(mtW, 499.999),totalWeight);
       histo[lepType+27][theCategory]->Fill(dPhiDiLepMET,totalWeight);
       histo[lepType+30][theCategory]->Fill(dphill,totalWeight);
-      histo[lepType+33][theCategory]->Fill(TMath::Min(ptFrac,1.999),totalWeight);
-      histo[lepType+36][theCategory]->Fill(TMath::Min(caloMinusPFMETRel,1.999),totalWeight);
+      histo[lepType+33][theCategory]->Fill(TMath::Min(ptFrac,4.999),totalWeight);
+      histo[lepType+36][theCategory]->Fill(TMath::Min(caloMinusPFMETRel,4.999),totalWeight);
       histo[lepType+39][theCategory]->Fill(TMath::Min(detall,4.999),totalWeight);
       histo[lepType+42][theCategory]->Fill(TMath::Min(drll,4.999),totalWeight);
       histo[lepType+45][theCategory]->Fill(TMath::Min((double)thePandaFlat.npv,79.499),totalWeight);
@@ -273,6 +293,7 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
       histo[lepType+51][theCategory]->Fill(looseLepEta[1],totalWeight);
       histo[lepType+54][theCategory]->Fill(TMath::Min((double)looseLepPt[0], 224.999),totalWeight);
       histo[lepType+57][theCategory]->Fill(TMath::Min((double)looseLepPt[1], 224.999),totalWeight);
+      histo[lepType+60][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNBtags,4.4999),totalWeight);
 
     } // end event loop
   } // end samples loop
