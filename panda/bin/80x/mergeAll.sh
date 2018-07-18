@@ -31,6 +31,7 @@ PandaAnalysis/T3/merging/merge_Leptonic.py DYJetsToEE_POWHEG
 PandaAnalysis/T3/merging/merge_Leptonic.py WJets
 PandaAnalysis/T3/merging/merge_Leptonic.py WpWp_EWK
 PandaAnalysis/T3/merging/merge_Leptonic.py WpWp_QCD
+PandaAnalysis/T3/merging/merge_Leptonic.py DYJetsToEE_POWHEG_MINLO
 PandaAnalysis/T3/merging/merge_Leptonic.py MET
 #PandaAnalysis/T3/merging/merge_Leptonic.py SingleMuon           
 #PandaAnalysis/T3/merging/merge_Leptonic.py SingleElectron     
