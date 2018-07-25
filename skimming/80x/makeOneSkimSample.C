@@ -152,7 +152,7 @@ void makeOneSkimSample(
   UInt_t Filter_pass[totalNumberSkims] = {0,0,0,0,0,0,0,0};
   Double_t sumAllEvents = 0;
   Double_t sumPassEvents = 0;
-  Double_t sumPassSelection[5] = {0,0,0,0,0};
+  Double_t sumPassSelection[6] = {0,0,0,0,0,0};
   for (int i=0; i<the_input_all->GetEntries(); ++i) {
     the_input_all->GetEntry(i);
     if(doReject0WeightEvents == true) the_input_tree->GetEntry(i);
@@ -190,16 +190,15 @@ void makeOneSkimSample(
       bool isGoodFlags = ((*eventMonteCarlo.flags)[ngen0] & BareMonteCarlo::PromptFinalState) == BareMonteCarlo::PromptFinalState ||
                          ((*eventMonteCarlo.flags)[ngen0] & BareMonteCarlo::DirectPromptTauDecayProductFinalState) == BareMonteCarlo::DirectPromptTauDecayProductFinalState;
       if(!isGoodFlags) continue;
-      idGenLep.push_back(ngen0);
       bool passSelLepton = 
          ((*eventMonteCarlo.flags)[ngen0] & BareMonteCarlo::PromptFinalState) == BareMonteCarlo::PromptFinalState &&
          TMath::Abs(((TLorentzVector*)(*eventMonteCarlo.p4)[ngen0])->Eta()) < 2.5 &&
          ((TLorentzVector*)(*eventMonteCarlo.p4)[ngen0])->Pt() > 20;
-      if(passSelLepton) countSelectedGenLeptons ++;
+      if(passSelLepton) {countSelectedGenLeptons++; idGenLep.push_back(ngen0);}
     }
 
     if(countSelectedGenLeptons >= 2){
-      vector<int> idGenJet25,idGenJet30,idGenJet35;
+      vector<int> idGenJet25,idGenJet30,idGenJet35,idGenJet65;
       for(int njetgen=0; njetgen<eventMonteCarlo.jetP4->GetEntriesFast(); njetgen++) {
         if(TMath::Abs(((TLorentzVector*)(*eventMonteCarlo.jetP4)[njetgen])->Eta()) >= 5.0) continue;
         bool isGenLepton = false;
@@ -213,6 +212,7 @@ void makeOneSkimSample(
         if(((TLorentzVector*)(*eventMonteCarlo.jetP4)[njetgen])->Pt() > 25) idGenJet25.push_back(njetgen);
         if(((TLorentzVector*)(*eventMonteCarlo.jetP4)[njetgen])->Pt() > 30) idGenJet30.push_back(njetgen);
         if(((TLorentzVector*)(*eventMonteCarlo.jetP4)[njetgen])->Pt() > 35) idGenJet35.push_back(njetgen);
+        if(((TLorentzVector*)(*eventMonteCarlo.jetP4)[njetgen])->Pt() > 65) idGenJet65.push_back(njetgen);
       }
 
       if(idGenJet25.size() == 0) sumPassSelection[0] = sumPassSelection[0] + eventMonteCarlo.mcWeight;
@@ -220,10 +220,15 @@ void makeOneSkimSample(
       if(idGenJet35.size() == 0) sumPassSelection[2] = sumPassSelection[2] + eventMonteCarlo.mcWeight;
 
       if(idGenJet30.size() >= 2){
-        TLorentzVector dijet =       ( *(TLorentzVector*)(*eventMonteCarlo.jetP4)[idGenJet30[0]] ) +   ( *(TLorentzVector*)(*eventMonteCarlo.jetP4)[idGenJet30[1]] );
+        TLorentzVector dilep = ( *(TLorentzVector*)(*eventMonteCarlo.p4)[idGenLep[0]] ) + ( *(TLorentzVector*)(*eventMonteCarlo.p4)[idGenLep[1]] );
+        TLorentzVector dijet = ( *(TLorentzVector*)(*eventMonteCarlo.jetP4)[idGenJet30[0]] ) +   ( *(TLorentzVector*)(*eventMonteCarlo.jetP4)[idGenJet30[1]] );
 	double deltaEtaJJ = TMath::Abs(((TLorentzVector*)(*eventMonteCarlo.jetP4)[idGenJet30[0]])->Eta()-((TLorentzVector*)(*eventMonteCarlo.jetP4)[idGenJet30[1]])->Eta());
         if(deltaEtaJJ > 2.5 && dijet.M() > 300) sumPassSelection[3] = sumPassSelection[3] + eventMonteCarlo.mcWeight;
         if(deltaEtaJJ > 2.5 && dijet.M() > 500) sumPassSelection[4] = sumPassSelection[4] + eventMonteCarlo.mcWeight;
+        bool fidSelATLAS = idGenJet35.size() >= 2 && idGenJet65.size() >= 1 && deltaEtaJJ > 2.0 && dijet.M() > 500 && dilep.M() > 20 && 
+                           ((TLorentzVector*)(*eventMonteCarlo.p4)[idGenLep[0]])->Pt() > 27 && ((TLorentzVector*)(*eventMonteCarlo.p4)[idGenLep[1]])->Pt() > 27 &&
+                           ((TLorentzVector*)(*eventMet.p4)[0])->Pt() > 30.0;
+        if(fidSelATLAS == true) sumPassSelection[5] = sumPassSelection[5] + eventMonteCarlo.mcWeight;
       }
     }
     // End gen fiducial selection
@@ -506,7 +511,7 @@ void makeOneSkimSample(
   printf("Filters: %d %d %d %d %d %d %d %d\n",Filter_pass[0],Filter_pass[1],Filter_pass[2],Filter_pass[3],Filter_pass[4],Filter_pass[5],Filter_pass[6],Filter_pass[7]);
   printf("Overall ratio: %f\n",(double)(Filter_pass[0]+Filter_pass[1]+Filter_pass[2]+Filter_pass[3]+Filter_pass[4]+Filter_pass[5]+Filter_pass[6]+Filter_pass[7])/(double)N_pass);
   printf("N pass/all = %d / %d = %f | Sum pass/all = %f / %f = %f\n",N_pass,N_all,(double)N_pass/N_all,sumPassEvents,sumAllEvents,sumPassEvents/sumAllEvents);
-  printf("effPassSelection: %f %f %f %f %f\n",sumPassSelection[0]/sumAllEvents,sumPassSelection[1]/sumAllEvents,sumPassSelection[2]/sumAllEvents,sumPassSelection[3]/sumAllEvents,sumPassSelection[4]/sumAllEvents);
+  printf("effPassSelection: %f %f %f %f %f %f\n",sumPassSelection[0]/sumAllEvents,sumPassSelection[1]/sumAllEvents,sumPassSelection[2]/sumAllEvents,sumPassSelection[3]/sumAllEvents,sumPassSelection[4]/sumAllEvents,sumPassSelection[5]/sumAllEvents);
   normalizedTree0->Write();
   normalizedTree1->Write();
   if(the_PDF_tree && fillPDFInfo) theClone_PDF_tree->Write();
