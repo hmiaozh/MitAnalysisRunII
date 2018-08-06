@@ -1,5 +1,5 @@
 
-bool isVZbbAna = true, applyBtagPtEta = false;
+//bool isVZbbAna = true, applyBtagPtEta = false;
 bool isVZbbAna = false, applyBtagPtEta = false;
 
 gSystem->Load("libPandaAnalysisFlat.so");

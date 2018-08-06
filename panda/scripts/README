@@ -1,0 +1,91 @@
+===== Installation =====
+
+git clone git@github.com:PandaPhysics/PandaTree.git
+git clone git@github.com:DylanHsu/PandaAnalysis.git
+git clone git@github.com:sidnarayanan/PandaCore.git
+git clone https://github.com/GuillelmoGomezCeballos/MitAnalysisRunII
+git clone git@github.com:PandaPhysics/MitVHBBAnalysis.git
+
+===== Main macros =====
+
+* MitVHBBAnalysis/macros/zllhAnalysis.C <-- ZllHbb analysis
+* MitVHBBAnalysis/macros/whAnalysis.C <-- WlnHbb analysis
+* MitVHBBAnalysis/macros/vhbbPlot.h <-- auxiliary file for categories, plotting, etc
+* MitVHBBAnalysis/macros/zhbbMVA.C <-- ZllHbb MVA training
+* MitVHBBAnalysis/macros/whbbMVA.C <-- WlnHbb MVA training
+* MitVHBBAnalysis/macros/finalPlot2018.C <-- make plots using plots_* files
+
+- Datacards and plots go to MitVHBBAnalysis/datacards
+   - only root files are produced, the actual txt files are produced in a second step
+- mva training ntuples go to MitVHBBAnalysis/mva
+
+===== Small analysis macros details =====
+   - Selection defined under ao.cuts
+   - vector<pair<TString,vhbbPlot::sampleType>> samples only used if it runs interactively
+      - Otherwise, it is irrelevant, but it is important to keep consistency between the big sample names (here) and the individual small sample names (see below)
+   - ao.MVAVarType==1 is to fit the Higgs pt, while ao.MVAVarType==3 is to fit the MVA variable in the SR region
+   - Check the section ``Declare histograms for plotting" if new or updated plots are needed
+   - ao.mvaTree is used for the MVA
+   - Make sure you are using the right MitVHBBAnalysis/weights
+   - There are 3+1 resolved+boostd categories in zh, while there are 1+1 resolved+boostd categories in wh
+
+===== Run on condor =====
+
+* MitAnalysisRunII/panda/scripts/runAllCondor_zh.sh
+* MitAnalysisRunII/panda/scripts/runAllCondor_wh.sh
+
+- Run both 2016 and 2017 datasets
+- You MUST change the location of condor files, on git:
+   - /data/t3serv014/ceballos/submit/zhbb/testcondor2016
+   - /data/t3serv014/ceballos/submit/zhbb/testcondor2017
+   - /data/t3serv014/ceballos/submit/whbb/testcondor2016
+   - /data/t3serv014/ceballos/submit/whbb/testcondor2017
+- Check status and resubmit jobs:
+   - PandaCore/bin/check --cache /data/t3serv014/ceballos/submit/zhbb/testcondor2016 --resubmit_failed
+   - PandaCore/bin/check --cache /data/t3serv014/ceballos/submit/zhbb/testcondor2017 --resubmit_failed
+   - PandaCore/bin/check --cache /data/t3serv014/ceballos/submit/whbb/testcondor2016 --resubmit_failed
+   - PandaCore/bin/check --cache /data/t3serv014/ceballos/submit/whbb/testcondor2017 --resubmit_failed
+- Merge all output files when 100% done:
+   - MitVHBBAnalysis/bash/mergeOutputZllh.sh zhbb/testcondor2016
+   - MitVHBBAnalysis/bash/mergeOutputZllh.sh zhbb/testcondor2017
+   - MitVHBBAnalysis/bash/mergeOutputWh.sh whbb/testcondor2016
+   - MitVHBBAnalysis/bash/mergeOutputWh.sh whbb/testcondor2017
+- If we want to merge the MVA ntuples:
+   - Replace MitVHBBAnalysis/datacards to MitVHBBAnalysis/mva on:
+      - MitVHBBAnalysis/bash/mergeOutputZllh.sh
+      - MitVHBBAnalysis/bash/mergeOutputWh.sh
+
+===== Location and Name of individual samples ==== 
+   - Big samples are assumed to be under ntupleDir2016 and ntupleDir2017
+   - Small samples, which are used to run on condor, are under ntupleDir2016/split and ntupleDir2017/split
+   - The variables ntupleDir2016 and ntupleDir2017 are defined in the zh and wh macros
+   - The list of individual samples are defined on MitVHBBAnalysis/config
+      - If a new set of ntuples are created, you MUST check the correctness of these lists
+
+==== Produce datacards =====
+   - MitAnalysisRunII/panda/scripts/makeDatacards_zh.C
+   - MitAnalysisRunII/panda/scripts/makeDatacards_wh.C
+
+It is meant to be run interactively, it is extremely fast
+
+=== Produce plots =====
+   - MitAnalysisRunII/panda/scripts/makePlots_zh.sh 2016 (mlf)
+   - MitAnalysisRunII/panda/scripts/makePlots_zh.sh 2017 (mlf)
+   - MitAnalysisRunII/panda/scripts/makePlots_wh.sh 2016 (mlf)
+   - MitAnalysisRunII/panda/scripts/makePlots_wh.sh 2017 (mlf)
+
+The option mlf means the postfit normalization is used, but location is HARDCODED, you MUST modify it
+
+==== Produce new MVA training =====
+   - MitAnalysisRunII/panda/scripts/runBDTs_zh.sh
+   - MitAnalysisRunII/panda/scripts/runBDTs_wh.sh
+
+Input files are under MitVHBBAnalysis/mva_frozen. You MUST move the ntplus you want to use from mva to mva_frozen
+
+Careful, new weights go to MitVHBBAnalysis/weights, remove the *class*C files, they are not used
+
+==== Check equal binning using a given MVA training =====
+   - Run MitAnalysisRunII/panda/scripts/checkEqualBinning.C
+   - intervalType = 0 (8 bins, for resolved categories), =1 (6 bins, for boosted categories)
+   - You should run the signal samples only on the SRs only and modifying the binning of the BDT distribution (bdtValue) to 200 bins for instance (40 is the default)
+   - The new proposed binning is modified in the macros with new ``ao.MVAbins"
