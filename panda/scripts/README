@@ -1,4 +1,4 @@
-===== Installation =====
+ ===== Installation =====
 
 git clone git@github.com:PandaPhysics/PandaTree.git
 git clone git@github.com:DylanHsu/PandaAnalysis.git
@@ -16,18 +16,24 @@ git clone git@github.com:PandaPhysics/MitVHBBAnalysis.git
 * MitVHBBAnalysis/macros/finalPlot2018.C <-- make plots using plots_* files
 
 - Datacards and plots go to MitVHBBAnalysis/datacards
-   - only root files are produced, the actual txt files are produced in a second step
+   - only root files are produced in condor submission mode, the actual txt files are produced in 
+     a second step
 - mva training ntuples go to MitVHBBAnalysis/mva
 
 ===== Small analysis macros details =====
+
    - Selection defined under ao.cuts
    - vector<pair<TString,vhbbPlot::sampleType>> samples only used if it runs interactively
-      - Otherwise, it is irrelevant, but it is important to keep consistency between the big sample names (here) and the individual small sample names (see below)
-   - ao.MVAVarType==1 is to fit the Higgs pt, while ao.MVAVarType==3 is to fit the MVA variable in the SR region
+      - Otherwise, it is irrelevant, but it is important to keep consistency between the big sample 
+        names (here) and the individual small sample names (see below)
+   - ao.MVAVarType==1 is used to fit the Higgs pt, while ao.MVAVarType==3 is used to fit the MVA 
+     variable in the SR region
    - Check the section ``Declare histograms for plotting" if new or updated plots are needed
    - ao.mvaTree is used for the MVA
    - Make sure you are using the right MitVHBBAnalysis/weights
-   - There are 3+1 resolved+boostd categories in zh, while there are 1+1 resolved+boostd categories in wh
+   - There are 3+1 resolved+boostd categories in zh, while there are 1+1 resolved+boostd 
+     categories in wh; there are ee/mm/em (en/mn) final states in Z_>ll (W->ln) channels
+   - Need to run the macro for every signal or control region
 
 ===== Run on condor =====
 
@@ -56,19 +62,23 @@ git clone git@github.com:PandaPhysics/MitVHBBAnalysis.git
       - MitVHBBAnalysis/bash/mergeOutputWh.sh
 
 ===== Location and Name of individual samples ==== 
+
    - Big samples are assumed to be under ntupleDir2016 and ntupleDir2017
-   - Small samples, which are used to run on condor, are under ntupleDir2016/split and ntupleDir2017/split
+   - Small samples, which are used to run on condor, are under ntupleDir2016/split 
+     and ntupleDir2017/split
    - The variables ntupleDir2016 and ntupleDir2017 are defined in the zh and wh macros
    - The list of individual samples are defined on MitVHBBAnalysis/config
       - If a new set of ntuples are created, you MUST check the correctness of these lists
 
 ==== Produce datacards =====
+
    - MitAnalysisRunII/panda/scripts/makeDatacards_zh.C
    - MitAnalysisRunII/panda/scripts/makeDatacards_wh.C
 
 It is meant to be run interactively, it is extremely fast
 
 === Produce plots =====
+
    - MitAnalysisRunII/panda/scripts/makePlots_zh.sh 2016 (mlf)
    - MitAnalysisRunII/panda/scripts/makePlots_zh.sh 2017 (mlf)
    - MitAnalysisRunII/panda/scripts/makePlots_wh.sh 2016 (mlf)
@@ -77,15 +87,28 @@ It is meant to be run interactively, it is extremely fast
 The option mlf means the postfit normalization is used, but location is HARDCODED, you MUST modify it
 
 ==== Produce new MVA training =====
+
    - MitAnalysisRunII/panda/scripts/runBDTs_zh.sh
    - MitAnalysisRunII/panda/scripts/runBDTs_wh.sh
 
-Input files are under MitVHBBAnalysis/mva_frozen. You MUST move the ntplus you want to use from mva to mva_frozen
+Input files are under MitVHBBAnalysis/mva_frozen. You MUST move the ntplus you want to use 
+from mva to mva_frozen
 
 Careful, new weights go to MitVHBBAnalysis/weights, remove the *class*C files, they are not used
 
 ==== Check equal binning using a given MVA training =====
+
    - Run MitAnalysisRunII/panda/scripts/checkEqualBinning.C
    - intervalType = 0 (8 bins, for resolved categories), =1 (6 bins, for boosted categories)
-   - You should run the signal samples only on the SRs only and modifying the binning of the BDT distribution (bdtValue) to 200 bins for instance (40 is the default)
+   - You should run the signal samples only on the SRs only and modifying the binning of the 
+     BDT distribution (bdtValue) to 200 bins for instance (40 is the default)
    - The new proposed binning is modified in the macros with new ``ao.MVAbins"
+
+==== Current datacards =====
+   - They are NOT on git
+   - You can find them on /home/ceballos/releases/CMSSW_8_1_0/src/cards/cards_vh
+   - Scripts:
+      - makeCards.sh to produce the workspaces, see the different options (zh, wh, combinations...)
+      - runFits.sh to run an specific fir (limits, significance...)
+      - runAllFits.sh to run everything, it is used just as a reference
+   - The default datacards are on the ``default" folder
