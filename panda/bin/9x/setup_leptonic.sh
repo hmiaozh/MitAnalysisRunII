@@ -14,6 +14,8 @@ export SUBMIT_WORKDIR="/data/t3serv014/ceballos/condor/"${SUBMIT_NAME}"/work/"
 export SUBMIT_LOCKDIR="/data/t3serv014/ceballos/panda/"${SUBMIT_NAME}"/locks/"
 export SUBMIT_LOGDIR="/data/t3serv014/ceballos/condor/"${SUBMIT_NAME}"/logs/"
 export SUBMIT_OUTDIR="/data/t3serv014/ceballos/panda/"${SUBMIT_NAME}"/batch/"
-mkdir -p $SUBMIT_WORKDIR $SUBMIT_LOCKDIR $SUBMIT_LOGDIR $SUBMIT_OUTDIR
+export SUBMIT_USER="/data/t3serv014/ceballos/condor/"${SUBMIT_NAME}"/user/"
+export SUBMIT_REPORT="/data/t3serv014/ceballos/condor/"${SUBMIT_NAME}"/report/"
+mkdir -p $SUBMIT_WORKDIR $SUBMIT_LOCKDIR $SUBMIT_LOGDIR $SUBMIT_OUTDIR $SUBMIT_USER $SUBMIT_REPORT
 
 export SUBMIT_CONFIG=T2

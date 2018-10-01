@@ -5,6 +5,7 @@ rm -rf /data/t3serv014/ceballos/submit/zhbb/*
 
 MitVHBBAnalysis/bash/buildJobArgsZllh.sh zhbb/testcondor2016 3 2016 true
 grep -v Presel MitVHBBAnalysis/datacards/zhbb/testcondor2016/jobArgs.txt | grep -v ZllHTT2bFJCR > lll
+#grep -v Presel MitVHBBAnalysis/datacards/zhbb/testcondor2016/jobArgs.txt | grep -v ZllHTT2bFJCR | grep SR > lll
 mv lll MitVHBBAnalysis/datacards/zhbb/testcondor2016/jobArgs.txt
 PandaCore/bin/submit --exec MitVHBBAnalysis/bash/runZllhAnalysis.sh --njobs 1000 --arglist MitVHBBAnalysis/datacards/zhbb/testcondor2016/jobArgs.txt --cache /data/t3serv014/ceballos/submit/zhbb/testcondor2016
 

@@ -5,6 +5,7 @@ rm -rf /data/t3serv014/ceballos/submit/whbb/*
 
 MitVHBBAnalysis/bash/buildJobArgsWh.sh whbb/testcondor2016 3 2016 true
 grep -v Presel MitVHBBAnalysis/datacards/whbb/testcondor2016/jobArgs.txt | grep -v WHTT1bFJCR > lll
+#grep -v Presel MitVHBBAnalysis/datacards/whbb/testcondor2016/jobArgs.txt | grep -v WHTT1bFJCR | grep SR > lll
 mv lll MitVHBBAnalysis/datacards/whbb/testcondor2016/jobArgs.txt
 PandaCore/bin/submit --exec MitVHBBAnalysis/bash/runWhAnalysis.sh --njobs 1000 --arglist MitVHBBAnalysis/datacards/whbb/testcondor2016/jobArgs.txt --cache /data/t3serv014/ceballos/submit/whbb/testcondor2016
 

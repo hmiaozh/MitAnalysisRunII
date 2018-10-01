@@ -1,7 +1,7 @@
 void checkEqualBinning(TString fileName = "", int intervalType = 0, bool debug = false){
   TFile *_file0 = TFile::Open(fileName.Data());
   TH1F* histo0 = (TH1F*)_file0->Get(Form("bdtValue/histo12"));
-  TH1F* histo1 = (TH1F*)_file0->Get(Form("bdtValue/histo14"));
+  TH1F* histo1 = (TH1F*)_file0->Get(Form("bdtValue/histo13"));
   TH1F* histo2 = (TH1F*)_file0->Get(Form("bdtValue/histo14"));
   double sum[4]= {0, 0, 0, 0};
   double theInterval[8] = {1/8., 2/8., 3/8., 4/8., 5/8., 6/8., 7/8., 8.001/8.};
