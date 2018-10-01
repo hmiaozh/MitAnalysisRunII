@@ -32,12 +32,12 @@ PandaAnalysis/T3/merging/merge_Leptonic.py WJets
 PandaAnalysis/T3/merging/merge_Leptonic.py WpWp_EWK
 PandaAnalysis/T3/merging/merge_Leptonic.py WpWp_QCD
 PandaAnalysis/T3/merging/merge_Leptonic.py DYJetsToEE_POWHEG_MINLO
-PandaAnalysis/T3/merging/merge_Leptonic.py MET
+###PandaAnalysis/T3/merging/merge_Leptonic.py MET
 #PandaAnalysis/T3/merging/merge_Leptonic.py SingleMuon           
 #PandaAnalysis/T3/merging/merge_Leptonic.py SingleElectron     
 #PandaAnalysis/T3/merging/merge_Leptonic.py MuonEG       
 #PandaAnalysis/T3/merging/merge_Leptonic.py DoubleEG     
 #PandaAnalysis/T3/merging/merge_Leptonic.py DoubleMuon
-PandaAnalysis/T3/merging/merge_Leptonic.py data_overlaps
+###PandaAnalysis/T3/merging/merge_Leptonic.py data_overlaps
 
-root -q -l -b MitAnalysisRunII/panda/macros/9x/makeGoodRunSample.C+'("${PANDA_FLATDIR}/data_overlaps.root","${PANDA_FLATDIR}/data.root")'
+###root -q -l -b MitAnalysisRunII/panda/macros/9x/makeGoodRunSample.C+'("${PANDA_FLATDIR}/data_overlaps.root","${PANDA_FLATDIR}/data.root","MitAnalysisRunII/json/80x/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt")'
