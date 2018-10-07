@@ -1275,6 +1275,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
 	  if(binNum > 0 && binDen > 0){
 	    weightEWK = fhDVjetsNum->GetBinContent(binNum)/fhDVjetsDen->GetBinContent(binDen);
 	  }
+	  if((vGen1+vGen2).Pt() > 800) weightEWK = weightEWK * 1.2;
 	  if(weightEWK <= 0.5 || weightEWK >= 1.5 || TMath::IsNaN(weightEWK)) printf("WARNING, UNUSUAL weightEWK(pt=%f): %f/%f = %f (%d/%d)\n",(vGen1+vGen2).Pt(),fhDVjetsNum->GetBinContent(binNum),fhDVjetsDen->GetBinContent(binDen),weightEWK,binNum,binDen);
 	}
 

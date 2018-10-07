@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Mon Jun 18 04:51:29 2018 by ROOT version 6.10/09
+// Sun Oct  7 03:30:03 2018 by ROOT version 6.10/09
 // from TTree events/events
 // found on file: /data/t3home000/ceballos/panda/v_004_0/qqZZ.root
 //////////////////////////////////////////////////////////
@@ -134,19 +134,55 @@ public :
    Float_t         genBosonEta;
    Float_t         genBosonMass;
    Float_t         genBosonPhi;
-   Float_t         genMuonPt;
-   Float_t         genMuonEta;
-   Float_t         genElectronPt;
-   Float_t         genElectronEta;
-   Float_t         genTauPt;
-   Float_t         genTauEta;
-   Float_t         genMjj;
-   Float_t         genTopPt;
-   Float_t         genAntiTopPt;
+   Float_t         genJet1Pt;
+   Float_t         genJet2Pt;
+   Float_t         genJet1Eta;
+   Float_t         genJet2Eta;
    Int_t           nJet;
    Int_t           nJot;
+   Int_t           nJot_JESTotalUp;
+   Int_t           nJot_JESTotalDown;
+   Int_t           nJot_JESAbsoluteMPFBiasUp;
+   Int_t           nJot_JESAbsoluteMPFBiasDown;
+   Int_t           nJot_JESAbsoluteScaleUp;
+   Int_t           nJot_JESAbsoluteScaleDown;
+   Int_t           nJot_JESAbsoluteStatUp;
+   Int_t           nJot_JESAbsoluteStatDown;
+   Int_t           nJot_JESFlavorQCDUp;
+   Int_t           nJot_JESFlavorQCDDown;
+   Int_t           nJot_JESFragmentationUp;
+   Int_t           nJot_JESFragmentationDown;
+   Int_t           nJot_JESPileUpDataMCUp;
+   Int_t           nJot_JESPileUpDataMCDown;
+   Int_t           nJot_JESPileUpPtBBUp;
+   Int_t           nJot_JESPileUpPtBBDown;
+   Int_t           nJot_JESPileUpPtEC1Up;
+   Int_t           nJot_JESPileUpPtEC1Down;
+   Int_t           nJot_JESPileUpPtEC2Up;
+   Int_t           nJot_JESPileUpPtEC2Down;
+   Int_t           nJot_JESPileUpPtRefUp;
+   Int_t           nJot_JESPileUpPtRefDown;
+   Int_t           nJot_JESRelativeFSRUp;
+   Int_t           nJot_JESRelativeFSRDown;
+   Int_t           nJot_JESRelativeJEREC1Up;
+   Int_t           nJot_JESRelativeJEREC1Down;
+   Int_t           nJot_JESRelativePtBBUp;
+   Int_t           nJot_JESRelativePtBBDown;
+   Int_t           nJot_JESRelativePtEC1Up;
+   Int_t           nJot_JESRelativePtEC1Down;
+   Int_t           nJot_JESRelativePtEC2Up;
+   Int_t           nJot_JESRelativePtEC2Down;
+   Int_t           nJot_JESRelativeStatECUp;
+   Int_t           nJot_JESRelativeStatECDown;
+   Int_t           nJot_JESRelativeStatFSRUp;
+   Int_t           nJot_JESRelativeStatFSRDown;
+   Int_t           nJot_JESSinglePionECALUp;
+   Int_t           nJot_JESSinglePionECALDown;
+   Int_t           nJot_JESSinglePionHCALUp;
+   Int_t           nJot_JESSinglePionHCALDown;
+   Int_t           nJot_JESTimePtEtaUp;
+   Int_t           nJot_JESTimePtEtaDown;
    Int_t           nJotMax;
-   Int_t           nIsoJet;
    Float_t         jotPt[2];
    Float_t         jotPt_JESTotalUp[2];
    Float_t         jotPt_JESTotalDown[2];
@@ -209,7 +245,48 @@ public :
    Float_t         jot12DPhi_JESTotalUp;
    Float_t         jot12DPhi_JESTotalDown;
    Int_t           jetNBtags;
-   Int_t           isojetNBtags;
+   Int_t           jetNBtags_JESTotalUp;
+   Int_t           jetNBtags_JESTotalDown;
+   Int_t           jetNBtags_JESAbsoluteMPFBiasUp;
+   Int_t           jetNBtags_JESAbsoluteMPFBiasDown;
+   Int_t           jetNBtags_JESAbsoluteScaleUp;
+   Int_t           jetNBtags_JESAbsoluteScaleDown;
+   Int_t           jetNBtags_JESAbsoluteStatUp;
+   Int_t           jetNBtags_JESAbsoluteStatDown;
+   Int_t           jetNBtags_JESFlavorQCDUp;
+   Int_t           jetNBtags_JESFlavorQCDDown;
+   Int_t           jetNBtags_JESFragmentationUp;
+   Int_t           jetNBtags_JESFragmentationDown;
+   Int_t           jetNBtags_JESPileUpDataMCUp;
+   Int_t           jetNBtags_JESPileUpDataMCDown;
+   Int_t           jetNBtags_JESPileUpPtBBUp;
+   Int_t           jetNBtags_JESPileUpPtBBDown;
+   Int_t           jetNBtags_JESPileUpPtEC1Up;
+   Int_t           jetNBtags_JESPileUpPtEC1Down;
+   Int_t           jetNBtags_JESPileUpPtEC2Up;
+   Int_t           jetNBtags_JESPileUpPtEC2Down;
+   Int_t           jetNBtags_JESPileUpPtRefUp;
+   Int_t           jetNBtags_JESPileUpPtRefDown;
+   Int_t           jetNBtags_JESRelativeFSRUp;
+   Int_t           jetNBtags_JESRelativeFSRDown;
+   Int_t           jetNBtags_JESRelativeJEREC1Up;
+   Int_t           jetNBtags_JESRelativeJEREC1Down;
+   Int_t           jetNBtags_JESRelativePtBBUp;
+   Int_t           jetNBtags_JESRelativePtBBDown;
+   Int_t           jetNBtags_JESRelativePtEC1Up;
+   Int_t           jetNBtags_JESRelativePtEC1Down;
+   Int_t           jetNBtags_JESRelativePtEC2Up;
+   Int_t           jetNBtags_JESRelativePtEC2Down;
+   Int_t           jetNBtags_JESRelativeStatECUp;
+   Int_t           jetNBtags_JESRelativeStatECDown;
+   Int_t           jetNBtags_JESRelativeStatFSRUp;
+   Int_t           jetNBtags_JESRelativeStatFSRDown;
+   Int_t           jetNBtags_JESSinglePionECALUp;
+   Int_t           jetNBtags_JESSinglePionECALDown;
+   Int_t           jetNBtags_JESSinglePionHCALUp;
+   Int_t           jetNBtags_JESSinglePionHCALDown;
+   Int_t           jetNBtags_JESTimePtEtaUp;
+   Int_t           jetNBtags_JESTimePtEtaDown;
    Int_t           nHF;
    Int_t           nB;
    Int_t           nBGenJets;
@@ -258,6 +335,7 @@ public :
    Float_t         scale[6];
    Float_t         lheHT;
    Int_t           isGS;
+   Float_t         genMjj;
    Float_t         electronSfLoose[4];   //[nLooseElectron]
    Float_t         electronSfMedium[4];   //[nLooseElectron]
    Float_t         electronSfTight[4];   //[nLooseElectron]
@@ -418,20 +496,98 @@ public :
    TBranch        *b_genBosonEta;   //!
    TBranch        *b_genBosonMass;   //!
    TBranch        *b_genBosonPhi;   //!
-   TBranch        *b_genMuonPt;   //!
-   TBranch        *b_genMuonEta;   //!
-   TBranch        *b_genElectronPt;   //!
-   TBranch        *b_genElectronEta;   //!
-   TBranch        *b_genTauPt;   //!
-   TBranch        *b_genTauEta;   //!
-   TBranch        *b_genMjj;   //!
-   TBranch        *b_genTopPt;   //!
-   TBranch        *b_genAntiTopPt;   //!
+   TBranch        *b_genJet1Pt;   //!
+   TBranch        *b_genJet2Pt;   //!
+   TBranch        *b_genJet1Eta;   //!
+   TBranch        *b_genJet2Eta;   //!
    TBranch        *b_nJet;   //!
    TBranch        *b_nJot;   //!
+   TBranch        *b_nJot_JESTotalUp;   //!
+   TBranch        *b_nJot_JESTotalDown;   //!
+   TBranch        *b_nJot_JESAbsoluteMPFBiasUp;   //!
+   TBranch        *b_nJot_JESAbsoluteMPFBiasDown;   //!
+   TBranch        *b_nJot_JESAbsoluteScaleUp;   //!
+   TBranch        *b_nJot_JESAbsoluteScaleDown;   //!
+   TBranch        *b_nJot_JESAbsoluteStatUp;   //!
+   TBranch        *b_nJot_JESAbsoluteStatDown;   //!
+   TBranch        *b_nJot_JESFlavorQCDUp;   //!
+   TBranch        *b_nJot_JESFlavorQCDDown;   //!
+   TBranch        *b_nJot_JESFragmentationUp;   //!
+   TBranch        *b_nJot_JESFragmentationDown;   //!
+   TBranch        *b_nJot_JESPileUpDataMCUp;   //!
+   TBranch        *b_nJot_JESPileUpDataMCDown;   //!
+   TBranch        *b_nJot_JESPileUpPtBBUp;   //!
+   TBranch        *b_nJot_JESPileUpPtBBDown;   //!
+   TBranch        *b_nJot_JESPileUpPtEC1Up;   //!
+   TBranch        *b_nJot_JESPileUpPtEC1Down;   //!
+   TBranch        *b_nJot_JESPileUpPtEC2Up;   //!
+   TBranch        *b_nJot_JESPileUpPtEC2Down;   //!
+   TBranch        *b_nJot_JESPileUpPtRefUp;   //!
+   TBranch        *b_nJot_JESPileUpPtRefDown;   //!
+   TBranch        *b_nJot_JESRelativeFSRUp;   //!
+   TBranch        *b_nJot_JESRelativeFSRDown;   //!
+   TBranch        *b_nJot_JESRelativeJEREC1Up;   //!
+   TBranch        *b_nJot_JESRelativeJEREC1Down;   //!
+   TBranch        *b_nJot_JESRelativePtBBUp;   //!
+   TBranch        *b_nJot_JESRelativePtBBDown;   //!
+   TBranch        *b_nJot_JESRelativePtEC1Up;   //!
+   TBranch        *b_nJot_JESRelativePtEC1Down;   //!
+   TBranch        *b_nJot_JESRelativePtEC2Up;   //!
+   TBranch        *b_nJot_JESRelativePtEC2Down;   //!
+   TBranch        *b_nJot_JESRelativeStatECUp;   //!
+   TBranch        *b_nJot_JESRelativeStatECDown;   //!
+   TBranch        *b_nJot_JESRelativeStatFSRUp;   //!
+   TBranch        *b_nJot_JESRelativeStatFSRDown;   //!
+   TBranch        *b_nJot_JESSinglePionECALUp;   //!
+   TBranch        *b_nJot_JESSinglePionECALDown;   //!
+   TBranch        *b_nJot_JESSinglePionHCALUp;   //!
+   TBranch        *b_nJot_JESSinglePionHCALDown;   //!
+   TBranch        *b_nJot_JESTimePtEtaUp;   //!
+   TBranch        *b_nJot_JESTimePtEtaDown;   //!
    TBranch        *b_nJotMax;   //!
-   TBranch        *b_nIsoJet;   //!
    TBranch        *b_jotPt;   //!
+   TBranch        *b_jotPt_JESTotalUp;   //!
+   TBranch        *b_jotPt_JESTotalDown;   //!
+   TBranch        *b_jotPt_JESAbsoluteMPFBiasUp;   //!
+   TBranch        *b_jotPt_JESAbsoluteMPFBiasDown;   //!
+   TBranch        *b_jotPt_JESAbsoluteScaleUp;   //!
+   TBranch        *b_jotPt_JESAbsoluteScaleDown;   //!
+   TBranch        *b_jotPt_JESAbsoluteStatUp;   //!
+   TBranch        *b_jotPt_JESAbsoluteStatDown;   //!
+   TBranch        *b_jotPt_JESFlavorQCDUp;   //!
+   TBranch        *b_jotPt_JESFlavorQCDDown;   //!
+   TBranch        *b_jotPt_JESFragmentationUp;   //!
+   TBranch        *b_jotPt_JESFragmentationDown;   //!
+   TBranch        *b_jotPt_JESPileUpDataMCUp;   //!
+   TBranch        *b_jotPt_JESPileUpDataMCDown;   //!
+   TBranch        *b_jotPt_JESPileUpPtBBUp;   //!
+   TBranch        *b_jotPt_JESPileUpPtBBDown;   //!
+   TBranch        *b_jotPt_JESPileUpPtEC1Up;   //!
+   TBranch        *b_jotPt_JESPileUpPtEC1Down;   //!
+   TBranch        *b_jotPt_JESPileUpPtEC2Up;   //!
+   TBranch        *b_jotPt_JESPileUpPtEC2Down;   //!
+   TBranch        *b_jotPt_JESPileUpPtRefUp;   //!
+   TBranch        *b_jotPt_JESPileUpPtRefDown;   //!
+   TBranch        *b_jotPt_JESRelativeFSRUp;   //!
+   TBranch        *b_jotPt_JESRelativeFSRDown;   //!
+   TBranch        *b_jotPt_JESRelativeJEREC1Up;   //!
+   TBranch        *b_jotPt_JESRelativeJEREC1Down;   //!
+   TBranch        *b_jotPt_JESRelativePtBBUp;   //!
+   TBranch        *b_jotPt_JESRelativePtBBDown;   //!
+   TBranch        *b_jotPt_JESRelativePtEC1Up;   //!
+   TBranch        *b_jotPt_JESRelativePtEC1Down;   //!
+   TBranch        *b_jotPt_JESRelativePtEC2Up;   //!
+   TBranch        *b_jotPt_JESRelativePtEC2Down;   //!
+   TBranch        *b_jotPt_JESRelativeStatECUp;   //!
+   TBranch        *b_jotPt_JESRelativeStatECDown;   //!
+   TBranch        *b_jotPt_JESRelativeStatFSRUp;   //!
+   TBranch        *b_jotPt_JESRelativeStatFSRDown;   //!
+   TBranch        *b_jotPt_JESSinglePionECALUp;   //!
+   TBranch        *b_jotPt_JESSinglePionECALDown;   //!
+   TBranch        *b_jotPt_JESSinglePionHCALUp;   //!
+   TBranch        *b_jotPt_JESSinglePionHCALDown;   //!
+   TBranch        *b_jotPt_JESTimePtEtaUp;   //!
+   TBranch        *b_jotPt_JESTimePtEtaDown;   //!
    TBranch        *b_jotEta;   //!
    TBranch        *b_jotPhi;   //!
    TBranch        *b_jotCSV;   //!
@@ -451,7 +607,48 @@ public :
    TBranch        *b_jot12DPhi_JESTotalUp;   //!
    TBranch        *b_jot12DPhi_JESTotalDown;   //!
    TBranch        *b_jetNBtags;   //!
-   TBranch        *b_isojetNBtags;   //!
+   TBranch        *b_jetNBtags_JESTotalUp;   //!
+   TBranch        *b_jetNBtags_JESTotalDown;   //!
+   TBranch        *b_jetNBtags_JESAbsoluteMPFBiasUp;   //!
+   TBranch        *b_jetNBtags_JESAbsoluteMPFBiasDown;   //!
+   TBranch        *b_jetNBtags_JESAbsoluteScaleUp;   //!
+   TBranch        *b_jetNBtags_JESAbsoluteScaleDown;   //!
+   TBranch        *b_jetNBtags_JESAbsoluteStatUp;   //!
+   TBranch        *b_jetNBtags_JESAbsoluteStatDown;   //!
+   TBranch        *b_jetNBtags_JESFlavorQCDUp;   //!
+   TBranch        *b_jetNBtags_JESFlavorQCDDown;   //!
+   TBranch        *b_jetNBtags_JESFragmentationUp;   //!
+   TBranch        *b_jetNBtags_JESFragmentationDown;   //!
+   TBranch        *b_jetNBtags_JESPileUpDataMCUp;   //!
+   TBranch        *b_jetNBtags_JESPileUpDataMCDown;   //!
+   TBranch        *b_jetNBtags_JESPileUpPtBBUp;   //!
+   TBranch        *b_jetNBtags_JESPileUpPtBBDown;   //!
+   TBranch        *b_jetNBtags_JESPileUpPtEC1Up;   //!
+   TBranch        *b_jetNBtags_JESPileUpPtEC1Down;   //!
+   TBranch        *b_jetNBtags_JESPileUpPtEC2Up;   //!
+   TBranch        *b_jetNBtags_JESPileUpPtEC2Down;   //!
+   TBranch        *b_jetNBtags_JESPileUpPtRefUp;   //!
+   TBranch        *b_jetNBtags_JESPileUpPtRefDown;   //!
+   TBranch        *b_jetNBtags_JESRelativeFSRUp;   //!
+   TBranch        *b_jetNBtags_JESRelativeFSRDown;   //!
+   TBranch        *b_jetNBtags_JESRelativeJEREC1Up;   //!
+   TBranch        *b_jetNBtags_JESRelativeJEREC1Down;   //!
+   TBranch        *b_jetNBtags_JESRelativePtBBUp;   //!
+   TBranch        *b_jetNBtags_JESRelativePtBBDown;   //!
+   TBranch        *b_jetNBtags_JESRelativePtEC1Up;   //!
+   TBranch        *b_jetNBtags_JESRelativePtEC1Down;   //!
+   TBranch        *b_jetNBtags_JESRelativePtEC2Up;   //!
+   TBranch        *b_jetNBtags_JESRelativePtEC2Down;   //!
+   TBranch        *b_jetNBtags_JESRelativeStatECUp;   //!
+   TBranch        *b_jetNBtags_JESRelativeStatECDown;   //!
+   TBranch        *b_jetNBtags_JESRelativeStatFSRUp;   //!
+   TBranch        *b_jetNBtags_JESRelativeStatFSRDown;   //!
+   TBranch        *b_jetNBtags_JESSinglePionECALUp;   //!
+   TBranch        *b_jetNBtags_JESSinglePionECALDown;   //!
+   TBranch        *b_jetNBtags_JESSinglePionHCALUp;   //!
+   TBranch        *b_jetNBtags_JESSinglePionHCALDown;   //!
+   TBranch        *b_jetNBtags_JESTimePtEtaUp;   //!
+   TBranch        *b_jetNBtags_JESTimePtEtaDown;   //!
    TBranch        *b_nHF;   //!
    TBranch        *b_nB;   //!
    TBranch        *b_nBGenJets;   //!
@@ -500,6 +697,7 @@ public :
    TBranch        *b_scale;   //!
    TBranch        *b_lheHT;   //!
    TBranch        *b_isGS;   //!
+   TBranch        *b_genMjj;   //!
    TBranch        *b_electronSfLoose;   //!
    TBranch        *b_electronSfMedium;   //!
    TBranch        *b_electronSfTight;   //!
@@ -729,20 +927,98 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("genBosonEta", &genBosonEta, &b_genBosonEta);
    fChain->SetBranchAddress("genBosonMass", &genBosonMass, &b_genBosonMass);
    fChain->SetBranchAddress("genBosonPhi", &genBosonPhi, &b_genBosonPhi);
-   fChain->SetBranchAddress("genMuonPt", &genMuonPt, &b_genMuonPt);
-   fChain->SetBranchAddress("genMuonEta", &genMuonEta, &b_genMuonEta);
-   fChain->SetBranchAddress("genElectronPt", &genElectronPt, &b_genElectronPt);
-   fChain->SetBranchAddress("genElectronEta", &genElectronEta, &b_genElectronEta);
-   fChain->SetBranchAddress("genTauPt", &genTauPt, &b_genTauPt);
-   fChain->SetBranchAddress("genTauEta", &genTauEta, &b_genTauEta);
-   fChain->SetBranchAddress("genMjj", &genMjj, &b_genMjj);
-   fChain->SetBranchAddress("genTopPt", &genTopPt, &b_genTopPt);
-   fChain->SetBranchAddress("genAntiTopPt", &genAntiTopPt, &b_genAntiTopPt);
+   fChain->SetBranchAddress("genJet1Pt", &genJet1Pt, &b_genJet1Pt);
+   fChain->SetBranchAddress("genJet2Pt", &genJet2Pt, &b_genJet2Pt);
+   fChain->SetBranchAddress("genJet1Eta", &genJet1Eta, &b_genJet1Eta);
+   fChain->SetBranchAddress("genJet2Eta", &genJet2Eta, &b_genJet2Eta);
    fChain->SetBranchAddress("nJet", &nJet, &b_nJet);
    fChain->SetBranchAddress("nJot", &nJot, &b_nJot);
+   fChain->SetBranchAddress("nJot_JESTotalUp", &nJot_JESTotalUp, &b_nJot_JESTotalUp);
+   fChain->SetBranchAddress("nJot_JESTotalDown", &nJot_JESTotalDown, &b_nJot_JESTotalDown);
+   fChain->SetBranchAddress("nJot_JESAbsoluteMPFBiasUp", &nJot_JESAbsoluteMPFBiasUp, &b_nJot_JESAbsoluteMPFBiasUp);
+   fChain->SetBranchAddress("nJot_JESAbsoluteMPFBiasDown", &nJot_JESAbsoluteMPFBiasDown, &b_nJot_JESAbsoluteMPFBiasDown);
+   fChain->SetBranchAddress("nJot_JESAbsoluteScaleUp", &nJot_JESAbsoluteScaleUp, &b_nJot_JESAbsoluteScaleUp);
+   fChain->SetBranchAddress("nJot_JESAbsoluteScaleDown", &nJot_JESAbsoluteScaleDown, &b_nJot_JESAbsoluteScaleDown);
+   fChain->SetBranchAddress("nJot_JESAbsoluteStatUp", &nJot_JESAbsoluteStatUp, &b_nJot_JESAbsoluteStatUp);
+   fChain->SetBranchAddress("nJot_JESAbsoluteStatDown", &nJot_JESAbsoluteStatDown, &b_nJot_JESAbsoluteStatDown);
+   fChain->SetBranchAddress("nJot_JESFlavorQCDUp", &nJot_JESFlavorQCDUp, &b_nJot_JESFlavorQCDUp);
+   fChain->SetBranchAddress("nJot_JESFlavorQCDDown", &nJot_JESFlavorQCDDown, &b_nJot_JESFlavorQCDDown);
+   fChain->SetBranchAddress("nJot_JESFragmentationUp", &nJot_JESFragmentationUp, &b_nJot_JESFragmentationUp);
+   fChain->SetBranchAddress("nJot_JESFragmentationDown", &nJot_JESFragmentationDown, &b_nJot_JESFragmentationDown);
+   fChain->SetBranchAddress("nJot_JESPileUpDataMCUp", &nJot_JESPileUpDataMCUp, &b_nJot_JESPileUpDataMCUp);
+   fChain->SetBranchAddress("nJot_JESPileUpDataMCDown", &nJot_JESPileUpDataMCDown, &b_nJot_JESPileUpDataMCDown);
+   fChain->SetBranchAddress("nJot_JESPileUpPtBBUp", &nJot_JESPileUpPtBBUp, &b_nJot_JESPileUpPtBBUp);
+   fChain->SetBranchAddress("nJot_JESPileUpPtBBDown", &nJot_JESPileUpPtBBDown, &b_nJot_JESPileUpPtBBDown);
+   fChain->SetBranchAddress("nJot_JESPileUpPtEC1Up", &nJot_JESPileUpPtEC1Up, &b_nJot_JESPileUpPtEC1Up);
+   fChain->SetBranchAddress("nJot_JESPileUpPtEC1Down", &nJot_JESPileUpPtEC1Down, &b_nJot_JESPileUpPtEC1Down);
+   fChain->SetBranchAddress("nJot_JESPileUpPtEC2Up", &nJot_JESPileUpPtEC2Up, &b_nJot_JESPileUpPtEC2Up);
+   fChain->SetBranchAddress("nJot_JESPileUpPtEC2Down", &nJot_JESPileUpPtEC2Down, &b_nJot_JESPileUpPtEC2Down);
+   fChain->SetBranchAddress("nJot_JESPileUpPtRefUp", &nJot_JESPileUpPtRefUp, &b_nJot_JESPileUpPtRefUp);
+   fChain->SetBranchAddress("nJot_JESPileUpPtRefDown", &nJot_JESPileUpPtRefDown, &b_nJot_JESPileUpPtRefDown);
+   fChain->SetBranchAddress("nJot_JESRelativeFSRUp", &nJot_JESRelativeFSRUp, &b_nJot_JESRelativeFSRUp);
+   fChain->SetBranchAddress("nJot_JESRelativeFSRDown", &nJot_JESRelativeFSRDown, &b_nJot_JESRelativeFSRDown);
+   fChain->SetBranchAddress("nJot_JESRelativeJEREC1Up", &nJot_JESRelativeJEREC1Up, &b_nJot_JESRelativeJEREC1Up);
+   fChain->SetBranchAddress("nJot_JESRelativeJEREC1Down", &nJot_JESRelativeJEREC1Down, &b_nJot_JESRelativeJEREC1Down);
+   fChain->SetBranchAddress("nJot_JESRelativePtBBUp", &nJot_JESRelativePtBBUp, &b_nJot_JESRelativePtBBUp);
+   fChain->SetBranchAddress("nJot_JESRelativePtBBDown", &nJot_JESRelativePtBBDown, &b_nJot_JESRelativePtBBDown);
+   fChain->SetBranchAddress("nJot_JESRelativePtEC1Up", &nJot_JESRelativePtEC1Up, &b_nJot_JESRelativePtEC1Up);
+   fChain->SetBranchAddress("nJot_JESRelativePtEC1Down", &nJot_JESRelativePtEC1Down, &b_nJot_JESRelativePtEC1Down);
+   fChain->SetBranchAddress("nJot_JESRelativePtEC2Up", &nJot_JESRelativePtEC2Up, &b_nJot_JESRelativePtEC2Up);
+   fChain->SetBranchAddress("nJot_JESRelativePtEC2Down", &nJot_JESRelativePtEC2Down, &b_nJot_JESRelativePtEC2Down);
+   fChain->SetBranchAddress("nJot_JESRelativeStatECUp", &nJot_JESRelativeStatECUp, &b_nJot_JESRelativeStatECUp);
+   fChain->SetBranchAddress("nJot_JESRelativeStatECDown", &nJot_JESRelativeStatECDown, &b_nJot_JESRelativeStatECDown);
+   fChain->SetBranchAddress("nJot_JESRelativeStatFSRUp", &nJot_JESRelativeStatFSRUp, &b_nJot_JESRelativeStatFSRUp);
+   fChain->SetBranchAddress("nJot_JESRelativeStatFSRDown", &nJot_JESRelativeStatFSRDown, &b_nJot_JESRelativeStatFSRDown);
+   fChain->SetBranchAddress("nJot_JESSinglePionECALUp", &nJot_JESSinglePionECALUp, &b_nJot_JESSinglePionECALUp);
+   fChain->SetBranchAddress("nJot_JESSinglePionECALDown", &nJot_JESSinglePionECALDown, &b_nJot_JESSinglePionECALDown);
+   fChain->SetBranchAddress("nJot_JESSinglePionHCALUp", &nJot_JESSinglePionHCALUp, &b_nJot_JESSinglePionHCALUp);
+   fChain->SetBranchAddress("nJot_JESSinglePionHCALDown", &nJot_JESSinglePionHCALDown, &b_nJot_JESSinglePionHCALDown);
+   fChain->SetBranchAddress("nJot_JESTimePtEtaUp", &nJot_JESTimePtEtaUp, &b_nJot_JESTimePtEtaUp);
+   fChain->SetBranchAddress("nJot_JESTimePtEtaDown", &nJot_JESTimePtEtaDown, &b_nJot_JESTimePtEtaDown);
    fChain->SetBranchAddress("nJotMax", &nJotMax, &b_nJotMax);
-   fChain->SetBranchAddress("nIsoJet", &nIsoJet, &b_nIsoJet);
    fChain->SetBranchAddress("jotPt", jotPt, &b_jotPt);
+   fChain->SetBranchAddress("jotPt_JESTotalUp", jotPt_JESTotalUp, &b_jotPt_JESTotalUp);
+   fChain->SetBranchAddress("jotPt_JESTotalDown", jotPt_JESTotalDown, &b_jotPt_JESTotalDown);
+   fChain->SetBranchAddress("jotPt_JESAbsoluteMPFBiasUp", jotPt_JESAbsoluteMPFBiasUp, &b_jotPt_JESAbsoluteMPFBiasUp);
+   fChain->SetBranchAddress("jotPt_JESAbsoluteMPFBiasDown", jotPt_JESAbsoluteMPFBiasDown, &b_jotPt_JESAbsoluteMPFBiasDown);
+   fChain->SetBranchAddress("jotPt_JESAbsoluteScaleUp", jotPt_JESAbsoluteScaleUp, &b_jotPt_JESAbsoluteScaleUp);
+   fChain->SetBranchAddress("jotPt_JESAbsoluteScaleDown", jotPt_JESAbsoluteScaleDown, &b_jotPt_JESAbsoluteScaleDown);
+   fChain->SetBranchAddress("jotPt_JESAbsoluteStatUp", jotPt_JESAbsoluteStatUp, &b_jotPt_JESAbsoluteStatUp);
+   fChain->SetBranchAddress("jotPt_JESAbsoluteStatDown", jotPt_JESAbsoluteStatDown, &b_jotPt_JESAbsoluteStatDown);
+   fChain->SetBranchAddress("jotPt_JESFlavorQCDUp", jotPt_JESFlavorQCDUp, &b_jotPt_JESFlavorQCDUp);
+   fChain->SetBranchAddress("jotPt_JESFlavorQCDDown", jotPt_JESFlavorQCDDown, &b_jotPt_JESFlavorQCDDown);
+   fChain->SetBranchAddress("jotPt_JESFragmentationUp", jotPt_JESFragmentationUp, &b_jotPt_JESFragmentationUp);
+   fChain->SetBranchAddress("jotPt_JESFragmentationDown", jotPt_JESFragmentationDown, &b_jotPt_JESFragmentationDown);
+   fChain->SetBranchAddress("jotPt_JESPileUpDataMCUp", jotPt_JESPileUpDataMCUp, &b_jotPt_JESPileUpDataMCUp);
+   fChain->SetBranchAddress("jotPt_JESPileUpDataMCDown", jotPt_JESPileUpDataMCDown, &b_jotPt_JESPileUpDataMCDown);
+   fChain->SetBranchAddress("jotPt_JESPileUpPtBBUp", jotPt_JESPileUpPtBBUp, &b_jotPt_JESPileUpPtBBUp);
+   fChain->SetBranchAddress("jotPt_JESPileUpPtBBDown", jotPt_JESPileUpPtBBDown, &b_jotPt_JESPileUpPtBBDown);
+   fChain->SetBranchAddress("jotPt_JESPileUpPtEC1Up", jotPt_JESPileUpPtEC1Up, &b_jotPt_JESPileUpPtEC1Up);
+   fChain->SetBranchAddress("jotPt_JESPileUpPtEC1Down", jotPt_JESPileUpPtEC1Down, &b_jotPt_JESPileUpPtEC1Down);
+   fChain->SetBranchAddress("jotPt_JESPileUpPtEC2Up", jotPt_JESPileUpPtEC2Up, &b_jotPt_JESPileUpPtEC2Up);
+   fChain->SetBranchAddress("jotPt_JESPileUpPtEC2Down", jotPt_JESPileUpPtEC2Down, &b_jotPt_JESPileUpPtEC2Down);
+   fChain->SetBranchAddress("jotPt_JESPileUpPtRefUp", jotPt_JESPileUpPtRefUp, &b_jotPt_JESPileUpPtRefUp);
+   fChain->SetBranchAddress("jotPt_JESPileUpPtRefDown", jotPt_JESPileUpPtRefDown, &b_jotPt_JESPileUpPtRefDown);
+   fChain->SetBranchAddress("jotPt_JESRelativeFSRUp", jotPt_JESRelativeFSRUp, &b_jotPt_JESRelativeFSRUp);
+   fChain->SetBranchAddress("jotPt_JESRelativeFSRDown", jotPt_JESRelativeFSRDown, &b_jotPt_JESRelativeFSRDown);
+   fChain->SetBranchAddress("jotPt_JESRelativeJEREC1Up", jotPt_JESRelativeJEREC1Up, &b_jotPt_JESRelativeJEREC1Up);
+   fChain->SetBranchAddress("jotPt_JESRelativeJEREC1Down", jotPt_JESRelativeJEREC1Down, &b_jotPt_JESRelativeJEREC1Down);
+   fChain->SetBranchAddress("jotPt_JESRelativePtBBUp", jotPt_JESRelativePtBBUp, &b_jotPt_JESRelativePtBBUp);
+   fChain->SetBranchAddress("jotPt_JESRelativePtBBDown", jotPt_JESRelativePtBBDown, &b_jotPt_JESRelativePtBBDown);
+   fChain->SetBranchAddress("jotPt_JESRelativePtEC1Up", jotPt_JESRelativePtEC1Up, &b_jotPt_JESRelativePtEC1Up);
+   fChain->SetBranchAddress("jotPt_JESRelativePtEC1Down", jotPt_JESRelativePtEC1Down, &b_jotPt_JESRelativePtEC1Down);
+   fChain->SetBranchAddress("jotPt_JESRelativePtEC2Up", jotPt_JESRelativePtEC2Up, &b_jotPt_JESRelativePtEC2Up);
+   fChain->SetBranchAddress("jotPt_JESRelativePtEC2Down", jotPt_JESRelativePtEC2Down, &b_jotPt_JESRelativePtEC2Down);
+   fChain->SetBranchAddress("jotPt_JESRelativeStatECUp", jotPt_JESRelativeStatECUp, &b_jotPt_JESRelativeStatECUp);
+   fChain->SetBranchAddress("jotPt_JESRelativeStatECDown", jotPt_JESRelativeStatECDown, &b_jotPt_JESRelativeStatECDown);
+   fChain->SetBranchAddress("jotPt_JESRelativeStatFSRUp", jotPt_JESRelativeStatFSRUp, &b_jotPt_JESRelativeStatFSRUp);
+   fChain->SetBranchAddress("jotPt_JESRelativeStatFSRDown", jotPt_JESRelativeStatFSRDown, &b_jotPt_JESRelativeStatFSRDown);
+   fChain->SetBranchAddress("jotPt_JESSinglePionECALUp", jotPt_JESSinglePionECALUp, &b_jotPt_JESSinglePionECALUp);
+   fChain->SetBranchAddress("jotPt_JESSinglePionECALDown", jotPt_JESSinglePionECALDown, &b_jotPt_JESSinglePionECALDown);
+   fChain->SetBranchAddress("jotPt_JESSinglePionHCALUp", jotPt_JESSinglePionHCALUp, &b_jotPt_JESSinglePionHCALUp);
+   fChain->SetBranchAddress("jotPt_JESSinglePionHCALDown", jotPt_JESSinglePionHCALDown, &b_jotPt_JESSinglePionHCALDown);
+   fChain->SetBranchAddress("jotPt_JESTimePtEtaUp", jotPt_JESTimePtEtaUp, &b_jotPt_JESTimePtEtaUp);
+   fChain->SetBranchAddress("jotPt_JESTimePtEtaDown", jotPt_JESTimePtEtaDown, &b_jotPt_JESTimePtEtaDown);
    fChain->SetBranchAddress("jotEta", jotEta, &b_jotEta);
    fChain->SetBranchAddress("jotPhi", jotPhi, &b_jotPhi);
    fChain->SetBranchAddress("jotCSV", jotCSV, &b_jotCSV);
@@ -762,7 +1038,48 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("jot12DPhi_JESTotalUp", &jot12DPhi_JESTotalUp, &b_jot12DPhi_JESTotalUp);
    fChain->SetBranchAddress("jot12DPhi_JESTotalDown", &jot12DPhi_JESTotalDown, &b_jot12DPhi_JESTotalDown);
    fChain->SetBranchAddress("jetNBtags", &jetNBtags, &b_jetNBtags);
-   fChain->SetBranchAddress("isojetNBtags", &isojetNBtags, &b_isojetNBtags);
+   fChain->SetBranchAddress("jetNBtags_JESTotalUp", &jetNBtags_JESTotalUp, &b_jetNBtags_JESTotalUp);
+   fChain->SetBranchAddress("jetNBtags_JESTotalDown", &jetNBtags_JESTotalDown, &b_jetNBtags_JESTotalDown);
+   fChain->SetBranchAddress("jetNBtags_JESAbsoluteMPFBiasUp", &jetNBtags_JESAbsoluteMPFBiasUp, &b_jetNBtags_JESAbsoluteMPFBiasUp);
+   fChain->SetBranchAddress("jetNBtags_JESAbsoluteMPFBiasDown", &jetNBtags_JESAbsoluteMPFBiasDown, &b_jetNBtags_JESAbsoluteMPFBiasDown);
+   fChain->SetBranchAddress("jetNBtags_JESAbsoluteScaleUp", &jetNBtags_JESAbsoluteScaleUp, &b_jetNBtags_JESAbsoluteScaleUp);
+   fChain->SetBranchAddress("jetNBtags_JESAbsoluteScaleDown", &jetNBtags_JESAbsoluteScaleDown, &b_jetNBtags_JESAbsoluteScaleDown);
+   fChain->SetBranchAddress("jetNBtags_JESAbsoluteStatUp", &jetNBtags_JESAbsoluteStatUp, &b_jetNBtags_JESAbsoluteStatUp);
+   fChain->SetBranchAddress("jetNBtags_JESAbsoluteStatDown", &jetNBtags_JESAbsoluteStatDown, &b_jetNBtags_JESAbsoluteStatDown);
+   fChain->SetBranchAddress("jetNBtags_JESFlavorQCDUp", &jetNBtags_JESFlavorQCDUp, &b_jetNBtags_JESFlavorQCDUp);
+   fChain->SetBranchAddress("jetNBtags_JESFlavorQCDDown", &jetNBtags_JESFlavorQCDDown, &b_jetNBtags_JESFlavorQCDDown);
+   fChain->SetBranchAddress("jetNBtags_JESFragmentationUp", &jetNBtags_JESFragmentationUp, &b_jetNBtags_JESFragmentationUp);
+   fChain->SetBranchAddress("jetNBtags_JESFragmentationDown", &jetNBtags_JESFragmentationDown, &b_jetNBtags_JESFragmentationDown);
+   fChain->SetBranchAddress("jetNBtags_JESPileUpDataMCUp", &jetNBtags_JESPileUpDataMCUp, &b_jetNBtags_JESPileUpDataMCUp);
+   fChain->SetBranchAddress("jetNBtags_JESPileUpDataMCDown", &jetNBtags_JESPileUpDataMCDown, &b_jetNBtags_JESPileUpDataMCDown);
+   fChain->SetBranchAddress("jetNBtags_JESPileUpPtBBUp", &jetNBtags_JESPileUpPtBBUp, &b_jetNBtags_JESPileUpPtBBUp);
+   fChain->SetBranchAddress("jetNBtags_JESPileUpPtBBDown", &jetNBtags_JESPileUpPtBBDown, &b_jetNBtags_JESPileUpPtBBDown);
+   fChain->SetBranchAddress("jetNBtags_JESPileUpPtEC1Up", &jetNBtags_JESPileUpPtEC1Up, &b_jetNBtags_JESPileUpPtEC1Up);
+   fChain->SetBranchAddress("jetNBtags_JESPileUpPtEC1Down", &jetNBtags_JESPileUpPtEC1Down, &b_jetNBtags_JESPileUpPtEC1Down);
+   fChain->SetBranchAddress("jetNBtags_JESPileUpPtEC2Up", &jetNBtags_JESPileUpPtEC2Up, &b_jetNBtags_JESPileUpPtEC2Up);
+   fChain->SetBranchAddress("jetNBtags_JESPileUpPtEC2Down", &jetNBtags_JESPileUpPtEC2Down, &b_jetNBtags_JESPileUpPtEC2Down);
+   fChain->SetBranchAddress("jetNBtags_JESPileUpPtRefUp", &jetNBtags_JESPileUpPtRefUp, &b_jetNBtags_JESPileUpPtRefUp);
+   fChain->SetBranchAddress("jetNBtags_JESPileUpPtRefDown", &jetNBtags_JESPileUpPtRefDown, &b_jetNBtags_JESPileUpPtRefDown);
+   fChain->SetBranchAddress("jetNBtags_JESRelativeFSRUp", &jetNBtags_JESRelativeFSRUp, &b_jetNBtags_JESRelativeFSRUp);
+   fChain->SetBranchAddress("jetNBtags_JESRelativeFSRDown", &jetNBtags_JESRelativeFSRDown, &b_jetNBtags_JESRelativeFSRDown);
+   fChain->SetBranchAddress("jetNBtags_JESRelativeJEREC1Up", &jetNBtags_JESRelativeJEREC1Up, &b_jetNBtags_JESRelativeJEREC1Up);
+   fChain->SetBranchAddress("jetNBtags_JESRelativeJEREC1Down", &jetNBtags_JESRelativeJEREC1Down, &b_jetNBtags_JESRelativeJEREC1Down);
+   fChain->SetBranchAddress("jetNBtags_JESRelativePtBBUp", &jetNBtags_JESRelativePtBBUp, &b_jetNBtags_JESRelativePtBBUp);
+   fChain->SetBranchAddress("jetNBtags_JESRelativePtBBDown", &jetNBtags_JESRelativePtBBDown, &b_jetNBtags_JESRelativePtBBDown);
+   fChain->SetBranchAddress("jetNBtags_JESRelativePtEC1Up", &jetNBtags_JESRelativePtEC1Up, &b_jetNBtags_JESRelativePtEC1Up);
+   fChain->SetBranchAddress("jetNBtags_JESRelativePtEC1Down", &jetNBtags_JESRelativePtEC1Down, &b_jetNBtags_JESRelativePtEC1Down);
+   fChain->SetBranchAddress("jetNBtags_JESRelativePtEC2Up", &jetNBtags_JESRelativePtEC2Up, &b_jetNBtags_JESRelativePtEC2Up);
+   fChain->SetBranchAddress("jetNBtags_JESRelativePtEC2Down", &jetNBtags_JESRelativePtEC2Down, &b_jetNBtags_JESRelativePtEC2Down);
+   fChain->SetBranchAddress("jetNBtags_JESRelativeStatECUp", &jetNBtags_JESRelativeStatECUp, &b_jetNBtags_JESRelativeStatECUp);
+   fChain->SetBranchAddress("jetNBtags_JESRelativeStatECDown", &jetNBtags_JESRelativeStatECDown, &b_jetNBtags_JESRelativeStatECDown);
+   fChain->SetBranchAddress("jetNBtags_JESRelativeStatFSRUp", &jetNBtags_JESRelativeStatFSRUp, &b_jetNBtags_JESRelativeStatFSRUp);
+   fChain->SetBranchAddress("jetNBtags_JESRelativeStatFSRDown", &jetNBtags_JESRelativeStatFSRDown, &b_jetNBtags_JESRelativeStatFSRDown);
+   fChain->SetBranchAddress("jetNBtags_JESSinglePionECALUp", &jetNBtags_JESSinglePionECALUp, &b_jetNBtags_JESSinglePionECALUp);
+   fChain->SetBranchAddress("jetNBtags_JESSinglePionECALDown", &jetNBtags_JESSinglePionECALDown, &b_jetNBtags_JESSinglePionECALDown);
+   fChain->SetBranchAddress("jetNBtags_JESSinglePionHCALUp", &jetNBtags_JESSinglePionHCALUp, &b_jetNBtags_JESSinglePionHCALUp);
+   fChain->SetBranchAddress("jetNBtags_JESSinglePionHCALDown", &jetNBtags_JESSinglePionHCALDown, &b_jetNBtags_JESSinglePionHCALDown);
+   fChain->SetBranchAddress("jetNBtags_JESTimePtEtaUp", &jetNBtags_JESTimePtEtaUp, &b_jetNBtags_JESTimePtEtaUp);
+   fChain->SetBranchAddress("jetNBtags_JESTimePtEtaDown", &jetNBtags_JESTimePtEtaDown, &b_jetNBtags_JESTimePtEtaDown);
    fChain->SetBranchAddress("nHF", &nHF, &b_nHF);
    fChain->SetBranchAddress("nB", &nB, &b_nB);
    fChain->SetBranchAddress("nBGenJets", &nBGenJets, &b_nBGenJets);
@@ -811,6 +1128,7 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("scale", scale, &b_scale);
    fChain->SetBranchAddress("lheHT", &lheHT, &b_lheHT);
    fChain->SetBranchAddress("isGS", &isGS, &b_isGS);
+   fChain->SetBranchAddress("genMjj", &genMjj, &b_genMjj);
    fChain->SetBranchAddress("electronSfLoose", electronSfLoose, &b_electronSfLoose);
    fChain->SetBranchAddress("electronSfMedium", electronSfMedium, &b_electronSfMedium);
    fChain->SetBranchAddress("electronSfTight", electronSfTight, &b_electronSfTight);
