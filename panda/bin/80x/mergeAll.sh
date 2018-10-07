@@ -28,6 +28,10 @@ PandaAnalysis/T3/merging/merge_Leptonic.py DYJetsToLL_M-50_LO_Pt200toInf
 PandaAnalysis/T3/merging/merge_Leptonic.py DYJetsToLL_POWHEG
 PandaAnalysis/T3/merging/merge_Leptonic.py DYJetsToMM_POWHEG
 PandaAnalysis/T3/merging/merge_Leptonic.py DYJetsToEE_POWHEG
+PandaAnalysis/T3/merging/merge_Leptonic.py ZtoNuNu_pt100to250
+PandaAnalysis/T3/merging/merge_Leptonic.py ZtoNuNu_pt250to400
+PandaAnalysis/T3/merging/merge_Leptonic.py ZtoNuNu_pt400to650
+PandaAnalysis/T3/merging/merge_Leptonic.py ZtoNuNu_pt650toinf
 PandaAnalysis/T3/merging/merge_Leptonic.py WJets
 PandaAnalysis/T3/merging/merge_Leptonic.py WpWp_EWK
 PandaAnalysis/T3/merging/merge_Leptonic.py WpWp_QCD
