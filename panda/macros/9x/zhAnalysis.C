@@ -122,7 +122,7 @@ int year, bool isBlinded = false
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 52;
+  const int allPlots = 61;
   TH1D* histo[allPlots][nPlotCategories];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     if     (thePlot >=   0 && thePlot <=   2) {nBinPlot = 100; xminPlot =100.0; xmaxPlot = 500;}
@@ -140,6 +140,7 @@ int year, bool isBlinded = false
     else if(thePlot >=  42 && thePlot <=  44) {nBinPlot = 40;  xminPlot =  0.0; xmaxPlot = 4.0;}
     else if(thePlot >=  45 && thePlot <=  47) {nBinPlot = 10;  xminPlot = -0.5; xmaxPlot = 9.5;}
     else if(thePlot >=  48 && thePlot <=  50) {nBinPlot =100;  xminPlot = -5.0; xmaxPlot = 5.0;}
+    else if(thePlot >=  51 && thePlot <=  59) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = TMath::Pi();}
     TH1D* histos;
     if(thePlot == allPlots-1) histos = new TH1D("histos", "histos", nBinMVA, xbins);
     else                      histos = new TH1D("histos", "histos", nBinPlot, xminPlot, xmaxPlot);
@@ -312,6 +313,7 @@ int year, bool isBlinded = false
         if(dPhiLepMETMin      > TMath::Abs(vLoose[i].DeltaPhi(vMet))   ) dPhiLepMETMin      = TMath::Abs(vLoose[i].DeltaPhi(vMet));
 	if(dPhiLepTrackMETMin > TMath::Abs(vLoose[i].DeltaPhi(vTrkMet))) dPhiLepTrackMETMin = TMath::Abs(vLoose[i].DeltaPhi(vTrkMet));
       }
+      double dPhiMETTrackMETMin = TMath::Abs(vMet.DeltaPhi(vTrkMet));
 
       double PMET[1] = {vMet.Pt()};
       double PTrackMET[1] = {vTrkMet.Pt()};
@@ -460,6 +462,9 @@ int year, bool isBlinded = false
       if((passNMinusOne[ 1] ||
           passNMinusOne[ 7]) &&
 	  thePandaFlat.nJot >= 1) histo[lepType+ 48][theCategory]->Fill(thePandaFlat.jotEta[0],totalWeight);
+      if(passNMinusOne[1] || passNMinusOne[7]) histo[lepType+ 51][theCategory]->Fill(dPhiLepMETMin,totalWeight);
+      if(passNMinusOne[1] || passNMinusOne[7]) histo[lepType+ 54][theCategory]->Fill(dPhiLepTrackMETMin,totalWeight);
+      if(passNMinusOne[1] || passNMinusOne[7]) histo[lepType+ 57][theCategory]->Fill(dPhiMETTrackMETMin,totalWeight);
 
       //double MVAVar = TMath::Min(vMet.Pt(),xbins[nBinMVA]-0.0001); double MVAVarUp = TMath::Min(vMetUp.Pt(),xbins[nBinMVA]-0.0001); double MVAVarDown = TMath::Min(vMetDown.Pt(),xbins[nBinMVA]-0.0001);
       double MVAVar = TMath::Min(vMet.Pt(),metMax); double MVAVarUp = TMath::Min(vMetUp.Pt(),metMax); double MVAVarDown = TMath::Min(vMetDown.Pt(),metMax);
