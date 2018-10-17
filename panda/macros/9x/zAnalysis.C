@@ -13,98 +13,82 @@
 
 #include "MitAnalysisRunII/panda/macros/9x/pandaFlat.C"
 #include "MitAnalysisRunII/panda/macros/9x/common.h"
+#include "MitAnalysisRunII/panda/macros/9x/trigger_auxiliar.h"
 
 const double mcPrescale = 1;
 
-void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int year = 2017, int debug = 0)
+void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
 {
-  TString dirPathRM = TString(gSystem->Getenv("CMSSW_BASE")) + "/src/MitAnalysisRunII/data/80x/rcdata.2016.v3";
-  double lumi = 41.7;
+  // trigger
+  double trgEff [3][nTrgBinPt1][nTrgBinPt2][nTrgBinEta1][nTrgBinEta2];
+  double trgEffE[3][nTrgBinPt1][nTrgBinPt2][nTrgBinEta1][nTrgBinEta2];
+  initialize_trgEff(trgEff, trgEffE, year);
   double k_eff = 0.5 * sqrt(20285930./12446486.);
-  TString filesPath    = "/data/t3home000/ceballos/panda/v_004_0/";
-  TString pileUpName = "MitAnalysisRunII/data/90x/puWeights_90x.root";
-  TString fakeName = "MitAnalysisRunII/data/80x/histoFakeEtaPt_80x_37ifb.root";
-  TString muonRecoSFName = "MitAnalysisRunII/data/80x/scalefactors_80x_eta_sf_37ifb_period0.root";
-  TString electronRecoSFName = "MitAnalysisRunII/data/90x/scalefactors_90x_egpog_2017.root";
-  TString muonEffSFName = "MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period0.root";
-  TString electronEffSFName = "MitAnalysisRunII/data/90x/scalefactors_90x_egpog_2017.root";
 
   //*******************************************************
-  //Input Files
+  //Inputs
   //*******************************************************
   vector<TString> infileName_;
-  vector<Int_t> infileCat_;
-  infileName_.push_back(Form("%sdata.root",filesPath.Data()));                 infileCat_.push_back(0);
-  TH1D *fhDPU2;
+  vector<int> infileCat_;
 
-  if     (year == 2017){
-  infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
-  //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
-  //infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(2);
-  infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));  infileCat_.push_back(2);
-  infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));                infileCat_.push_back(3);
-  infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                  infileCat_.push_back(3);
+  double lumi;
+  TString filesPath;
+  TString fLepton_FakesName;
+  if(year == 2017) {
+    lumi = 41.5;
+    filesPath = "/data/t3home000/ceballos/panda/v_004_0/";
 
-  infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	       infileCat_.push_back(4);
-  infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data())); 	       infileCat_.push_back(4);
-  infileName_.push_back(Form("%sWZ.root" ,filesPath.Data()));                  infileCat_.push_back(4);
-  infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));                 infileCat_.push_back(4);
-  infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));                 infileCat_.push_back(4);
-  //infileName_.push_back(Form("%sWGstar.root" ,filesPath.Data()));	       infileCat_.push_back(4);
-  //infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));		       infileCat_.push_back(6);
-  //infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	       infileCat_.push_back(7);
-  } 
-  else if(year == 2018){
-  infileName_.push_back(Form("%sdata_2018.root","/data/t3home000/ceballos/panda/v_006_0/")); infileCat_.push_back(1);
-  pileUpName = "MitAnalysisRunII/data/90x/npvWeights_2018_to_2017.root";
-  infileName_.push_back(Form("%sdata.root","/data/t3home000/ceballos/panda/v_002_0/")); infileCat_.push_back(2);
-
-  TFile *fPUFile2 = TFile::Open("MitAnalysisRunII/data/90x/npvWeights_2016_to_2017.root");
-  fhDPU2 = (TH1D*)(fPUFile2->Get("puWeights")); assert(fhDPU2); fhDPU2->SetDirectory(0);
-  delete fPUFile2;
+    infileName_.push_back(Form("%sdata.root",filesPath.Data()));                 infileCat_.push_back(kPlotData);
+    infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotqqWW);
+    infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotggWW);
+    infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));   infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));                infileCat_.push_back(kPlotTop);
+    infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                  infileCat_.push_back(kPlotTop);
+    infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotZZ);
+    infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotZZ);
+    infileName_.push_back(Form("%sWZno3l.root" ,filesPath.Data()));              infileCat_.push_back(kPlotWZ);
+    infileName_.push_back(Form("%sWZ3l_powheg.root" ,filesPath.Data()));         infileCat_.push_back(kPlotWZ);
+    infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));                 infileCat_.push_back(kPlotVVV);
+    infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));                 infileCat_.push_back(kPlotVVV);
+    infileName_.push_back(Form("%sTTVV.root" ,filesPath.Data()));                infileCat_.push_back(kPlotVVV);
+    //infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));                  infileCat_.push_back(kPlotVG);
+    infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotHiggs);
   }
+  else if(year == 2016) {
+    lumi = 35.9;
+    filesPath = "/data/t3home000/ceballos/panda/v_002_0/";
 
-  TFile *fPUFile = TFile::Open(pileUpName.Data());
-  TH1D *fhDPU = (TH1D*)(fPUFile->Get("puWeights")); assert(fhDPU); fhDPU->SetDirectory(0);
-  delete fPUFile;
-
-  TFile *fLepton_Fakes = TFile::Open(fakeName.Data());
-  TH2D* histoFakeEffSelMediumEtaPt_m = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel0EtaPt_0"); histoFakeEffSelMediumEtaPt_m->SetDirectory(0);
-  TH2D* histoFakeEffSelMediumEtaPt_e = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel0EtaPt_1"); histoFakeEffSelMediumEtaPt_e->SetDirectory(0);
-  TH2D* histoFakeEffSelTightEtaPt_m  = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel2EtaPt_0"); histoFakeEffSelTightEtaPt_m ->SetDirectory(0);
-  TH2D* histoFakeEffSelTightEtaPt_e  = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel2EtaPt_1"); histoFakeEffSelTightEtaPt_e ->SetDirectory(0);
-  fLepton_Fakes->Close();
-
-  TFile *fMuon_Reco_SF = TFile::Open(muonRecoSFName.Data());
-  TH1D* scalefactors_Muon_Reco = (TH1D*)fMuon_Reco_SF->Get("scalefactors_Muon_Eta"); scalefactors_Muon_Reco->SetDirectory(0);
-  fMuon_Reco_SF->Close();
-
-  TFile *fElectron_Reco_SF = TFile::Open(electronRecoSFName.Data());
-  TH2D* scalefactors_Electron_Reco       = (TH2D*)fElectron_Reco_SF->Get("scalefactors_Reco_Electron");       scalefactors_Electron_Reco      ->SetDirectory(0);
-  TH2D* scalefactors_Electron_Reco_LowEt = (TH2D*)fElectron_Reco_SF->Get("scalefactors_Reco_lowEt_Electron"); scalefactors_Electron_Reco_LowEt->SetDirectory(0);
-  fElectron_Reco_SF->Close();
-
-  TFile *fMuonEffSF = TFile::Open(muonEffSFName.Data());
-  TH2D* scalefactors_Medium_Muon = (TH2D*)fMuonEffSF->Get("scalefactors_Medium_Muon"); scalefactors_Medium_Muon->SetDirectory(0);
-  fMuonEffSF->Close();
-
-  TFile *fElectronEffSF = TFile::Open(electronEffSFName.Data());
-  TH2D* scalefactors_Medium_Electron = (TH2D*)fElectronEffSF->Get("scalefactors_Medium_Electron"); scalefactors_Medium_Electron->SetDirectory(0);
-  TH2D* scalefactors_Tight_Electron  = (TH2D*)fElectronEffSF->Get("scalefactors_Tight_Electron");  scalefactors_Tight_Electron ->SetDirectory(0);
-  fElectronEffSF->Close();
-
-  double getMaxPtForSFs[4] = {scalefactors_Muon_Reco       ->GetYaxis()->GetBinCenter(scalefactors_Muon_Reco	   ->GetNbinsY()),
-                              scalefactors_Electron_Reco   ->GetYaxis()->GetBinCenter(scalefactors_Electron_Reco   ->GetNbinsY()),
-		              scalefactors_Medium_Muon     ->GetYaxis()->GetBinCenter(scalefactors_Medium_Muon     ->GetNbinsY()),
-                              scalefactors_Medium_Electron ->GetYaxis()->GetBinCenter(scalefactors_Medium_Electron ->GetNbinsY())
-		              };
+    infileName_.push_back(Form("%sdata.root",filesPath.Data()));                  infileCat_.push_back(kPlotData);
+    infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotqqWW);
+    infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotggWW);
+    infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data()));  infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sDYJetsToLL_Pt0To50.root",filesPath.Data()));    infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sDYJetsToLL_Pt50To100.root",filesPath.Data()));  infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sDYJetsToLL_Pt100To250.root",filesPath.Data())); infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sDYJetsToLL_Pt250To400.root",filesPath.Data())); infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sDYJetsToLL_Pt400To650.root",filesPath.Data())); infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sDYJetsToLL_Pt650ToInf.root",filesPath.Data())); infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));                 infileCat_.push_back(kPlotTop);
+    infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                   infileCat_.push_back(kPlotTop);
+    infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotZZ);
+    infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotZZ);
+    infileName_.push_back(Form("%sWZ.root" ,filesPath.Data()));                   infileCat_.push_back(kPlotWZ);
+    infileName_.push_back(Form("%sWGstar.root" ,filesPath.Data()));               infileCat_.push_back(kPlotWZ);
+    infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));                  infileCat_.push_back(kPlotVVV);
+    infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));                  infileCat_.push_back(kPlotVVV);
+    //infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));                   infileCat_.push_back(kPlotVG);
+    infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotHiggs);
+  }
+  else {
+    return;
+  }
 
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 63;
-  const int histBins = 9;
-  TH1D* histo[allPlots][histBins];
+  const int allPlots = 71;
+  TH1D* histo[allPlots][nPlotCategories];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     if     (thePlot >=  0 && thePlot <=  1) {nBinPlot = 120; xminPlot = 91.1876-15; xmaxPlot = 91.1876+15;}
     else if(thePlot >=  2 && thePlot <=  2) {nBinPlot = 200; xminPlot = 20.0; xmaxPlot = 220;}
@@ -118,12 +102,13 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
     else if(thePlot >= 48 && thePlot <= 53) {nBinPlot = 100; xminPlot = -2.5; xmaxPlot = 2.5;}
     else if(thePlot >= 54 && thePlot <= 59) {nBinPlot = 200; xminPlot = 25.0; xmaxPlot = 225;}
     else if(thePlot >= 60 && thePlot <= 62) {nBinPlot =   5; xminPlot = -0.5; xmaxPlot = 4.5;}
+    else if(thePlot >= 63 && thePlot <= 70) {nBinPlot = 200; xminPlot = 25.0; xmaxPlot = 225;}
     
     if(isTopSel == true && (thePlot >=  0 && thePlot <=  1)) {nBinPlot = 200; xminPlot = 20.0; xmaxPlot = 220;}
 
     TH1D* histos = new TH1D("histos", "histos", nBinPlot, xminPlot, xmaxPlot);
     histos->Sumw2();
-    for(int i=0; i<histBins; i++) histo[thePlot][i] = (TH1D*) histos->Clone(Form("histo%d",i));
+    for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = (TH1D*) histos->Clone(Form("histo%d",i));
     histos->Reset();histos->Clear();
   }
 
@@ -147,16 +132,18 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
                          (thePandaFlat.trigger & (1<<kSingleMuTrig)) != 0  || (thePandaFlat.trigger & (1<<kDoubleEleTrig)) != 0 ||
                          (thePandaFlat.trigger & (1<<kSingleEleTrig)) != 0;
       if(passTrigger == false) continue;
-     
+      if(thePandaFlat.metFilter == 0) continue;
+
       if(thePandaFlat.nLooseLep != 2) continue;
 
-      vector<float>  looseLepPt,looseLepEta,looseLepPhi;
+      vector<float>  looseLepPt,looseLepEta,looseLepPhi,looseLepSF;
       vector<int> looseLepSelBit,looseLepPdgId;
       int ptSelCuts[3] = {0,0,0};
       for(int i=0; i<thePandaFlat.nLooseMuon; i++){
         looseLepPt.push_back(thePandaFlat.muonPt[i]);
         looseLepEta.push_back(thePandaFlat.muonEta[i]);
         looseLepPhi.push_back(thePandaFlat.muonPhi[i]);
+        looseLepSF.push_back(thePandaFlat.muonSfReco[i] * thePandaFlat.muonSfMedium[i]);
         looseLepSelBit.push_back(thePandaFlat.muonSelBit[i]);
         looseLepPdgId.push_back(thePandaFlat.muonPdgId[i]);
 	if(thePandaFlat.muonPt[i] > 25) ptSelCuts[0]++;
@@ -167,6 +154,7 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
         looseLepPt.push_back(thePandaFlat.electronPt[i]);
         looseLepEta.push_back(thePandaFlat.electronEta[i]);
         looseLepPhi.push_back(thePandaFlat.electronPhi[i]);
+        looseLepSF.push_back(thePandaFlat.electronSfReco[i] * thePandaFlat.electronSfMedium[i]);
         looseLepSelBit.push_back(thePandaFlat.electronSelBit[i]);
         looseLepPdgId.push_back(thePandaFlat.electronPdgId[i]);
 	if(thePandaFlat.electronPt[i] > 25) ptSelCuts[0]++;
@@ -216,66 +204,19 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
       if(passSel == false) continue;
 
       double totalWeight = 1.0;
-      if     (theCategory != 0 && year != 2018){
-        int nElectrons = 0;
-        double the_eta_sf[4] = {1.0, 1.0, 1.0, 1.0};
-        double sfWeightLepEff[4] = {1.0, 1.0, 1.0, 1.0};
-	for(unsigned int i=0; i<looseLepPdgId.size(); i++){
-          if(abs(looseLepPdgId[i])==13){
-            double etal = looseLepEta[i]; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
-            int binEta = scalefactors_Muon_Reco->GetXaxis()->FindFixBin(etal);
-            the_eta_sf[i] = scalefactors_Muon_Reco->GetBinContent(binEta);
-          } else {
-	    nElectrons++;
-            double etal = looseLepEta[i]; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
-	    if(looseLepPt[i] >= 20){
-              int binXT = scalefactors_Electron_Reco->GetXaxis()->FindFixBin(etal);
-              int binYT = scalefactors_Electron_Reco->GetYaxis()->FindFixBin(TMath::Min((double)looseLepPt[i],getMaxPtForSFs[1]));
-              the_eta_sf[i] = scalefactors_Electron_Reco->GetBinContent(binXT,binYT);
-	    }
-	    else {
-              int binXT = scalefactors_Electron_Reco_LowEt->GetXaxis()->FindFixBin(etal);
-              int binYT = scalefactors_Electron_Reco_LowEt->GetYaxis()->FindFixBin(looseLepPt[i]);
-              the_eta_sf[i] = scalefactors_Electron_Reco_LowEt->GetBinContent(binXT,binYT);
-	    }
-          }        
-          if(abs(looseLepPdgId[i])==13){
-            double etal = looseLepEta[i]; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
-            int binXT = scalefactors_Medium_Muon->GetXaxis()->FindFixBin(etal);
-            int binYT = scalefactors_Medium_Muon->GetYaxis()->FindFixBin(TMath::Min((double)looseLepPt[i],getMaxPtForSFs[2]));
-	    sfWeightLepEff[i] = scalefactors_Medium_Muon->GetBinContent(binXT,binYT);
-          } else {
-            double etal = looseLepEta[i]; if(etal >= 2.5) etal = 2.4999; else if(etal <= -2.5) etal = -2.4999;
-            int binXT = scalefactors_Medium_Electron->GetXaxis()->FindFixBin(etal);
-            int binYT = scalefactors_Medium_Electron->GetYaxis()->FindFixBin(TMath::Min((double)looseLepPt[i],getMaxPtForSFs[3]));
-	    sfWeightLepEff[i] = scalefactors_Medium_Electron->GetBinContent(binXT,binYT);
-          }
-        }
-        double sfPileUp = nPUScaleFactor(fhDPU,thePandaFlat.pu);
-
-        double specialWeight = 1.0;
-        if     (infileCat_[ifile] == 3)                                                specialWeight = thePandaFlat.sf_wz;
-	else if(infileCat_[ifile] == 4 && infileName_[ifile].Contains("qqZZ") == true) specialWeight = thePandaFlat.sf_zz;
-        if(nElectrons >= 1) specialWeight = specialWeight * 0.991;
-
-        totalWeight = thePandaFlat.normalizedWeight * lumi * sfPileUp * 
-	              the_eta_sf[0] * the_eta_sf[1] * the_eta_sf[2] * the_eta_sf[3] * 
-		      sfWeightLepEff[0] * sfWeightLepEff[1] * sfWeightLepEff[2] * sfWeightLepEff[3] * specialWeight * theMCPrescale;
-
-	if(debug == 1) printf("WEIGHTS: %f | %f %f %f %f %f %f %f %f %f %f %f %f\n",totalWeight,thePandaFlat.normalizedWeight,lumi,sfPileUp,the_eta_sf[0],the_eta_sf[1],the_eta_sf[2],the_eta_sf[3],sfWeightLepEff[0],sfWeightLepEff[1],sfWeightLepEff[2],sfWeightLepEff[3],specialWeight);
-      }
-      else if(theCategory == 1 && year == 2018){
-        double sfPileUp = nPUScaleFactor(fhDPU,thePandaFlat.npv);
-        totalWeight = sfPileUp * 2.40;
-      }
-      else if(theCategory == 2 && year == 2018){
-        double sfPileUp = nPUScaleFactor(fhDPU2,thePandaFlat.npv);
-        totalWeight = sfPileUp * 1.21;
+      if     (theCategory != kPlotData){
+        double triggerWeights[2];
+        trigger_sf(triggerWeights, trgEff, trgEffE, lepType, looseLepPt[0], TMath::Abs(looseLepEta[0]), looseLepPt[1], TMath::Abs(looseLepEta[1]));
+        totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu * looseLepSF[0] * looseLepSF[1] * triggerWeights[0];
       }
 
+      bool passFakeLepId[2] = {((looseLepSelBit[0] & kFake) == kFake), ((looseLepSelBit[1] & kFake) == kFake)};
+
+      histo[lepType+ 6][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,9.4999),totalWeight);
+      if(isTopSel == true) passSel = passSel && thePandaFlat.nJot >= 1;
+      if(passSel == false) continue;
       histo[lepType+ 0][theCategory]->Fill((v1+v2).M(),totalWeight);
       histo[lepType+ 3][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJet,9.4999),totalWeight);
-      histo[lepType+ 6][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,9.4999),totalWeight);
       histo[lepType+ 9][theCategory]->Fill(TMath::Min((v1+v2).Pt(), 999.999),totalWeight);
       histo[lepType+12][theCategory]->Fill(TMath::Min((double)thePandaFlat.pfmet, 499.999),totalWeight);
       histo[lepType+15][theCategory]->Fill(TMath::Min((double)thePandaFlat.puppimet, 499.999),totalWeight);
@@ -294,7 +235,35 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
       histo[lepType+54][theCategory]->Fill(TMath::Min((double)looseLepPt[0], 224.999),totalWeight);
       histo[lepType+57][theCategory]->Fill(TMath::Min((double)looseLepPt[1], 224.999),totalWeight);
       histo[lepType+60][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNBtags,4.4999),totalWeight);
-
+      if     (lepType == 0){
+        if     (TMath::Abs(looseLepEta[0]) < 1.475) histo[63][theCategory]->Fill(TMath::Min((double)looseLepPt[0], 224.999),totalWeight);
+        else                                        histo[64][theCategory]->Fill(TMath::Min((double)looseLepPt[0], 224.999),totalWeight);
+        if     (TMath::Abs(looseLepEta[1]) < 1.475) histo[63][theCategory]->Fill(TMath::Min((double)looseLepPt[1], 224.999),totalWeight);
+        else                                        histo[64][theCategory]->Fill(TMath::Min((double)looseLepPt[1], 224.999),totalWeight);
+        if(passFakeLepId[0]) {
+          if     (TMath::Abs(looseLepEta[0]) < 1.475) histo[65][theCategory]->Fill(TMath::Min((double)looseLepPt[0], 224.999),totalWeight);
+          else                                        histo[66][theCategory]->Fill(TMath::Min((double)looseLepPt[0], 224.999),totalWeight);
+        }
+        if(passFakeLepId[1]) {
+          if     (TMath::Abs(looseLepEta[1]) < 1.475) histo[65][theCategory]->Fill(TMath::Min((double)looseLepPt[1], 224.999),totalWeight);
+          else                                        histo[66][theCategory]->Fill(TMath::Min((double)looseLepPt[1], 224.999),totalWeight);
+	}
+      }
+      else if(lepType == 1){
+        if     (TMath::Abs(looseLepEta[0]) < 1.475) histo[67][theCategory]->Fill(TMath::Min((double)looseLepPt[0], 224.999),totalWeight);
+        else                                        histo[68][theCategory]->Fill(TMath::Min((double)looseLepPt[0], 224.999),totalWeight);
+        if     (TMath::Abs(looseLepEta[1]) < 1.475) histo[67][theCategory]->Fill(TMath::Min((double)looseLepPt[1], 224.999),totalWeight);
+        else                                        histo[68][theCategory]->Fill(TMath::Min((double)looseLepPt[1], 224.999),totalWeight);
+        if(passFakeLepId[0]) {
+          if     (TMath::Abs(looseLepEta[0]) < 1.475) histo[69][theCategory]->Fill(TMath::Min((double)looseLepPt[0], 224.999),totalWeight);
+          else                                        histo[70][theCategory]->Fill(TMath::Min((double)looseLepPt[0], 224.999),totalWeight);
+        }
+        if(passFakeLepId[1]) {
+          if     (TMath::Abs(looseLepEta[1]) < 1.475) histo[69][theCategory]->Fill(TMath::Min((double)looseLepPt[1], 224.999),totalWeight);
+          else                                        histo[70][theCategory]->Fill(TMath::Min((double)looseLepPt[1], 224.999),totalWeight);
+	}
+      }
+      
     } // end event loop
   } // end samples loop
 
@@ -302,18 +271,18 @@ void zAnalysis(int whichDY = 0, bool isMIT = true, bool isTopSel = false, int ye
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     TString addSuffix = "";
     if(isTopSel == true) addSuffix = "_topsel";
-    sprintf(output,"histoDY%dzll_%d%s.root",whichDY,thePlot,addSuffix.Data());	
+    sprintf(output,"histoDY%dzll_%d_%d%s.root",whichDY,year,thePlot,addSuffix.Data());	
     TFile* outFilePlotsNote = new TFile(output,"recreate");
     outFilePlotsNote->cd();
     double totBck = 0;
-    for(int i=1; i<=8; i++) totBck =totBck + histo[thePlot][i]->GetSumOfWeights();
+    for(int i=1; i<nPlotCategories; i++) totBck =totBck + histo[thePlot][i]->GetSumOfWeights();
     printf("(%d) %f (%f+%f+%f+%f+%f+%f+%f+%f)=%f\n",thePlot,histo[thePlot][0]->GetSumOfWeights(),
     histo[thePlot][1]->GetSumOfWeights(),histo[thePlot][2]->GetSumOfWeights(),
     histo[thePlot][3]->GetSumOfWeights(),histo[thePlot][4]->GetSumOfWeights(),
     histo[thePlot][5]->GetSumOfWeights(),histo[thePlot][6]->GetSumOfWeights(),
     histo[thePlot][6]->GetSumOfWeights(),histo[thePlot][8]->GetSumOfWeights(),
     totBck);
-    for(int np=0; np<histBins; np++) histo[thePlot][np]->Write();
+    for(int np=0; np<nPlotCategories; np++) histo[thePlot][np]->Write();
     outFilePlotsNote->Close();
   }
 

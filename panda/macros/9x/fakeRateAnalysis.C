@@ -15,38 +15,71 @@
 #include "MitAnalysisRunII/panda/macros/9x/common.h"
 
 void fakeRateAnalysis(
-unsigned int period = 0
+int year
 ){
 
   double minLepPt[2] = {10.0, 12.0};
 
-  double lumi = 41.7;
   //*******************************************************
-  //Input Files
+  //Inputs
   //*******************************************************
-  TString filesPath    = "/data/t3home000/ceballos/panda/v_005_0/";
   vector<TString> infileName_;
   vector<int> infileCat_;
 
-  infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	       infileCat_.push_back(0);
-  infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
-  //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
-  infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		       infileCat_.push_back(1);
-  infileName_.push_back(Form("%sTT1L.root" ,filesPath.Data()));		       infileCat_.push_back(1);
-  infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));		       infileCat_.push_back(1);
-  infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
-  infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
-  infileName_.push_back(Form("%sWZ.root" ,filesPath.Data()));		       infileCat_.push_back(1);
-  infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));  	       infileCat_.push_back(1);
-  infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	       infileCat_.push_back(1);
-  //infileName_.push_back(Form("%sWGstar.root" ,filesPath.Data()));	       infileCat_.push_back(1);
-  //infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));		       infileCat_.push_back(1);
-  //infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	       infileCat_.push_back(1);
-  //infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(2);
-  infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));  infileCat_.push_back(2);
-  infileName_.push_back(Form("%sWJets.root" ,filesPath.Data()));               infileCat_.push_back(3);
+  double lumi;
+  TString filesPath;
+  TString fnpvWeightsFileName;
+  if(year == 2017) {
+    lumi = 41.5;
+    filesPath = "/data/t3home000/ceballos/panda/v_005_0/";
+    fnpvWeightsFileName = "MitAnalysisRunII/data/90x/npvWeights_2017_FakeTriggers.root";
 
-  TFile *fnpvWeights = TFile::Open(Form("MitAnalysisRunII/data/80x/npvWeights_2016_FakeTriggers.root"));
+    infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(0);
+    infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		 infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTT1L.root" ,filesPath.Data()));		 infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));		         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sWZno3l.root" ,filesPath.Data()));	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sWZ3l_powheg.root" ,filesPath.Data()));         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));  	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTTVV.root" ,filesPath.Data()));  	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));		         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(2);
+    infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));   infileCat_.push_back(2);
+    infileName_.push_back(Form("%sWJets.root" ,filesPath.Data()));               infileCat_.push_back(3);
+  }
+  else if(year == 2016) {
+    lumi = 35.9;
+    filesPath = "/data/t3home000/ceballos/panda/v_003_0/";
+    fnpvWeightsFileName = "MitAnalysisRunII/data/80x/npvWeights_2016_FakeTriggers.root";
+
+    infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(0);
+    infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTT.root" ,filesPath.Data()));		         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));		         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sWZ.root" ,filesPath.Data()));	                 infileCat_.push_back(1);
+    infileName_.push_back(Form("%sWGstar.root" ,filesPath.Data()));	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));  	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));		         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(2);
+    infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));  infileCat_.push_back(2);
+    infileName_.push_back(Form("%sWJets.root" ,filesPath.Data()));               infileCat_.push_back(3);
+  }
+  else {
+    return;
+  }
+  
+  TFile *fnpvWeights = TFile::Open(fnpvWeightsFileName.Data());
   TH1D* hDnpvWeights = (TH1D*)fnpvWeights->Get("npvWeights"); hDnpvWeights->SetDirectory(0);
   fnpvWeights->Close();
 
@@ -117,7 +150,7 @@ unsigned int period = 0
       nb = thePandaFlat.fChain->GetEntry(jentry);   nbytes += nb;
       if (jentry%1000000 == 0) printf("--- reading event %8lld (%8lld) of %8lld\n",jentry,ientry,nentries);
 
-      //if(infileCat_[ifile] == 0 && ((period == 1 && thePandaFlat.runNumber > 278802) || (period == 2 && thePandaFlat.runNumber <= 278802))) continue;
+      if(thePandaFlat.metFilter == 0) continue;
 
       vector<float>  looseLepPt,looseLepEta,looseLepPhi,looseLepSF;
       vector<int> looseLepSelBit,looseLepPdgId,looseLepTripleCharge,looseLepMissingHits;
@@ -201,8 +234,8 @@ unsigned int period = 0
       }
 
       bool passJetSel = kFALSE;
-      if((lepType == 0 && thePandaFlat.nJot >= 1) || 
-         (lepType == 1 && thePandaFlat.nJot >= 1)) passJetSel = kTRUE;
+      if((lepType == 0 && thePandaFlat.nJot >= 0) || 
+         (lepType == 1 && thePandaFlat.nJot >= 0)) passJetSel = kTRUE;
       if(passJetSel == kFALSE) continue;
 
       double deltaPhiLeptonMet = TMath::Abs(vLoose1.DeltaPhi(vMet));
@@ -269,7 +302,7 @@ unsigned int period = 0
 
   char output[200];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
-    sprintf(output,"histoFake_%d.root",thePlot);	
+    sprintf(output,"histoFake_%d_%d.root",year,thePlot);	
     TFile* outFilePlotsNote = new TFile(output,"recreate");
     outFilePlotsNote->cd();
     double totBck = 0;
@@ -281,7 +314,7 @@ unsigned int period = 0
 
   {
     for(int thePlot=0; thePlot<2; thePlot++){
-      sprintf(output,"histoZllPt_%d.root",thePlot);	
+      sprintf(output,"histoZllPt_%d_%d.root",year,thePlot);	
       TFile* outFilePlotsNote = new TFile(output,"recreate");
       outFilePlotsNote->cd();
       for(int np=0; np<histBins; np++) histoZllPt[thePlot][np]->Write();
@@ -298,7 +331,7 @@ unsigned int period = 0
 
   {
     for(int thePlot=0; thePlot<2; thePlot++){
-      sprintf(output,"histoWlnPt_%d.root",thePlot);	
+      sprintf(output,"histoWlnPt_%d_%d.root",year,thePlot);	
       TFile* outFilePlotsNote = new TFile(output,"recreate");
       outFilePlotsNote->cd();
       for(int np=0; np<histBins; np++) histoWlnPt[thePlot][np]->Write();
@@ -315,7 +348,7 @@ unsigned int period = 0
   }
 
   {
-    sprintf(output,"histoFakeEtaPt.root"); 
+    sprintf(output,"histoFakeEtaPt_%d.root",year); 
     TFile* outFilePlotsNote = new TFile(output,"recreate");
     outFilePlotsNote->cd();
     double den,num,eff,unc;

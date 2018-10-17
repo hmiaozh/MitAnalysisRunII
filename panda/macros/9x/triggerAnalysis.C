@@ -35,21 +35,15 @@ int whichLepSel = 1
   vector<int> infileCat_;
 
   if     (typeAna == 0 || typeAna == 1){
-    infileName_.push_back(Form("%sMET.root",filesPath.Data()));		                   infileCat_.push_back(0);
+    infileName_.push_back(Form("%sMET.root",filesPath.Data()));		                 infileCat_.push_back(0);
   }
 
   if(typeAna == 0 || typeAna == 2){
-    //infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));		           infileCat_.push_back(1);
-    //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data()));		           infileCat_.push_back(1);
-    infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		           infileCat_.push_back(1);
-    //infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));		                   infileCat_.push_back(1);
-    //infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data()));           infileCat_.push_back(1);
-    //infileName_.push_back(Form("%sDYJetsToLL_Pt0To50.root" ,filesPath.Data()));            infileCat_.push_back(1);
-    //infileName_.push_back(Form("%sDYJetsToLL_Pt100To250.root" ,filesPath.Data()));         infileCat_.push_back(1);
-    //infileName_.push_back(Form("%sDYJetsToLL_Pt250To400.root" ,filesPath.Data()));         infileCat_.push_back(1);
-    //infileName_.push_back(Form("%sDYJetsToLL_Pt400To650.root" ,filesPath.Data()));         infileCat_.push_back(1);
-    //infileName_.push_back(Form("%sDYJetsToLL_Pt50To100.root" ,filesPath.Data()));          infileCat_.push_back(1);
-    infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));            infileCat_.push_back(1);
+    infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));			 infileCat_.push_back(1);
+    infileName_.push_back(Form("%sggWW.root" ,filesPath.Data()));			 infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));		                 infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));           infileCat_.push_back(1);
   }
 
   TString pileUpName = "MitAnalysisRunII/data/90x/puWeights_90x.root";

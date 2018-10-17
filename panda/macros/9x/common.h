@@ -1,3 +1,8 @@
+#include "TH1D.h"
+#include "TH2D.h"
+
+const bool useZZWZEWKUnc = true;
+
 enum LepSelectionBit {
  kLoose   =(1<<0),
  kFake    =(1<<1),
@@ -18,18 +23,99 @@ enum PhoSelectionBit {
 };
 
 enum TriggerBits {
-    kMETTrig     = 0,
-    kSingleEleTrig,
-    kSinglePhoTrig,
-    kSingleMuTrig,
-    kDoubleMuTrig,
-    kDoubleEleTrig,
-    kEMuTrig,
-    kJetHTTrig,
-    kMuFakeTrig,
-    kEleFakeTrig,
-    kNTrig
-  };
+  kMETTrig     = 0,
+  kSingleEleTrig,
+  kSinglePhoTrig,
+  kSingleMuTrig,
+  kDoubleMuTrig,
+  kDoubleEleTrig,
+  kEMuTrig,
+  kJetHTTrig,
+  kMuFakeTrig,
+  kEleFakeTrig,
+  kNTrig
+};
+
+enum plotCategory {
+  kPlotData      , // 0 
+  kPlotqqWW      , // 1  
+  kPlotggWW      , // 2  
+  kPlotTop       , // 3  
+  kPlotDY        , // 4  
+  kPlotZZ        , // 5  
+  kPlotWZ        , // 6  
+  kPlotVVV       , // 7  
+  kPlotVG        , // 8  
+  kPlotNonPrompt , // 9  
+  kPlotHiggs     , //10  
+  kPlotSSWWEWK   , //11   
+  kPlotSSWWQCD   , //12   
+  kPlotDPSWW     , //13   
+  kPlotWS        , //14   
+  kPlotEM        , //15   
+  kPlotBSM       , //16 
+  nPlotCategories
+};
+
+std::map<int, TString> plotBaseNames={
+  { kPlotData	   , "Data" },
+  { kPlotqqWW	   , "qqWW" },
+  { kPlotggWW	   , "ggWW" },
+  { kPlotTop	   , "Top" },
+  { kPlotDY	   , "DY" },
+  { kPlotZZ	   , "ZZ" },
+  { kPlotWZ	   , "WZ" },
+  { kPlotVVV	   , "VVV" },
+  { kPlotVG	   , "VG" },
+  { kPlotNonPrompt , "NonPrompt" },
+  { kPlotHiggs     , "Higgs" },
+  { kPlotSSWWEWK   , "SSWWEWK" },
+  { kPlotSSWWQCD   , "SSWWQCD" },
+  { kPlotDPSWW     , "DPSWW" },
+  { kPlotWS	   , "WS" },
+  { kPlotEM	   , "EM" },
+  { kPlotBSM	   , "BSM" }
+}; 
+
+std::map<int, int> plotColors={
+  { kPlotData	   , kBlack},
+  { kPlotqqWW	   , kAzure-9},
+  { kPlotggWW	   , 901},
+  { kPlotTop	   , kYellow},
+  { kPlotDY	   , kAzure-2},
+  { kPlotZZ	   , TColor::GetColor(155,152,204)},
+  { kPlotWZ	   , kViolet-9},
+  { kPlotVVV	   , 809},
+  { kPlotVG	   , 419},
+  { kPlotNonPrompt , kAzure-4},
+  { kPlotHiggs     , 842},
+  { kPlotSSWWEWK   , 832},
+  { kPlotSSWWQCD   , 798},
+  { kPlotDPSWW     , TColor::GetColor(248,206,104)},
+  { kPlotWS	   , kYellow},
+  { kPlotEM	   , kBlue},
+  { kPlotBSM	   , kGreen}
+}; 
+
+std::map<int, TString> plotNames={
+    { kPlotData      , "Data"	  },
+    { kPlotqqWW      , "qq #rightarrow WW"	  },
+    { kPlotggWW      , "gg #rightarrow WW"   },
+    { kPlotTop       , "Top quark"    },
+    { kPlotDY	     , "Drell-Yan" },
+    { kPlotZZ	     , "ZZ"	  },
+    { kPlotWZ	     , "WZ"	  },
+    { kPlotVVV       , "VVV"	  },
+    { kPlotVG	     , "V#gamma" },
+    { kPlotNonPrompt , "Nonprompt"	  },
+    { kPlotHiggs     , "Higgs"	  },
+    { kPlotSSWWEWK   , "EWK W^{#pm}W^{#pm}"  },
+    { kPlotSSWWQCD   , "QCD W^{#pm}W^{#pm}"  },
+    { kPlotDPSWW     , "DPS W^{#pm}W^{#pm}"  },
+    { kPlotWS	     , "Wrong sign"  },
+    { kPlotEM	     , "Top-quark/WW"  },
+    { kPlotBSM       , "BSM"}
+};
 
 const double mass_el = 0.000510998928;
 const double mass_mu = 0.10566;
@@ -47,6 +133,7 @@ double fakeRateFactor(double pt, double eta, int pdgId, bool applyTight, TH2D *h
   else printf("IMPOSSIBLE COMPUTING FAKE RATES\n");
 
   if(pt<20 && applyTight == true) rate = 2*rate/(1+rate);
+  //if(pt<20) rate = 2*rate/(1+rate);
 
   return rate/(1-rate);
 }
