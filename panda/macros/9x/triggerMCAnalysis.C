@@ -121,7 +121,7 @@ void triggerMCAnalysis()
 
       double sfPileUp = nPUScaleFactor(fhDPU,thePandaFlat.pu);
 
-      double totalWeight = thePandaFlat.normalizedWeight * lumi * sfPileUp;
+      double totalWeight = thePandaFlat.normalizedWeight * lumi * sfPileUp * thePandaFlat.sf_l1Prefire;
 
       // 2-l study
       if(thePandaFlat.nLooseLep >= 2 && ptSelCuts[0] >= 1 && ptSelCuts[1] >= 2 && theCategory <= 1) {

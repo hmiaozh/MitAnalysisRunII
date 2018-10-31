@@ -38,7 +38,7 @@ int year
   if(year == 2017) {
     lumi = 41.5;
     filesPath = "/data/t3home000/ceballos/panda/v_004_0/";
-    fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_9x.root";
+    fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2017.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotqqWW);
@@ -60,7 +60,7 @@ int year
   else if(year == 2016) {
     lumi = 35.9;
     filesPath = "/data/t3home000/ceballos/panda/v_002_0/";
-    fLepton_FakesName = "MitAnalysisRunII/data/80x/histoFakeEtaPt_80x_37ifb.root";
+    fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2016.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	          infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotqqWW);
@@ -88,10 +88,17 @@ int year
   }
 
   TFile *fLepton_Fakes = TFile::Open(fLepton_FakesName.Data());
-  TH2D* histoFakeEffSelMediumEtaPt_m = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel0EtaPt_0"); histoFakeEffSelMediumEtaPt_m->SetDirectory(0);
-  TH2D* histoFakeEffSelMediumEtaPt_e = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel0EtaPt_1"); histoFakeEffSelMediumEtaPt_e->SetDirectory(0);
-  TH2D* histoFakeEffSelTightEtaPt_m  = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel3EtaPt_0"); histoFakeEffSelTightEtaPt_m ->SetDirectory(0);
-  TH2D* histoFakeEffSelTightEtaPt_e  = (TH2D*)fLepton_Fakes->Get("histoFakeEffSel3EtaPt_1"); histoFakeEffSelTightEtaPt_e ->SetDirectory(0);
+  TH2D* histoFakeEffSelMediumEtaPt_m = (TH2D*)fLepton_Fakes->Get("histoFakeEffSelEtaPt_0_0"); histoFakeEffSelMediumEtaPt_m->SetDirectory(0);
+  TH2D* histoFakeEffSelMediumEtaPt_e = (TH2D*)fLepton_Fakes->Get("histoFakeEffSelEtaPt_0_1"); histoFakeEffSelMediumEtaPt_e->SetDirectory(0);
+
+  //TH2D* histoFakeEffSelTightEtaPt_m = (TH2D*)fLepton_Fakes->Get("histoFakeEffSelEtaPt_3_0"); histoFakeEffSelTightEtaPt_m ->SetDirectory(0);
+  //TH2D* histoFakeEffSelTightEtaPt_e = (TH2D*)fLepton_Fakes->Get("histoFakeEffSelEtaPt_3_1"); histoFakeEffSelTightEtaPt_e ->SetDirectory(0);
+  TH2D* histoFakeEffSelTightEtaPt_m = (TH2D*)fLepton_Fakes->Get("histoFakeEffSelEtaPt_0_0");;
+  if     (year == 2016) {histoFakeEffSelTightEtaPt_m = (TH2D*)fLepton_Fakes->Get("histoFakeEffSelEtaPt_2_0");  printf("2016 tight mu sel\n");}
+  else if(year == 2017) {histoFakeEffSelTightEtaPt_m = (TH2D*)fLepton_Fakes->Get("histoFakeEffSelEtaPt_13_0"); printf("2017 tight mu sel\n");}
+  histoFakeEffSelTightEtaPt_m ->SetDirectory(0);
+        
+  TH2D* histoFakeEffSelTightEtaPt_e  = (TH2D*)fLepton_Fakes->Get("histoFakeEffSelEtaPt_6_1"); histoFakeEffSelTightEtaPt_e ->SetDirectory(0);
   fLepton_Fakes->Close();
 
   int nBinPlot      = 200;
@@ -179,33 +186,46 @@ int year
       bool isNotMCFake = thePandaFlat.looseGenLep1PdgId != 0 && thePandaFlat.looseGenLep2PdgId != 0;
       if(theCategory != kPlotData && theCategory != kPlotVG && isNotMCFake == false && usePureMC == false) continue;
 
-      vector<int> idLep; idLep.push_back(0); idLep.push_back(0);
-      bool passLooseLepId = ((looseLepSelBit[0] & kFake) == kFake) && ((looseLepSelBit[1] & kFake) == kFake);
+      vector<TLorentzVector> vLoose;
+      vector<int> idLep;
+      bool passLooseLepId = true;
+      int qTot = 0;
+      unsigned int countLeptonTight = 0;
+      for(int i=0; i<thePandaFlat.nLooseLep; i++) {
+        idLep.push_back(0);
+        //if((looseLepSelBit[i] & kTight) == kTight && (looseLepSelBit[i] & kDxyz) == kDxyz && looseLepMissingHits[i] == 0) idLep[i] = 1;
+        if(abs(looseLepPdgId[i])==13) {
+	  if     (year == 2016 && (looseLepSelBit[i] & kTight) == kTight && (looseLepSelBit[i] & kDxyz) == kDxyz) idLep[i] = 1;
+	  else if(year == 2017 && (looseLepSelBit[i] & kMvaTight) == kMvaTight && (looseLepSelBit[i] & kMiniIsoTight) == kMiniIsoTight) idLep[i] = 1;
+	}
+	else {
+          if((looseLepSelBit[i] & kEleMvaWP80) == kEleMvaWP80) idLep[i] = 1;
+	}
+	countLeptonTight = countLeptonTight + (idLep[i] > 0);
+        double thePDGMass = mass_mu;
+        if(abs(looseLepPdgId[i])==11) thePDGMass = mass_el;
+	TLorentzVector vLepTemp; vLepTemp.SetPtEtaPhiM(looseLepPt[i],looseLepEta[i],looseLepPhi[i],thePDGMass);
+        vLoose.push_back(vLepTemp);
+
+	qTot = qTot + abs(looseLepPdgId[i])/looseLepPdgId[i];
+
+        passLooseLepId = passLooseLepId && ((looseLepSelBit[i] & kFake) == kFake);
+      }
+
       if(passLooseLepId == false) continue;
-
-      if((looseLepSelBit[0] & kTight) == kTight && (looseLepSelBit[0] & kDxyz) == kDxyz && looseLepMissingHits[0] == 0) idLep[0] = 1;
-      if((looseLepSelBit[1] & kTight) == kTight && (looseLepSelBit[1] & kDxyz) == kDxyz && looseLepMissingHits[1] == 0) idLep[1] = 1;
-
-      int qTot = abs(looseLepPdgId[0])/looseLepPdgId[0] + abs(looseLepPdgId[1])/looseLepPdgId[1];
 
       int lepType = -1;
       if     (abs(looseLepPdgId[0])==13 && abs(looseLepPdgId[1])==13) lepType = 0;
       else if(abs(looseLepPdgId[0])==11 && abs(looseLepPdgId[1])==11) lepType = 1;
       else  lepType = 2;
 
-      TLorentzVector vLoose1,vLoose2,vMet,vTrkMet;
+      TLorentzVector vMet,vTrkMet;
       vMet.SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
       vTrkMet.SetPtEtaPhiM(thePandaFlat.trkmet,0.0,thePandaFlat.trkmetphi,0.0);
-      double thePDGMass[2] = {mass_mu, mass_mu};
-      if(abs(looseLepPdgId[0])==11) thePDGMass[0] = mass_el;
-      if(abs(looseLepPdgId[1])==11) thePDGMass[1] = mass_el;
-      vLoose1.SetPtEtaPhiM(looseLepPt[0],looseLepEta[0],looseLepPhi[0],thePDGMass[0]);
-      vLoose2.SetPtEtaPhiM(looseLepPt[1],looseLepEta[1],looseLepPhi[1],thePDGMass[1]);
+      TLorentzVector dilep = vLoose[0] + vLoose[1];
 
-      unsigned int countLeptonTight = (idLep[0] > 0) + (idLep[1] > 0);
-
-      double dPhiLepMETMin = TMath::Min(TMath::Abs(vLoose1.DeltaPhi(vMet)), TMath::Abs(vLoose2.DeltaPhi(vMet)));
-      double dPhiLepTrackMETMin = TMath::Min(TMath::Abs(vLoose1.DeltaPhi(vTrkMet)), TMath::Abs(vLoose2.DeltaPhi(vTrkMet)));
+      double dPhiLepMETMin = TMath::Min(TMath::Abs(vLoose[0].DeltaPhi(vMet)), TMath::Abs(vLoose[1].DeltaPhi(vMet)));
+      double dPhiLepTrackMETMin = TMath::Min(TMath::Abs(vLoose[0].DeltaPhi(vTrkMet)), TMath::Abs(vLoose[1].DeltaPhi(vTrkMet)));
 
       double PMET[1] = {vMet.Pt()};
       double PTrackMET[1] = {vTrkMet.Pt()};
@@ -215,8 +235,8 @@ int year
 
       bool passBtagVeto = thePandaFlat.jetNBtags == 0;
 
-      bool passSel[7] = {qTot == 0, (vLoose1+vLoose2).M() > 20, fabs((vLoose1+vLoose2).M()-91.1876) > 15 || lepType == 2, minPMET[0] > 20, minPMET[0] > 45 || lepType == 2, 
-                         (vLoose1+vLoose2).Pt() > 30 && ((vLoose1+vLoose2).Pt() > 45 ||  lepType == 2), passBtagVeto};
+      bool passSel[7] = {qTot == 0, dilep.M() > 20, fabs(dilep.M()-91.1876) > 15 || lepType == 2, minPMET[0] > 20, minPMET[0] > 45 || lepType == 2, 
+                         dilep.Pt() > 30 && (dilep.Pt() > 45 ||  lepType == 2), passBtagVeto};
 
       bool passWWSel  =  passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[4] && passSel[5] &&  passSel[6];
       bool passSSSel  = !passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[4] && passSel[5] &&  passSel[6];
@@ -238,8 +258,8 @@ int year
       if(theCategory != kPlotData){
         double triggerWeights[2] = {1.0, 0.0};
         trigger_sf(triggerWeights, trgEff, trgEffE, lepTypeOri, looseLepPt[0], TMath::Abs(looseLepEta[0]), looseLepPt[1], TMath::Abs(looseLepEta[1]));
-        if(passBtagVeto) totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu * looseLepSF[0] * looseLepSF[1] * thePandaFlat.sf_btag0   * triggerWeights[0] * theMCPrescale;
-        else             totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu * looseLepSF[0] * looseLepSF[1] * thePandaFlat.sf_btagGT0 * triggerWeights[0] * theMCPrescale;
+        if(passBtagVeto) totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu * thePandaFlat.sf_l1Prefire * looseLepSF[0] * looseLepSF[1] * thePandaFlat.sf_btag0   * triggerWeights[0] * theMCPrescale;
+        else             totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu * thePandaFlat.sf_l1Prefire * looseLepSF[0] * looseLepSF[1] * thePandaFlat.sf_btagGT0 * triggerWeights[0] * theMCPrescale;
 
         if     (infileCat_[ifile] == kPlotWZ)                                                totalWeight = totalWeight * thePandaFlat.sf_wz;
 	else if(infileCat_[ifile] == kPlotZZ && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;
@@ -248,10 +268,9 @@ int year
       if(usePureMC == false && countLeptonTight != idLep.size()){
         double fakeSF = 1.0;
         for(unsigned int nl=0; nl<idLep.size(); nl++){
-          if(idLep[nl] == 1 || idLep[nl] == 3) continue;
+          if(idLep[nl] == 1) continue;
           bool applyTight = true;
-          if(nl == 0) fakeSF = fakeSF * fakeRateFactor(TMath::Min((double)looseLepPt[0],44.999),TMath::Abs(looseLepEta[0]),TMath::Abs(looseLepPdgId[0]),applyTight,histoFakeEffSelMediumEtaPt_m,histoFakeEffSelMediumEtaPt_e,histoFakeEffSelTightEtaPt_m,histoFakeEffSelTightEtaPt_e);
-          if(nl == 1) fakeSF = fakeSF * fakeRateFactor(TMath::Min((double)looseLepPt[1],44.999),TMath::Abs(looseLepEta[1]),TMath::Abs(looseLepPdgId[1]),applyTight,histoFakeEffSelMediumEtaPt_m,histoFakeEffSelMediumEtaPt_e,histoFakeEffSelTightEtaPt_m,histoFakeEffSelTightEtaPt_e);
+          fakeSF = fakeSF * fakeRateFactor(TMath::Min((double)looseLepPt[nl],44.999),TMath::Abs(looseLepEta[nl]),TMath::Abs(looseLepPdgId[nl]),applyTight,histoFakeEffSelMediumEtaPt_m,histoFakeEffSelMediumEtaPt_e,histoFakeEffSelTightEtaPt_m,histoFakeEffSelTightEtaPt_e);
           theCategory = kPlotNonPrompt;
         }
         if     (infileCat_[ifile] != kPlotData && countLeptonTight == idLep.size()-2) fakeSF = +1.0 * fakeSF; // double fake, MC
@@ -262,24 +281,24 @@ int year
         totalWeight = totalWeight * fakeSF;
       }
 
-      if(passAllButOneSel[0])histo[lepType+  0][theCategory]->Fill(TMath::Min((vLoose1+vLoose2).M(),199.999),totalWeight);
+      if(passAllButOneSel[0])histo[lepType+  0][theCategory]->Fill(TMath::Min(dilep.M(),199.999),totalWeight);
       if(passAllButOneSel[1])histo[lepType+  9][theCategory]->Fill(TMath::Min(minPMET[0],199.999),totalWeight);
       if(passAllButOneSel[1])histo[lepType+ 18][theCategory]->Fill(TMath::Min(vMet.Pt(),199.999),totalWeight);
       if(passAllButOneSel[1])histo[lepType+ 27][theCategory]->Fill(TMath::Min(vTrkMet.Pt(),199.999),totalWeight);
-      if(passAllButOneSel[2])histo[lepType+ 36][theCategory]->Fill(TMath::Min((vLoose1+vLoose2).Pt(),199.999),totalWeight);
+      if(passAllButOneSel[2])histo[lepType+ 36][theCategory]->Fill(TMath::Min(dilep.Pt(),199.999),totalWeight);
       if(passAllButOneSel[3])histo[lepType+ 45][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNBtags,4.499),totalWeight);
-      if(passWWSel)          histo[lepType+ 54][theCategory]->Fill(TMath::Min(vLoose1.Pt(),199.999),totalWeight);
-      if(passWWSel)          histo[lepType+ 63][theCategory]->Fill(TMath::Min(vLoose2.Pt(),199.999),totalWeight);
-      if(passWWSel)          histo[lepType+ 72][theCategory]->Fill(TMath::Min((vLoose1+vLoose2).M(),199.999),totalWeight);
-      if(passWWSel)          histo[lepType+ 81][theCategory]->Fill(TMath::Abs(vLoose1.DeltaPhi(vLoose2))*180/TMath::Pi(),totalWeight);
-      if(passSSSel)          histo[lepType+ 90][theCategory]->Fill(TMath::Min(vLoose1.Pt(),199.999),totalWeight);
-      if(passSSSel)          histo[lepType+ 99][theCategory]->Fill(TMath::Min(vLoose2.Pt(),199.999),totalWeight);
-      if(passSSSel)          histo[lepType+108][theCategory]->Fill(TMath::Min((vLoose1+vLoose2).M(),199.999),totalWeight);
-      if(passSSSel)          histo[lepType+117][theCategory]->Fill(TMath::Abs(vLoose1.DeltaPhi(vLoose2))*180/TMath::Pi(),totalWeight);
-      if(passTopSel)         histo[lepType+126][theCategory]->Fill(TMath::Min(vLoose1.Pt(),199.999),totalWeight);
-      if(passTopSel)         histo[lepType+135][theCategory]->Fill(TMath::Min(vLoose2.Pt(),199.999),totalWeight);
-      if(passTopSel)         histo[lepType+144][theCategory]->Fill(TMath::Min((vLoose1+vLoose2).M(),199.999),totalWeight);
-      if(passTopSel)         histo[lepType+153][theCategory]->Fill(TMath::Abs(vLoose1.DeltaPhi(vMet))*180/TMath::Pi(),totalWeight);
+      if(passWWSel)          histo[lepType+ 54][theCategory]->Fill(TMath::Min(vLoose[0].Pt(),199.999),totalWeight);
+      if(passWWSel)          histo[lepType+ 63][theCategory]->Fill(TMath::Min(vLoose[1].Pt(),199.999),totalWeight);
+      if(passWWSel)          histo[lepType+ 72][theCategory]->Fill(TMath::Min(dilep.M(),199.999),totalWeight);
+      if(passWWSel)          histo[lepType+ 81][theCategory]->Fill(TMath::Abs(vLoose[0].DeltaPhi(vLoose[1]))*180/TMath::Pi(),totalWeight);
+      if(passSSSel)          histo[lepType+ 90][theCategory]->Fill(TMath::Min(vLoose[0].Pt(),199.999),totalWeight);
+      if(passSSSel)          histo[lepType+ 99][theCategory]->Fill(TMath::Min(vLoose[1].Pt(),199.999),totalWeight);
+      if(passSSSel)          histo[lepType+108][theCategory]->Fill(TMath::Min(dilep.M(),199.999),totalWeight);
+      if(passSSSel)          histo[lepType+117][theCategory]->Fill(TMath::Abs(vLoose[0].DeltaPhi(vLoose[1]))*180/TMath::Pi(),totalWeight);
+      if(passTopSel)         histo[lepType+126][theCategory]->Fill(TMath::Min(vLoose[0].Pt(),199.999),totalWeight);
+      if(passTopSel)         histo[lepType+135][theCategory]->Fill(TMath::Min(vLoose[1].Pt(),199.999),totalWeight);
+      if(passTopSel)         histo[lepType+144][theCategory]->Fill(TMath::Min(dilep.M(),199.999),totalWeight);
+      if(passTopSel)         histo[lepType+153][theCategory]->Fill(TMath::Abs(vLoose[0].DeltaPhi(vMet))*180/TMath::Pi(),totalWeight);
 
     } // end events loop
     the_input_file->Close();

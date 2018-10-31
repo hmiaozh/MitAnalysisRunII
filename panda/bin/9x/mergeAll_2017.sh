@@ -20,6 +20,7 @@ PandaAnalysis/T3/merging/merge.py -cfg leptonic_2017 VG
 PandaAnalysis/T3/merging/merge.py -cfg leptonic_2017 VG_M120
 PandaAnalysis/T3/merging/merge.py -cfg leptonic_2017 H125
 PandaAnalysis/T3/merging/merge.py -cfg leptonic_2017 DYNJetsToLL
+PandaAnalysis/T3/merging/merge.py -cfg leptonic_2017 DYNJetsToLL_NLO
 #PandaAnalysis/T3/merging/merge.py -cfg leptonic_2017 DYJetsToLL_Pt0To50
 #PandaAnalysis/T3/merging/merge.py -cfg leptonic_2017 DYJetsToLL_Pt50To100 
 #PandaAnalysis/T3/merging/merge.py -cfg leptonic_2017 DYJetsToLL_Pt100To250  
@@ -38,7 +39,7 @@ PandaAnalysis/T3/merging/merge.py -cfg leptonic_2017 MET
 PandaAnalysis/T3/merging/merge.py -cfg leptonic_2017 WpWp_EWK_QCD
 PandaAnalysis/T3/merging/merge.py -cfg leptonic_2017 WpWp_EWK
 PandaAnalysis/T3/merging/merge.py -cfg leptonic_2017 WpWp_QCD
-#PandaAnalysis/T3/merging/merge.py -cfg leptonic_2017 DarkPhoton_ZH_powheg_M-125
+#PandaAnalysis/T3/merging/merge.py -cfg leptonic_2017 ZH_ZToLL_HToGDarkG_M125
 #PandaAnalysis/T3/merging/merge.py -cfg leptonic_2017 SingleMuon           
 #PandaAnalysis/T3/merging/merge.py -cfg leptonic_2017 SingleElectron     
 #PandaAnalysis/T3/merging/merge.py -cfg leptonic_2017 MuonEG       

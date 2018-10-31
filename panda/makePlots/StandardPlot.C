@@ -74,15 +74,15 @@ void AxisFonts(TAxis*  axis,
         TString title)
 {
     axis->SetLabelFont  (   42);
-    axis->SetLabelOffset(0.015);
-    axis->SetLabelSize  (0.050);
+    axis->SetLabelOffset(0.010);
+    axis->SetLabelSize  (0.040);
     axis->SetNdivisions (  505);
     axis->SetTitleFont  (   42);
-    axis->SetTitleOffset(  1.3);
-    axis->SetTitleSize  (0.070);
+    axis->SetTitleOffset(  0.9);
+    axis->SetTitleSize  (0.050);
 
-    if      (coordinate == "y" && doApplyBinWidth == true) axis->SetTitleOffset(1.1);
-    else if (coordinate == "y")                            axis->SetTitleOffset(1.1);
+    if      (coordinate == "y" && doApplyBinWidth == true) axis->SetTitleOffset(1.0);
+    else if (coordinate == "y")                            axis->SetTitleOffset(1.0);
 
     axis->SetTitle(title);
 }

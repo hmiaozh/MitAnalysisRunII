@@ -1,6 +1,11 @@
 #include "TH1D.h"
 #include "TH2D.h"
 
+double WSSF_2016[5]  = {1.450841,1.144231,0.957954,0.961680,0.939596};
+double WSSFE_2016[5] = {0.294219,0.113998,0.052910,0.022919,0.028844};
+double WSSF_2017[5]  = {1.039729,2.242910,1.506833,1.393533,1.353645};
+double WSSFE_2017[5] = {0.230004,0.151531,0.065174,0.028503,0.030047};
+
 const bool useZZWZEWKUnc = true;
 
 enum LepSelectionBit {
@@ -10,7 +15,11 @@ enum LepSelectionBit {
  kTight   =(1<<3),
  kDxyz    =(1<<4),
  kEleMvaWP90=(1<<5),
- kEleMvaWP80=(1<<6)
+ kEleMvaWP80=(1<<6),
+ kMvaMedium    =(1<<7),
+ kMvaTight     =(1<<8),
+ kMiniIsoMedium=(1<<9),
+ kMiniIsoTight =(1<<10)
 };
 
 enum PhoSelectionBit {
@@ -132,8 +141,7 @@ double fakeRateFactor(double pt, double eta, int pdgId, bool applyTight, TH2D *h
   else if(TMath::Abs(pdgId) == 11 && applyTight == true)  rate = TMath::Min(histoFakeEffSelTightEtaPt_e ->GetBinContent(binXT,binYT),0.999);
   else printf("IMPOSSIBLE COMPUTING FAKE RATES\n");
 
-  if(pt<20 && applyTight == true) rate = 2*rate/(1+rate);
-  //if(pt<20) rate = 2*rate/(1+rate);
+  //if(pt<20 && applyTight == true) rate = 2*rate/(1+rate);
 
   return rate/(1-rate);
 }

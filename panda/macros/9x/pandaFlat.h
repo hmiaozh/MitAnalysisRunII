@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Sun Oct  7 03:30:03 2018 by ROOT version 6.10/09
+// Mon Oct 22 12:52:12 2018 by ROOT version 6.10/09
 // from TTree events/events
 // found on file: /data/t3home000/ceballos/panda/v_004_0/qqZZ.root
 //////////////////////////////////////////////////////////
@@ -76,6 +76,7 @@ public :
    Float_t         sf_metTrigZmm;
    Float_t         sf_metTrigVBF;
    Float_t         sf_metTrigZmmVBF;
+   Float_t         sf_l1Prefire;
    Float_t         sf_pu;
    Float_t         sf_npv;
    Float_t         sf_tt;
@@ -147,6 +148,9 @@ public :
    Int_t           jetNBtags;
    Int_t           jetNBtags_JESTotalUp;
    Int_t           jetNBtags_JESTotalDown;
+   Int_t           jetNMBtags;
+   Int_t           jetNMBtags_JESTotalUp;
+   Int_t           jetNMBtags_JESTotalDown;
    Int_t           nHF;
    Int_t           nB;
    Int_t           nBGenJets;
@@ -298,6 +302,7 @@ public :
    TBranch        *b_sf_metTrigZmm;   //!
    TBranch        *b_sf_metTrigVBF;   //!
    TBranch        *b_sf_metTrigZmmVBF;   //!
+   TBranch        *b_sf_l1Prefire;   //!
    TBranch        *b_sf_pu;   //!
    TBranch        *b_sf_npv;   //!
    TBranch        *b_sf_tt;   //!
@@ -369,6 +374,9 @@ public :
    TBranch        *b_jetNBtags;   //!
    TBranch        *b_jetNBtags_JESTotalUp;   //!
    TBranch        *b_jetNBtags_JESTotalDown;   //!
+   TBranch        *b_jetNMBtags;   //!
+   TBranch        *b_jetNMBtags_JESTotalUp;   //!
+   TBranch        *b_jetNMBtags_JESTotalDown;   //!
    TBranch        *b_nHF;   //!
    TBranch        *b_nB;   //!
    TBranch        *b_nBGenJets;   //!
@@ -589,6 +597,7 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("sf_metTrigZmm", &sf_metTrigZmm, &b_sf_metTrigZmm);
    fChain->SetBranchAddress("sf_metTrigVBF", &sf_metTrigVBF, &b_sf_metTrigVBF);
    fChain->SetBranchAddress("sf_metTrigZmmVBF", &sf_metTrigZmmVBF, &b_sf_metTrigZmmVBF);
+   fChain->SetBranchAddress("sf_l1Prefire", &sf_l1Prefire, &b_sf_l1Prefire);
    fChain->SetBranchAddress("sf_pu", &sf_pu, &b_sf_pu);
    fChain->SetBranchAddress("sf_npv", &sf_npv, &b_sf_npv);
    fChain->SetBranchAddress("sf_tt", &sf_tt, &b_sf_tt);
@@ -660,6 +669,9 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("jetNBtags", &jetNBtags, &b_jetNBtags);
    fChain->SetBranchAddress("jetNBtags_JESTotalUp", &jetNBtags_JESTotalUp, &b_jetNBtags_JESTotalUp);
    fChain->SetBranchAddress("jetNBtags_JESTotalDown", &jetNBtags_JESTotalDown, &b_jetNBtags_JESTotalDown);
+   fChain->SetBranchAddress("jetNMBtags", &jetNMBtags, &b_jetNMBtags);
+   fChain->SetBranchAddress("jetNMBtags_JESTotalUp", &jetNMBtags_JESTotalUp, &b_jetNMBtags_JESTotalUp);
+   fChain->SetBranchAddress("jetNMBtags_JESTotalDown", &jetNMBtags_JESTotalDown, &b_jetNMBtags_JESTotalDown);
    fChain->SetBranchAddress("nHF", &nHF, &b_nHF);
    fChain->SetBranchAddress("nB", &nB, &b_nB);
    fChain->SetBranchAddress("nBGenJets", &nBGenJets, &b_nBGenJets);

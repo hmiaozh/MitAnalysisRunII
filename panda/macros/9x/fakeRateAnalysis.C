@@ -15,10 +15,13 @@
 #include "MitAnalysisRunII/panda/macros/9x/common.h"
 
 void fakeRateAnalysis(
-int year
+int year, int nbjets = 0
 ){
 
   double minLepPt[2] = {10.0, 12.0};
+
+  TString addSuffix = "";
+  if(nbjets > 0) addSuffix = "_btagged";
 
   //*******************************************************
   //Inputs
@@ -30,7 +33,7 @@ int year
   TString filesPath;
   TString fnpvWeightsFileName;
   if(year == 2017) {
-    lumi = 41.5;
+    lumi = 41.5/1000.;
     filesPath = "/data/t3home000/ceballos/panda/v_005_0/";
     fnpvWeightsFileName = "MitAnalysisRunII/data/90x/npvWeights_2017_FakeTriggers.root";
 
@@ -54,7 +57,7 @@ int year
     infileName_.push_back(Form("%sWJets.root" ,filesPath.Data()));               infileCat_.push_back(3);
   }
   else if(year == 2016) {
-    lumi = 35.9;
+    lumi = 35.9/1000.;
     filesPath = "/data/t3home000/ceballos/panda/v_003_0/";
     fnpvWeightsFileName = "MitAnalysisRunII/data/80x/npvWeights_2016_FakeTriggers.root";
 
@@ -83,10 +86,11 @@ int year
   TH1D* hDnpvWeights = (TH1D*)fnpvWeights->Get("npvWeights"); hDnpvWeights->SetDirectory(0);
   fnpvWeights->Close();
 
+  const int nLepSel = 16;
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 34;
+  const int allPlots = 26;
   const int histBins = 4;
   TH1D* histo[allPlots][histBins];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
@@ -99,36 +103,23 @@ int year
     histos->Reset();histos->Clear();
   }
 
-  double prescales[2][7]; for(int i=0; i<2; i++) for(int j=0; j<7; j++) prescales[i][j] = 1.0;
+  const int nBinPt  = 5; Double_t xPtbins [nBinPt+1 ] = {10.0, 20.0, 25.0, 30.0, 35.0, 45.0};
+  const int nBinEta = 4; Double_t xEtabins[nBinEta+1] = {0.0, 1.0, 1.5, 2.0, 2.5};
+
+  double prescales[2][nBinPt]; for(int i=0; i<2; i++) for(int j=0; j<nBinPt; j++) prescales[i][j] = 1.0;
   TH1D* histoZllPt[2][histBins];
   TH1D* histoWlnPt[2][histBins];
   TH2D* histoFakeDenEtaPt[2][histBins];
-  TH2D* histoFakeNumSel0EtaPt[2][histBins];
-  TH2D* histoFakeNumSel1EtaPt[2][histBins];
-  TH2D* histoFakeNumSel2EtaPt[2][histBins];
-  TH2D* histoFakeNumSel3EtaPt[2][histBins];
-  TH2D* histoFakeNumSel4EtaPt[2][histBins];
-  TH2D* histoFakeEffSel0EtaPt[2];
-  TH2D* histoFakeEffSel1EtaPt[2];
-  TH2D* histoFakeEffSel2EtaPt[2];
-  TH2D* histoFakeEffSel3EtaPt[2];
-  TH2D* histoFakeEffSel4EtaPt[2];
+  TH2D* histoFakeNumSelEtaPt[nLepSel][2][histBins];
+  TH2D* histoFakeEffSelEtaPt[nLepSel][2];
   for(int i=0; i<2; i++){
     for(int j=0; j<histBins; j++){
-      histoZllPt[i][j] = new TH1D(Form("histoZllPt_%d_%d",i,j), Form("histoZllPt_%d_%d",i,j), 7, 10, 45);
-      histoWlnPt[i][j] = new TH1D(Form("histoWlnPt_%d_%d",i,j), Form("histoWlnPt_%d_%d",i,j), 7, 10, 45);
-      histoFakeDenEtaPt[i][j] = new TH2D(Form("histoFakeDenEtaPt_%d_%d",i,j), Form("histoFakeDenEtaPt_%d_%d",i,j), 6, 0, 2.5, 7, 10, 45);
-      histoFakeNumSel0EtaPt[i][j] = new TH2D(Form("histoFakeNumSel0EtaPt_%d_%d",i,j), Form("histoFakeNumSel0EtaPt_%d_%d",i,j), 6, 0, 2.5, 7, 10, 45);
-      histoFakeNumSel1EtaPt[i][j] = new TH2D(Form("histoFakeNumSel1EtaPt_%d_%d",i,j), Form("histoFakeNumSel1EtaPt_%d_%d",i,j), 6, 0, 2.5, 7, 10, 45);
-      histoFakeNumSel2EtaPt[i][j] = new TH2D(Form("histoFakeNumSel2EtaPt_%d_%d",i,j), Form("histoFakeNumSel2EtaPt_%d_%d",i,j), 6, 0, 2.5, 7, 10, 45);
-      histoFakeNumSel3EtaPt[i][j] = new TH2D(Form("histoFakeNumSel3EtaPt_%d_%d",i,j), Form("histoFakeNumSel3EtaPt_%d_%d",i,j), 6, 0, 2.5, 7, 10, 45);
-      histoFakeNumSel4EtaPt[i][j] = new TH2D(Form("histoFakeNumSel4EtaPt_%d_%d",i,j), Form("histoFakeNumSel4EtaPt_%d_%d",i,j), 6, 0, 2.5, 7, 10, 45);
-      if(j==0){
-      histoFakeEffSel0EtaPt[i] = new TH2D(Form("histoFakeEffSel0EtaPt_%d",i), Form("histoFakeEffSel0EtaPt_%d",i), 6, 0, 2.5, 7, 10, 45);
-      histoFakeEffSel1EtaPt[i] = new TH2D(Form("histoFakeEffSel1EtaPt_%d",i), Form("histoFakeEffSel1EtaPt_%d",i), 6, 0, 2.5, 7, 10, 45);
-      histoFakeEffSel2EtaPt[i] = new TH2D(Form("histoFakeEffSel2EtaPt_%d",i), Form("histoFakeEffSel2EtaPt_%d",i), 6, 0, 2.5, 7, 10, 45);
-      histoFakeEffSel3EtaPt[i] = new TH2D(Form("histoFakeEffSel3EtaPt_%d",i), Form("histoFakeEffSel3EtaPt_%d",i), 6, 0, 2.5, 7, 10, 45);
-      histoFakeEffSel4EtaPt[i] = new TH2D(Form("histoFakeEffSel4EtaPt_%d",i), Form("histoFakeEffSel4EtaPt_%d",i), 6, 0, 2.5, 7, 10, 45);
+      histoZllPt[i][j] = new TH1D(Form("histoZllPt_%d_%d",i,j), Form("histoZllPt_%d_%d",i,j), nBinPt, xPtbins);
+      histoWlnPt[i][j] = new TH1D(Form("histoWlnPt_%d_%d",i,j), Form("histoWlnPt_%d_%d",i,j), nBinPt, xPtbins);
+      histoFakeDenEtaPt[i][j] = new TH2D(Form("histoFakeDenEtaPt_%d_%d",i,j), Form("histoFakeDenEtaPt_%d_%d",i,j), nBinEta, xEtabins, nBinPt, xPtbins);
+      for(int nsel=0; nsel<nLepSel; nsel++){
+        histoFakeNumSelEtaPt[nsel][i][j] = new TH2D(Form("histoFakeNumSelEtaPt_%d_%d_%d",nsel,i,j), Form("histoFakeNumSelEtaPt_%d_%d_%d",nsel,i,j), nBinEta, xEtabins, nBinPt, xPtbins);
+        if(j==0) histoFakeEffSelEtaPt[nsel][i] = new TH2D(Form("histoFakeEffSelEtaPt_%d_%d",nsel,i), Form("histoFakeEffSelEtaPt_%d_%d",nsel,i), nBinEta, xEtabins, nBinPt, xPtbins);
       }
     }
   }
@@ -234,8 +225,9 @@ int year
       }
 
       bool passJetSel = kFALSE;
-      if((lepType == 0 && thePandaFlat.nJot >= 0) || 
-         (lepType == 1 && thePandaFlat.nJot >= 0)) passJetSel = kTRUE;
+      if(((lepType == 0 && thePandaFlat.nJot >= 1) || 
+          (lepType == 1 && thePandaFlat.nJot >= 1)) &&
+	  thePandaFlat.jetNBtags >= nbjets) passJetSel = kTRUE;
       if(passJetSel == kFALSE) continue;
 
       double deltaPhiLeptonMet = TMath::Abs(vLoose1.DeltaPhi(vMet));
@@ -256,7 +248,7 @@ int year
         int binNpv = hDnpvWeights->GetXaxis()->FindFixBin(TMath::Min((double)thePandaFlat.npv,49.499));
 	double npvWeights = 1;//hDnpvWeights->GetBinContent(binNpv);
         
-        totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu * looseLepSF[0] * npvWeights;
+        totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu * thePandaFlat.sf_l1Prefire * looseLepSF[0] * npvWeights;
       }
 
       int binPt = histoZllPt[0][0]->GetXaxis()->FindFixBin(TMath::Min(vLoose1.Pt(),44.999))-1;
@@ -273,36 +265,40 @@ int year
         histo[lepType+  6 + 2*binPt][theCategory]->Fill(TMath::Min(mt,199.999),totalWeight);
       }
       if(passWLoose2Sel == true) {
-        histo[lepType+ 20 + 2*binPt][theCategory]->Fill(TMath::Min(vMet.Pt(),199.999),totalWeight);
+        histo[lepType+ 16 + 2*binPt][theCategory]->Fill(TMath::Min(vMet.Pt(),199.999),totalWeight);
       }
 
       if(passFakeNumSel == true) {
-        if((looseLepSelBit[0] & kFake)   == kFake  ) histoFakeDenEtaPt[lepType][theCategory]    ->Fill(TMath::Min(TMath::Abs(vLoose1.Eta()),2.499),TMath::Min(vLoose1.Pt(),44.999),totalWeight);
-        if((looseLepSelBit[0] & kFake)   == kFake &&
-	   (looseLepSelBit[0] & kMedium) == kMedium) histoFakeNumSel0EtaPt[lepType][theCategory]->Fill(TMath::Min(TMath::Abs(vLoose1.Eta()),2.499),TMath::Min(vLoose1.Pt(),44.999),totalWeight);
-        if((looseLepSelBit[0] & kFake)   == kFake &&
-	   (looseLepSelBit[0] & kTight) == kTight)   histoFakeNumSel1EtaPt[lepType][theCategory]->Fill(TMath::Min(TMath::Abs(vLoose1.Eta()),2.499),TMath::Min(vLoose1.Pt(),44.999),totalWeight);
-        if((looseLepSelBit[0] & kFake)   == kFake &&
-	   (looseLepSelBit[0] & kTight) == kTight &&
-	   (looseLepSelBit[0] & kDxyz) == kDxyz)     histoFakeNumSel2EtaPt[lepType][theCategory]->Fill(TMath::Min(TMath::Abs(vLoose1.Eta()),2.499),TMath::Min(vLoose1.Pt(),44.999),totalWeight);
-        if((looseLepSelBit[0] & kFake)   == kFake &&
-	   (looseLepSelBit[0] & kTight) == kTight &&
-	   (looseLepSelBit[0] & kDxyz) == kDxyz   &&
-	    looseLepMissingHits[0] == 0)             histoFakeNumSel3EtaPt[lepType][theCategory]->Fill(TMath::Min(TMath::Abs(vLoose1.Eta()),2.499),TMath::Min(vLoose1.Pt(),44.999),totalWeight);
-        if((looseLepSelBit[0] & kFake)   == kFake &&
-	   (looseLepSelBit[0] & kTight) == kTight &&
-	   (looseLepSelBit[0] & kDxyz) == kDxyz   &&
-	    looseLepMissingHits[0] == 0           &&
-	    looseLepTripleCharge[0] == 1)            histoFakeNumSel4EtaPt[lepType][theCategory]->Fill(TMath::Min(TMath::Abs(vLoose1.Eta()),2.499),TMath::Min(vLoose1.Pt(),44.999),totalWeight);
+        bool passLepSel[nLepSel+1] = {(looseLepSelBit[0] & kFake) == kFake, 
+	                              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kMedium) == kMedium,
+	                              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kTight) == kTight,
+	                              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kTight) == kTight && (looseLepSelBit[0] & kDxyz) == kDxyz,
+	                              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kTight) == kTight && (looseLepSelBit[0] & kDxyz) == kDxyz && looseLepMissingHits[0] == 0,
+	                              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kTight) == kTight && (looseLepSelBit[0] & kDxyz) == kDxyz && looseLepMissingHits[0] == 0 && looseLepTripleCharge[0] == 1,
+			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kEleMvaWP90) == kEleMvaWP90,
+			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kEleMvaWP80) == kEleMvaWP80,
+			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kEleMvaWP80) == kEleMvaWP80 && looseLepTripleCharge[0] == 1,
+			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kMvaMedium) == kMvaMedium,
+			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kMvaTight) == kMvaTight,
+			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kMiniIsoMedium) == kMiniIsoMedium,
+			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kMiniIsoTight) == kMiniIsoTight,
+			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kMvaMedium) == kMvaMedium && (looseLepSelBit[0] & kMiniIsoMedium) == kMiniIsoMedium,
+			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kMvaTight) == kMvaTight && (looseLepSelBit[0] & kMiniIsoTight) == kMiniIsoTight,
+			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kMvaMedium) == kMvaMedium && (looseLepSelBit[0] & kMiniIsoMedium) == kMiniIsoMedium && (looseLepSelBit[0] & kDxyz) == kDxyz,
+			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kMvaTight) == kMvaTight && (looseLepSelBit[0] & kMiniIsoTight) == kMiniIsoTight && (looseLepSelBit[0] & kDxyz) == kDxyz			       
+			             };
+        if(passLepSel[0]) histoFakeDenEtaPt[lepType][theCategory]->Fill(TMath::Min(TMath::Abs(vLoose1.Eta()),2.499),TMath::Min(vLoose1.Pt(),44.999),totalWeight);
+        for(int nsel=0; nsel<nLepSel; nsel++){
+	  if(passLepSel[nsel+1]) histoFakeNumSelEtaPt[nsel][lepType][theCategory]->Fill(TMath::Min(TMath::Abs(vLoose1.Eta()),2.499),TMath::Min(vLoose1.Pt(),44.999),totalWeight);
+        }
       }
-
     } // end events loop
     the_input_file->Close();
   } // end chain loop
 
   char output[200];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
-    sprintf(output,"histoFake_%d_%d.root",year,thePlot);	
+    sprintf(output,"histoFake_%d_%d%s.root",year,thePlot,addSuffix.Data());	
     TFile* outFilePlotsNote = new TFile(output,"recreate");
     outFilePlotsNote->cd();
     double totBck = 0;
@@ -314,7 +310,7 @@ int year
 
   {
     for(int thePlot=0; thePlot<2; thePlot++){
-      sprintf(output,"histoZllPt_%d_%d.root",year,thePlot);	
+      sprintf(output,"histoZllPt_%d_%d%s.root",year,thePlot,addSuffix.Data());	
       TFile* outFilePlotsNote = new TFile(output,"recreate");
       outFilePlotsNote->cd();
       for(int np=0; np<histBins; np++) histoZllPt[thePlot][np]->Write();
@@ -331,7 +327,7 @@ int year
 
   {
     for(int thePlot=0; thePlot<2; thePlot++){
-      sprintf(output,"histoWlnPt_%d_%d.root",year,thePlot);	
+      sprintf(output,"histoWlnPt_%d_%d%s.root",year,thePlot,addSuffix.Data());	
       TFile* outFilePlotsNote = new TFile(output,"recreate");
       outFilePlotsNote->cd();
       for(int np=0; np<histBins; np++) histoWlnPt[thePlot][np]->Write();
@@ -348,99 +344,38 @@ int year
   }
 
   {
-    sprintf(output,"histoFakeEtaPt_%d.root",year); 
+    sprintf(output,"histoFakeEtaPt_%d%s.root",year,addSuffix.Data()); 
     TFile* outFilePlotsNote = new TFile(output,"recreate");
     outFilePlotsNote->cd();
     double den,num,eff,unc;
     for(int thePlot=0; thePlot<2; thePlot++){
+      printf("**************************** thePlot = %d ****************************\n",thePlot);
       for(int i=1; i<=histoFakeDenEtaPt[thePlot][0]->GetNbinsX(); i++){
         for(int j=1; j<=histoFakeDenEtaPt[thePlot][0]->GetNbinsY(); j++){
-          den = histoFakeDenEtaPt[thePlot][0]    ->GetBinContent(i,j) - (histoFakeDenEtaPt[thePlot][1]    ->GetBinContent(i,j)+histoFakeDenEtaPt[thePlot][2]    ->GetBinContent(i,j)+histoFakeDenEtaPt[thePlot][3]    ->GetBinContent(i,j))*prescales[thePlot][j-1];
-          num = histoFakeNumSel0EtaPt[thePlot][0]->GetBinContent(i,j) - (histoFakeNumSel0EtaPt[thePlot][1]->GetBinContent(i,j)+histoFakeNumSel0EtaPt[thePlot][2]->GetBinContent(i,j)+histoFakeNumSel0EtaPt[thePlot][3]->GetBinContent(i,j))*prescales[thePlot][j-1];
-          eff = 1.0; unc = 0.0;
-          if(den > 0 && num > 0){
-            eff = num / den;
-            unc = sqrt(eff*(1-eff)/den);
-	  }
-          else if(den > 0){
-            eff = 0.0;
-            unc = TMath::Min(sqrt(1.0/den),0.999);
+          for(int nsel=0; nsel<nLepSel; nsel++){
+            den = histoFakeDenEtaPt[thePlot][0]         ->GetBinContent(i,j) - (histoFakeDenEtaPt[thePlot][1]         ->GetBinContent(i,j)+histoFakeDenEtaPt[thePlot][2]         ->GetBinContent(i,j)+histoFakeDenEtaPt[thePlot][3]         ->GetBinContent(i,j))*prescales[thePlot][j-1];
+            num = histoFakeNumSelEtaPt[nsel][thePlot][0]->GetBinContent(i,j) - (histoFakeNumSelEtaPt[nsel][thePlot][1]->GetBinContent(i,j)+histoFakeNumSelEtaPt[nsel][thePlot][2]->GetBinContent(i,j)+histoFakeNumSelEtaPt[nsel][thePlot][3]->GetBinContent(i,j))*prescales[thePlot][j-1];
+            eff = 1.0; unc = 0.0;
+            if(den > 0 && num > 0){
+              eff = num / den;
+              unc = sqrt(eff*(1-eff)/den);
+	    }
+            else if(den > 0){
+              eff = 0.0;
+              unc = TMath::Min(sqrt(1.0/den),0.999);
+            }
+            histoFakeEffSelEtaPt[nsel][thePlot]->SetBinContent(i,j,eff);
+            histoFakeEffSelEtaPt[nsel][thePlot]->SetBinError  (i,j,unc);
+	    printf("(%d,%d,%2d): %9.1f %9.1f %9.1f %9.1f / %9.1f %9.1f %9.1f %9.1f = %9.1f %9.1f %5.3f %5.3f %5.3f - %7.5f\n",i,j,nsel,
+	    histoFakeNumSelEtaPt[nsel][thePlot][0]->GetBinContent(i,j),histoFakeNumSelEtaPt[nsel][thePlot][1]->GetBinContent(i,j),histoFakeNumSelEtaPt[nsel][thePlot][2]->GetBinContent(i,j),histoFakeNumSelEtaPt[nsel][thePlot][3]->GetBinContent(i,j),
+	    histoFakeDenEtaPt         [thePlot][0]->GetBinContent(i,j),histoFakeDenEtaPt         [thePlot][1]->GetBinContent(i,j),histoFakeDenEtaPt         [thePlot][2]->GetBinContent(i,j),histoFakeDenEtaPt         [thePlot][3]->GetBinContent(i,j),
+	    num,den,eff,unc,histoFakeEffSelEtaPt[nsel][thePlot]->GetBinContent(i,j),prescales[thePlot][j-1]);
           }
-          histoFakeEffSel0EtaPt[thePlot]->SetBinContent(i,j,eff);
-          histoFakeEffSel0EtaPt[thePlot]->SetBinError  (i,j,unc);
-
-          num = histoFakeNumSel1EtaPt[thePlot][0]->GetBinContent(i,j) - (histoFakeNumSel1EtaPt[thePlot][1]->GetBinContent(i,j)+histoFakeNumSel1EtaPt[thePlot][2]->GetBinContent(i,j)+histoFakeNumSel1EtaPt[thePlot][3]->GetBinContent(i,j))*prescales[thePlot][j-1];
-          eff = 1.0; unc = 0.0;
-          if(den > 0 && num > 0){
-            eff = num / den;
-            unc = sqrt(eff*(1-eff)/den);
-	  }
-          else if(den > 0){
-            eff = 0.0;
-            unc = TMath::Min(sqrt(1.0/den),0.999);
-          }
-          histoFakeEffSel1EtaPt[thePlot]->SetBinContent(i,j,eff);
-          histoFakeEffSel1EtaPt[thePlot]->SetBinError  (i,j,unc);
-
-          num = histoFakeNumSel2EtaPt[thePlot][0]->GetBinContent(i,j) - (histoFakeNumSel2EtaPt[thePlot][1]->GetBinContent(i,j)+histoFakeNumSel2EtaPt[thePlot][2]->GetBinContent(i,j)+histoFakeNumSel2EtaPt[thePlot][3]->GetBinContent(i,j))*prescales[thePlot][j-1];
-          eff = 1.0; unc = 0.0;
-          if(den > 0 && num > 0){
-            eff = num / den;
-            unc = sqrt(eff*(1-eff)/den);
-	  }
-          else if(den > 0){
-            eff = 0.0;
-            unc = TMath::Min(sqrt(1.0/den),0.999);
-          }
-          histoFakeEffSel2EtaPt[thePlot]->SetBinContent(i,j,eff);
-          histoFakeEffSel2EtaPt[thePlot]->SetBinError  (i,j,unc);
-
-          num = histoFakeNumSel3EtaPt[thePlot][0]->GetBinContent(i,j) - (histoFakeNumSel3EtaPt[thePlot][1]->GetBinContent(i,j)+histoFakeNumSel3EtaPt[thePlot][2]->GetBinContent(i,j)+histoFakeNumSel3EtaPt[thePlot][3]->GetBinContent(i,j))*prescales[thePlot][j-1];
-          eff = 1.0; unc = 0.0;
-          if(den > 0 && num > 0){
-            eff = num / den;
-            unc = sqrt(eff*(1-eff)/den);
-	  }
-          else if(den > 0){
-            eff = 0.0;
-            unc = TMath::Min(sqrt(1.0/den),0.999);
-          }
-          histoFakeEffSel3EtaPt[thePlot]->SetBinContent(i,j,eff);
-          histoFakeEffSel3EtaPt[thePlot]->SetBinError  (i,j,unc);
-
-          num = histoFakeNumSel4EtaPt[thePlot][0]->GetBinContent(i,j) - (histoFakeNumSel4EtaPt[thePlot][1]->GetBinContent(i,j)+histoFakeNumSel4EtaPt[thePlot][2]->GetBinContent(i,j)+histoFakeNumSel4EtaPt[thePlot][3]->GetBinContent(i,j))*prescales[thePlot][j-1];
-          eff = 1.0; unc = 0.0;
-          if(den > 0 && num > 0){
-            eff = num / den;
-            unc = sqrt(eff*(1-eff)/den);
-	  }
-          else if(den > 0){
-            eff = 0.0;
-            unc = TMath::Min(sqrt(1.0/den),0.999);
-          }
-          histoFakeEffSel4EtaPt[thePlot]->SetBinContent(i,j,eff);
-          histoFakeEffSel4EtaPt[thePlot]->SetBinError  (i,j,unc);
-
-	  printf("(%d,%d): %9.1f %9.1f %9.1f %9.1f %9.1f %9.1f / %9.1f %9.1f %9.1f %9.1f %9.1f %9.1f / %9.1f %9.1f %9.1f %9.1f %9.1f %9.1f / %9.1f %9.1f %9.1f %9.1f %9.1f %9.1f = %5.3f %5.3f %5.3f %5.3f %5.3f - %7.5f\n",i,j,
-	  histoFakeDenEtaPt[thePlot][0]->GetBinContent(i,j),histoFakeNumSel0EtaPt[thePlot][0]->GetBinContent(i,j),histoFakeNumSel1EtaPt[thePlot][0]->GetBinContent(i,j),histoFakeNumSel2EtaPt[thePlot][0]->GetBinContent(i,j),histoFakeNumSel3EtaPt[thePlot][0]->GetBinContent(i,j),histoFakeNumSel4EtaPt[thePlot][0]->GetBinContent(i,j),
-	  histoFakeDenEtaPt[thePlot][1]->GetBinContent(i,j),histoFakeNumSel0EtaPt[thePlot][1]->GetBinContent(i,j),histoFakeNumSel1EtaPt[thePlot][1]->GetBinContent(i,j),histoFakeNumSel2EtaPt[thePlot][1]->GetBinContent(i,j),histoFakeNumSel3EtaPt[thePlot][1]->GetBinContent(i,j),histoFakeNumSel4EtaPt[thePlot][1]->GetBinContent(i,j),
-	  histoFakeDenEtaPt[thePlot][2]->GetBinContent(i,j),histoFakeNumSel0EtaPt[thePlot][2]->GetBinContent(i,j),histoFakeNumSel1EtaPt[thePlot][2]->GetBinContent(i,j),histoFakeNumSel2EtaPt[thePlot][2]->GetBinContent(i,j),histoFakeNumSel3EtaPt[thePlot][2]->GetBinContent(i,j),histoFakeNumSel4EtaPt[thePlot][2]->GetBinContent(i,j),
-	  histoFakeDenEtaPt[thePlot][3]->GetBinContent(i,j),histoFakeNumSel0EtaPt[thePlot][3]->GetBinContent(i,j),histoFakeNumSel1EtaPt[thePlot][3]->GetBinContent(i,j),histoFakeNumSel2EtaPt[thePlot][3]->GetBinContent(i,j),histoFakeNumSel3EtaPt[thePlot][3]->GetBinContent(i,j),histoFakeNumSel4EtaPt[thePlot][3]->GetBinContent(i,j),
-          histoFakeEffSel0EtaPt[thePlot]->GetBinContent(i,j),histoFakeEffSel1EtaPt[thePlot]->GetBinContent(i,j),histoFakeEffSel2EtaPt[thePlot]->GetBinContent(i,j),histoFakeEffSel3EtaPt[thePlot]->GetBinContent(i,j),histoFakeEffSel4EtaPt[thePlot]->GetBinContent(i,j),
-	  prescales[thePlot][j-1]);
         }
       }
       for(int np=0; np<histBins; np++) histoFakeDenEtaPt[thePlot][np]->Write();
-      for(int np=0; np<histBins; np++) histoFakeNumSel0EtaPt[thePlot][np]->Write();
-      for(int np=0; np<histBins; np++) histoFakeNumSel1EtaPt[thePlot][np]->Write();
-      for(int np=0; np<histBins; np++) histoFakeNumSel2EtaPt[thePlot][np]->Write();
-      for(int np=0; np<histBins; np++) histoFakeNumSel3EtaPt[thePlot][np]->Write();
-      for(int np=0; np<histBins; np++) histoFakeNumSel4EtaPt[thePlot][np]->Write();
-      histoFakeEffSel0EtaPt[thePlot]->Write();
-      histoFakeEffSel1EtaPt[thePlot]->Write();
-      histoFakeEffSel2EtaPt[thePlot]->Write();
-      histoFakeEffSel3EtaPt[thePlot]->Write();
-      histoFakeEffSel4EtaPt[thePlot]->Write();
+      for(int np=0; np<histBins; np++) for(int nsel=0; nsel<nLepSel; nsel++) histoFakeNumSelEtaPt[nsel][thePlot][np]->Write();
+      for(int nsel=0; nsel<nLepSel; nsel++) histoFakeEffSelEtaPt[nsel][thePlot]->Write();
     }
     outFilePlotsNote->Close();
   }
