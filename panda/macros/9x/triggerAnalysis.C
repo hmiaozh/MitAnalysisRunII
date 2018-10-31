@@ -23,31 +23,51 @@ TH1D *hDTrgBinEta1 = new TH1D(Form("hDTrgBinEta1"), Form("hDTrgBinEta1"), nTrgBi
 TH1D *hDTrgBinEta2 = new TH1D(Form("hDTrgBinEta2"), Form("hDTrgBinEta2"), nTrgBinEta2, xTrgBinEta2);
 
 void triggerAnalysis(
-int typeAna = 0,
-int whichLepSel = 1
+int year,
+int whichLepSel = 0
 ){
 
   //*******************************************************
   //Input Files
   //*******************************************************
-  TString filesPath    = "/data/t3home000/ceballos/panda/v_004_0/";
+  TString filesPath;
+  TString puPath;
   vector<TString> infileName_;
   vector<int> infileCat_;
 
-  if     (typeAna == 0 || typeAna == 1){
-    infileName_.push_back(Form("%sMET.root",filesPath.Data()));		                 infileCat_.push_back(0);
+  if     (year == 2017){
+    filesPath = "/data/t3home000/ceballos/panda/v_004_0/";
+    puPath = "MitAnalysisRunII/data/90x/puWeights_90x.root";
+    infileName_.push_back(Form("%sMET.root",filesPath.Data()));		          infileCat_.push_back(0);
+    infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));		  infileCat_.push_back(1);
+    infileName_.push_back(Form("%sggWW.root" ,filesPath.Data()));		  infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		  infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));		          infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));    infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));   infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYNJetsToLL_NLO.root",filesPath.Data()));       infileCat_.push_back(1);
+    infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	          infileCat_.push_back(1);
+  }
+  else if(year == 2016){
+    filesPath = "/data/t3home000/ceballos/panda/v_002_0/";
+    puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
+    infileName_.push_back(Form("%sMET.root",filesPath.Data()));		          infileCat_.push_back(0);
+    infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	          infileCat_.push_back(1);
+    infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	          infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data()));  infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root" ,filesPath.Data()));  infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYJetsToLL_Pt0To50.root",filesPath.Data()));    infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYJetsToLL_Pt50To100.root",filesPath.Data()));  infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYJetsToLL_Pt100To250.root",filesPath.Data())); infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYJetsToLL_Pt250To400.root",filesPath.Data())); infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYJetsToLL_Pt400To650.root",filesPath.Data())); infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYJetsToLL_Pt650ToInf.root",filesPath.Data())); infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));                 infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                   infileCat_.push_back(1);
+    infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	          infileCat_.push_back(1);
   }
 
-  if(typeAna == 0 || typeAna == 2){
-    infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));			 infileCat_.push_back(1);
-    infileName_.push_back(Form("%sggWW.root" ,filesPath.Data()));			 infileCat_.push_back(1);
-    infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		         infileCat_.push_back(1);
-    infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));		                 infileCat_.push_back(1);
-    infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));           infileCat_.push_back(1);
-  }
-
-  TString pileUpName = "MitAnalysisRunII/data/90x/puWeights_90x.root";
-  TFile *fPUFile = TFile::Open(pileUpName.Data());
+  TFile *fPUFile = TFile::Open(puPath.Data());
   TH1D *fhDPU = (TH1D*)(fPUFile->Get("puWeights")); assert(fhDPU); fhDPU->SetDirectory(0);
   delete fPUFile;
 
@@ -65,9 +85,9 @@ int whichLepSel = 1
   TH1D* histo[allCategories][histBins][allPlots];
 
   for(int thePlot=0; thePlot<allPlots; thePlot++){
-    if     (thePlot >=  0 && thePlot <=  1) {nBinPlot = 60; xminPlot =-0.5; xmaxPlot = 59.5;}
-    else if(thePlot >=  2 && thePlot <=  7) {nBinPlot = 200; xminPlot = 0.0; xmaxPlot = 400.0;}
-    else if(thePlot >=  8 && thePlot <= 11) {nBinPlot =  20; xminPlot = -2.5; xmaxPlot = 2.5;}
+    if     (thePlot >=  0 && thePlot <=  1) {nBinPlot =  60; xminPlot = -0.5; xmaxPlot =  59.5;}
+    else if(thePlot >=  2 && thePlot <=  7) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 400.0;}
+    else if(thePlot >=  8 && thePlot <= 11) {nBinPlot =  20; xminPlot = -2.5; xmaxPlot =   2.5;}
     TH1D* histos = new TH1D("histos", "histos", nBinPlot, xminPlot, xmaxPlot);
     histos->Sumw2();
     for(int i=0; i<histBins; i++) {
@@ -173,8 +193,7 @@ int whichLepSel = 1
       if(theCategory != 0){
         double sfPileUp = nPUScaleFactor(fhDPU,thePandaFlat.pu);
 
-        totalWeight = thePandaFlat.sf_pu *
-		      looseLepSF[0] * looseLepSF[1];
+        totalWeight = sfPileUp * looseLepSF[0] * looseLepSF[1];
       }
 
       trgEffDen[theCategory][lepType][npt1][npt2][neta1][neta2] = trgEffDen[theCategory][lepType][npt1][npt2][neta1][neta2] + totalWeight;
@@ -232,7 +251,7 @@ int whichLepSel = 1
   }
 
   char output[200];
-  sprintf(output,"histo_trigger2017_histos_sel%d_ana%d.root",whichLepSel,typeAna);	
+  sprintf(output,"histo_trigger%d_histos_sel%d.root",year,whichLepSel);	
   TFile* outFilePlotsHistos = new TFile(output,"recreate");
   outFilePlotsHistos->cd();
   for(int thePlot=0; thePlot<allPlots; thePlot++){
@@ -261,7 +280,7 @@ int whichLepSel = 1
     }
   }
 
-  sprintf(output,"histo_trigger2017_eff_sel%d_ana%d.root",whichLepSel,typeAna);	
+  sprintf(output,"histo_trigger%d_eff_sel%d.root",year,whichLepSel);	
   TFile* outFilePlotsEff = new TFile(output,"recreate");
   outFilePlotsEff->cd();
   for(int theCat=0; theCat<allCategories; theCat++){
