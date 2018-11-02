@@ -168,8 +168,8 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
       }
       hRatio->SetBinContent(i,pull);
       hRatio->SetBinError(i,1.0);
-      //printf("pull(%3d): %da: %f pred: %f --> %f\n",i,hDataDivision ->GetBinContent(i),hTotalDivision->GetBinContent(i),pull);
-    } 
+      //printf("pull(%3d): da: %f pred: %f --> %f\n",i,hDataDivision ->GetBinContent(i),hTotalDivision->GetBinContent(i),pull);
+    }
     else {
       double N = g->GetY()[i-1];
       double alpha=(1-0.6827);
@@ -238,11 +238,16 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   bool computePU = false;
   if(computePU){
     hBck->Scale(hData->GetSumOfWeights()/hBck->GetSumOfWeights());
-    TH1D * puWeights =  (TH1D*)hData->Clone("puWeights");
-    puWeights->Sumw2();
-    puWeights->Divide(hBck);
-    TFile output("puWeights_13TeV.root","RECREATE");
-    puWeights->Write();
+    TH1D * npvWeights =  (TH1D*)hData->Clone("npvWeights");
+    npvWeights->Sumw2();
+    npvWeights->Divide(hBck);
+    for(int i=1; i<=npvWeights->GetNbinsX(); i++){
+      if(npvWeights->GetBinContent(i) > 2) {
+        printf("Big number in (%d): %f, set to 2\n",i,npvWeights->GetBinContent(i));npvWeights->SetBinContent(i,2);
+      }
+    }
+    TFile output(Form("npvWeights_%d.root",year),"RECREATE");
+    npvWeights->Write();
     output.Close();
   }
 

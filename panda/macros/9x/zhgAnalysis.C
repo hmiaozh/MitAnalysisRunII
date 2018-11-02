@@ -529,7 +529,7 @@ int year
       bool passNjetsUp = thePandaFlat.nJot_JESTotalUp <= 2;
       bool passNjetsDown = thePandaFlat.nJot_JESTotalDown <= 2;
 
-      bool passBtagVeto = thePandaFlat.jetNBtags == 0; bool passBtagVetoUp = thePandaFlat.jetNBtags_JESTotalUp == 0; bool passBtagVetoDown = thePandaFlat.jetNBtags_JESTotalDown == 0;
+      bool passBtagVeto = thePandaFlat.jetNMBtags == 0; bool passBtagVetoUp = thePandaFlat.jetNMBtags_JESTotalUp == 0; bool passBtagVetoDown = thePandaFlat.jetNMBtags_JESTotalDown == 0;
       double dphill = TMath::Abs(vZ1l1.DeltaPhi(vZ1l2));
       double detall = TMath::Abs(vZ1l1.Eta()-vZ1l2.Eta());
       double drll = sqrt(dphill*dphill+detall*detall);
@@ -649,7 +649,7 @@ int year
       if(passNMinusOne[ 2])  histo[26][theCategory]->Fill(TMath::Min(vMET.Pt(),199.999),totalWeight);
       if(passNMinusOne[ 3])  histo[27][theCategory]->Fill(TMath::Min(ptFracG,1.999),totalWeight);
       if(passNMinusOne[ 4])  histo[28][theCategory]->Fill(dPhiDiLepGMET,totalWeight);
-      if(passNMinusOne[ 5])  histo[29][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNBtags,3.499),totalWeight);
+      if(passNMinusOne[ 5])  histo[29][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,3.499),totalWeight);
       if(passNMinusOne[ 6])  histo[30][theCategory]->Fill(TMath::Min(dilep.Pt(),199.999),totalWeight);
       if(passNMinusOne[ 7])  histo[31][theCategory]->Fill(dPhiJetMET,totalWeight);
       if(passNMinusOne[ 8])  histo[32][theCategory]->Fill(TMath::Min((double)thePandaFlat.nTau,3.499),totalWeight);

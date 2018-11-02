@@ -173,16 +173,27 @@ int year, TString WZName = "WZ3l_MG"
 
   const int nBinMJJ = 4; Float_t xbinsMJJ[nBinMJJ+1] = {500, 800, 1100, 1500, 2000};
   const int nBinMLL = 4; Float_t xbinsMLL[nBinMLL+1] = {0, 100, 180, 300, 500};
-  const int nBinMVA = 24; Float_t xbins[nBinMVA+1] = {500, 800, 1100, 1500, 2000,
+  /*const int nBinMVA = 24; Float_t xbins[nBinMVA+1] = {500, 800, 1100, 1500, 2000,
                                                           2800, 3100, 3500, 4000,
 						          4800, 5100, 5500, 6000,
 						          6800, 7100, 7500, 8000,
 						          8800, 9100, 9500,10000,
-						         10800,11100,11500,12000};
+						         10800,11100,11500,12000};*/
+  const int nBinMVA = 44; Float_t xbins[nBinMVA+1] = {500, 800, 1100, 1500, 2000,
+                                                          2800, 3100, 3500, 4000,
+						          4800, 5100, 5500, 6000,
+						          6800, 7100, 7500, 8000,
+						          8800, 9100, 9500,10000,
+						         10800,11100,11500,12000,
+						         12800,13100,13500,14000,
+						         14800,15100,15500,16000,
+						         16800,17100,17500,18000,
+						         18800,19100,19500,20000,
+						         20800,21100,21500,22000};
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 89;
+  const int allPlots = 92;
   TH1D* histo[allPlots][nPlotCategories];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     if     (thePlot >=   0 && thePlot <=   5) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
@@ -202,6 +213,7 @@ int year, TString WZName = "WZ3l_MG"
     else if(thePlot >=  76 && thePlot <=  78) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
     else if(thePlot >=  79 && thePlot <=  81) {nBinPlot =  50; xminPlot =  0.0; xmaxPlot = 2.5;}
     else if(thePlot >=  82 && thePlot <=  87) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 1.0;}
+    else if(thePlot >=  88 && thePlot <=  90) {nBinPlot = 200; xminPlot = 20.0; xmaxPlot = 220;}
     TH1D* histos;
     if     (thePlot == allPlots-1)            histos = new TH1D("histos", "histos", nBinMVA, xbins);
     else if(thePlot >=  30 && thePlot <=  39) histos = new TH1D("histos", "histos", nBinMJJ, xbinsMJJ);
@@ -516,6 +528,8 @@ int year, TString WZName = "WZ3l_MG"
       bool passWZSelUp   = passWZPresel && passSelUp[2]   && passSelUp[3]   && passSelUp[4]   && passSelUp[5]   && passSelUp[6]   && passSelUp[7]   && passSelUp[8];
       bool passWZSelDown = passWZPresel && passSelDown[2] && passSelDown[3] && passSelDown[4] && passSelDown[5] && passSelDown[6] && passSelDown[7] && passSelDown[8];
 
+      bool passZSel      = passSel[0]     && mllZ > 20      &&!passSel[2]     && passSel[3]     && passSel[4]     && passSel[5]     && passSel[6]     && passSel[7]     && passSel[8];
+
       bool passPresel    = passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[5];
 
       bool passAllButOneSel[8] = {
@@ -605,8 +619,8 @@ int year, TString WZName = "WZ3l_MG"
       }
 
       if(theCategory != kPlotData){
-        if     (year == 2017 && thePandaFlat.jetNMBtags > 0) totalWeight = totalWeight * 0.50;
-	else if(year == 2017 && thePandaFlat.jetNBtags  > 0) totalWeight = totalWeight * 0.75;
+        if     (year == 2017 && thePandaFlat.jetNMBtags > 0) totalWeight = totalWeight * 0.60;
+        else if(year == 2017 && thePandaFlat.jetNBtags  > 0) totalWeight = totalWeight * 0.85;
       }
 
       if(passAllButOneSel[0])histo[lepType+  0][theCategory]->Fill(TMath::Min(mllZ,199.999),totalWeight);
@@ -643,8 +657,9 @@ int year, TString WZName = "WZ3l_MG"
       if(passPresel)         histo[lepType+ 76][theCategory]->Fill(TMath::Min(vZ1l2.Pt(),199.999),totalWeight);
       if(passPresel)         histo[lepType+ 79][theCategory]->Fill(TMath::Abs(vZ1l1.Eta()),totalWeight);
       if(passPresel)         histo[lepType+ 79][theCategory]->Fill(TMath::Abs(vZ1l2.Eta()),totalWeight);
-      if(passPresel)         histo[lepType+ 80][theCategory]->Fill(TMath::Max((double)TMath::Max(thePandaFlat.jotCSV[0],thePandaFlat.jotCSV[1]),0.001),totalWeight);
-      if(passPresel)         histo[lepType+ 83][theCategory]->Fill(TMath::Max((double)TMath::Min(thePandaFlat.jotCSV[0],thePandaFlat.jotCSV[1]),0.001),totalWeight);
+      if(passPresel)         histo[lepType+ 82][theCategory]->Fill(TMath::Max((double)TMath::Max(thePandaFlat.jotCSV[0],thePandaFlat.jotCSV[1]),0.001),totalWeight);
+      if(passPresel)         histo[lepType+ 85][theCategory]->Fill(TMath::Max((double)TMath::Min(thePandaFlat.jotCSV[0],thePandaFlat.jotCSV[1]),0.001),totalWeight);
+      if(passZSel)           histo[lepType+ 88][theCategory]->Fill(TMath::Min(mllZ,219.999),totalWeight);
 
       if((theCategory == kPlotData && passWZSel && debug == 1) || debug == 2){
         printf("DATA %d %d %llu | %d %d | %d -> %d %d %d %d %d %d %d %d %d | %.1f %.1f %.1f %.1f %.2f | %.1f %.1f %.1f %d | %.2f %.2f %.2f %.2f %.2f %.2f / %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\n",
@@ -656,23 +671,25 @@ int year, TString WZName = "WZ3l_MG"
       }
 
       if(1){
-        double typeSelAux = 0;
-        if     (mllZ < 100) typeSelAux = 0;
-        else if(mllZ < 180) typeSelAux = 1;
-        else if(mllZ < 300) typeSelAux = 2;
-        else                typeSelAux = 3;
+        double typeSelAux0 = 0;
+        if     (mllZ < 100) typeSelAux0 = 0;
+        else if(mllZ < 180) typeSelAux0 = 1;
+        else if(mllZ < 300) typeSelAux0 = 2;
+        else                typeSelAux0 = 3;
+        double typeSelAux1 = 0;
+	if(qTot>0) typeSelAux1 = 1;
         double MVAVar     = TMath::Min(massJJ     ,xbinsMJJ[nBinMJJ]-0.0001);
         double MVAVarUp   = TMath::Min(massJJUp   ,xbinsMJJ[nBinMJJ]-0.0001);
         double MVAVarDown = TMath::Min(massJJDown ,xbinsMJJ[nBinMJJ]-0.0001);
-        if     (dataCardSel     == 0) MVAVar     = MVAVar     + 2000 * typeSelAux;
-        else if(dataCardSel     == 1) MVAVar     = MVAVar     + 8000;
-        else if(dataCardSel     == 2) MVAVar     = MVAVar     + 10000;
-        if     (dataCardSelUp   == 0) MVAVarUp   = MVAVarUp   + 2000 * typeSelAux;
-        else if(dataCardSelUp   == 1) MVAVarUp   = MVAVarUp   + 8000;
-        else if(dataCardSelUp   == 2) MVAVarUp   = MVAVarUp   + 10000;
-        if     (dataCardSelDown == 0) MVAVarDown = MVAVarDown + 2000 * typeSelAux;
-        else if(dataCardSelDown == 1) MVAVarDown = MVAVarDown + 8000;
-        else if(dataCardSelDown == 2) MVAVarDown = MVAVarDown + 10000;
+        if     (dataCardSel     == 0) MVAVar     = MVAVar     + 2000 * typeSelAux0 + 8000 * typeSelAux1;
+        else if(dataCardSel     == 1) MVAVar     = MVAVar     + 16000 + 2000 * typeSelAux1;
+        else if(dataCardSel     == 2) MVAVar     = MVAVar     + 20000;
+        if     (dataCardSelUp   == 0) MVAVarUp   = MVAVarUp   + 2000 * typeSelAux0 + 8000 * typeSelAux1;
+        else if(dataCardSelUp   == 1) MVAVarUp   = MVAVarUp   + 16000 + 2000 * typeSelAux1;
+        else if(dataCardSelUp   == 2) MVAVarUp   = MVAVarUp   + 20000;
+        if     (dataCardSelDown == 0) MVAVarDown = MVAVarDown + 2000 * typeSelAux0 + 8000 * typeSelAux1;
+        else if(dataCardSelDown == 1) MVAVarDown = MVAVarDown + 16000 + 2000 * typeSelAux1;
+        else if(dataCardSelDown == 2) MVAVarDown = MVAVarDown + 20000;
 
         // Avoid QCD scale weights that are anomalous high
         double maxQCDscale = (TMath::Abs(thePandaFlat.scale[0])+TMath::Abs(thePandaFlat.scale[1])+TMath::Abs(thePandaFlat.scale[2])+

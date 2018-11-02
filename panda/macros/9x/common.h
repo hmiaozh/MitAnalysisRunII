@@ -1,10 +1,10 @@
 #include "TH1D.h"
 #include "TH2D.h"
 
-double WSSF_2016[5]  = {1.450841,1.144231,0.957954,0.961680,0.939596};
-double WSSFE_2016[5] = {0.294219,0.113998,0.052910,0.022919,0.028844};
-double WSSF_2017[5]  = {1.039729,2.242910,1.506833,1.393533,1.353645};
-double WSSFE_2017[5] = {0.230004,0.151531,0.065174,0.028503,0.030047};
+double WSSF_2016[5]  = {1.450898,1.144208,0.958000,0.961725,0.939571};
+double WSSFE_2016[5] = {0.294214,0.113999,0.052908,0.022919,0.028844};
+double WSSF_2017[5]  = {2.051988,0.946897,1.549924,1.522864,1.434715};
+double WSSFE_2017[5] = {0.284776,0.132241,0.060640,0.033413,0.033171};
 
 const bool useZZWZEWKUnc = true;
 
@@ -96,13 +96,13 @@ std::map<int, int> plotColors={
   { kPlotWZ	   , kViolet-9},
   { kPlotVVV	   , 809},
   { kPlotVG	   , 419},
-  { kPlotNonPrompt , kAzure-4},
+  { kPlotNonPrompt , kAzure-5},
   { kPlotHiggs     , 842},
   { kPlotSSWWEWK   , 832},
   { kPlotSSWWQCD   , 798},
   { kPlotDPSWW     , TColor::GetColor(248,206,104)},
-  { kPlotWS	   , kYellow},
-  { kPlotEM	   , kBlue},
+  { kPlotWS	   , kAzure+10},
+  { kPlotEM	   , kGreen-5},
   { kPlotBSM	   , kGreen}
 }; 
 

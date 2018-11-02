@@ -389,7 +389,7 @@ int year, TString WZName = "default"
       if(usePureMC == true && countLeptonTight != idLep.size()) continue;
       if(infileCat_[ifile] == kPlotWZ && countLeptonTight == idLep.size()) histoWZSelEvol->Fill(9.,thePandaFlat.normalizedWeight * lumi);
 
-      bool passBtagVeto = thePandaFlat.jetNBtags == 0;
+      bool passBtagVeto = thePandaFlat.jetNMBtags == 0;
 
       bool passSel[6] = {mllmin > 4, fabs(mllZ-91.1876) < 15, vWln.Pt() > 20, vMet.Pt() > 30, (vLoose1+vLoose2+vLoose3).M() > 100, passBtagVeto};
       bool passWZSel  = passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[4] &&  passSel[5];
@@ -488,7 +488,7 @@ int year, TString WZName = "default"
       if(passTopSel)         {histo[lepType+40][theCategory]->Fill(TMath::Min(vMet.Pt(),199.999),totalWeight);			  histo[44][theCategory]->Fill(TMath::Min(vMet.Pt(),199.999),totalWeight);}
       if(passWZSel)          {histo[lepType+45][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,4.499),totalWeight);      histo[49][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,4.499),totalWeight);}
       if(passTopSel)         {histo[lepType+50][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,4.499),totalWeight);      histo[54][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,4.499),totalWeight);}
-      if(passAllButOneSel[5]){histo[lepType+55][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNBtags,4.499),totalWeight);histo[59][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNBtags,4.499),totalWeight);}
+      if(passAllButOneSel[5]){histo[lepType+55][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,4.499),totalWeight);histo[59][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,4.499),totalWeight);}
       if(passZXLikeSel)      {histo[lepType+60][theCategory]->Fill(TMath::Min(vMetZXLike.Pt(),299.999),totalWeight);		  histo[64][theCategory]->Fill(TMath::Min(vMetZXLike.Pt(),299.999),totalWeight);}
       if(passZXLooseLikeSel) {histo[lepType+65][theCategory]->Fill(TMath::Min(vMetZXLike.Pt(),299.999),totalWeight);		  histo[69][theCategory]->Fill(TMath::Min(vMetZXLike.Pt(),299.999),totalWeight);}
       if(passWZSel && passNjets && passMET) {histo[70][theCategory]->Fill(TMath::Abs(dilep.DeltaPhi(vMetZXLike)),totalWeight);}

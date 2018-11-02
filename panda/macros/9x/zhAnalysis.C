@@ -43,11 +43,13 @@ int year, bool isBlinded = false
   TString filesPath;
   TString fLepton_FakesName;
   TString puPath;
+  TString npvPath;
   if(year == 2017) {
     lumi = 41.5;
     filesPath = "/data/t3home000/ceballos/panda/v_004_0/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2017.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x.root";
+    npvPath = "MitAnalysisRunII/data/90x/npvWeights_2017.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotEM);
@@ -73,6 +75,7 @@ int year, bool isBlinded = false
     filesPath = "/data/t3home000/ceballos/panda/v_002_0/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2016.root";
     puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
+    npvPath = "MitAnalysisRunII/data/90x/npvWeights_2016.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	          infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotEM);
@@ -112,6 +115,10 @@ int year, bool isBlinded = false
   TH1D *fhDPUUp   = (TH1D*)(fPUFile->Get("puWeightsUp"));   assert(fhDPUUp);   fhDPUUp  ->SetDirectory(0);
   TH1D *fhDPUDown = (TH1D*)(fPUFile->Get("puWeightsDown")); assert(fhDPUDown); fhDPUDown->SetDirectory(0);
   delete fPUFile;
+
+  TFile *fNPVFile = TFile::Open(Form("%s",npvPath.Data()));
+  TH1D *fhDNPV    = (TH1D*)(fNPVFile->Get("npvWeights"));   assert(fhDNPV);    fhDNPV   ->SetDirectory(0);
+  delete fNPVFile;
 
   //const int nBinMVA = 22; Float_t xbins[nBinMVA+1] = {0, 70, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600,
   //                                                               1125,1150,1175,1200,1250,1300,1350,1400,1500,1600};
@@ -401,7 +408,7 @@ int year, bool isBlinded = false
       passZMass   && passNjets     && passMETMin     && passPTFrac     && passDPhiZMET     &&  passBtagVeto     && passPTLL && passDPhiJetMET     && passTauVeto && passDRLL
                                     };
 
-      double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0;
+      double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0; double npvWeight = 1.0;
       if(theCategory != kPlotData){
         double triggerWeights[2] = {1.0, 0.0};
 	if(thePandaFlat.nLooseLep == 2) {
@@ -411,14 +418,21 @@ int year, bool isBlinded = false
         puWeightUp   = nPUScaleFactor(fhDPUUp,  thePandaFlat.pu);
         puWeightDown = nPUScaleFactor(fhDPUDown,thePandaFlat.pu);
 
-        if(passBtagVeto) totalWeight = thePandaFlat.normalizedWeight * lumi * puWeight * thePandaFlat.sf_l1Prefire * thePandaFlat.sf_btag0   * looseLepSF[0] * looseLepSF[1] * triggerWeights[0] * theMCPrescale;
-        else	         totalWeight = thePandaFlat.normalizedWeight * lumi * puWeight * thePandaFlat.sf_l1Prefire * thePandaFlat.sf_btagGT0 * looseLepSF[0] * looseLepSF[1] * triggerWeights[0] * theMCPrescale;
+	npvWeight = nPUScaleFactor(fhDNPV, thePandaFlat.npv);
+
+        if(passBtagVeto) totalWeight = thePandaFlat.normalizedWeight * lumi * puWeight * thePandaFlat.sf_l1Prefire * thePandaFlat.sf_btag0   * looseLepSF[0] * looseLepSF[1] * triggerWeights[0] * theMCPrescale * npvWeight;
+        else	         totalWeight = thePandaFlat.normalizedWeight * lumi * puWeight * thePandaFlat.sf_l1Prefire * thePandaFlat.sf_btagGT0 * looseLepSF[0] * looseLepSF[1] * triggerWeights[0] * theMCPrescale * npvWeight;
 
         if     (infileCat_[ifile] == kPlotWZ)                                                totalWeight = totalWeight * thePandaFlat.sf_wz;
 	else if(infileCat_[ifile] == kPlotZZ && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;
 	else if(infileCat_[ifile] == kPlotDY && year == 2016) totalWeight = totalWeight * 1.00;
-	else if(infileCat_[ifile] == kPlotDY && year == 2017) totalWeight = totalWeight * 1.15;
+	else if(infileCat_[ifile] == kPlotDY && year == 2017) totalWeight = totalWeight * 1.00;
 	else if(infileCat_[ifile] == kPlotEM && passBtagVeto) totalWeight = totalWeight * 1.35;
+
+        if     (infileCat_[ifile] == kPlotDY && year == 2016 && lepType == 0) totalWeight = totalWeight * (1.09180-ptFrac*0.104392);
+        else if(infileCat_[ifile] == kPlotDY && year == 2016 && lepType == 1) totalWeight = totalWeight * (1.15117-ptFrac*0.141021);
+        else if(infileCat_[ifile] == kPlotDY && year == 2017 && lepType == 0) totalWeight = totalWeight * (1.15115-ptFrac*0.391765);
+        else if(infileCat_[ifile] == kPlotDY && year == 2017 && lepType == 1) totalWeight = totalWeight * (1.07009-ptFrac*0.351426);
       }
 
       if(usePureMC == false && countLeptonTight != idLep.size()){

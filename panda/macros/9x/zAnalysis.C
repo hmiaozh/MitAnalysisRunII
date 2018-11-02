@@ -42,9 +42,13 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
   double lumi;
   TString filesPath;
   TString fLepton_FakesName;
+  TString puPath;
+  TString npvPath;
   if(year == 2017) {
     lumi = 41.5;
     filesPath = "/data/t3home000/ceballos/panda/v_004_0/";
+    puPath = "MitAnalysisRunII/data/90x/puWeights_90x.root";
+    npvPath = "MitAnalysisRunII/data/90x/npvWeights_2017.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));                 infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotqqWW);
@@ -75,6 +79,8 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
   else if(year == 2016) {
     lumi = 35.9;
     filesPath = "/data/t3home000/ceballos/panda/v_002_0/";
+    puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
+    npvPath = "MitAnalysisRunII/data/90x/npvWeights_2016.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));                  infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotqqWW);
@@ -106,10 +112,20 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
     return;
   }
 
+  TFile *fPUFile = TFile::Open(Form("%s",puPath.Data()));
+  TH1D *fhDPU     = (TH1D*)(fPUFile->Get("puWeights"));     assert(fhDPU);     fhDPU    ->SetDirectory(0);
+  TH1D *fhDPUUp   = (TH1D*)(fPUFile->Get("puWeightsUp"));   assert(fhDPUUp);   fhDPUUp  ->SetDirectory(0);
+  TH1D *fhDPUDown = (TH1D*)(fPUFile->Get("puWeightsDown")); assert(fhDPUDown); fhDPUDown->SetDirectory(0);
+  delete fPUFile;
+
+  TFile *fNPVFile = TFile::Open(Form("%s",npvPath.Data()));
+  TH1D *fhDNPV    = (TH1D*)(fNPVFile->Get("npvWeights"));   assert(fhDNPV);    fhDNPV   ->SetDirectory(0);
+  delete fNPVFile;
+
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 69;
+  const int allPlots = 78;
   TH1D* histo[allPlots][nPlotCategories];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     if     (thePlot >=  0 && thePlot <=  1) {nBinPlot = 120; xminPlot = 91.1876-15; xmaxPlot = 91.1876+15;}
@@ -126,6 +142,9 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
     else if(thePlot >= 51 && thePlot <= 56) {nBinPlot = 100; xminPlot = -2.5; xmaxPlot = 2.5;}
     else if(thePlot >= 57 && thePlot <= 62) {nBinPlot = 200; xminPlot = 25.0; xmaxPlot = 225;}
     else if(thePlot >= 63 && thePlot <= 68) {nBinPlot =   5; xminPlot = -0.5; xmaxPlot = 4.5;}
+    else if(thePlot >= 69 && thePlot <= 71) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
+    else if(thePlot >= 72 && thePlot <= 74) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 1.0;}
+    else if(thePlot >= 75 && thePlot <= 77) {nBinPlot = 200; xminPlot = -5.0; xmaxPlot = 5.0;}
     
     if(isTopSel == true && (thePlot >= 0 && thePlot <= 5)) {nBinPlot = 200; xminPlot = 50.0; xmaxPlot = 250;}
 
@@ -259,11 +278,15 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
       if(isTopSel == true) passSel = (TMath::Abs(dilep.M()-91.1876) > 15 || lepType == 2) && dilep.M() > 50 && vLoose[0].Pt() > 25 && vLoose[1].Pt() > 25 && mtW > 50 && thePandaFlat.nJot >= 1;
       if(passSel == false) continue;
 
-      double totalWeight = 1.0; double sfWS = 1.0;
+      double totalWeight = 1.0; double sfWS = 1.0; double puWeight = 1.0; double npvWeight = 1.0;
       if     (theCategory != kPlotData){
         double triggerWeights[2];
         trigger_sf(triggerWeights, trgEff, trgEffE, lepType, looseLepPt[0], TMath::Abs(looseLepEta[0]), looseLepPt[1], TMath::Abs(looseLepEta[1]));
-        totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu * thePandaFlat.sf_l1Prefire * looseLepSF[0] * looseLepSF[1] * triggerWeights[0];
+
+        puWeight  = nPUScaleFactor(fhDPU,  thePandaFlat.pu);
+        npvWeight = nPUScaleFactor(fhDNPV, thePandaFlat.npv);
+
+        totalWeight = thePandaFlat.normalizedWeight * lumi * puWeight * thePandaFlat.sf_l1Prefire * looseLepSF[0] * looseLepSF[1] * triggerWeights[0] * npvWeight;
 
         bool isRS = thePandaFlat.looseGenLep1PdgId > 0 && thePandaFlat.looseGenLep2PdgId > 0;
         if(thePandaFlat.nLooseLep >= 3) isRS = isRS && thePandaFlat.looseGenLep3PdgId > 0;
@@ -340,6 +363,11 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
 	histo[lepType+60][theCategory]->Fill(TMath::Min((double)looseLepPt[1], 224.999),totalWeight);
 	histo[lepType+63][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNBtags,4.4999),totalWeight);
 	histo[lepType+66][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,4.4999),totalWeight);
+	if(thePandaFlat.nJot >= 1){
+	  histo[lepType+69][theCategory]->Fill(TMath::Min((double)thePandaFlat.jotPt[0],199.9999),totalWeight);
+	  histo[lepType+72][theCategory]->Fill(TMath::Max(TMath::Min((double)thePandaFlat.jotCSV[0],0.999),0.001),totalWeight);
+	  histo[lepType+75][theCategory]->Fill(thePandaFlat.jotEta[0],totalWeight);	
+	}
       }
 
       const int nLepSel = 16+1;
