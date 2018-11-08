@@ -325,11 +325,20 @@ int year, TString WZName = "default"
       else {printf("Impossible dilepton combination: %d %d %d\n",looseLepPdgId[0],looseLepPdgId[1],looseLepPdgId[2]); continue;}
 
       double mllZ = 10000; double mllmin = 10000;
-      TLorentzVector vLoose1,vLoose2,vLoose3,vMet,vMetUp,vMetDown;
+      TLorentzVector vLoose1,vLoose2,vLoose3;
       TLorentzVector vZl1,vZl2,vWln;
-      vMet.SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
-      vMetUp  .SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalUp  ,0.0,thePandaFlat.pfmetphi_JESTotalUp  ,0.0);
-      vMetDown.SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalDown,0.0,thePandaFlat.pfmetphi_JESTotalDown,0.0);
+      TLorentzVector vMet,vTrkMet,vMetUp,vMetDown;
+      vTrkMet.SetPtEtaPhiM(thePandaFlat.trkmet,0.0,thePandaFlat.trkmetphi,0.0);
+      if     (year == 2016) {
+        vMet    .SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
+        vMetUp  .SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalUp  ,0.0,thePandaFlat.pfmetphi_JESTotalUp  ,0.0);
+        vMetDown.SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalDown,0.0,thePandaFlat.pfmetphi_JESTotalDown,0.0);
+      } 
+      else if(year == 2017){
+        vMet    .SetPtEtaPhiM(thePandaFlat.puppimet,0.0,thePandaFlat.puppimetphi,0.0);
+        vMetUp  .SetPtEtaPhiM(thePandaFlat.puppimet_JESTotalUp  ,0.0,thePandaFlat.puppimetphi_JESTotalUp  ,0.0);
+        vMetDown.SetPtEtaPhiM(thePandaFlat.puppimet_JESTotalDown,0.0,thePandaFlat.puppimetphi_JESTotalDown,0.0);
+      }
       double thePDGMass[3] = {mass_mu, mass_mu, mass_mu};
       if(abs(looseLepPdgId[0])==11) thePDGMass[0] = mass_el;
       if(abs(looseLepPdgId[1])==11) thePDGMass[1] = mass_el;

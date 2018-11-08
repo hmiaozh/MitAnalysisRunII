@@ -175,8 +175,8 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
       double alpha=(1-0.6827);
       double L = (N==0) ? 0 : (ROOT::Math::gamma_quantile(alpha/2,N,1.));
       double U = ROOT::Math::gamma_quantile_c(alpha/2,N+1,1);
-      double diff = hDataDivision->GetBinError(i);
-      //double diff = (U-L)/2;
+      //double diff = hDataDivision->GetBinError(i);
+      double diff = (U-L)/2;
       if( N != hDataDivision ->GetBinContent(i)) cout << "PROBLEM" << endl;
       double pull = 1.0; double pullerr = 0.0;
       if(hDataDivision->GetBinContent(i) > 0 && hTotalDivision->GetBinContent(i) > 0){
@@ -213,7 +213,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   Double_t dy = TMath::Max(TMath::Abs(hRatio->GetMaximum()),
                            TMath::Abs(hRatio->GetMinimum())) + theLines[1];
   if(showPulls) hRatio->GetYaxis()->SetRangeUser(-dy, +dy);
-  else          hRatio->GetYaxis()->SetRangeUser(0.601, +1.399);
+  else          hRatio->GetYaxis()->SetRangeUser(0.301, +1.699);
   hRatio->GetYaxis()->CenterTitle();
   eraselabel(pad1,hData->GetXaxis()->GetLabelSize());
   }

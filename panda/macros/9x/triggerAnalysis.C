@@ -163,9 +163,7 @@ int whichLepSel = 0
       else if(abs(looseLepPdgId[0])==11 && abs(looseLepPdgId[1])==13) lepType = 2;
       else  {printf("IMPOSSIBLE\n");}
 
-      TLorentzVector vLoose1,vLoose2,vMet,vTrkMet;
-      vMet.SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
-      vTrkMet.SetPtEtaPhiM(thePandaFlat.trkmet,0.0,thePandaFlat.trkmetphi,0.0);
+      TLorentzVector vLoose1,vLoose2;
       double thePDGMass[2] = {mass_mu, mass_mu};
       if(abs(looseLepPdgId[0])==11) thePDGMass[0] = mass_el;
       if(abs(looseLepPdgId[1])==11) thePDGMass[1] = mass_el;

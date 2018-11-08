@@ -186,6 +186,8 @@ int year, bool isBlinded = false
   TH1D *histo_ggZZCorrDown[nPlotCategories];
   TH1D *histo_CorrWZZZUp[nPlotCategories];
   TH1D *histo_CorrWZZZDown[nPlotCategories];
+  TH1D *histo_EWKCorrZHUp[nPlotCategories];
+  TH1D *histo_EWKCorrZHDown[nPlotCategories];
   TH1D *histo_JESBoundingUp[nPlotCategories];
   TH1D *histo_JESBoundingDown[nPlotCategories];
   TH1D *histo_METBoundingUp[nPlotCategories];
@@ -216,6 +218,8 @@ int year, bool isBlinded = false
     histo_ggZZCorrDown		[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_ggZZCorrDown"       , plotBaseNames[ic].Data()));
     histo_CorrWZZZUp		[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CorrWZZZUp"         , plotBaseNames[ic].Data()));
     histo_CorrWZZZDown		[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CorrWZZZDown"       , plotBaseNames[ic].Data()));
+    histo_EWKCorrZHUp		[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_EWKZHCorrUp"        , plotBaseNames[ic].Data()));
+    histo_EWKCorrZHDown 	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_EWKZHCorrDown"      , plotBaseNames[ic].Data()));
     histo_JESBoundingUp 	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_jesUp"          , plotBaseNames[ic].Data()));
     histo_JESBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_jesDown"        , plotBaseNames[ic].Data()));
     histo_METBoundingUp 	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_metUp"          , plotBaseNames[ic].Data()));
@@ -314,10 +318,17 @@ int year, bool isBlinded = false
       }
 
       TLorentzVector vMet,vTrkMet,vMetUp,vMetDown;
-      vMet.SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
       vTrkMet.SetPtEtaPhiM(thePandaFlat.trkmet,0.0,thePandaFlat.trkmetphi,0.0);
-      vMetUp  .SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalUp  ,0.0,thePandaFlat.pfmetphi_JESTotalUp  ,0.0);
-      vMetDown.SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalDown,0.0,thePandaFlat.pfmetphi_JESTotalDown,0.0);
+      if     (year == 2016) {
+        vMet    .SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
+        vMetUp  .SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalUp  ,0.0,thePandaFlat.pfmetphi_JESTotalUp  ,0.0);
+        vMetDown.SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalDown,0.0,thePandaFlat.pfmetphi_JESTotalDown,0.0);
+      } 
+      else if(year == 2017){
+        vMet    .SetPtEtaPhiM(thePandaFlat.puppimet,0.0,thePandaFlat.puppimetphi,0.0);
+        vMetUp  .SetPtEtaPhiM(thePandaFlat.puppimet_JESTotalUp  ,0.0,thePandaFlat.puppimetphi_JESTotalUp  ,0.0);
+        vMetDown.SetPtEtaPhiM(thePandaFlat.puppimet_JESTotalDown,0.0,thePandaFlat.puppimetphi_JESTotalDown,0.0);
+      }
 
       double dPhiLepMETMin = 999; double dPhiLepTrackMETMin = 999;
       for(unsigned int i=0; i<vLoose.size(); i++){
@@ -341,10 +352,20 @@ int year, bool isBlinded = false
       }
 
       double dPhiJetMET = -1.0; double dPhiJetMETUp = -1.0; double dPhiJetMETDown = -1.0;
-      if(thePandaFlat.jotPt[0] > 30) {
+      if(thePandaFlat.nJot > 0 && thePandaFlat.jotPt[0] > 30) {
         TLorentzVector vJetTemp;
         vJetTemp.SetPtEtaPhiM(thePandaFlat.jotPt[0],thePandaFlat.jotEta[0],thePandaFlat.jotPhi[0],0.0);
-        dPhiJetMET = TMath::Abs(vJetTemp.DeltaPhi(vMet)); dPhiJetMETUp = TMath::Abs(vJetTemp.DeltaPhi(vMetUp)); dPhiJetMETDown = TMath::Abs(vJetTemp.DeltaPhi(vMetDown));
+        dPhiJetMET = TMath::Abs(vJetTemp.DeltaPhi(vMet));
+      }
+      if(thePandaFlat.nJot_JESTotalUp > 0 && thePandaFlat.jotPt_JESTotalUp[0] > 30) {
+        TLorentzVector vJetTemp;
+        vJetTemp.SetPtEtaPhiM(thePandaFlat.jotPt_JESTotalUp[0],thePandaFlat.jotEta[0],thePandaFlat.jotPhi[0],0.0);
+        dPhiJetMETUp = TMath::Abs(vJetTemp.DeltaPhi(vMetUp));
+      }
+      if(thePandaFlat.nJot_JESTotalDown > 0 && thePandaFlat.jotPt_JESTotalDown[0] > 30) {
+        TLorentzVector vJetTemp;
+        vJetTemp.SetPtEtaPhiM(thePandaFlat.jotPt_JESTotalDown[0],thePandaFlat.jotEta[0],thePandaFlat.jotPhi[0],0.0);
+        dPhiJetMETDown = TMath::Abs(vJetTemp.DeltaPhi(vMetDown));
       }
 
       TLorentzVector dilep = vZ1l1+vZ1l2;
@@ -359,11 +380,17 @@ int year, bool isBlinded = false
       bool passMETMinDown = vMetDown.Pt() > 70 && (lepType != 2 || vMetDown.Pt() > 100);
       bool passPTLL   = dilep.Pt() > 60;
 
-      double ptFrac = TMath::Abs(dilep.Pt()-vMet.Pt())/dilep.Pt(); double ptFracUp = TMath::Abs(dilep.Pt()-vMetUp.Pt())/dilep.Pt(); double ptFracDown = TMath::Abs(dilep.Pt()-vMetDown.Pt())/dilep.Pt();
-      bool passPTFrac = ptFrac < 0.4; bool passPTFracUp = ptFracUp < 0.4; bool passPTFracDown = ptFracDown < 0.4;
-      bool passDPhiZMET = dPhiDiLepMET > 2.5; bool passDPhiZMETUp = dPhiDiLepMETUp > 2.5; bool passDPhiZMETDown = dPhiDiLepMETDown > 2.5;
-      bool passNjets = thePandaFlat.nJot <= 2;
-      bool passNjetsUp = thePandaFlat.nJot_JESTotalUp <= 2;
+      double ptFrac     = TMath::Abs(dilep.Pt()-vMet.Pt()    )/dilep.Pt();
+      double ptFracUp   = TMath::Abs(dilep.Pt()-vMetUp.Pt()  )/dilep.Pt();
+      double ptFracDown = TMath::Abs(dilep.Pt()-vMetDown.Pt())/dilep.Pt();
+      bool passPTFrac     = ptFrac     < 0.4;
+      bool passPTFracUp   = ptFracUp   < 0.4;
+      bool passPTFracDown = ptFracDown < 0.4;
+      bool passDPhiZMET     = dPhiDiLepMET     > 2.5;
+      bool passDPhiZMETUp   = dPhiDiLepMETUp   > 2.5;
+      bool passDPhiZMETDown = dPhiDiLepMETDown > 2.5;
+      bool passNjets     = thePandaFlat.nJot              <= 2;
+      bool passNjetsUp   = thePandaFlat.nJot_JESTotalUp   <= 2;
       bool passNjetsDown = thePandaFlat.nJot_JESTotalDown <= 2;
 
       bool passBtagVeto = thePandaFlat.jetNBtags == 0; bool passBtagVetoUp = thePandaFlat.jetNBtags_JESTotalUp == 0; bool passBtagVetoDown = thePandaFlat.jetNBtags_JESTotalDown == 0;
@@ -372,7 +399,9 @@ int year, bool isBlinded = false
       double drll = sqrt(dphill*dphill+detall*detall);
       bool passDRLL = drll < 1.8;
 
-      bool passDPhiJetMET = dPhiJetMET == -1 || dPhiJetMET >= 0.5; bool passDPhiJetMETUp = dPhiJetMETUp == -1 || dPhiJetMETUp >= 0.5; bool passDPhiJetMETDown = dPhiJetMETDown == -1 || dPhiJetMETDown >= 0.5;
+      bool passDPhiJetMET     = dPhiJetMET     == -1 || (dPhiJetMET     >= 0.5 && TMath::Abs(thePandaFlat.jotEta[0]) < 2.5);
+      bool passDPhiJetMETUp   = dPhiJetMETUp   == -1 || (dPhiJetMETUp   >= 0.5 && TMath::Abs(thePandaFlat.jotEta[0]) < 2.5);
+      bool passDPhiJetMETDown = dPhiJetMETDown == -1 || (dPhiJetMETDown >= 0.5 && TMath::Abs(thePandaFlat.jotEta[0]) < 2.5);
       bool passTauVeto    = thePandaFlat.nTau == 0;
 
       //                             0         1           2         3              4        5          6            7            8       9
@@ -409,6 +438,7 @@ int year, bool isBlinded = false
                                     };
 
       double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0; double npvWeight = 1.0;
+      double sf_EWKZH = 1.0; double sf_EWKZHUp = 1.0; double sf_EWKZHDown = 1.0;
       if(theCategory != kPlotData){
         double triggerWeights[2] = {1.0, 0.0};
 	if(thePandaFlat.nLooseLep == 2) {
@@ -431,8 +461,15 @@ int year, bool isBlinded = false
 
         if     (infileCat_[ifile] == kPlotDY && year == 2016 && lepType == 0) totalWeight = totalWeight * (1.09180-ptFrac*0.104392);
         else if(infileCat_[ifile] == kPlotDY && year == 2016 && lepType == 1) totalWeight = totalWeight * (1.15117-ptFrac*0.141021);
-        else if(infileCat_[ifile] == kPlotDY && year == 2017 && lepType == 0) totalWeight = totalWeight * (1.15115-ptFrac*0.391765);
-        else if(infileCat_[ifile] == kPlotDY && year == 2017 && lepType == 1) totalWeight = totalWeight * (1.07009-ptFrac*0.351426);
+        //else if(infileCat_[ifile] == kPlotDY && year == 2017 && lepType == 0) totalWeight = totalWeight * (1.15115-ptFrac*0.391765);
+        //else if(infileCat_[ifile] == kPlotDY && year == 2017 && lepType == 1) totalWeight = totalWeight * (1.07009-ptFrac*0.351426);
+	
+	if(infileCat_[ifile] == kPlotBSM && infileName_[ifile].Contains("qqZH") == true){
+	  sf_EWKZH     = thePandaFlat.sf_vh;
+	  sf_EWKZHUp   = thePandaFlat.sf_vhUp;
+	  sf_EWKZHDown = thePandaFlat.sf_vhDown;
+	}
+	totalWeight = totalWeight * sf_EWKZH;
       }
 
       if(usePureMC == false && countLeptonTight != idLep.size()){
@@ -536,6 +573,8 @@ int year, bool isBlinded = false
 	    histo_ggZZCorrDown[theCategory]->Fill(MVAVar,totalWeight/sf_ggcorrzz_unc);
 	    histo_CorrWZZZUp  [theCategory]->Fill(MVAVar,totalWeight*sf_corrwzzz_unc);
 	    histo_CorrWZZZDown[theCategory]->Fill(MVAVar,totalWeight/sf_corrwzzz_unc);
+	    histo_EWKCorrZHUp  [theCategory]->Fill(MVAVar,totalWeight*sf_EWKZHUp  /sf_EWKZH);
+	    histo_EWKCorrZHDown[theCategory]->Fill(MVAVar,totalWeight*sf_EWKZHDown/sf_EWKZH);
 	  }
           if(passSystCuts[JESUP])  histo_JESBoundingUp  [theCategory]->Fill(MVAVarUp  ,totalWeight);
           if(passSystCuts[JESDOWN])histo_JESBoundingDown[theCategory]->Fill(MVAVarDown,totalWeight);
@@ -602,6 +641,8 @@ int year, bool isBlinded = false
       histo_ggZZCorrDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_ggZZCorrDown  	[ic]->GetBinContent(nb),1e-7f));
       histo_CorrWZZZUp  	  [ic]->SetBinContent(nb, TMath::Max((float)histo_CorrWZZZUp		[ic]->GetBinContent(nb),1e-7f));
       histo_CorrWZZZDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_CorrWZZZDown  	[ic]->GetBinContent(nb),1e-7f));
+      histo_EWKCorrZHUp 	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKCorrZHUp		[ic]->GetBinContent(nb),1e-7f));
+      histo_EWKCorrZHDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKCorrZHDown 	[ic]->GetBinContent(nb),1e-7f));
       histo_JESBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingUp 	[ic]->GetBinContent(nb),1e-7f));
       histo_JESBoundingDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingDown	[ic]->GetBinContent(nb),1e-7f));
       histo_METBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_METBoundingUp 	[ic]->GetBinContent(nb),1e-7f));
@@ -765,6 +806,19 @@ int year, bool isBlinded = false
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_CorrWZZZDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
 
+    printf("uncertainties EWKCorrZHUp\n");
+    for(unsigned ic=0; ic<nPlotCategories; ic++) {
+      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+         printf("%10s: ",plotBaseNames[ic].Data());
+        for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_EWKCorrZHUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    }
+    printf("uncertainties EWKCorrZHDown\n");
+    for(unsigned ic=0; ic<nPlotCategories; ic++) {
+      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+         printf("%10s: ",plotBaseNames[ic].Data());
+        for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_EWKCorrZHDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    }
+
     printf("uncertainties JESUp\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
       if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
@@ -824,6 +878,8 @@ int year, bool isBlinded = false
     histo_ggZZCorrDown  	[ic]->Write();
     histo_CorrWZZZUp		[ic]->Write();
     histo_CorrWZZZDown  	[ic]->Write();
+    histo_EWKCorrZHUp		[ic]->Write();
+    histo_EWKCorrZHDown 	[ic]->Write();
     histo_JESBoundingUp 	[ic]->Write();
     histo_JESBoundingDown	[ic]->Write();
     histo_METBoundingUp 	[ic]->Write();
@@ -946,6 +1002,14 @@ int year, bool isBlinded = false
     }
     newcardShape << Form("\n");
   }
+
+  newcardShape << Form("EWKZHCorr    shape     ");
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    if(ic != kPlotBSM) newcardShape << Form("- ");
+    else	       newcardShape << Form("1.0 ");
+  }
+  newcardShape << Form("\n");
 
   newcardShape << Form("WZ_lep    lnN     ");
   for (int ic=0; ic<nPlotCategories; ic++){

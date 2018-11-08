@@ -332,19 +332,26 @@ int year
         else {printf("Impossible dilepton combination: %d %d %d %d\n",looseLepPdgId[0],looseLepPdgId[1],looseLepPdgId[2],looseLepPdgId[3]); continue;}
       }
 
-      TLorentzVector vMET,vTrkMet,vMETUp,vMETDown;
-      vMET.SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
+      TLorentzVector vMet,vTrkMet,vMetUp,vMetDown;
       vTrkMet.SetPtEtaPhiM(thePandaFlat.trkmet,0.0,thePandaFlat.trkmetphi,0.0);
-      vMETUp  .SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalUp  ,0.0,thePandaFlat.pfmetphi_JESTotalUp  ,0.0);
-      vMETDown.SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalDown,0.0,thePandaFlat.pfmetphi_JESTotalDown,0.0);
+      if     (year == 2016) {
+        vMet    .SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
+        vMetUp  .SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalUp  ,0.0,thePandaFlat.pfmetphi_JESTotalUp  ,0.0);
+        vMetDown.SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalDown,0.0,thePandaFlat.pfmetphi_JESTotalDown,0.0);
+      } 
+      else if(year == 2017){
+        vMet    .SetPtEtaPhiM(thePandaFlat.puppimet,0.0,thePandaFlat.puppimetphi,0.0);
+        vMetUp  .SetPtEtaPhiM(thePandaFlat.puppimet_JESTotalUp  ,0.0,thePandaFlat.puppimetphi_JESTotalUp  ,0.0);
+        vMetDown.SetPtEtaPhiM(thePandaFlat.puppimet_JESTotalDown,0.0,thePandaFlat.puppimetphi_JESTotalDown,0.0);
+      }
 
       double dPhiLepMETMin = 999; double dPhiLepTrackMETMin = 999;
       for(unsigned int i=0; i<vLoose.size(); i++){
-        if(dPhiLepMETMin      > TMath::Abs(vLoose[i].DeltaPhi(vMET))   ) dPhiLepMETMin      = TMath::Abs(vLoose[i].DeltaPhi(vMET));
+        if(dPhiLepMETMin      > TMath::Abs(vLoose[i].DeltaPhi(vMet))   ) dPhiLepMETMin      = TMath::Abs(vLoose[i].DeltaPhi(vMet));
 	if(dPhiLepTrackMETMin > TMath::Abs(vLoose[i].DeltaPhi(vTrkMet))) dPhiLepTrackMETMin = TMath::Abs(vLoose[i].DeltaPhi(vTrkMet));
       }
 
-      double PMET[1] = {vMET.Pt()};
+      double PMET[1] = {vMet.Pt()};
       double PTrackMET[1] = {vTrkMet.Pt()};
       if(dPhiLepMETMin < TMath::Pi()/2) {PMET[0] = PMET[0] * sin(dPhiLepMETMin);}
       if(dPhiLepTrackMETMin < TMath::Pi()/2) {PTrackMET[0] = PTrackMET[0] * sin(dPhiLepTrackMETMin);}
@@ -480,8 +487,8 @@ int year
       }
       else if(passPhoSel == true  && vLoose.size() == 3 && whichWln >= 0 && tightWlnId == true && TMath::Abs(qTot) == 1){       
         theMinSelType = 2;
-        vMET.SetPx(vMET.Px()+vLoose[whichWln].Px());
-        vMET.SetPy(vMET.Py()+vLoose[whichWln].Px());
+        vMet.SetPx(vMet.Px()+vLoose[whichWln].Px());
+        vMet.SetPy(vMet.Py()+vLoose[whichWln].Px());
         theG = vPhoton;
       }
       else if(passPhoSel == false && vLoose.size() == 4 && vZ2l1.Pt() > 0 && vZ2l2.Pt() > 0 && TMath::Abs((vZ2l1 + vZ2l2).M()-91.1876) < 15.0 && TMath::Abs(qTot) == 0){     
@@ -496,7 +503,7 @@ int year
       if(thePandaFlat.jotPt[0] > 30) {
         TLorentzVector vJetTemp;
         vJetTemp.SetPtEtaPhiM(thePandaFlat.jotPt[0],thePandaFlat.jotEta[0],thePandaFlat.jotPhi[0],0.0);
-        dPhiJetMET = TMath::Abs(vJetTemp.DeltaPhi(vMET));
+        dPhiJetMET = TMath::Abs(vJetTemp.DeltaPhi(vMet));
       }
 
       double dPhiGMET = 0; double dPhiGMETUp = 0;double dPhiGMETDown = 0;
@@ -505,24 +512,24 @@ int year
       TLorentzVector dilepG = vZ1l1+vZ1l2;
       if(theMinSelType >= 0){
         dilepG = dilepG + theG;
-	dPhiGMET = TMath::Abs(theG.DeltaPhi(vMET));
-	dPhiGMETUp = TMath::Abs(theG.DeltaPhi(vMETUp));
-	dPhiGMETDown = TMath::Abs(theG.DeltaPhi(vMETDown));
-        mTGMET = TMath::Sqrt(2.0*theG.Pt()*vMET.Pt()*(1.0 - cos(dPhiGMET)));
-	dPhiGMETUp = TMath::Abs(theG.DeltaPhi(vMETUp));
-        mTGMETUp = TMath::Sqrt(2.0*theG.Pt()*vMETUp.Pt()*(1.0 - cos(dPhiGMETUp)));
-	dPhiGMETDown = TMath::Abs(theG.DeltaPhi(vMETDown));
-        mTGMETDown = TMath::Sqrt(2.0*theG.Pt()*vMETDown.Pt()*(1.0 - cos(dPhiGMETDown)));
+	dPhiGMET = TMath::Abs(theG.DeltaPhi(vMet));
+	dPhiGMETUp = TMath::Abs(theG.DeltaPhi(vMetUp));
+	dPhiGMETDown = TMath::Abs(theG.DeltaPhi(vMetDown));
+        mTGMET = TMath::Sqrt(2.0*theG.Pt()*vMet.Pt()*(1.0 - cos(dPhiGMET)));
+	dPhiGMETUp = TMath::Abs(theG.DeltaPhi(vMetUp));
+        mTGMETUp = TMath::Sqrt(2.0*theG.Pt()*vMetUp.Pt()*(1.0 - cos(dPhiGMETUp)));
+	dPhiGMETDown = TMath::Abs(theG.DeltaPhi(vMetDown));
+        mTGMETDown = TMath::Sqrt(2.0*theG.Pt()*vMetDown.Pt()*(1.0 - cos(dPhiGMETDown)));
       }
 
-      double dPhiDiLepGMET = TMath::Abs(dilepG.DeltaPhi(vMET)); double dPhiDiLepGMETUp = TMath::Abs(dilepG.DeltaPhi(vMETUp)); double dPhiDiLepGMETDown = TMath::Abs(dilepG.DeltaPhi(vMETDown));
+      double dPhiDiLepGMET = TMath::Abs(dilepG.DeltaPhi(vMet)); double dPhiDiLepGMETUp = TMath::Abs(dilepG.DeltaPhi(vMetUp)); double dPhiDiLepGMETDown = TMath::Abs(dilepG.DeltaPhi(vMetDown));
       bool passZMass = mllmin > 4.0 && TMath::Abs(mllZ-91.1876) < 15.0;
       bool passZMassSB = mllZ > 110 && mllZ < 200;
-      bool passMET    = vMET.Pt() > 110; bool passMETUp    = vMETUp.Pt() > 110; bool passMETDown    = vMETDown.Pt() > 110;
-      bool passMETMin = vMET.Pt() > 60;  bool passMETMinUp = vMETUp.Pt() > 60;  bool passMETMinDown = vMETDown.Pt() > 60;
-      bool passPTLL   = dilep.Pt() > 60;
+      bool passMET    = vMet.Pt() > 110; bool passMETUp    = vMetUp.Pt() > 110; bool passMETDown    = vMetDown.Pt() > 110;
+      bool passMETMin = vMet.Pt() > 70;  bool passMETMinUp = vMetUp.Pt() > 70;  bool passMETMinDown = vMetDown.Pt() > 70;
+      bool passPTLL   = dilep.Pt() > 70;
 
-      double ptFracG = TMath::Abs(dilepG.Pt()-vMET.Pt())/dilepG.Pt(); double ptFracGUp = TMath::Abs(dilepG.Pt()-vMETUp.Pt())/dilepG.Pt(); double ptFracGDown = TMath::Abs(dilepG.Pt()-vMETDown.Pt())/dilepG.Pt();
+      double ptFracG = TMath::Abs(dilepG.Pt()-vMet.Pt())/dilepG.Pt(); double ptFracGUp = TMath::Abs(dilepG.Pt()-vMetUp.Pt())/dilepG.Pt(); double ptFracGDown = TMath::Abs(dilepG.Pt()-vMetDown.Pt())/dilepG.Pt();
       bool passPTFracG = ptFracG < 0.4; bool passPTFracGUp = ptFracGUp < 0.4; bool passPTFracGDown = ptFracGDown < 0.4;
       bool passDPhiZGMET = dPhiDiLepGMET > 2.5; bool passDPhiZGMETUp = dPhiDiLepGMETUp > 2.5; bool passDPhiZGMETDown = dPhiDiLepGMETDown > 2.5;
       bool passNjets = thePandaFlat.nJot <= 2;
@@ -646,7 +653,7 @@ int year
       if(passAllCuts[WWSEL])histo[lepType+  21][theCategory]->Fill(TMath::Min(mTGMET,199.999),totalWeight);
       if(passNMinusOne[ 0])  histo[24][theCategory]->Fill(TMath::Min(TMath::Abs(mllZ-91.1876),99.999),totalWeight);
       if(passNMinusOne[ 1])  histo[25][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,4.4999),totalWeight);
-      if(passNMinusOne[ 2])  histo[26][theCategory]->Fill(TMath::Min(vMET.Pt(),199.999),totalWeight);
+      if(passNMinusOne[ 2])  histo[26][theCategory]->Fill(TMath::Min(vMet.Pt(),199.999),totalWeight);
       if(passNMinusOne[ 3])  histo[27][theCategory]->Fill(TMath::Min(ptFracG,1.999),totalWeight);
       if(passNMinusOne[ 4])  histo[28][theCategory]->Fill(dPhiDiLepGMET,totalWeight);
       if(passNMinusOne[ 5])  histo[29][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,3.499),totalWeight);

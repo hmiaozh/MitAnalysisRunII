@@ -212,7 +212,8 @@ int year, int nbjets = 0
 
       bool passMllSel = false;
       TLorentzVector vMet;
-      vMet.SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
+      if     (year == 2016) vMet.SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
+      else if(year == 2017) vMet.SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
       if(thePandaFlat.nLooseLep == 2) {
         passMllSel = TMath::Abs((vLoose1+vLoose2).M()-91.1876) < 15 && lepType <= 1;
       }
