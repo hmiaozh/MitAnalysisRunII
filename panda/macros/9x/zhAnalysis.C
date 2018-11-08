@@ -120,9 +120,9 @@ int year, bool isBlinded = false
   TH1D *fhDNPV    = (TH1D*)(fNPVFile->Get("npvWeights"));   assert(fhDNPV);    fhDNPV   ->SetDirectory(0);
   delete fNPVFile;
 
-  //const int nBinMVA = 22; Float_t xbins[nBinMVA+1] = {0, 70, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600,
-  //                                                               1125,1150,1175,1200,1250,1300,1350,1400,1500,1600};
-  const int nBinMVA = 12; Float_t xbins[nBinMVA+1] = {0, 70, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600};
+  const int nBinMVA = 22; Float_t xbins[nBinMVA+1] = {0, 70, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600,
+  								 1125,1150,1175,1200,1250,1300,1350,1400,1500,1600};
+  //const int nBinMVA = 12; Float_t xbins[nBinMVA+1] = {0, 70, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600};
 
   const double metMax = 599.999;
 
@@ -524,6 +524,11 @@ int year, bool isBlinded = false
       //double MVAVar = TMath::Min(vMet.Pt(),xbins[nBinMVA]-0.0001); double MVAVarUp = TMath::Min(vMetUp.Pt(),xbins[nBinMVA]-0.0001); double MVAVarDown = TMath::Min(vMetDown.Pt(),xbins[nBinMVA]-0.0001);
       double MVAVar = TMath::Min(vMet.Pt(),metMax); double MVAVarUp = TMath::Min(vMetUp.Pt(),metMax); double MVAVarDown = TMath::Min(vMetDown.Pt(),metMax);
       if     (lepType == 2) {MVAVar = 0.5; MVAVarUp = 0.5; MVAVarDown = 0.5; }
+      else {
+        if(MVAVar     >= 100 && thePandaFlat.nJot              == 1) MVAVar     = MVAVar     + 1000;
+        if(MVAVarUp   >= 100 && thePandaFlat.nJot_JESTotalUp   == 1) MVAVarUp   = MVAVarUp   + 1000;
+        if(MVAVarDown >= 100 && thePandaFlat.nJot_JESTotalDown == 1) MVAVarDown = MVAVarDown + 1000;
+      }
       //else if(lepType == 1) {
       //  if(MVAVar     >= 100) MVAVar	 = MVAVar     + 1000;
       //  if(MVAVarUp   >= 100) MVAVarUp   = MVAVarUp   + 1000;
