@@ -402,7 +402,7 @@ int year, bool isBlinded = false
       bool passDPhiJetMET     = dPhiJetMET     == -1 || (dPhiJetMET     >= 0.5 && TMath::Abs(thePandaFlat.jotEta[0]) < 2.5);
       bool passDPhiJetMETUp   = dPhiJetMETUp   == -1 || (dPhiJetMETUp   >= 0.5 && TMath::Abs(thePandaFlat.jotEta[0]) < 2.5);
       bool passDPhiJetMETDown = dPhiJetMETDown == -1 || (dPhiJetMETDown >= 0.5 && TMath::Abs(thePandaFlat.jotEta[0]) < 2.5);
-      bool passTauVeto    = thePandaFlat.nTau == 0;
+      bool passTauVeto = thePandaFlat.nTau == 0;
 
       //                             0         1           2         3              4        5          6            7            8       9
       bool passCutEvol[10] = {passPTLL,passZMass,passTauVeto,passNjets,passDPhiJetMET,passDRLL,passPTFrac,passDPhiZMET,passBtagVeto,passMET};
