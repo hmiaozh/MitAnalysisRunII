@@ -120,8 +120,10 @@ int year, bool isBlinded = false
   TH1D *fhDNPV    = (TH1D*)(fNPVFile->Get("npvWeights"));   assert(fhDNPV);    fhDNPV   ->SetDirectory(0);
   delete fNPVFile;
 
-  const int nBinMVA = 22; Float_t xbins[nBinMVA+1] = {0, 70, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600,
-  								 1125,1150,1175,1200,1250,1300,1350,1400,1500,1600};
+  const int nBinMVA = 38; Float_t xbins[nBinMVA+1] = {0,  70, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600,
+  						        1070,1100,1125,1150,1175,1200,1250,1300,1350,1400,1500,1600,
+  						        2070,2100,2125,2150,2200,2300,2600,
+  						        3070,3100,3125,3150,3200,3300,3600};
   //const int nBinMVA = 12; Float_t xbins[nBinMVA+1] = {0, 70, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600};
 
   const double metMax = 599.999;
@@ -195,9 +197,12 @@ int year, bool isBlinded = false
   
   for(unsigned ic=kPlotData; ic!=nPlotCategories; ic++) {
     for(int i=0; i<6; i++)  histo_QCDScaleBounding[ic][i] = (TH1D*)histo_MVA->Clone(Form("histo_%s_%d_QCDScaleBounding",plotBaseNames[ic].Data(),i));
+    int jetType = 0;
+    if     (ic==kPlotDY) jetType = 1;
+    else if(ic==kPlotEM) jetType = 2;
     histo_Baseline              [ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s"                    , plotBaseNames[ic].Data()));
-    histo_QCDScaleUp            [ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_QCDScale_%s_ACCEPTUp"         , plotBaseNames[ic].Data(), plotBaseNames[ic].Data()));
-    histo_QCDScaleDown          [ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_QCDScale_%s_ACCEPTDown"       , plotBaseNames[ic].Data(), plotBaseNames[ic].Data()));
+    histo_QCDScaleUp            [ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_QCDScale_%s_ACCEPTUp"   , plotBaseNames[ic].Data(), plotBaseNames[ic].Data()));
+    histo_QCDScaleDown          [ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_QCDScale_%s_ACCEPTDown" , plotBaseNames[ic].Data(), plotBaseNames[ic].Data()));
     histo_PDFBoundingUp 	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_PDFUp"              , plotBaseNames[ic].Data()));
     histo_PDFBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_PDFDown"            , plotBaseNames[ic].Data()));
     histo_LepEffMBoundingUp	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_eff_mUp"        , plotBaseNames[ic].Data()));
@@ -220,8 +225,8 @@ int year, bool isBlinded = false
     histo_CorrWZZZDown		[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CorrWZZZDown"       , plotBaseNames[ic].Data()));
     histo_EWKCorrZHUp		[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_EWKZHCorrUp"        , plotBaseNames[ic].Data()));
     histo_EWKCorrZHDown 	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_EWKZHCorrDown"      , plotBaseNames[ic].Data()));
-    histo_JESBoundingUp 	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_jesUp"          , plotBaseNames[ic].Data()));
-    histo_JESBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_jesDown"        , plotBaseNames[ic].Data()));
+    histo_JESBoundingUp 	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_jes%dUp"        , plotBaseNames[ic].Data(),jetType));
+    histo_JESBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_jes%dDown"      , plotBaseNames[ic].Data(),jetType));
     histo_METBoundingUp 	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_metUp"          , plotBaseNames[ic].Data()));
     histo_METBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_metDown"        , plotBaseNames[ic].Data()));
   }
@@ -374,10 +379,10 @@ int year, bool isBlinded = false
 
       bool passZMass = TMath::Abs(mllZ-91.1876) < 15.0;
       bool passZMassSB = mllZ > 110 && mllZ < 200;
-      bool passMET    = vMet.Pt() > 100;
-      bool passMETMin     = vMet.Pt()     > 70 && (lepType != 2 || vMet.Pt()     > 100);
-      bool passMETMinUp   = vMetUp.Pt()   > 70 && (lepType != 2 || vMetUp.Pt()   > 100);
-      bool passMETMinDown = vMetDown.Pt() > 70 && (lepType != 2 || vMetDown.Pt() > 100);
+      bool passMETTight = vMet.Pt()     > 100;
+      bool passMET      = vMet.Pt()     >  70 && (lepType != 2 || vMet.Pt()     > 100);
+      bool passMETUp    = vMetUp.Pt()   >  70 && (lepType != 2 || vMetUp.Pt()   > 100);
+      bool passMETDown  = vMetDown.Pt() >  70 && (lepType != 2 || vMetDown.Pt() > 100);
       bool passPTLL   = dilep.Pt() > 60;
 
       double ptFrac     = TMath::Abs(dilep.Pt()-vMet.Pt()    )/dilep.Pt();
@@ -386,9 +391,9 @@ int year, bool isBlinded = false
       bool passPTFrac     = ptFrac     < 0.4;
       bool passPTFracUp   = ptFracUp   < 0.4;
       bool passPTFracDown = ptFracDown < 0.4;
-      bool passDPhiZMET     = dPhiDiLepMET     > 2.5;
-      bool passDPhiZMETUp   = dPhiDiLepMETUp   > 2.5;
-      bool passDPhiZMETDown = dPhiDiLepMETDown > 2.5;
+      bool passDPhiZMET     = dPhiDiLepMET     > 1.5; bool passDPhiZMETTight = dPhiDiLepMET > 2.8;
+      bool passDPhiZMETUp   = dPhiDiLepMETUp   > 1.5;
+      bool passDPhiZMETDown = dPhiDiLepMETDown > 1.5;
       bool passNjets     = thePandaFlat.nJot              <= 2;
       bool passNjetsUp   = thePandaFlat.nJot_JESTotalUp   <= 2;
       bool passNjetsDown = thePandaFlat.nJot_JESTotalDown <= 2;
@@ -404,37 +409,37 @@ int year, bool isBlinded = false
       bool passDPhiJetMETDown = dPhiJetMETDown == -1 || (dPhiJetMETDown >= 0.5 && TMath::Abs(thePandaFlat.jotEta[0]) < 2.5);
       bool passTauVeto = thePandaFlat.nTau == 0;
 
-      //                             0         1           2         3              4        5          6            7            8       9
-      bool passCutEvol[10] = {passPTLL,passZMass,passTauVeto,passNjets,passDPhiJetMET,passDRLL,passPTFrac,passDPhiZMET,passBtagVeto,passMET};
+      //                             0         1           2         3              4        5          6                 7            8            9
+      bool passCutEvol[10] = {passPTLL,passZMass,passTauVeto,passNjets,passDPhiJetMET,passDRLL,passPTFrac,passDPhiZMETTight,passBtagVeto,passMETTight};
       bool passCutEvolAll = true;
 
       bool passAllCuts[nSelTypes] = {                   
-      passZMass   && passNjets && passMETMin && passPTFrac && passDPhiZMET &&  passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,   // ZHSEL
-      passZMass   && passNjets && passMET    && passPTFrac && passDPhiZMET &&  passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,   // ZHTIGHTSEL
-      passZMass   && passNjets && passMET    && passPTFrac && passDPhiZMET && !passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,   // BTAGSEL
-      passZMass   &&		  passMET    && 					       passPTLL &&		     passTauVeto,               // ZLLSEL
-      passZMassSB && passNjets && passMET    && passPTFrac && passDPhiZMET &&  passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,   // WWSEL
-      passZMass   && passNjets &&                                                              passPTLL && passDPhiJetMET && passTauVeto && passDRLL    // PRESEL
+      passZMass   && passNjets && passMET      && passPTFrac && passDPhiZMET      &&  passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,   // ZHSEL
+      passZMass   && passNjets && passMETTight && passPTFrac && passDPhiZMETTight &&  passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,   // ZHTIGHTSEL
+      passZMass   && passNjets && passMETTight && passPTFrac && passDPhiZMETTight && !passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,   // BTAGSEL
+      passZMass   &&              passMETTight &&                                                     passPTLL &&                   passTauVeto,               // ZLLSEL
+      passZMassSB && passNjets && passMETTight && passPTFrac && passDPhiZMETTight &&  passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,   // WWSEL
+      passZMass   && passNjets &&                                                                     passPTLL && passDPhiJetMET && passTauVeto && passDRLL    // PRESEL
                                     };
 
       bool passNMinusOne[10] = {
-     		  passNjets && passMET && passPTFrac && passDPhiZMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,
-     passZMass &&	       passMET && passPTFrac && passDPhiZMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,
-     passZMass && passNjets &&  	  passPTFrac && passDPhiZMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,
-     passZMass && passNjets && passMET &&	        passDPhiZMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,
-     passZMass && passNjets && passMET && passPTFrac && 	        passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,
-     passZMass && passNjets && passMET && passPTFrac && passDPhiZMET && 		passPTLL && passDPhiJetMET && passTauVeto && passDRLL,
-     passZMass && passNjets && passMET && passPTFrac && passDPhiZMET && passBtagVeto && 	    passDPhiJetMET && passTauVeto && passDRLL,
-     passZMass && passNjets && passMET && passPTFrac && passDPhiZMET && passBtagVeto && passPTLL &&		      passTauVeto && passDRLL,
-     passZMass && passNjets && passMET && passPTFrac && passDPhiZMET && passBtagVeto && passPTLL && passDPhiJetMET                && passDRLL,
-     passZMass && passNjets && passMET && passPTFrac && passDPhiZMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto
+     		  passNjets && passMETTight && passPTFrac && passDPhiZMETTight && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,
+     passZMass &&	       passMETTight && passPTFrac && passDPhiZMETTight && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,
+     passZMass && passNjets &&  	       passPTFrac && passDPhiZMETTight && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,
+     passZMass && passNjets && passMETTight &&	             passDPhiZMETTight && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,
+     passZMass && passNjets && passMETTight && passPTFrac &&                      passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,
+     passZMass && passNjets && passMETTight && passPTFrac && passDPhiZMETTight &&                 passPTLL && passDPhiJetMET && passTauVeto && passDRLL,
+     passZMass && passNjets && passMETTight && passPTFrac && passDPhiZMETTight && passBtagVeto &&             passDPhiJetMET && passTauVeto && passDRLL,
+     passZMass && passNjets && passMETTight && passPTFrac && passDPhiZMETTight && passBtagVeto && passPTLL &&                   passTauVeto && passDRLL,
+     passZMass && passNjets && passMETTight && passPTFrac && passDPhiZMETTight && passBtagVeto && passPTLL && passDPhiJetMET                && passDRLL,
+     passZMass && passNjets && passMETTight && passPTFrac && passDPhiZMETTight && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto
                                     };
 
       bool passSystCuts[nSystTypes] = {                   
-      passZMass   && passNjetsUp   && passMETMinUp   && passPTFracUp   && passDPhiZMETUp   &&  passBtagVetoUp   && passPTLL && passDPhiJetMETUp   && passTauVeto && passDRLL,
-      passZMass   && passNjetsDown && passMETMinDown && passPTFracDown && passDPhiZMETDown &&  passBtagVetoDown && passPTLL && passDPhiJetMETDown && passTauVeto && passDRLL,
-      passZMass   && passNjets     && passMETMin     && passPTFrac     && passDPhiZMET     &&  passBtagVeto     && passPTLL && passDPhiJetMET     && passTauVeto && passDRLL,
-      passZMass   && passNjets     && passMETMin     && passPTFrac     && passDPhiZMET     &&  passBtagVeto     && passPTLL && passDPhiJetMET     && passTauVeto && passDRLL
+      passZMass   && passNjetsUp   && passMETUp   && passPTFracUp   && passDPhiZMETUp   &&  passBtagVetoUp   && passPTLL && passDPhiJetMETUp   && passTauVeto && passDRLL,
+      passZMass   && passNjetsDown && passMETDown && passPTFracDown && passDPhiZMETDown &&  passBtagVetoDown && passPTLL && passDPhiJetMETDown && passTauVeto && passDRLL,
+      passZMass   && passNjets     && passMET     && passPTFrac     && passDPhiZMET     &&  passBtagVeto     && passPTLL && passDPhiJetMET     && passTauVeto && passDRLL,
+      passZMass   && passNjets     && passMET     && passPTFrac     && passDPhiZMET     &&  passBtagVeto     && passPTLL && passDPhiJetMET     && passTauVeto && passDRLL
                                     };
 
       double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0; double npvWeight = 1.0;
@@ -524,11 +529,12 @@ int year, bool isBlinded = false
       //double MVAVar = TMath::Min(vMet.Pt(),xbins[nBinMVA]-0.0001); double MVAVarUp = TMath::Min(vMetUp.Pt(),xbins[nBinMVA]-0.0001); double MVAVarDown = TMath::Min(vMetDown.Pt(),xbins[nBinMVA]-0.0001);
       double MVAVar = TMath::Min(vMet.Pt(),metMax); double MVAVarUp = TMath::Min(vMetUp.Pt(),metMax); double MVAVarDown = TMath::Min(vMetDown.Pt(),metMax);
       if     (lepType == 2) {MVAVar = 0.5; MVAVarUp = 0.5; MVAVarDown = 0.5; }
-      else {
-        if(MVAVar     >= 100 && thePandaFlat.nJot              == 1) MVAVar     = MVAVar     + 1000;
-        if(MVAVarUp   >= 100 && thePandaFlat.nJot_JESTotalUp   == 1) MVAVarUp   = MVAVarUp   + 1000;
-        if(MVAVarDown >= 100 && thePandaFlat.nJot_JESTotalDown == 1) MVAVarDown = MVAVarDown + 1000;
-      }
+      if(thePandaFlat.nJot              == 1) MVAVar     = MVAVar     + 1000;
+      if(thePandaFlat.nJot_JESTotalUp   == 1) MVAVarUp   = MVAVarUp   + 1000;
+      if(thePandaFlat.nJot_JESTotalDown == 1) MVAVarDown = MVAVarDown + 1000;
+      if(dPhiDiLepMET     <= 2.8) MVAVar     = MVAVar     + 2000;
+      if(dPhiDiLepMETUp   <= 2.8) MVAVarUp   = MVAVarUp   + 2000;
+      if(dPhiDiLepMETDown <= 2.8) MVAVarDown = MVAVarDown + 2000;
       //else if(lepType == 1) {
       //  if(MVAVar     >= 100) MVAVar	 = MVAVar     + 1000;
       //  if(MVAVarUp   >= 100) MVAVarUp   = MVAVarUp   + 1000;
@@ -1093,20 +1099,29 @@ int year, bool isBlinded = false
   }
   newcardShape << Form("\n");
 
-  newcardShape << Form("CMS_jes    shape     ");
+  newcardShape << Form("CMS_jes0    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotNonPrompt || ic == kPlotDY) newcardShape << Form("- ");
-    else                                      newcardShape << Form("1.0 ");
+    if(ic == kPlotNonPrompt || ic == kPlotDY || ic == kPlotEM) newcardShape << Form("- ");
+    else                                                       newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
-  //newcardShape << Form("CMS_met    shape     ");
-  //for (int ic=0; ic<nPlotCategories; ic++){
-  //  if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-  //  newcardShape << Form("1.0 ");
-  //}
-  //newcardShape << Form("\n");
+  newcardShape << Form("CMS_jes1    shape     ");
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    if(ic == kPlotDY) newcardShape << Form("1.0 ");
+    else              newcardShape << Form("- ");
+  }
+  newcardShape << Form("\n");
+
+  newcardShape << Form("CMS_jes2    shape     ");
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    if(ic == kPlotEM) newcardShape << Form("1.0 ");
+    else              newcardShape << Form("- ");
+  }
+  newcardShape << Form("\n");
 
   if(useZZWZEWKUnc == true){
     newcardShape << Form("CMS_hinv_vvnorm_bin_%d  rateParam * %s 1 [0.1,10]\n",year,plotBaseNames[kPlotZZ].Data());

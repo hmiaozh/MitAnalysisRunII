@@ -21,6 +21,7 @@ double scaling[8] = {1,1,1,1,1,1,1,1};
 //double scaling[8] = {0.94,1.04,1.04,1.01,1.00,1.02,1.01,1.05}; // EWK/QCD/VV/VVV/WS/WG/DPS/Wjets
 
 bool isLogSpecial = false;
+bool isLogX = false;
 
 void eraselabel(TPad *p,Double_t h){
   p->cd();
@@ -114,6 +115,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
 
   if(show2D==false){
   if(isLogY == true) c1->SetLogy();
+  if(isLogX == true) c1->SetLogx();
   myPlot.Draw(ReBin);  // Can pass a rebin 
   CMS_lumi( c1, year, 12 );
   } else {
@@ -130,6 +132,8 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   pad1->cd();
   if(isLogY == true) c1->SetLogy();
   if(isLogY == true) pad1->SetLogy();
+  if(isLogX == true) c1->SetLogx();
+  if(isLogX == true) pad1->SetLogx();
   
   if(isLogSpecial) {c1->SetLogx();pad1->SetLogx();pad2->SetLogx();}
 
