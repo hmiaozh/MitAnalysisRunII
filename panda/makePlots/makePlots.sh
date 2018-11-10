@@ -71,20 +71,47 @@ elif [ $NSEL == 'zh' ]; then
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"ZH cut evolution","","done/histoZH_'${YEAR}'_45.root","zhmm_cutevol",1,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"ZH cut evolution","","done/histoZH_'${YEAR}'_46.root","zhee_cutevol",1,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"ZH cut evolution","","done/histoZH_'${YEAR}'_47.root","zhem_cutevol",1,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#eta_{j}","","done/histoZH_'${YEAR}'_48.root","zhmm_etaj",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#eta_{j}","","done/histoZH_'${YEAR}'_49.root","zhee_etaj",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#eta_{j}","","done/histoZH_'${YEAR}'_50.root","zhem_etaj",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{l,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_51.root","zhmm_dphilmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{l,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_52.root","zhee_dphilmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{l,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_53.root","zhem_dphilmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{l,track E_{T}^{miss}}","","done/histoZH_'${YEAR}'_54.root","zhmm_dphiltrkmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{l,track E_{T}^{miss}}","","done/histoZH_'${YEAR}'_55.root","zhee_dphiltrkmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{l,track E_{T}^{miss}}","","done/histoZH_'${YEAR}'_56.root","zhem_dphiltrkmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{track E_{T}^{miss},E_{T}^{miss}}","","done/histoZH_'${YEAR}'_57.root","zhmm_dphimettrkmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{track E_{T}^{miss},E_{T}^{miss}}","","done/histoZH_'${YEAR}'_58.root","zhee_dphimettrkmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{track E_{T}^{miss},E_{T}^{miss}}","","done/histoZH_'${YEAR}'_59.root","zhem_dphimettrkmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{l,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_48.root","zhmm_dphilmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{l,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_49.root","zhee_dphilmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{l,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_50.root","zhem_dphilmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{l,track E_{T}^{miss}}","","done/histoZH_'${YEAR}'_51.root","zhmm_dphiltrkmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{l,track E_{T}^{miss}}","","done/histoZH_'${YEAR}'_52.root","zhee_dphiltrkmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{l,track E_{T}^{miss}}","","done/histoZH_'${YEAR}'_53.root","zhem_dphiltrkmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{track E_{T}^{miss},E_{T}^{miss}}","","done/histoZH_'${YEAR}'_54.root","zhmm_dphimettrkmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{track E_{T}^{miss},E_{T}^{miss}}","","done/histoZH_'${YEAR}'_55.root","zhee_dphimettrkmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"#Delta#phi_{track E_{T}^{miss},E_{T}^{miss}}","","done/histoZH_'${YEAR}'_56.root","zhem_dphimettrkmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection E_{T}^{miss}","GeV","done/histoZH_'${YEAR}'_57.root","zhmm_presel_met",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection E_{T}^{miss}","GeV","done/histoZH_'${YEAR}'_58.root","zhee_presel_met",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection E_{T}^{miss}","GeV","done/histoZH_'${YEAR}'_59.root","zhem_presel_met",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection |p_{T}^{ll}-E_{T}^{miss}|/p_{T}^{ll}","","done/histoZH_'${YEAR}'_60.root","zhmm_presel_ptfrac",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection |p_{T}^{ll}-E_{T}^{miss}|/p_{T}^{ll}","","done/histoZH_'${YEAR}'_61.root","zhee_presel_ptfrac",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection |p_{T}^{ll}-E_{T}^{miss}|/p_{T}^{ll}","","done/histoZH_'${YEAR}'_62.root","zhem_presel_ptfrac",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection #Delta#phi_{ll,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_63.root","zhmm_presel_dphidilepmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,0)';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection #Delta#phi_{ll,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_64.root","zhee_presel_dphidilepmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,0)';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection #Delta#phi_{ll,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_65.root","zhem_presel_dphidilepmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,0)';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"ZH preselection N_{b jets}","","done/histoZH_'${YEAR}'_66.root","zhmm_presel_nbjets",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"ZH preselection N_{b jets}","","done/histoZH_'${YEAR}'_67.root","zhee_presel_nbjets",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"ZH preselection N_{b jets}","","done/histoZH_'${YEAR}'_68.root","zhem_presel_nbjets",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection #eta_{j}","","done/histoZH_'${YEAR}'_69.root","zhmm_nojetsel_etaj",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection #eta_{j}","","done/histoZH_'${YEAR}'_70.root","zhee_nojetsel_etaj",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection #eta_{j}","","done/histoZH_'${YEAR}'_71.root","zhem_nojetsel_etaj",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection N_{jets}","","done/histoZH_'${YEAR}'_72.root","zhmm_nojetsel_njets",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection N_{jets}","","done/histoZH_'${YEAR}'_73.root","zhee_nojetsel_njets",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection N_{jets}","","done/histoZH_'${YEAR}'_74.root","zhem_nojetsel_njets",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection N_{central jets}","","done/histoZH_'${YEAR}'_75.root","zhmm_nojetsel_ncjets",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection N_{central jets}","","done/histoZH_'${YEAR}'_76.root","zhee_nojetsel_ncjets",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection N_{central jets}","","done/histoZH_'${YEAR}'_77.root","zhem_nojetsel_ncjets",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection #Delta#phi_{ll,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_78.root","zhmm_nojetsel_dphidilepmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection #Delta#phi_{ll,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_79.root","zhee_nojetsel_dphidilepmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection #Delta#phi_{ll,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_80.root","zhem_nojetsel_dphidilepmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection #Delta#phi_{jet,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_81.root","zhmm_nojetsel_dphijetmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection #Delta#phi_{jet,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_82.root","zhee_nojetsel_dphijetmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection #Delta#phi_{jet,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_83.root","zhem_nojetsel_dphijetmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection |p_{T}^{ll}-E_{T}^{miss}|/p_{T}^{ll}","","done/histoZH_'${YEAR}'_84.root","zhmm_nojetsel_ptfrac",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection |p_{T}^{ll}-E_{T}^{miss}|/p_{T}^{ll}","","done/histoZH_'${YEAR}'_85.root","zhee_nojetsel_ptfrac",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,4,"No jet selection |p_{T}^{ll}-E_{T}^{miss}|/p_{T}^{ll}","","done/histoZH_'${YEAR}'_86.root","zhem_nojetsel_ptfrac",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
 
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"E_{T}^{miss} X 4 regions","","done/histoZH_'${YEAR}'_72.root","zh_card_met",1,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"E_{T}^{miss} X 4 regions","","done/histoZH_'${YEAR}'_87.root","zh_card_met",1,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
 
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH tight selection m_{T}","GeV","done/histoZH_'${YEAR}'_0.root","zhmm_zhtightsel_mt",1,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH selection E_{T}^{miss}","GeV","done/histoZH_'${YEAR}'_3.root","zhmm_zhsel_met",1,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
@@ -101,10 +128,6 @@ elif [ $NSEL == 'zh' ]; then
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"N-1 ZH selection #Delta#phi_{jet,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_36.root","zhmm_zhselnminus1_dphijetmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"N-1 ZH selection N_{#tau}","","done/histoZH_'${YEAR}'_39.root","zhmm_zhselnminus1_ntau",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,2,"N-1 ZH selection #Delta R_{ll}","","done/histoZH_'${YEAR}'_42.root","zhmm_zhselnminus1_drll",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection E_{T}^{miss}","GeV","done/histoZH_'${YEAR}'_60.root","zhmm_presel_met",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection |p_{T}^{ll}-E_{T}^{miss}|/p_{T}^{ll}","","done/histoZH_'${YEAR}'_63.root","zhmm_presel_ptfrac",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection #Delta#phi_{ll,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_66.root","zhmm_presel_dphidilepmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,0)';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"ZH preselection N_{b jets}","","done/histoZH_'${YEAR}'_69.root","zhmm_presel_nbjets",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
 
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH tight selection m_{T}","GeV","done/histoZH_'${YEAR}'_1.root","zhee_zhtightsel_mt",1,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH selection E_{T}^{miss}","GeV","done/histoZH_'${YEAR}'_4.root","zhee_zhsel_met",1,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
@@ -121,10 +144,6 @@ elif [ $NSEL == 'zh' ]; then
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"N-1 ZH selection #Delta#phi_{jet,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_37.root","zhee_zhselnminus1_dphijetmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"N-1 ZH selection N_{#tau}","","done/histoZH_'${YEAR}'_40.root","zhee_zhselnminus1_ntau",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,2,"N-1 ZH selection #Delta R_{ll}","","done/histoZH_'${YEAR}'_43.root","zhee_zhselnminus1_drll",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection E_{T}^{miss}","GeV","done/histoZH_'${YEAR}'_61.root","zhee_presel_met",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection |p_{T}^{ll}-E_{T}^{miss}|/p_{T}^{ll}","","done/histoZH_'${YEAR}'_64.root","zhee_presel_ptfrac",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection #Delta#phi_{ll,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_67.root","zhee_presel_dphidilepmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,0)';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"ZH preselection N_{b jets}","","done/histoZH_'${YEAR}'_70.root","zhee_presel_nbjets",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
 
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH tight selection m_{T}","GeV","done/histoZH_'${YEAR}'_2.root","zhem_zhtightsel_mt",1,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH selection E_{T}^{miss}","GeV","done/histoZH_'${YEAR}'_5.root","zhem_zhsel_met",1,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
@@ -141,10 +160,6 @@ elif [ $NSEL == 'zh' ]; then
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"N-1 ZH selection #Delta#phi_{jet,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_38.root","zhem_zhselnminus1_dphijetmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"N-1 ZH selection N_{#tau}","","done/histoZH_'${YEAR}'_41.root","zhem_zhselnminus1_ntau",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,2,"N-1 ZH selection #Delta R_{ll}","","done/histoZH_'${YEAR}'_44.root","zhem_zhselnminus1_drll",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection E_{T}^{miss}","GeV","done/histoZH_'${YEAR}'_62.root","zhem_presel_met",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection |p_{T}^{ll}-E_{T}^{miss}|/p_{T}^{ll}","","done/histoZH_'${YEAR}'_65.root","zhem_presel_ptfrac",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"ZH preselection #Delta#phi_{ll,E_{T}^{miss}}","","done/histoZH_'${YEAR}'_68.root","zhem_presel_dphidilepmet",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,0)';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"ZH preselection N_{b jets}","","done/histoZH_'${YEAR}'_71.root","zhem_presel_nbjets",0,'${YEAR}',"ZH(inv)",'${sf_dy}',0,"",1,'${APPLYSCALING}')';
 
 elif [ $NSEL == 'zhg' ]; then
   export sf_dy=1.0;
