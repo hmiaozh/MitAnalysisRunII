@@ -22,6 +22,7 @@ double scaling[8] = {1,1,1,1,1,1,1,1};
 
 bool isLogSpecial = false;
 bool isLogX = false;
+bool printRatios = false;
 
 void eraselabel(TPad *p,Double_t h){
   p->cd();
@@ -172,7 +173,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
       }
       hRatio->SetBinContent(i,pull);
       hRatio->SetBinError(i,1.0);
-      //printf("pull(%3d): da: %f pred: %f --> %f\n",i,hDataDivision ->GetBinContent(i),hTotalDivision->GetBinContent(i),pull);
+      if(printRatios) printf("pull(%3d): da: %f pred: %f --> %f\n",i,hDataDivision ->GetBinContent(i),hTotalDivision->GetBinContent(i),pull);
     }
     else {
       double N = g->GetY()[i-1];
@@ -194,7 +195,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
       hBand->SetBinContent(i,1);
       hBand->SetBinError(i,hTotalDivision->GetBinError(i)/hTotalDivision->GetBinContent(i));
       //if(pull<0.97||pull>1.03)
-      //printf("ratio(%3d): %f +/- %f --> da: %f +/- %f (%f) pred: %f +/- %f\n",i,pull,pullerr,hDataDivision ->GetBinContent(i),hDataDivision ->GetBinError(i),diff,hTotalDivision->GetBinContent(i),hTotalDivision->GetBinError(i));
+      if(printRatios) printf("ratio(%3d): %f +/- %f --> da: %f +/- %f (%f) pred: %f +/- %f\n",i,pull,pullerr,hDataDivision ->GetBinContent(i),hDataDivision ->GetBinError(i),diff,hTotalDivision->GetBinContent(i),hTotalDivision->GetBinError(i));
     }
   }
   if(showPulls) atributes(hRatio,XTitle.Data(),"Pull",units.Data());

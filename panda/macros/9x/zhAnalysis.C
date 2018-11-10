@@ -131,7 +131,7 @@ int year, bool isBlinded = false
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 88;
+  const int allPlots = 85;
   TH1D* histo[allPlots][nPlotCategories];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     if     (thePlot >=   0 && thePlot <=   2) {nBinPlot = 100; xminPlot =100.0; xmaxPlot = 500;}
@@ -156,7 +156,6 @@ int year, bool isBlinded = false
     else if(thePlot >=  69 && thePlot <=  71) {nBinPlot =100;  xminPlot = -5.0; xmaxPlot = 5.0;}
     else if(thePlot >=  72 && thePlot <=  77) {nBinPlot = 5;   xminPlot = -0.5; xmaxPlot = 4.5;}
     else if(thePlot >=  78 && thePlot <=  83) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = TMath::Pi();}
-    else if(thePlot >=  84 && thePlot <=  86) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 1;}
     TH1D* histos;
     if(thePlot == allPlots-1) histos = new TH1D("histos", "histos", nBinMVA, xbins);
     else                      histos = new TH1D("histos", "histos", nBinPlot, xminPlot, xmaxPlot);
@@ -472,6 +471,23 @@ int year, bool isBlinded = false
         else if(infileCat_[ifile] == kPlotDY && year == 2016 && lepType == 1) totalWeight = totalWeight * (1.15117-ptFrac*0.141021);
         //else if(infileCat_[ifile] == kPlotDY && year == 2017 && lepType == 0) totalWeight = totalWeight * (1.15115-ptFrac*0.391765);
         //else if(infileCat_[ifile] == kPlotDY && year == 2017 && lepType == 1) totalWeight = totalWeight * (1.07009-ptFrac*0.351426);
+
+        if     (infileCat_[ifile] == kPlotDY && year == 2017 && TMath::Abs(thePandaFlat.jotEta[0]) < 10 && lepType == 0) {
+	  if     (thePandaFlat.jotEta[0] >= -4.0 && thePandaFlat.jotEta[0] < -3.5) totalWeight = totalWeight * 2.35;
+	  else if(thePandaFlat.jotEta[0] >= -3.5 && thePandaFlat.jotEta[0] < -3.0) totalWeight = totalWeight * 2.35;
+	  else if(thePandaFlat.jotEta[0] >= -3.0 && thePandaFlat.jotEta[0] < -2.5) totalWeight = totalWeight * 3.30;
+	  else if(thePandaFlat.jotEta[0] >   2.5 && thePandaFlat.jotEta[0] <  3.0) totalWeight = totalWeight * 3.20;
+	  else if(thePandaFlat.jotEta[0] >   3.0 && thePandaFlat.jotEta[0] <  3.5) totalWeight = totalWeight * 3.40;
+	  else if(thePandaFlat.jotEta[0] >   3.5 && thePandaFlat.jotEta[0] <  4.0) totalWeight = totalWeight * 7.00;
+	}
+        else if(infileCat_[ifile] == kPlotDY && year == 2017 && TMath::Abs(thePandaFlat.jotEta[0]) < 10 && lepType == 1) {
+	  if     (thePandaFlat.jotEta[0] >= -4.0 && thePandaFlat.jotEta[0] < -3.5) totalWeight = totalWeight * 6.00;
+	  else if(thePandaFlat.jotEta[0] >= -3.5 && thePandaFlat.jotEta[0] < -3.0) totalWeight = totalWeight * 2.95;
+	  else if(thePandaFlat.jotEta[0] >= -3.0 && thePandaFlat.jotEta[0] < -2.5) totalWeight = totalWeight * 1.20;
+	  else if(thePandaFlat.jotEta[0] >   2.5 && thePandaFlat.jotEta[0] <  3.0) totalWeight = totalWeight * 2.25;
+	  else if(thePandaFlat.jotEta[0] >   3.0 && thePandaFlat.jotEta[0] <  3.5) totalWeight = totalWeight * 1.00;
+	  else if(thePandaFlat.jotEta[0] >   3.5 && thePandaFlat.jotEta[0] <  4.0) totalWeight = totalWeight * 2.00;
+	}
 	
 	if(infileCat_[ifile] == kPlotBSM && infileName_[ifile].Contains("qqZH") == true){
 	  sf_EWKZH     = thePandaFlat.sf_vh;
@@ -535,7 +551,6 @@ int year, bool isBlinded = false
 	    histo[lepType+ 75][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJet,4.4999),totalWeight);
 	    histo[lepType+ 78][theCategory]->Fill(dPhiDiLepMET,totalWeight);
 	    histo[lepType+ 81][theCategory]->Fill(dPhiJetMET,totalWeight);
-	    histo[lepType+ 84][theCategory]->Fill(TMath::Min(ptFrac,0.999),totalWeight);
       }
 
       //double MVAVar = TMath::Min(vMet.Pt(),xbins[nBinMVA]-0.0001); double MVAVarUp = TMath::Min(vMetUp.Pt(),xbins[nBinMVA]-0.0001); double MVAVarDown = TMath::Min(vMetDown.Pt(),xbins[nBinMVA]-0.0001);
