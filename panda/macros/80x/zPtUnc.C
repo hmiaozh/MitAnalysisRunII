@@ -84,23 +84,26 @@ if(ana == 0){  // ZLL analysis
 else if(ana == 1){  // Znunu analysis
   TH1D *hDIDilHighPtNN;   TH1D *hDIDilHighPtNN_PDF;   TH1D *hDIDilHighPtNN_QCD;    
 
-  hDIDilHighPtNN     = (TH1D*)_file->Get("hDDilHighPtNN");
+  hDIDilHighPtNN      = (TH1D*)_file->Get("hDDilHighPtNN");
+  hDIDilHighPtNoEWKNN = (TH1D*)_file->Get("hDDilHighPtNoEWKNN");
 
   hDIDilHighPtNN_PDF = (TH1D*)_file->Get("hDDilHighPtNN_PDF");
 
   hDIDilHighPtNN_QCD = (TH1D*)_file->Get("hDDilHighPtNN_QCD");
 
-  printf("(%d) NN pdf/qcd = %8.2f / %5.2f / %5.2f\n",0,
+  printf("(%d) NN pdf/qcd = %8.2f / %5.2f / %5.2f (noewk) %8.2f \n",0,
      1000*hDIDilHighPtNN->GetSumOfWeights()/6.,
      100*abs(hDIDilHighPtNN_PDF->GetSumOfWeights()/hDIDilHighPtNN->GetSumOfWeights()-1),
-     100*abs(hDIDilHighPtNN_QCD->GetSumOfWeights()/hDIDilHighPtNN->GetSumOfWeights()-1));
+     100*abs(hDIDilHighPtNN_QCD->GetSumOfWeights()/hDIDilHighPtNN->GetSumOfWeights()-1),
+     1000*hDIDilHighPtNoEWKNN->GetSumOfWeights()/6.);
 
   printf("---------------------------------------------------------------------\n");
   for(int i=1; i<=hDIDilHighPtNN->GetNbinsX(); i++){
-    printf("(%d) NN pdf/qcd = %8.2f / %5.2f / %5.2f\n",i,
+    printf("(%d) NN pdf/qcd = %8.2f / %5.2f / %5.2f (noewk) %8.2f\n",i,
        1000*hDIDilHighPtNN->GetBinContent(i)/6.,
        100*abs(hDIDilHighPtNN_PDF->GetBinContent(i)/hDIDilHighPtNN->GetBinContent(i)-1),
-       100*abs(hDIDilHighPtNN_QCD->GetBinContent(i)/hDIDilHighPtNN->GetBinContent(i)-1)); 
+       100*abs(hDIDilHighPtNN_QCD->GetBinContent(i)/hDIDilHighPtNN->GetBinContent(i)-1),
+       1000*hDIDilHighPtNoEWKNN->GetBinContent(i)/6.); 
   }
 
 }

@@ -21,6 +21,8 @@ TH1D *hDIDilHighPtIncMM[nFiles]; TH1D *hDIDilHighPtIncMM_PDF[nFiles];	TH1D *hDID
 TH1D *hDIDilHighPtIncEE[nFiles]; TH1D *hDIDilHighPtIncEE_PDF[nFiles];	TH1D *hDIDilHighPtIncEE_QCD[nFiles];	 
 TH1D *hDIDilHighPtMM[nFiles]; TH1D *hDIDilHighPtMM_PDF[nFiles];	TH1D *hDIDilHighPtMM_QCD[nFiles];	 
 TH1D *hDIDilHighPtEE[nFiles]; TH1D *hDIDilHighPtEE_PDF[nFiles];	TH1D *hDIDilHighPtEE_QCD[nFiles];	 
+TH1D *hDIDilHighPtNoEWKMM[nFiles];	    
+TH1D *hDIDilHighPtNoEWKEE[nFiles];	    
 TH1D *hDIDilRapMM[nFiles];    TH1D *hDIDilRapMM_PDF[nFiles];	TH1D *hDIDilRapMM_QCD[nFiles];   
 TH1D *hDIDilRapEE[nFiles];    TH1D *hDIDilRapEE_PDF[nFiles];	TH1D *hDIDilRapEE_QCD[nFiles];   
 TH1D *hDIDilPhiStarMM[nFiles];TH1D *hDIDilPhiStarMM_PDF[nFiles];TH1D *hDIDilPhiStarMM_QCD[nFiles];    
@@ -45,6 +47,8 @@ for(int i=0; i<nFiles; i++){
   hDIDilHighPtIncEE[i]   = (TH1D*)_file[i]->Get("hDDilHighPtIncEE"); hDIDilHighPtIncEE[i]->Sumw2(); hDIDilHighPtIncEE[i] ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
   hDIDilHighPtMM[i]   = (TH1D*)_file[i]->Get("hDDilHighPtMM"); hDIDilHighPtMM[i]->Sumw2(); hDIDilHighPtMM[i] ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
   hDIDilHighPtEE[i]   = (TH1D*)_file[i]->Get("hDDilHighPtEE"); hDIDilHighPtEE[i]->Sumw2(); hDIDilHighPtEE[i] ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
+  hDIDilHighPtNoEWKMM[i]   = (TH1D*)_file[i]->Get("hDDilHighPtNoEWKMM"); hDIDilHighPtNoEWKMM[i]->Sumw2(); hDIDilHighPtNoEWKMM[i] ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
+  hDIDilHighPtNoEWKEE[i]   = (TH1D*)_file[i]->Get("hDDilHighPtNoEWKEE"); hDIDilHighPtNoEWKEE[i]->Sumw2(); hDIDilHighPtNoEWKEE[i] ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
   hDIDilRapMM[i]      = (TH1D*)_file[i]->Get("hDDilRapMM");    hDIDilRapMM[i]->Sumw2();    hDIDilRapMM[i]    ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
   hDIDilRapEE[i]      = (TH1D*)_file[i]->Get("hDDilRapEE");    hDIDilRapEE[i]->Sumw2();    hDIDilRapEE[i]    ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
   hDIDilPhiStarMM[i]  = (TH1D*)_file[i]->Get("hDDilPhiStarMM");hDIDilPhiStarMM[i]->Sumw2();hDIDilPhiStarMM[i]->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());	    
@@ -109,6 +113,8 @@ TH1D *hDDilHighPtIncMM  = (TH1D*)hDIDilHighPtIncMM [0]->Clone();
 TH1D *hDDilHighPtIncEE  = (TH1D*)hDIDilHighPtIncEE [0]->Clone();
 TH1D *hDDilHighPtMM  = (TH1D*)hDIDilHighPtMM [0]->Clone();
 TH1D *hDDilHighPtEE  = (TH1D*)hDIDilHighPtEE [0]->Clone();
+TH1D *hDDilHighPtNoEWKMM  = (TH1D*)hDIDilHighPtNoEWKMM [0]->Clone();
+TH1D *hDDilHighPtNoEWKEE  = (TH1D*)hDIDilHighPtNoEWKEE [0]->Clone();
 TH1D *hDDilRapMM     = (TH1D*)hDIDilRapMM    [0]->Clone();
 TH1D *hDDilRapEE     = (TH1D*)hDIDilRapEE    [0]->Clone();
 TH1D *hDDilPhiStarMM = (TH1D*)hDIDilPhiStarMM[0]->Clone();
@@ -173,6 +179,8 @@ for(int i=1; i<nFiles; i++){
   hDDilHighPtIncEE	->Add(hDIDilHighPtIncEE [i]);   
   hDDilHighPtMM	->Add(hDIDilHighPtMM [i]);   
   hDDilHighPtEE	->Add(hDIDilHighPtEE [i]);   
+  hDDilHighPtNoEWKMM	->Add(hDIDilHighPtNoEWKMM [i]);   
+  hDDilHighPtNoEWKEE	->Add(hDIDilHighPtNoEWKEE [i]);   
   hDDilRapMM	->Add(hDIDilRapMM    [i]);  
   hDDilRapEE	->Add(hDIDilRapEE    [i]);  
   hDDilPhiStarMM->Add(hDIDilPhiStarMM[i]);  
@@ -238,6 +246,8 @@ TFile myOutputFile("genZpt_NLO.root","RECREATE");
   hDDilHighPtIncEE	->Write(); 
   hDDilHighPtMM	->Write(); 
   hDDilHighPtEE	->Write(); 
+  hDDilHighPtNoEWKMM	->Write(); 
+  hDDilHighPtNoEWKEE	->Write(); 
   hDDilRapMM	->Write();
   hDDilRapEE	->Write();
   hDDilPhiStarMM->Write();
@@ -314,6 +324,8 @@ TH1D *hDIDilHighPtIncMM[nFiles]; TH1D *hDIDilHighPtIncMM_PDF[nFiles];	TH1D *hDID
 TH1D *hDIDilHighPtIncEE[nFiles]; TH1D *hDIDilHighPtIncEE_PDF[nFiles];	TH1D *hDIDilHighPtIncEE_QCD[nFiles];	 
 TH1D *hDIDilHighPtMM[nFiles]; TH1D *hDIDilHighPtMM_PDF[nFiles];	TH1D *hDIDilHighPtMM_QCD[nFiles];	 
 TH1D *hDIDilHighPtEE[nFiles]; TH1D *hDIDilHighPtEE_PDF[nFiles];	TH1D *hDIDilHighPtEE_QCD[nFiles];	 
+TH1D *hDIDilHighPtNoEWKMM[nFiles];   
+TH1D *hDIDilHighPtNoEWKEE[nFiles];   
 TH1D *hDIDilRapMM[nFiles];    TH1D *hDIDilRapMM_PDF[nFiles];	TH1D *hDIDilRapMM_QCD[nFiles];   
 TH1D *hDIDilRapEE[nFiles];    TH1D *hDIDilRapEE_PDF[nFiles];	TH1D *hDIDilRapEE_QCD[nFiles];   
 TH1D *hDIDilPhiStarMM[nFiles];TH1D *hDIDilPhiStarMM_PDF[nFiles];TH1D *hDIDilPhiStarMM_QCD[nFiles];    
@@ -338,6 +350,8 @@ for(int i=0; i<nFiles; i++){
   hDIDilHighPtIncEE[i]   = (TH1D*)_file[i]->Get("hDDilHighPtIncEE"); hDIDilHighPtIncEE[i]->Sumw2(); hDIDilHighPtIncEE[i] ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
   hDIDilHighPtMM[i]   = (TH1D*)_file[i]->Get("hDDilHighPtMM"); hDIDilHighPtMM[i]->Sumw2(); hDIDilHighPtMM[i] ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
   hDIDilHighPtEE[i]   = (TH1D*)_file[i]->Get("hDDilHighPtEE"); hDIDilHighPtEE[i]->Sumw2(); hDIDilHighPtEE[i] ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
+  hDIDilHighPtNoEWKMM[i]   = (TH1D*)_file[i]->Get("hDDilHighPtNoEWKMM"); hDIDilHighPtNoEWKMM[i]->Sumw2(); hDIDilHighPtNoEWKMM[i] ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
+  hDIDilHighPtNoEWKEE[i]   = (TH1D*)_file[i]->Get("hDDilHighPtNoEWKEE"); hDIDilHighPtNoEWKEE[i]->Sumw2(); hDIDilHighPtNoEWKEE[i] ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
   hDIDilRapMM[i]      = (TH1D*)_file[i]->Get("hDDilRapMM");    hDIDilRapMM[i]->Sumw2();    hDIDilRapMM[i]    ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
   hDIDilRapEE[i]      = (TH1D*)_file[i]->Get("hDDilRapEE");    hDIDilRapEE[i]->Sumw2();    hDIDilRapEE[i]    ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
   hDIDilPhiStarMM[i]  = (TH1D*)_file[i]->Get("hDDilPhiStarMM");hDIDilPhiStarMM[i]->Sumw2();hDIDilPhiStarMM[i]->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());	  
@@ -402,6 +416,8 @@ TH1D *hDDilHighPtIncMM  = (TH1D*)hDIDilHighPtIncMM [0]->Clone();
 TH1D *hDDilHighPtIncEE  = (TH1D*)hDIDilHighPtIncEE [0]->Clone();
 TH1D *hDDilHighPtMM  = (TH1D*)hDIDilHighPtMM [0]->Clone();
 TH1D *hDDilHighPtEE  = (TH1D*)hDIDilHighPtEE [0]->Clone();
+TH1D *hDDilHighPtNoEWKMM  = (TH1D*)hDIDilHighPtNoEWKMM [0]->Clone();
+TH1D *hDDilHighPtNoEWKEE  = (TH1D*)hDIDilHighPtNoEWKEE [0]->Clone();
 TH1D *hDDilRapMM     = (TH1D*)hDIDilRapMM    [0]->Clone();
 TH1D *hDDilRapEE     = (TH1D*)hDIDilRapEE    [0]->Clone();
 TH1D *hDDilPhiStarMM = (TH1D*)hDIDilPhiStarMM[0]->Clone();
@@ -466,6 +482,8 @@ for(int i=1; i<nFiles; i++){
   hDDilHighPtIncEE	->Add(hDIDilHighPtIncEE [i]);   
   hDDilHighPtMM	->Add(hDIDilHighPtMM [i]);   
   hDDilHighPtEE	->Add(hDIDilHighPtEE [i]);   
+  hDDilHighPtNoEWKMM	->Add(hDIDilHighPtNoEWKMM [i]);   
+  hDDilHighPtNoEWKEE	->Add(hDIDilHighPtNoEWKEE [i]);   
   hDDilRapMM	->Add(hDIDilRapMM    [i]);  
   hDDilRapEE	->Add(hDIDilRapEE    [i]);  
   hDDilPhiStarMM->Add(hDIDilPhiStarMM[i]);  
@@ -531,6 +549,8 @@ TFile myOutputFile("genZpt_LO.root","RECREATE");
   hDDilHighPtIncEE	->Write(); 
   hDDilHighPtMM	->Write(); 
   hDDilHighPtEE	->Write(); 
+  hDDilHighPtNoEWKMM	->Write(); 
+  hDDilHighPtNoEWKEE	->Write(); 
   hDDilRapMM	->Write();
   hDDilRapEE	->Write();
   hDDilPhiStarMM->Write();
@@ -698,11 +718,13 @@ double xs[nFiles] = {3*54.8229,3*2.0705,3*0.2779,3*0.0261};
 TH1D *hDITotalMCWeight[nFiles];
 
 TH1D *hDIDilHighPtNN[nFiles]; TH1D *hDIDilHighPtNN_PDF[nFiles];	TH1D *hDIDilHighPtNN_QCD[nFiles];	 
+TH1D *hDIDilHighPtNoEWKNN[nFiles];	 
 
 for(int i=0; i<nFiles; i++){
   hDITotalMCWeight[i] = (TH1D*)_file[i]->Get("hDTotalMCWeight");	 
 
   hDIDilHighPtNN[i]   = (TH1D*)_file[i]->Get("hDDilHighPtNN"); hDIDilHighPtNN[i]->Sumw2(); hDIDilHighPtNN[i] ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
+  hDIDilHighPtNoEWKNN[i]   = (TH1D*)_file[i]->Get("hDDilHighPtNoEWKNN"); hDIDilHighPtNoEWKNN[i]->Sumw2(); hDIDilHighPtNoEWKNN[i] ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
 
   hDIDilHighPtNN_PDF[i]   = (TH1D*)_file[i]->Get("hDDilHighPtNN_PDF"); hDIDilHighPtNN_PDF[i] ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
 
@@ -710,6 +732,7 @@ for(int i=0; i<nFiles; i++){
 }
 
 TH1D *hDDilHighPtNN  = (TH1D*)hDIDilHighPtNN [0]->Clone();
+TH1D *hDDilHighPtNoEWKNN  = (TH1D*)hDIDilHighPtNoEWKNN [0]->Clone();
 
 TH1D *hDDilHighPtNN_PDF  = (TH1D*)hDIDilHighPtNN_PDF [0]->Clone();
 
@@ -717,50 +740,20 @@ TH1D *hDDilHighPtNN_QCD  = (TH1D*)hDIDilHighPtNN_QCD [0]->Clone();
 
 for(int i=1; i<nFiles; i++){
   hDDilHighPtNN	->Add(hDIDilHighPtNN [i]);   
+  hDDilHighPtNoEWKNN	->Add(hDIDilHighPtNoEWKNN [i]);   
 
   hDDilHighPtNN_PDF ->Add(hDIDilHighPtNN_PDF [i]);   
 
   hDDilHighPtNN_QCD ->Add(hDIDilHighPtNN_QCD [i]);   
 }
 
-TH1D *hDIDilHighPtMM[nFiles]; TH1D *hDIDilHighPtMM_PDF[nFiles];	TH1D *hDIDilHighPtMM_QCD[nFiles];	 
-
-for(int i=0; i<nFiles; i++){
-  hDITotalMCWeight[i] = (TH1D*)_file[i]->Get("hDTotalMCWeight");	 
-
-  hDIDilHighPtMM[i]   = (TH1D*)_file[i]->Get("hDDilHighPtMM"); hDIDilHighPtMM[i]->Sumw2(); hDIDilHighPtMM[i] ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
-
-  hDIDilHighPtMM_PDF[i]   = (TH1D*)_file[i]->Get("hDDilHighPtMM_PDF"); hDIDilHighPtMM_PDF[i] ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
-
-  hDIDilHighPtMM_QCD[i]   = (TH1D*)_file[i]->Get("hDDilHighPtMM_QCD"); hDIDilHighPtMM_QCD[i] ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
-}
-
-TH1D *hDDilHighPtMM  = (TH1D*)hDIDilHighPtMM [0]->Clone();
-
-TH1D *hDDilHighPtMM_PDF  = (TH1D*)hDIDilHighPtMM_PDF [0]->Clone();
-
-TH1D *hDDilHighPtMM_QCD  = (TH1D*)hDIDilHighPtMM_QCD [0]->Clone();
-
-for(int i=1; i<nFiles; i++){
-  hDDilHighPtMM	->Add(hDIDilHighPtMM [i]);   
-
-  hDDilHighPtMM_PDF ->Add(hDIDilHighPtMM_PDF [i]);   
-
-  hDDilHighPtMM_QCD ->Add(hDIDilHighPtMM_QCD [i]);   
-}
-
 TFile myOutputFile("genZNuNupt_NLO.root","RECREATE");
   hDDilHighPtNN	->Write(); 
+ hDDilHighPtNoEWKNN	->Write(); 
 
   hDDilHighPtNN_PDF ->Write(); 
 
   hDDilHighPtNN_QCD ->Write(); 
-
-  hDDilHighPtMM	->Write(); 
-
-  hDDilHighPtMM_PDF ->Write(); 
-
-  hDDilHighPtMM_QCD ->Write(); 
 myOutputFile.Close();
 
 } 
