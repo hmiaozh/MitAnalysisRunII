@@ -561,7 +561,7 @@ int year, TString WZName = "WZ3l_MG"
       else if(passBtagSelDown) dataCardSelDown = 1;
       else if(passWZSelDown)   dataCardSelDown = 2;
 
-      bool passSystCuts[nSystTypes] = { dataCardSelUp >= 0, dataCardSelDown >= 0, dataCardSel >= 0, dataCardSel >= 0};
+      bool passSystCuts[nSystTypes] = {dataCardSelUp >= 0, dataCardSelDown >= 0, dataCardSel >= 0, dataCardSel >= 0};
 
       double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0; double effWSUnc = 1.0;
       if(theCategory != kPlotData){
