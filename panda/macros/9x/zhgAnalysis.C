@@ -118,11 +118,13 @@ int year
   TH2D *fhDElectronVetoSF = (TH2D*)(fPhotonSF->Get("Scaling_Factors_HasPix_R9 Inclusive")); assert(fhDElectronVetoSF); fhDElectronVetoSF->SetDirectory(0);
   delete fPhotonSF;
 
-  const int nBinMVA = 14; Double_t xbins[nBinMVA+1] = {-10,   0,  75, 115, 150, 185,
-  							    200, 275, 315, 350, 385,
-							         475, 585,
-								 675, 785};
-  const int nBinMVA1D = 4; Double_t xbins1D[nBinMVA1D+1] = {0,  75, 115, 150, 185};
+  const int nBinMVA = 13; Double_t xbins[nBinMVA+1] = {-50,   0,  75, 115, 150, 200,
+  							         275, 315, 350, 400,
+							         600,
+								 800,
+								 1000,
+								 1200};
+  const int nBinMVA1D = 7; Double_t xbins1D[nBinMVA1D+1] = {0,  50, 75, 100, 125, 150, 175, 200};
 
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
@@ -568,10 +570,10 @@ int year
       bool passDPhiJetMETUp   = dPhiJetMETUp   == -1 || dPhiJetMETUp   >= 0.5;
       bool passDPhiJetMETDown = dPhiJetMETDown == -1 || dPhiJetMETDown >= 0.5;
       bool passTauVeto      = thePandaFlat.nTau == 0;
-      bool passMT = mTGMET < 185.0; bool passMTUp = mTGMETUp < 185.0; bool passMTDown = mTGMETDown < 185.0;
+      bool passMT = mTGMET < 200.0; bool passMTUp = mTGMETUp < 200.0; bool passMTDown = mTGMETDown < 200.0;
 
-      //                                                   0            1         2           3       4           5             6         7              8      9
-      bool passCutEvol[10] = {theMinSelType == 0 && passPTLL,passBtagVeto,passZMass,passTauVeto,passMET,passPTFracG,passDPhiZGMET,passNjets,passDPhiJetMET,passMT};
+      //                                                   0            1         2           3           4             5         6              7       8      9
+      bool passCutEvol[10] = {theMinSelType == 0 && passPTLL,passBtagVeto,passZMass,passTauVeto,passPTFracG,passDPhiZGMET,passNjets,passDPhiJetMET,passMET,passMT};
       bool passCutEvolAll = true;
 
       if(isDEBUG && vLoose.size() == 4) printf("DEBUG %d %d %d %d %d %d %d %d %d %d %d | %f %f\n",theMinSelType,passZMass,passNjets,passMET,passPTFracG,passDPhiZGMET,passBtagVeto,passPTLL,passDPhiJetMET,passTauVeto,passMT,mllmin,TMath::Abs(mllZ-91.1876));
@@ -602,20 +604,26 @@ int year
 
       bool passNMinusThree = theMinSelType == 0 && passZMass && passNjets && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT;
 
-      bool passZHGSel     = theMinSelType == 0 && passZMass && passNjets     && passMET     && passPTFracG     && passDPhiZGMET     && passBtagVeto     && passPTLL && passDPhiJetMET     && passTauVeto && passMT;
-      bool passZHGSelUp   = theMinSelType == 0 && passZMass && passNjetsUp   && passMETUp   && passPTFracGUp   && passDPhiZGMETUp   && passBtagVetoUp	&& passPTLL && passDPhiJetMETUp   && passTauVeto && passMTUp;
-      bool passZHGSelDown = theMinSelType == 0 && passZMass && passNjetsDown && passMETDown && passPTFracGDown && passDPhiZGMETDown && passBtagVetoDown && passPTLL && passDPhiJetMETDown && passTauVeto && passMTDown;
-      bool passWZSel      = theMinSelType == 1 && passZMass && passNjets     && passMET     && passPTFracG     && passDPhiZGMET     && passBtagVeto	&& passPTLL && passDPhiJetMET	  &&                passMT;
-      bool passWZSelUp    = theMinSelType == 1 && passZMass && passNjetsUp   && passMETUp   && passPTFracGUp   && passDPhiZGMETUp   && passBtagVetoUp	&& passPTLL && passDPhiJetMETUp   && 		    passMTUp;
-      bool passWZSelDown  = theMinSelType == 1 && passZMass && passNjetsDown && passMETDown && passPTFracGDown && passDPhiZGMETDown && passBtagVetoDown && passPTLL && passDPhiJetMETDown && 		    passMTDown;
+      bool passZHGSel     = theMinSelType == 0 && passZMass && passNjets     && passMET        && passPTFracG     && passDPhiZGMET     && passBtagVeto     && passPTLL && passDPhiJetMET     && passTauVeto && passMT;
+      bool passZHGSelUp   = theMinSelType == 0 && passZMass && passNjetsUp   && passMETUp      && passPTFracGUp   && passDPhiZGMETUp   && passBtagVetoUp   && passPTLL && passDPhiJetMETUp   && passTauVeto && passMTUp;
+      bool passZHGSelDown = theMinSelType == 0 && passZMass && passNjetsDown && passMETDown    && passPTFracGDown && passDPhiZGMETDown && passBtagVetoDown && passPTLL && passDPhiJetMETDown && passTauVeto && passMTDown;
+      bool passWZSel      = theMinSelType == 1 && passZMass && passNjets     && passMET        && passPTFracG     && passDPhiZGMET     && passBtagVeto     && passPTLL && passDPhiJetMET     &&                passMT;
+      bool passWZSelUp    = theMinSelType == 1 && passZMass && passNjetsUp   && passMETUp      && passPTFracGUp   && passDPhiZGMETUp   && passBtagVetoUp   && passPTLL && passDPhiJetMETUp   && 	       passMTUp;
+      bool passWZSelDown  = theMinSelType == 1 && passZMass && passNjetsDown && passMETDown    && passPTFracGDown && passDPhiZGMETDown && passBtagVetoDown && passPTLL && passDPhiJetMETDown && 	       passMTDown;
+      bool passZZSel      = theMinSelType == 3 && passZMass && passNjets     && passMETMin     && passPTFracG     && passDPhiZGMET     && passBtagVeto     && passPTLL && passDPhiJetMET     &&                passMT;
+      bool passZZSelUp    = theMinSelType == 3 && passZMass && passNjetsUp   && passMETMinUp   && passPTFracGUp   && passDPhiZGMETUp   && passBtagVetoUp   && passPTLL && passDPhiJetMETUp   &&                passMTUp;
+      bool passZZSelDown  = theMinSelType == 3 && passZMass && passNjetsDown && passMETMinDown && passPTFracGDown && passDPhiZGMETDown && passBtagVetoDown && passPTLL && passDPhiJetMETDown &&                passMTDown; 
 
       int dataCardSel = -1; int dataCardSelUp = -1;int dataCardSelDown = -1;
       if     (passZHGSel)     dataCardSel     = 0;
       else if(passWZSel)      dataCardSel     = 1;
+      else if(passZZSel)      dataCardSel     = 2;
       if     (passZHGSelUp)   dataCardSelUp   = 0;
       else if(passWZSelUp)    dataCardSelUp   = 1;
+      else if(passZZSelUp)    dataCardSelUp   = 2;
       if     (passZHGSelDown) dataCardSelDown = 0;
       else if(passWZSelDown)  dataCardSelDown = 1;
+      else if(passZZSelDown)  dataCardSelDown = 2;
 
       bool passSystCuts[nSystTypes] = {dataCardSelUp >= 0, dataCardSelDown >= 0, dataCardSel >= 0, dataCardSel >= 0};
  
@@ -638,12 +646,12 @@ int year
         if     (infileCat_[ifile] == kPlotWZ)                                                totalWeight = totalWeight * thePandaFlat.sf_wz;
 	else if(infileCat_[ifile] == kPlotZZ && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;
 
-        if(infileCat_[ifile] == kPlotVG) totalWeight = totalWeight * 0.65;
+        if(infileCat_[ifile] == kPlotVG) totalWeight = totalWeight * 0.80;
 
 	if(passPhoSel == true) {
           double photonSF = 1.0;
           if     (thePandaFlat.looseGenPho1PdgId == 1) {
-            photonSF = electronToPhotonSF(vPhoton.Pt()); photonSFUnc[1] = 1.10;
+            photonSF = electronToPhotonSF(vPhoton.Pt(), year); photonSFUnc[1] = 1.10;
 	  }
           else if(thePandaFlat.looseGenPho1PdgId == 3) {
             photonSF = effhDPhotonScaleFactor(vPhoton.Pt(), vPhoton.Eta(), "medium", fhDPhotonSF, fhDElectronVetoSF); photonSFUnc[0] = 1.02;
@@ -705,19 +713,20 @@ int year
         double MVAVar     = mTGMET;
         double MVAVarUp   = mTGMETUp;
         double MVAVarDown = mTGMETDown;
-        if(lepType == 2 && dataCardSel     == 0) {MVAVar     = -0.5;}
-        if(lepType == 2 && dataCardSelUp   == 0) {MVAVarUp   = -0.5;}
-        if(lepType == 2 && dataCardSelDown == 0) {MVAVarDown = -0.5;}
-
-        if(TMath::Abs(theG.Eta()) > 1.0){
-          MVAVar     = MVAVar     + 200.0;
-          MVAVarUp   = MVAVarUp   + 200.0;
-          MVAVarDown = MVAVarDown + 200.0;
-	}
-
-        if(dataCardSel     == 1) {MVAVar     = MVAVar	  + 400.0;}
-        if(dataCardSelUp   == 1) {MVAVarUp   = MVAVarUp   + 400.0;}
-        if(dataCardSelDown == 1) {MVAVarDown = MVAVarDown + 400.0;}
+        if     (lepType == 2 && theMinSelType == 0) {MVAVar = -0.5; MVAVarUp = -0.5; MVAVarDown = -0.5;}
+        else {
+          if(TMath::Abs(theG.Eta()) > 1.0){
+            MVAVar     = MVAVar     + 200.0;
+            MVAVarUp   = MVAVarUp   + 200.0;
+            MVAVarDown = MVAVarDown + 200.0;
+	  }
+          if(dataCardSel     == 1) {MVAVar     = MVAVar	    + 400.0;}
+          if(dataCardSelUp   == 1) {MVAVarUp   = MVAVarUp   + 400.0;}
+          if(dataCardSelDown == 1) {MVAVarDown = MVAVarDown + 400.0;}
+          if(dataCardSel     == 2) {MVAVar     = MVAVar	    + 800.0;}
+          if(dataCardSelUp   == 2) {MVAVarUp   = MVAVarUp   + 800.0;}
+          if(dataCardSelDown == 2) {MVAVarDown = MVAVarDown + 800.0;}
+        }
 
         // Avoid QCD scale weights that are anomalous high
         double maxQCDscale = (TMath::Abs(thePandaFlat.scale[0])+TMath::Abs(thePandaFlat.scale[1])+TMath::Abs(thePandaFlat.scale[2])+
@@ -1287,6 +1296,7 @@ int year
 
   newcardShape << Form("CMS_hzg_emnorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotEM].Data());
   newcardShape << Form("CMS_hzg_wznorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotWZ].Data());
+  newcardShape << Form("CMS_hzg_zznorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotZZ].Data());
 
   newcardShape.close();
 

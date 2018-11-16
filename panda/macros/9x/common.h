@@ -152,13 +152,20 @@ double nPUScaleFactor(TH1D *fhDPU, float npu){
   return fhDPU->GetBinContent(npuxbin);
 }
 
-double electronToPhotonSF(double pt){
-double effDA = (0.0052 + 1.114 * TMath::Power(pt + 122.84, -0.75));
-double effMD = (0.0050 + 2.922 * TMath::Power(pt +  87.23, -1.18));
+double electronToPhotonSF(double pt, int year){
+  double effDA = 1.0;
+  double effMC = 1.0;
+  if     (year == 2016) {
+     effDA = (0.0052 + 1.114 * TMath::Power(pt + 122.84, -0.75));
+     effMC = (0.0050 + 2.922 * TMath::Power(pt +  87.23, -1.18));
+  }
+  else if(year == 2017) {
+     effDA = (0.0256 + 3.000 * TMath::Power(pt + 10.78, -1.43));
+     effMC = (0.0068 + 0.029 * TMath::Power(pt - 22.10, -0.45));
+  }
+  //printf("electronToPhotonSF (pt=%.1f): %f/%f=%f\n",pt,effDA,effMC,effDA/effMC);
 
-//printf("electronToPhotonSF: %f/%f=%f\n",effDA,effMD,effDA/effMD);
-
-return effDA/effMD;
+  return effDA/effMC;
 }
 
 double effhDPhotonScaleFactor(double pt, double eta, TString type, TH2D *fhDIdSF, TH2D *fhDVetoSF){
