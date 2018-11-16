@@ -11,7 +11,13 @@ _file[3] = TFile::Open(Form("%s/DYJetsToLL_Pt250To400.root",inputFolder.Data()))
 _file[4] = TFile::Open(Form("%s/DYJetsToLL_Pt400To650.root",inputFolder.Data()));
 _file[5] = TFile::Open(Form("%s/DYJetsToLL_Pt650ToInf.root",inputFolder.Data()));
 
-double xs[6] = {5512.4400,374.6800,86.5200,3.3247,0.4491,0.0422};
+double xs[6] = {5512.4400*2075.14/2008.4,
+                 374.6800*2075.14/2008.4,
+		  86.5200*2075.14/2008.4,
+		   3.3247*2075.14/2008.4,
+		   0.4491*2075.14/2008.4,
+		   0.0422*2075.14/2008.4
+               };
 
 TH1D *hDITotalMCWeight[nFiles];
 
@@ -314,7 +320,9 @@ _file[0] = TFile::Open(Form("%s/DYJetsToLL_M-50_LO_Pt000To050.root", inputFolder
 _file[1] = TFile::Open(Form("%s/DYJetsToLL_M-50_LO_Pt100to200.root", inputFolder.Data()));
 _file[2] = TFile::Open(Form("%s/DYJetsToLL_M-50_LO_Pt200toInf.root",inputFolder.Data()));
 
-double xs[nFiles] = {2008.4*3,69.586,8.186};
+double xs[nFiles] = {2075.14*3,
+                       69.586*2075.14/2008.4,
+		        8.186*2075.14/2008.4};
 
 TH1D *hDITotalMCWeight[nFiles];
 
@@ -713,7 +721,10 @@ _file[1] = TFile::Open(Form("%s/ZtoNuNu_pt250to400.root",inputFolder.Data()));
 _file[2] = TFile::Open(Form("%s/ZtoNuNu_pt400to650.root",inputFolder.Data()));
 _file[3] = TFile::Open(Form("%s/ZtoNuNu_pt650toinf.root",inputFolder.Data()));
 
-double xs[nFiles] = {3*54.8229,3*2.0705,3*0.2779,3*0.0261};
+double xs[nFiles] = {3*54.8229*2075.14/2008.4,
+                      3*2.0705*2075.14/2008.4,
+		      3*0.2779*2075.14/2008.4,
+		      3*0.0261*2075.14/2008.4};
 
 TH1D *hDITotalMCWeight[nFiles];
 

@@ -21,7 +21,7 @@
 const bool isSingleLeptonAna = true;
 const double mcPrescale = 1;
 
-void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 0, double dileptonPtCut = 0, bool isMIT = true)
+void pandaAnalysis(int whichDY, int whichAnaFlow = 0, unsigned int period = 0, double dileptonPtCut = 0, bool isMIT = true)
 {
 
   double lumi = 35.8;
@@ -292,7 +292,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
   const int elBinxX = scalefactors_Medium_Electron_stat_error_hi->GetNbinsX();
   const int elBinxY = scalefactors_Medium_Electron_stat_error_hi->GetNbinsY();
   const int nElSFBins = elBinxX*elBinxY;
-  const int nRecNuisances = 3;
+  const int nRecNuisances = 4;
   const int nEffNuisances = 8+nElSFBins;
   const int nMomNuisances = 5;
 
@@ -1202,6 +1202,9 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
 	  the_eta_sf_unc[1][1] = recoEfficiencies_Electron_Unc_Sig->GetBinContent(binUncEta);
 	  the_eta_sf_unc[1][2] = recoEfficiencies_Electron_Unc_Bck->GetBinContent(binUncEta);
         }
+        the_eta_sf_unc[0][3] = 0.0;
+        the_eta_sf_unc[1][3] = 0.0;
+        if(thePandaFlat.sf_l1PrefireUnc > 0 && thePandaFlat.sf_l1Prefire > 0) the_eta_sf_unc[0][3] = TMath::Min(TMath::Abs(thePandaFlat.sf_l1PrefireUnc/thePandaFlat.sf_l1Prefire - 1.0),0.999);
 
         if(isSingleLeptonAna == false){
 	  the_trigger_sf = trigger_sf(trgEff,thePandaFlat.looseLep1Pt,thePandaFlat.looseLep1Eta,thePandaFlat.looseLep1PdgId,thePandaFlat.looseLep2Pt,thePandaFlat.looseLep2Eta,thePandaFlat.looseLep2PdgId);
@@ -1346,7 +1349,7 @@ void pandaAnalysis(int whichDY = 0, int whichAnaFlow = 0, unsigned int period = 
         totalWeight = thePandaFlat.normalizedWeight * lumi * puWeight *
 		      the_eta_sf[0] * sfWeightLepEff[0] *
 		      the_eta_sf[1] * sfWeightLepEff[1] *
-		      the_trigger_sf * theMCPrescale * zPos_SF * weightEWK;
+		      the_trigger_sf * theMCPrescale * zPos_SF * weightEWK * thePandaFlat.sf_l1Prefire;
 
       }
       // End lepton selection efficiency corrections and uncertainties

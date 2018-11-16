@@ -57,7 +57,7 @@ double topNorm[3]  = {0.81,0.95,1.00};
 double topNormE[3] = {0.09,0.11,0.01};
 
 void wwAnalysis(
- unsigned int nJetsType = 0,
+ unsigned int nJetsType,
  int theControlRegion = 0,
  int shapeAnaType = 0,
  TString typeLepSel = "defaultTight",

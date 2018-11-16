@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Thu Mar  8 04:14:21 2018 by ROOT version 6.06/01
+// Tue Nov 13 12:58:34 2018 by ROOT version 6.06/01
 // from TTree events/events
 // found on file: /data/t3home000/ceballos/panda/v_001_0/qqZZ.root
 //////////////////////////////////////////////////////////
@@ -166,6 +166,8 @@ public :
    Float_t         loosePho1Pt;
    Float_t         loosePho1Eta;
    Float_t         loosePho1Phi;
+   Float_t         sf_l1Prefire;
+   Float_t         sf_l1PrefireUnc;
    Float_t         sf_pu;
    Float_t         sf_puUp;
    Float_t         sf_puDown;
@@ -323,6 +325,8 @@ public :
    TBranch        *b_loosePho1Pt;   //!
    TBranch        *b_loosePho1Eta;   //!
    TBranch        *b_loosePho1Phi;   //!
+   TBranch        *b_sf_l1Prefire;   //!
+   TBranch        *b_sf_l1PrefireUnc;   //!
    TBranch        *b_sf_pu;   //!
    TBranch        *b_sf_puUp;   //!
    TBranch        *b_sf_puDown;   //!
@@ -549,6 +553,8 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("loosePho1Pt", &loosePho1Pt, &b_loosePho1Pt);
    fChain->SetBranchAddress("loosePho1Eta", &loosePho1Eta, &b_loosePho1Eta);
    fChain->SetBranchAddress("loosePho1Phi", &loosePho1Phi, &b_loosePho1Phi);
+   fChain->SetBranchAddress("sf_l1Prefire", &sf_l1Prefire, &b_sf_l1Prefire);
+   fChain->SetBranchAddress("sf_l1PrefireUnc", &sf_l1PrefireUnc, &b_sf_l1PrefireUnc);
    fChain->SetBranchAddress("sf_pu", &sf_pu, &b_sf_pu);
    fChain->SetBranchAddress("sf_puUp", &sf_puUp, &b_sf_puUp);
    fChain->SetBranchAddress("sf_puDown", &sf_puDown, &b_sf_puDown);

@@ -15,7 +15,7 @@
 #include "MitAnalysisRunII/panda/macros/80x/common.h"
 
 void TnPAnalysis(
-int whichDY = 3, 
+int whichDY, 
 int whichAnaFlow = 0,
 unsigned int period = 0,
 bool useZRap = true
@@ -76,7 +76,7 @@ bool useZRap = true
   TH1D *fhDPU     = (TH1D*)(fPUFile->Get("puWeights"));     assert(fhDPU);    fhDPU    ->SetDirectory(0);
   delete fPUFile;
 
-  TFile *fLepton_Eta_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_eta_sf_37ifb_period%d.root",period));
+  TFile *fLepton_Eta_SF = fLepton_Eta_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_eta_sf_37ifb_period%d.root",period));
   TH1D* scalefactors_Muon_Eta = (TH1D*)fLepton_Eta_SF->Get("scalefactors_Muon_Eta"); scalefactors_Muon_Eta->SetDirectory(0);
   TH1D* scalefactors_Electron_Eta = (TH1D*)fLepton_Eta_SF->Get("scalefactors_Electron_Eta"); scalefactors_Electron_Eta->SetDirectory(0);
   fLepton_Eta_SF->Close();
@@ -237,7 +237,7 @@ bool useZRap = true
 
         totalWeight = thePandaFlat.normalizedWeight * lumi * puWeight *
 		      the_eta_sf[0] * sfWeightLepEff[0] *
-		      the_eta_sf[1] * sfWeightLepEff[1];
+		      the_eta_sf[1] * sfWeightLepEff[1] * thePandaFlat.sf_l1Prefire;
 
         if(theCategory == 2) totalWeight = -1.0 * totalWeight;
       }

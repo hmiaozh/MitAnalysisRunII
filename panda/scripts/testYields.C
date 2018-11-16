@@ -1,10 +1,14 @@
-void testYields(int year=2017, TString selectName="HeavyFlavorCR_ZptBin2"){
+void testYields(int year=2017, TString selectName="HeavyFlavorCR_ZptBin2", bool isW = false){
   TString inputDirAll;
   TString type1="plots_ZmmH" + selectName;
   TString type2="plots_ZeeH" + selectName;
+  if(isW){
+    type1="plots_WmnH" + selectName;
+    type2="plots_WenH" + selectName;
+  }
   vector<TString> samples;
-  if(year==2016){
-    inputDirAll = "MitVHBBAnalysis/datacards/zhbb_frozen/testcondor2016";
+  if     (year==2016 && !isW){
+    inputDirAll = "MitVHBBAnalysis/datacards/zhbb/testcondor2016";
     samples.push_back("LeptonPDSalad2016"        );
     samples.push_back("WZTo2L2Q"                 );	  
     samples.push_back("ZZTo2L2Q"                 );	  
@@ -34,7 +38,7 @@ void testYields(int year=2017, TString selectName="HeavyFlavorCR_ZptBin2"){
     samples.push_back("ZllHbb_mH125"             );	  
     samples.push_back("ggZllHbb_mH125"           );	  
   } 
-  else if(year==2017){
+  else if(year==2017 && !isW){
     inputDirAll = "MitVHBBAnalysis/datacards/zhbb/testcondor2017";
     samples.push_back("LeptonPDSalad2017"	 );
     samples.push_back("WZTo2L2Q"		 );
@@ -60,6 +64,97 @@ void testYields(int year=2017, TString selectName="HeavyFlavorCR_ZptBin2"){
     samples.push_back("ZJets_m4_ht600toinf_CP5"  );
     samples.push_back("ZllHbb_mH125"	         );
     samples.push_back("ggZllHbb_mH125"	         );
+  }
+  else if(year==2016 && isW){
+    inputDirAll = "MitVHBBAnalysis/datacards/whbb/testcondor2016";
+    samples.push_back("LeptonPDSalad2016"         );
+    samples.push_back("WZTo1L1Nu2Q"		  );	   
+    samples.push_back("WZTo1L3Nu"		  );	   
+    samples.push_back("WZTo2L2Q"		  );
+    samples.push_back("ZZTo2L2Nu"		  );	   
+    samples.push_back("ZZTo2L2Q"		  );	   
+    samples.push_back("ZZTo4Q"  		  );	   
+    samples.push_back("WWToLNuQQ"		  );
+    samples.push_back("TTbar_Powheg"		  );	   
+    samples.push_back("SingleTop_tT"		  );	   
+    samples.push_back("SingleTop_tTbar" 	  );	   
+    samples.push_back("SingleTop_tW"		  );	   
+    samples.push_back("SingleTop_tbarW" 	  );	   
+    samples.push_back("WJets_bHadrons_pt100to200" );	   
+    samples.push_back("WJets_bHadrons_pt200toinf" );	   
+    samples.push_back("WJets_bQuarks_pt100to200"  );	   
+    samples.push_back("WJets_bQuarks_pt200toinf"  );	   
+    samples.push_back("WJets_ht100to200"	  );	   
+    samples.push_back("WJets_ht200to400"	  );	   
+    samples.push_back("WJets_ht400to600"	  );	   
+    samples.push_back("WJets_ht600to800"	  );	   
+    samples.push_back("WJets_ht800to1200"	  );	   
+    samples.push_back("WJets_ht1200to2500"	  );	   
+    samples.push_back("WJets_ht2500toinf"	  );	   
+    samples.push_back("ZJets_bHadrons_pt100to200" );	   
+    samples.push_back("ZJets_bHadrons_pt200toinf" );
+    samples.push_back("ZJets_bQuarks_pt100to200"  );	   
+    samples.push_back("ZJets_bQuarks_pt200toinf"  );	   
+    samples.push_back("ZJets_ht100to200"	  );	   
+    samples.push_back("ZJets_ht200to400"	  );	   
+    samples.push_back("ZJets_ht400to600"	  );	   
+    samples.push_back("ZJets_ht600to800"	  );	   
+    samples.push_back("ZJets_ht800to1200"	  );	   
+    samples.push_back("ZJets_ht1200to2500"	  );	   
+    samples.push_back("ZJets_ht2500toinf"	  );	   
+    samples.push_back("WmLNuHbb_mH125"  	  );	   
+    samples.push_back("WpLNuHbb_mH125"  	  );	   
+    samples.push_back("ZllHbb_mH125"		  );	   
+    samples.push_back("ggZllHbb_mH125"  	  );	   
+  } 
+  else if(year==2017 && isW){
+    inputDirAll = "MitVHBBAnalysis/datacards/whbb/testcondor2017";
+    samples.push_back("LeptonPDSalad2017"	 );
+    samples.push_back("WWTo1L1Nu2Q_AMC" 	 );
+    samples.push_back("WZTo1L1Nu2Q"		 );
+    samples.push_back("WZTo2L2Q"		 );
+    samples.push_back("ZZTo2L2Q"		 );
+    samples.push_back("QCD_ht1000to1500_CP5"	 );
+    samples.push_back("QCD_ht1500to2000_CP5"	 ); 
+    samples.push_back("QCD_ht2000toinf_CP5"	 );
+    samples.push_back("QCD_ht200to300_CP5"	 );
+    samples.push_back("QCD_ht300to500_CP5"	 );
+    samples.push_back("QCD_ht500to700_CP5"	 );
+    samples.push_back("QCD_ht700to1000_CP5"	 );
+    samples.push_back("SingleTop_tT_CP5"	 );
+    samples.push_back("SingleTop_tTbar_CP5"	 );
+    samples.push_back("SingleTop_tW_CP5"	 );
+    samples.push_back("SingleTop_tbarW_CP5"	 );
+    samples.push_back("TTTo2L2Nu_CP5"		 );
+    samples.push_back("TTToSemiLeptonic_CP5"	 );
+    samples.push_back("TTToHadronic_CP5"	 );
+    samples.push_back("WJets_bHadrons_pt100to200");
+    samples.push_back("WJets_bHadrons_pt200toinf"); 
+    samples.push_back("WJets_ht100to200_CP5" 	 );
+    samples.push_back("WJets_ht200to400_CP5" 	 );
+    samples.push_back("WJets_ht400to600_CP5" 	 );
+    samples.push_back("WJets_ht600to800_CP5" 	 );
+    samples.push_back("WJets_ht800to1200_CP5"	 );
+    samples.push_back("WJets_ht1200to2500_CP5"	 );
+    samples.push_back("ZJets_bQuarks_incl"	 );
+    samples.push_back("ZJets_bHadrons_pt100to200");
+    samples.push_back("ZJets_bHadrons_pt200toinf");
+    samples.push_back("ZJets_ht100to200_CP5" 	 );
+    samples.push_back("ZJets_ht200to400_CP5" 	 );
+    samples.push_back("ZJets_ht400to600_CP5" 	 );
+    samples.push_back("ZJets_ht600to800_CP5" 	 );
+    samples.push_back("ZJets_ht800to1200_CP5"	 );
+    samples.push_back("ZJets_ht1200to2500_CP5"	 );
+    samples.push_back("ZJets_ht2500toinf_CP5"	 );
+    samples.push_back("ZJets_m4_ht70to100_CP5"   ); 
+    samples.push_back("ZJets_m4_ht100to200_CP5"  );
+    samples.push_back("ZJets_m4_ht200to400_CP5"  );
+    samples.push_back("ZJets_m4_ht400to600_CP5"  );
+    samples.push_back("ZJets_m4_ht600toinf_CP5"  );
+    samples.push_back("WmLNuHbb_mH125"  	 );
+    samples.push_back("WpLNuHbb_mH125"  	 );
+    samples.push_back("ZllHbb_mH125"		 );
+    samples.push_back("ggZllHbb_mH125"  	 );
   }
   else {
     return;
