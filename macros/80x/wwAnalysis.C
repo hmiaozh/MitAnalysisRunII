@@ -80,8 +80,17 @@ void wwAnalysis(
 
   double maxUnc = 1.30;
   double minUnc = 0.70;
-  const int nGenBins = 10;
-  const int nRecBins = 20;
+  const int nGenBins = 16;
+  const int nRecBins = 29;
+  double jetPtCut = 30.0; double jetEtaCut = 4.5; double ptLMinCut = 20.0;
+
+  if	 (shapeAnaType == 7) jetPtCut = 30.0;
+  else if(shapeAnaType == 8) jetPtCut = 25.0;
+  else if(shapeAnaType == 9) jetPtCut = 35.0;
+
+  if(shapeAnaType == 10) jetEtaCut =  2.4;
+
+  if(shapeAnaType >= 1) ptLMinCut =  20.0;
 
   //*******************************************************
   //Input Files
@@ -144,7 +153,7 @@ void wwAnalysis(
   infilenamev.push_back(Form("%sTTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.root",filesPathMC.Data()));           infilecatv.push_back(6);
   infilenamev.push_back(Form("%stZq_ll_4f_13TeV-amcatnlo-pythia8.root",filesPathMC.Data()));                                  infilecatv.push_back(6);
 
-  infilenamev.push_back(Form("%sWGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root",filesPathMC.Data()));                  infilecatv.push_back(7);
+  infilenamev.push_back(Form("%sWGToLNuG_01J_5f_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root",filesPathMC.Data()));           infilecatv.push_back(7);
   infilenamev.push_back(Form("%sZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root",filesPathMC.Data()));                   infilecatv.push_back(7);
   
   //if(applyGStarVeto == true) {
@@ -304,47 +313,120 @@ void wwAnalysis(
   fhDWWPtRatio_resumdown->SetDirectory(0);
   delete fWWPtRatio;
 
+  const int nBinWWMLL = 25;
+  Float_t xbinsWWMLL[nBinWWMLL+1];
+    xbinsWWMLL[ 0] =  20;      xbinsWWMLL[ 1] =  37;      xbinsWWMLL[ 2] =  55;      xbinsWWMLL[ 3] =  65;      xbinsWWMLL[ 4] =  75;
+    xbinsWWMLL[ 5] =  80;      xbinsWWMLL[ 6] =  85;      xbinsWWMLL[ 7] =  90;      xbinsWWMLL[ 8] =  95;      xbinsWWMLL[ 9] = 102; 
+    xbinsWWMLL[10] = 110;      xbinsWWMLL[11] = 117;      xbinsWWMLL[12] = 125;      xbinsWWMLL[13] = 132;      xbinsWWMLL[14] = 140;
+    xbinsWWMLL[15] = 150;      xbinsWWMLL[16] = 160;      xbinsWWMLL[17] = 172;      xbinsWWMLL[18] = 185;      xbinsWWMLL[19] = 202; 
+    xbinsWWMLL[20] = 220;      xbinsWWMLL[21] = 250;      xbinsWWMLL[22] = 280;      xbinsWWMLL[23] = 380;      xbinsWWMLL[24] = 600;
+    xbinsWWMLL[25] =1500;
+
+  const int nBinWWDPHILL = 18;
+  Float_t xbinsWWDPHILL[nBinWWDPHILL+1];
+    xbinsWWDPHILL[ 0] =   0*TMath::Pi()/180.;      xbinsWWDPHILL[ 1] =  10*TMath::Pi()/180.;      xbinsWWDPHILL[ 2] =  20*TMath::Pi()/180.;      xbinsWWDPHILL[ 3] =  30*TMath::Pi()/180.;      xbinsWWDPHILL[ 4] =  40*TMath::Pi()/180.;
+    xbinsWWDPHILL[ 5] =  50*TMath::Pi()/180.;      xbinsWWDPHILL[ 6] =  60*TMath::Pi()/180.;      xbinsWWDPHILL[ 7] =  70*TMath::Pi()/180.;      xbinsWWDPHILL[ 8] =  80*TMath::Pi()/180.;      xbinsWWDPHILL[ 9] =  90*TMath::Pi()/180.; 
+    xbinsWWDPHILL[10] = 100*TMath::Pi()/180.;      xbinsWWDPHILL[11] = 110*TMath::Pi()/180.;      xbinsWWDPHILL[12] = 120*TMath::Pi()/180.;      xbinsWWDPHILL[13] = 130*TMath::Pi()/180.;      xbinsWWDPHILL[14] = 140*TMath::Pi()/180.;
+    xbinsWWDPHILL[15] = 150*TMath::Pi()/180.;      xbinsWWDPHILL[16] = 160*TMath::Pi()/180.;      xbinsWWDPHILL[17] = 170*TMath::Pi()/180.;      xbinsWWDPHILL[18] = 180*TMath::Pi()/180.;
+
+  const int nBinWWPTL1 = 28;
+  Float_t xbinsWWPTL1[nBinWWPTL1+1];
+    xbinsWWPTL1[ 0] =  25;      xbinsWWPTL1[ 1] =  32;      xbinsWWPTL1[ 2] =  40;      xbinsWWPTL1[ 3] =  45;      xbinsWWPTL1[ 4] =  50;
+    xbinsWWPTL1[ 5] =  55;      xbinsWWPTL1[ 6] =  60;      xbinsWWPTL1[ 7] =  65;      xbinsWWPTL1[ 8] =  70;      xbinsWWPTL1[ 9] =  75; 
+    xbinsWWPTL1[10] =  80;      xbinsWWPTL1[11] =  85;      xbinsWWPTL1[12] =  90;      xbinsWWPTL1[13] =  95;      xbinsWWPTL1[14] = 100;
+    xbinsWWPTL1[15] = 105;      xbinsWWPTL1[16] = 110;      xbinsWWPTL1[17] = 120;      xbinsWWPTL1[18] = 130;      xbinsWWPTL1[19] = 140; 
+    xbinsWWPTL1[20] = 150;      xbinsWWPTL1[21] = 162;      xbinsWWPTL1[22] = 175;      xbinsWWPTL1[23] = 197;      xbinsWWPTL1[24] = 220;
+    xbinsWWPTL1[25] = 260;      xbinsWWPTL1[26] = 300;      xbinsWWPTL1[27] = 350;      xbinsWWPTL1[28] = 400;
+
+  const int nBinWWPTL2 = 12;
+  Float_t xbinsWWPTL2[nBinWWPTL2+1];
+    xbinsWWPTL2[ 0] =  20;      xbinsWWPTL2[ 1] =  25;      xbinsWWPTL2[ 2] =  30;      xbinsWWPTL2[ 3] =  35;      xbinsWWPTL2[ 4] =  40;    
+    xbinsWWPTL2[ 5] =  45;      xbinsWWPTL2[ 6] =  50;      xbinsWWPTL2[ 7] =  62;      xbinsWWPTL2[ 8] =  75;      xbinsWWPTL2[ 9] =  87;
+    xbinsWWPTL2[10] = 100;      xbinsWWPTL2[11] = 125;      xbinsWWPTL2[12] = 150;
+
+  const int nBinWWPTLL = 20;
+  Float_t xbinsWWPTLL[nBinWWPTLL+1];
+    xbinsWWPTLL[ 0] =  30;      xbinsWWPTLL[ 1] =  35;      xbinsWWPTLL[ 2] =  40;      xbinsWWPTLL[ 3] =  45;      xbinsWWPTLL[ 4] =  50;
+    xbinsWWPTLL[ 5] =  55;      xbinsWWPTLL[ 6] =  60;      xbinsWWPTLL[ 7] =  65;      xbinsWWPTLL[ 8] =  70;      xbinsWWPTLL[ 9] =  75; 
+    xbinsWWPTLL[10] =  80;      xbinsWWPTLL[11] =  85;      xbinsWWPTLL[12] =  90;      xbinsWWPTLL[13] =  97;      xbinsWWPTLL[14] = 105;
+    xbinsWWPTLL[15] = 122;      xbinsWWPTLL[16] = 140;      xbinsWWPTLL[17] = 170;      xbinsWWPTLL[18] = 200;      xbinsWWPTLL[19] = 250; 
+    xbinsWWPTLL[20] = 300;
+
   TString ECMsb  = "13TeV2016";
-  Float_t xGenbins[nGenBins+1] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-  Float_t xRecbins[nRecBins+1] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
-  if     (shapeAnaType == 1){
-    xGenbins[ 0] =  20;      xGenbins[ 1] =  40;      xGenbins[ 2] =  55;      xGenbins[ 3] =  70;      xGenbins[ 4] =  85;
-    xGenbins[ 5] = 100;      xGenbins[ 6] = 120;      xGenbins[ 7] = 150;      xGenbins[ 8] = 200;      xGenbins[ 9] = 800;      xGenbins[10] = 800.0001;
+  Float_t xGenbins[nGenBins+1] = { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16};
+  Float_t xRecbins[nRecBins+1] = { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 
+                                  16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29};
+  if     (shapeAnaType == 1){ // mll 55,75,85,95,110,125,140,160,185, 220,280,380,600,1500
+    xGenbins[ 0] =  20;      xGenbins[ 1] =  55;      xGenbins[ 2] =  75;      xGenbins[ 3] =  85;      xGenbins[ 4] =   95;
+    xGenbins[ 5] = 110;      xGenbins[ 6] = 125;      xGenbins[ 7] = 140;      xGenbins[ 8] = 160;      xGenbins[ 9] =  185;
+    xGenbins[10] = 220;      xGenbins[11] = 280;      xGenbins[12] = 380;      xGenbins[13] = 600;      xGenbins[14] = 1500; 
+    xGenbins[15] = 1500.001; xGenbins[16] = 1500.002;
     if(theControlRegion == 0){
-    xRecbins[ 0] =  20;      xRecbins[ 1] =  30;      xRecbins[ 2] =  40;      xRecbins[ 3] =  55;      xRecbins[ 4] =  70;
-    xRecbins[ 5] =  85;      xRecbins[ 6] = 100;      xRecbins[ 7] = 120;      xRecbins[ 8] = 150;      xRecbins[ 9] = 175; 
-    xRecbins[10] = 200;      xRecbins[11] = 500;      xRecbins[12] = 800;      xRecbins[13] = 800.0001; xRecbins[14] = 800.0002;
-    xRecbins[15] = 800.0003; xRecbins[16] = 800.0004; xRecbins[17] = 800.0005; xRecbins[18] = 800.0006; xRecbins[19] = 800.0007; xRecbins[20] = 800.0008;
+    xRecbins[ 0] =  20;      xRecbins[ 1] =  37;      xRecbins[ 2] =  55;      xRecbins[ 3] =  65;      xRecbins[ 4] =  75;
+    xRecbins[ 5] =  80;      xRecbins[ 6] =  85;      xRecbins[ 7] =  90;      xRecbins[ 8] =  95;      xRecbins[ 9] = 102; 
+    xRecbins[10] = 110;      xRecbins[11] = 117;      xRecbins[12] = 125;      xRecbins[13] = 132;      xRecbins[14] = 140;
+    xRecbins[15] = 150;      xRecbins[16] = 160;      xRecbins[17] = 172;      xRecbins[18] = 185;      xRecbins[19] = 202; 
+    xRecbins[20] = 220;      xRecbins[21] = 250;      xRecbins[22] = 280;      xRecbins[23] = 380;      xRecbins[24] = 600;
+    xRecbins[25] =1500;      xRecbins[26] =1500.001;  xRecbins[27] =1500.002;  xRecbins[28] =1500.003;  xRecbins[29] =1500.004;
     }
   }
-  else if(shapeAnaType == 2){
+  else if(shapeAnaType == 2){ // dphill
     xGenbins[ 0] =   0*TMath::Pi()/180.;      xGenbins[ 1] =  20*TMath::Pi()/180.;      xGenbins[ 2] =  40*TMath::Pi()/180.;      xGenbins[ 3] =  60*TMath::Pi()/180.;      xGenbins[ 4] =  80*TMath::Pi()/180.;
-    xGenbins[ 5] = 100*TMath::Pi()/180.;      xGenbins[ 6] = 120*TMath::Pi()/180.;      xGenbins[ 7] = 140*TMath::Pi()/180.;      xGenbins[ 8] = 160*TMath::Pi()/180.;      xGenbins[ 9] = 180*TMath::Pi()/180.;      xGenbins[10] = 800.0001*TMath::Pi()/180.;
+    xGenbins[ 5] = 100*TMath::Pi()/180.;      xGenbins[ 6] = 120*TMath::Pi()/180.;      xGenbins[ 7] = 140*TMath::Pi()/180.;      xGenbins[ 8] = 160*TMath::Pi()/180.;      xGenbins[ 9] = 180*TMath::Pi()/180.;      
+    xGenbins[10] = 800.0001*TMath::Pi()/180.; xGenbins[11] = 800.0002*TMath::Pi()/180.; xGenbins[12] = 800.0003*TMath::Pi()/180.; xGenbins[13] = 800.0004*TMath::Pi()/180.; xGenbins[14] = 800.0005*TMath::Pi()/180.;
+    xGenbins[15] = 800.0006*TMath::Pi()/180.; xGenbins[16] = 800.0007*TMath::Pi()/180.;
     if(theControlRegion == 0){
     xRecbins[ 0] =   0*TMath::Pi()/180.;      xRecbins[ 1] =  10*TMath::Pi()/180.;      xRecbins[ 2] =  20*TMath::Pi()/180.;      xRecbins[ 3] =  30*TMath::Pi()/180.;      xRecbins[ 4] =  40*TMath::Pi()/180.;
     xRecbins[ 5] =  50*TMath::Pi()/180.;      xRecbins[ 6] =  60*TMath::Pi()/180.;      xRecbins[ 7] =  70*TMath::Pi()/180.;      xRecbins[ 8] =  80*TMath::Pi()/180.;      xRecbins[ 9] =  90*TMath::Pi()/180.; 
     xRecbins[10] = 100*TMath::Pi()/180.;      xRecbins[11] = 110*TMath::Pi()/180.;      xRecbins[12] = 120*TMath::Pi()/180.;      xRecbins[13] = 130*TMath::Pi()/180.;      xRecbins[14] = 140*TMath::Pi()/180.;
-    xRecbins[15] = 150*TMath::Pi()/180.;      xRecbins[16] = 160*TMath::Pi()/180.;      xRecbins[17] = 170*TMath::Pi()/180.;      xRecbins[18] = 180*TMath::Pi()/180.;      xRecbins[19] = 800.0007*TMath::Pi()/180.; xRecbins[20] = 800.0008*TMath::Pi()/180.;
+    xRecbins[15] = 150*TMath::Pi()/180.;      xRecbins[16] = 160*TMath::Pi()/180.;      xRecbins[17] = 170*TMath::Pi()/180.;      xRecbins[18] = 180*TMath::Pi()/180.;      xRecbins[19] = 800.0001*TMath::Pi()/180.;
+    xRecbins[20] = 800.0002*TMath::Pi()/180.; xRecbins[21] = 800.0003*TMath::Pi()/180.; xRecbins[22] = 800.0004*TMath::Pi()/180.; xRecbins[23] = 800.0005*TMath::Pi()/180.; xRecbins[24] = 800.0006*TMath::Pi()/180.;
+    xRecbins[25] = 800.0007*TMath::Pi()/180.; xRecbins[26] = 800.0008*TMath::Pi()/180.; xRecbins[27] = 800.0009*TMath::Pi()/180.; xRecbins[28] = 800.0010*TMath::Pi()/180.; xRecbins[29] = 800.0011*TMath::Pi()/180.;
     }
   }
-  else if(shapeAnaType == 3){
-    xGenbins[ 0] =  25;      xGenbins[ 1] =  35;      xGenbins[ 2] =  40;      xGenbins[ 3] =  45;      xGenbins[ 4] =  50;
-    xGenbins[ 5] =  60;      xGenbins[ 6] =  70;      xGenbins[ 7] =  80;      xGenbins[ 8] = 110;      xGenbins[ 9] = 150;      xGenbins[10] = 800.0001;
+  else if(shapeAnaType == 3){ // ptl1 25,40,50,60,70,80,90,100,110,130,150,175,220,300,400
+
+    xGenbins[ 0] =  25;      xGenbins[ 1] =  40;      xGenbins[ 2] =  50;      xGenbins[ 3] =  60;      xGenbins[ 4] =  70;
+    xGenbins[ 5] =  80;      xGenbins[ 6] =  90;      xGenbins[ 7] = 100;      xGenbins[ 8] = 110;      xGenbins[ 9] = 130;      
+    xGenbins[10] = 150;      xGenbins[11] = 175;      xGenbins[12] = 220;      xGenbins[13] = 300;      xGenbins[14] = 400;
+    xGenbins[15] = 400.001;  xGenbins[16] = 400.002;
     if(theControlRegion == 0){
-    xRecbins[ 0] =  25;      xRecbins[ 1] =  30;      xRecbins[ 2] =  35;      xRecbins[ 3] =  40;      xRecbins[ 4] =  45;
-    xRecbins[ 5] =  50;      xRecbins[ 6] =  55;      xRecbins[ 7] =  60;      xRecbins[ 8] =  65;      xRecbins[ 9] =  70; 
-    xRecbins[10] =  75;      xRecbins[11] =  80;      xRecbins[12] =  85;      xRecbins[13] =  90;      xRecbins[14] =  95;
-    xRecbins[15] = 100;      xRecbins[16] = 125;      xRecbins[17] = 150;      xRecbins[18] = 800.0006; xRecbins[19] = 800.0007; xRecbins[20] = 800.0008;
+    xRecbins[ 0] =  25;      xRecbins[ 1] =  32;      xRecbins[ 2] =  40;      xRecbins[ 3] =  45;      xRecbins[ 4] =  50;
+    xRecbins[ 5] =  55;      xRecbins[ 6] =  60;      xRecbins[ 7] =  65;      xRecbins[ 8] =  70;      xRecbins[ 9] =  75; 
+    xRecbins[10] =  80;      xRecbins[11] =  85;      xRecbins[12] =  90;      xRecbins[13] =  95;      xRecbins[14] = 100;
+    xRecbins[15] = 105;      xRecbins[16] = 110;      xRecbins[17] = 120;      xRecbins[18] = 130;      xRecbins[19] = 140; 
+    xRecbins[20] = 150;      xRecbins[21] = 162;      xRecbins[22] = 175;      xRecbins[23] = 197;      xRecbins[24] = 220;
+    xRecbins[25] = 260;      xRecbins[26] = 300;      xRecbins[27] = 350;      xRecbins[28] = 400;      xRecbins[29] = 400.001;
     }
   }
-  else if(shapeAnaType == 4){
+  else if(shapeAnaType == 4){ // ptl2 20,25,30,40,45,50,75,100,150
     xGenbins[ 0] =  20;      xGenbins[ 1] =  25;      xGenbins[ 2] =  30;      xGenbins[ 3] =  35;      xGenbins[ 4] =  40;
-    xGenbins[ 5] =  45;      xGenbins[ 6] =  50;      xGenbins[ 7] =  75;      xGenbins[ 8] = 100;      xGenbins[ 9] = 150;      xGenbins[10] = 800.0001;
+    xGenbins[ 5] =  45;      xGenbins[ 6] =  50;      xGenbins[ 7] =  75;      xGenbins[ 8] = 100;      xGenbins[ 9] = 150;
+    xGenbins[10] = 150.001;  xGenbins[11] = 150.002;  xGenbins[12] = 150.003;  xGenbins[13] = 150.004;  xGenbins[14] = 150.004;
+    xGenbins[15] = 150.006;  xGenbins[16] = 150.007;
+    
     if(theControlRegion == 0){
-    xRecbins[ 0] =  20;      xRecbins[ 1] =  25;      xRecbins[ 2] =  30;      xRecbins[ 3] =  35;      xRecbins[ 4] =  40;
-    xRecbins[ 5] =  45;      xRecbins[ 6] =  50;      xRecbins[ 7] =  75;      xRecbins[ 8] = 100;      xRecbins[ 9] = 150; 
-    xRecbins[10] = 220;      xRecbins[11] = 230;      xRecbins[12] = 240;      xRecbins[13] = 250;      xRecbins[14] = 260;
-    xRecbins[15] = 270;      xRecbins[16] = 280;      xRecbins[17] = 290;      xRecbins[18] = 800.0006; xRecbins[19] = 800.0007; xRecbins[20] = 800.0008;
+    xRecbins[ 0] =  25;      xRecbins[ 1] =  30;      xRecbins[ 2] =  35;      xRecbins[ 3] =  40;      xRecbins[ 4] =  45;      
+    xRecbins[ 5] =  50;      xRecbins[ 6] =  62;      xRecbins[ 7] =  75;      xRecbins[ 8] =  87;      xRecbins[ 9] = 100; 
+    xRecbins[10] = 125;      xRecbins[11] = 150;      xRecbins[12] = 150.001;  xRecbins[13] = 150.002;  xRecbins[14] = 150.003;
+    xRecbins[15] = 150.004;  xRecbins[16] = 150.005;  xRecbins[17] = 150.006;  xRecbins[18] = 150.007;  xRecbins[19] = 150.008; 
+    xRecbins[20] = 150.0008; xRecbins[21] = 150.009;  xRecbins[22] = 150.010;  xRecbins[23] = 150.011;  xRecbins[24] = 150.012;
+    xRecbins[25] = 150.013;  xRecbins[26] = 150.014;  xRecbins[27] = 150.015;  xRecbins[28] = 150.016;  xRecbins[29] = 150.017;
+    }
+  }
+  else if(shapeAnaType == 5){ // ptll 30,35,40,45,50,55,60,65,70,75,80,90,105,140,200,300
+
+    xGenbins[ 0] =  30;      xGenbins[ 1] =  35;      xGenbins[ 2] =  40;      xGenbins[ 3] =  45;      xGenbins[ 4] =  50;
+    xGenbins[ 5] =  55;      xGenbins[ 6] =  60;      xGenbins[ 7] =  65;      xGenbins[ 8] =  70;      xGenbins[ 9] =  75;
+    xGenbins[10] =  80;      xGenbins[11] =  90;      xGenbins[12] = 105;      xGenbins[13] = 140;      xGenbins[14] = 200;
+    xGenbins[15] = 300;      xGenbins[16] = 300.001;
+    if(theControlRegion == 0){
+    xRecbins[ 0] =  30;      xRecbins[ 1] =  35;      xRecbins[ 2] =  40;      xRecbins[ 3] =  45;      xRecbins[ 4] =  50;
+    xRecbins[ 5] =  55;      xRecbins[ 6] =  60;      xRecbins[ 7] =  65;      xRecbins[ 8] =  70;      xRecbins[ 9] =  75; 
+    xRecbins[10] =  80;      xRecbins[11] =  85;      xRecbins[12] =  90;      xRecbins[13] =  97;      xRecbins[14] = 105;
+    xRecbins[15] = 122;      xRecbins[16] = 140;      xRecbins[17] = 170;      xRecbins[18] = 200;      xRecbins[19] = 250; 
+    xRecbins[20] = 300;      xRecbins[21] = 300.001;  xRecbins[22] = 300.002;  xRecbins[23] = 300.003;  xRecbins[24] = 300.004;
+    xRecbins[25] = 300.005;  xRecbins[26] = 300.006;  xRecbins[27] = 300.007;  xRecbins[28] = 300.008;  xRecbins[29] = 300.009;
     }
   }
   TH1D* histoMVA    = new TH1D("histoMVA",    "histoMVA",    nRecBins, xRecbins); histoMVA   ->Sumw2();
@@ -397,11 +479,23 @@ void wwAnalysis(
   TH1D *histoOneBin_WjetsE = (TH1D*) histoOneBin->Clone("histoOneBin_WjetsE");        
   TH1D *histoOneBin_Higgs  = (TH1D*) histoOneBin->Clone("histoOneBin_Higgs");	      
 
+  TString qqWWLastOneName = "qqWW14";
   TH1D *histoOneBin_FidqqWW[nGenBins];
   TH1D *histoOneBin_FidggWW[nGenBins];
   for(int i=0; i<nGenBins; i++){
-    histoOneBin_FidqqWW[i] = (TH1D*) histoOneBin->Clone(Form("histoOneBin_qqWW%d",i)); 
-    histoOneBin_FidggWW[i] = (TH1D*) histoOneBin->Clone(Form("histoOneBin_ggWW%d",i)); 
+    if    (i == nGenBins-1){
+      histoOneBin_FidqqWW[i] = (TH1D*) histoOneBin->Clone(Form("histoOneBin_qqNonFid")); 
+      histoOneBin_FidggWW[i] = (TH1D*) histoOneBin->Clone(Form("histoOneBin_ggNonFid")); 
+    }
+    else if(i == nGenBins-2 && shapeAnaType == 10){
+      qqWWLastOneName = "qqPU";
+      histoOneBin_FidqqWW[i] = (TH1D*) histoOneBin->Clone(Form("histoOneBin_qqPU")); 
+      histoOneBin_FidggWW[i] = (TH1D*) histoOneBin->Clone(Form("histoOneBin_ggPU")); 
+    }
+    else {
+      histoOneBin_FidqqWW[i] = (TH1D*) histoOneBin->Clone(Form("histoOneBin_qqWW%d",i)); 
+      histoOneBin_FidggWW[i] = (TH1D*) histoOneBin->Clone(Form("histoOneBin_ggWW%d",i)); 
+    }    
   }
 
   double totalFakeDataCount[4][5];
@@ -411,42 +505,36 @@ void wwAnalysis(
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 29;
+  const int allPlots = 33;
   const int histBins = 12;
   TH1D* histo[allPlots][histBins];
   TString processName[histBins] = {".Data", ".qqWW", ".ggWW", "..Top", "...DY", "...VV", "..VVV", "...WG", "..WGS", "WjetsM", "WjetsE", "Higgs"};
 
   for(int thePlot=0; thePlot<allPlots; thePlot++){
-    bool isMVAPlot = false;
-    if     (thePlot >=  0 && thePlot <=  2) {nBinPlot = 100; xminPlot = 0.0; xmaxPlot = 200.0;if(shapeAnaType == 3||shapeAnaType == 4) isMVAPlot = true;}
-    else if(thePlot >=  3 && thePlot <=  3) {nBinPlot =  90; xminPlot = 0.0; xmaxPlot = TMath::Pi();if(shapeAnaType == 2) isMVAPlot = true;}
-    else if(thePlot >=  4 && thePlot <=  4) {nBinPlot = 500; xminPlot = 0.0; xmaxPlot = 500.0;}
-    else if(thePlot >=  5 && thePlot <=  5) {nBinPlot = 200; xminPlot = 0.0; xmaxPlot = 800.0;if(shapeAnaType == 1) isMVAPlot = true;}
-    else if(thePlot >=  6 && thePlot <=  6) {nBinPlot = 400; xminPlot = 0.0; xmaxPlot = 400.0;}
-
-    else if(thePlot >=  7 && thePlot <=  9) {nBinPlot = 100; xminPlot = 0.0; xmaxPlot = 200.0;if(shapeAnaType == 3||shapeAnaType == 4) isMVAPlot = true;}
-    else if(thePlot >= 10 && thePlot <= 10) {nBinPlot =  90; xminPlot = 0.0; xmaxPlot = TMath::Pi();if(shapeAnaType == 2) isMVAPlot = true;}
-    else if(thePlot >= 11 && thePlot <= 11) {nBinPlot = 500; xminPlot = 0.0; xmaxPlot = 500.0;}
-    else if(thePlot >= 12 && thePlot <= 12) {nBinPlot = 200; xminPlot = 0.0; xmaxPlot = 800.0;if(shapeAnaType == 1) isMVAPlot = true;}
-    else if(thePlot >= 13 && thePlot <= 13) {nBinPlot = 400; xminPlot = 0.0; xmaxPlot = 400.0;}
-
-    else if(thePlot >= 14 && thePlot <= 16) {nBinPlot = 100; xminPlot = 0.0; xmaxPlot = 200.0;if(shapeAnaType == 3||shapeAnaType == 4) isMVAPlot = true;}
-    else if(thePlot >= 17 && thePlot <= 17) {nBinPlot =  90; xminPlot = 0.0; xmaxPlot = TMath::Pi();if(shapeAnaType == 2) isMVAPlot = true;}
-    else if(thePlot >= 18 && thePlot <= 18) {nBinPlot = 500; xminPlot = 0.0; xmaxPlot = 500.0;}
-    else if(thePlot >= 19 && thePlot <= 19) {nBinPlot = 200; xminPlot = 0.0; xmaxPlot = 800.0;if(shapeAnaType == 1) isMVAPlot = true;}
-    else if(thePlot >= 20 && thePlot <= 20) {nBinPlot = 400; xminPlot = 0.0; xmaxPlot = 400.0;}
-
-    else if(thePlot >= 21 && thePlot <= 23) {nBinPlot = 100; xminPlot = 0.0; xmaxPlot = 200.0;if(shapeAnaType == 3||shapeAnaType == 4) isMVAPlot = true;}
-    else if(thePlot >= 24 && thePlot <= 24) {nBinPlot =  90; xminPlot = 0.0; xmaxPlot = TMath::Pi();if(shapeAnaType == 2) isMVAPlot = true;}
-    else if(thePlot >= 25 && thePlot <= 25) {nBinPlot = 500; xminPlot = 0.0; xmaxPlot = 500.0;}
-    else if(thePlot >= 26 && thePlot <= 26) {nBinPlot = 200; xminPlot = 0.0; xmaxPlot = 800.0;if(shapeAnaType == 1) isMVAPlot = true;}
-    else if(thePlot >= 27 && thePlot <= 27) {nBinPlot = 400; xminPlot = 0.0; xmaxPlot = 400.0;}
-
-    else if(thePlot >= 28 && thePlot <= 28) {nBinPlot = 500; xminPlot = 0.0; xmaxPlot = 500.0;}
-
     TH1D* histos;
-    if(isMVAPlot == false) histos = new TH1D("histos", "histos", nBinPlot, xminPlot, xmaxPlot);
-    else                   histos = new TH1D("histos", "histos", nRecBins, xRecbins);
+    bool isMVAPlot = false;
+    if     (thePlot >= 19 && thePlot <= 19) {nBinPlot = 15; xminPlot = 0.0; xmaxPlot =  30.0;}
+    else if(thePlot >= 20 && thePlot <= 23) {nBinPlot = 25; xminPlot =20.0; xmaxPlot = 220.0;}
+    else if(thePlot >= 24 && thePlot <= 27) {nBinPlot = 40; xminPlot = 0.0; xmaxPlot = 800.0;}
+    else if(thePlot >= 28 && thePlot <= 31) {nBinPlot = 40; xminPlot = 0.0; xmaxPlot = 400.0;}
+    else if(thePlot >= 32 && thePlot <= 32) {nBinPlot = 80; xminPlot = 0.0; xmaxPlot = 800.0;}
+
+    if(shapeAnaType == 0) {
+      if     (thePlot >=  0 && thePlot <=  3) {nBinPlot =  25; xminPlot =20.0; xmaxPlot = 320.0;}
+      else if(thePlot >=  4 && thePlot <=  7) {nBinPlot =  18; xminPlot = 0.0; xmaxPlot = TMath::Pi();}
+      else if(thePlot >=  8 && thePlot <= 11) {nBinPlot =  25; xminPlot =25.0; xmaxPlot = 225.0;}
+      else if(thePlot >= 12 && thePlot <= 15) {nBinPlot =  20; xminPlot =20.0; xmaxPlot = 120.0;}
+      else if(thePlot >= 16 && thePlot <= 18) {nBinPlot =  25; xminPlot =30.0; xmaxPlot = 180.0;}
+      histos = new TH1D("histos", "histos", nBinPlot, xminPlot, xmaxPlot);
+    }
+    else {
+      if     (thePlot >=  0 && thePlot <=  3) histos = new TH1D("histos", "histos", nBinWWMLL, xbinsWWMLL);
+      else if(thePlot >=  4 && thePlot <=  7) histos = new TH1D("histos", "histos", nBinWWDPHILL, xbinsWWDPHILL);
+      else if(thePlot >=  8 && thePlot <= 11) histos = new TH1D("histos", "histos", nBinWWPTL1, xbinsWWPTL1);
+      else if(thePlot >= 12 && thePlot <= 15) histos = new TH1D("histos", "histos", nBinWWPTL2, xbinsWWPTL2);
+      else if(thePlot >= 16 && thePlot <= 18) histos = new TH1D("histos", "histos", nBinWWPTLL, xbinsWWPTLL);
+      else                                    histos = new TH1D("histos", "histos", nBinPlot, xminPlot, xmaxPlot);
+    }
     histos->Sumw2();
     for(int i=0; i<histBins; i++) histo[thePlot][i] = (TH1D*) histos->Clone(Form("histo%d",i));
     histos->Reset();histos->Clear();
@@ -919,8 +1007,8 @@ void wwAnalysis(
     histo_ggWW_CMS_PUBoundingBinsDown[i] 	  = new TH1D( Form("histo_ggWW_CMS_pu_%dDown",i), Form("histo_ggWW_CMS_pu_%dDown",i), nRecBins, xRecbins);                   histo_ggWW_CMS_PUBoundingBinsDown[i]  	->Sumw2();
  }
 
-  double bgdDecay[nSelTypes*4][histBins],weiDecay[nSelTypes*2][histBins];
-  for(unsigned int i=0; i<nSelTypes*2; i++) {
+  double bgdDecay[nSelTypes*3][histBins],weiDecay[nSelTypes*3][histBins];
+  for(unsigned int i=0; i<nSelTypes*3; i++) {
     for(int j=0; j<histBins; j++) {
       bgdDecay[i][j] = 0.0; weiDecay[i][j] = 0.0; 
     }
@@ -1069,7 +1157,7 @@ void wwAnalysis(
       else {assert(1); printf("Not possible %d %d %d\n",(int)idLep.size(),(int)idTight.size(),goodIsTight); return;}                                                                                                     ;
 
       if(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Pt() > 25 &&
-         ((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Pt() > 20) passFilter[0] = kTRUE;
+         ((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Pt() > ptLMinCut) passFilter[0] = kTRUE;
 
       if((goodIsTight == idTight.size() || usePureMC == false) && idTight.size() == 2) passFilter[1] = kTRUE;
 
@@ -1113,15 +1201,14 @@ void wwAnalysis(
       if(dilep.M() > 20.0) passFilter[2] = kTRUE;
       if(theControlRegion == 2) passFilter[2] = passFilter[2] && dilep.M() < 80.0;
 
+      //if(infilecatv[ifile] == 7 && dilep.M() > 500) continue;
+
       vector<int> idB,idC;
       for(int ngen0=0; ngen0<eventMonteCarlo.p4->GetEntriesFast(); ngen0++) {
         if     (TMath::Abs((int)(*eventMonteCarlo.pdgId)[ngen0]) == 5 && ((TLorentzVector*)(*eventMonteCarlo.p4)[ngen0])->Pt() > 15) idB.push_back(ngen0);
         else if(TMath::Abs((int)(*eventMonteCarlo.pdgId)[ngen0]) == 4 && ((TLorentzVector*)(*eventMonteCarlo.p4)[ngen0])->Pt() > 15) idC.push_back(ngen0);
       }
 
-      double jetPtCut = 30.0;
-      if     (shapeAnaType ==  7) jetPtCut = 25.0;
-      else if(shapeAnaType ==  8) jetPtCut = 35.0;
       vector<int> idJet,idJesUp,idJesDown,idJerUp,idJerDown;
       bool isBtag = kFALSE;
       double bDiscrMax = 0.0; double bDiscrMaxJESUp = 0.0; double bDiscrMaxJESDown = 0.0;double bDiscrMaxJERUp = 0.0; double bDiscrMaxJERDown = 0.0;
@@ -1134,7 +1221,7 @@ void wwAnalysis(
                      theMET.Pt();
       for(int nj=0; nj<eventJets.p4->GetEntriesFast(); nj++){
         if(((TLorentzVector*)(*eventJets.p4)[nj])->Pt() <= 10) continue;
-	if(TMath::Abs(((TLorentzVector*)(*eventJets.p4)[nj])->Eta()) >= 4.7) continue;
+	if(TMath::Abs(((TLorentzVector*)(*eventJets.p4)[nj])->Eta()) >= jetEtaCut) continue;
         //bool passId = passJetId(fMVACut, (float)(*eventJets.puId)[nj], ((TLorentzVector*)(*eventJets.p4)[nj])->Pt(), TMath::Abs(((TLorentzVector*)(*eventJets.p4)[nj])->Eta()));
         //if(passId == false) continue;
 	//if(((int)(*eventJets.selBits)[nj] & BareJets::JetLoose) != BareJets::JetLoose) continue;
@@ -1273,7 +1360,7 @@ void wwAnalysis(
       if(bDiscrMax < bTagCuts[0]) passFilter[7] = kTRUE;
       //if(idSoft.size() == 0) passFilter[8] = kTRUE;
       passFilter[8] = kTRUE;
-      if(idJet.size() == nJetsType || shapeAnaType == 9) passFilter[9] = kTRUE;
+      if(idJet.size() == nJetsType || shapeAnaType == 10) passFilter[9] = kTRUE;
 
       bool passBtagJES[2] = {bDiscrMaxJESUp < bTagCuts[0], bDiscrMaxJESDown < bTagCuts[0]};
       bool passBtagJER[2] = {bDiscrMaxJERUp < bTagCuts[0], bDiscrMaxJERDown < bTagCuts[0]};
@@ -1535,39 +1622,47 @@ void wwAnalysis(
       for(int thePlot=0; thePlot<allPlots; thePlot++){
         double theVar = 0.0;
         bool makePlot = false;
-        if     (thePlot ==  0 && passAllCuts[SIGSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Pt(),199.999);}
-        else if(thePlot ==  1 && passAllCuts[SIGSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Pt(),199.999);}
-        else if(thePlot ==  2 && passAllCuts[SIGSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min((double)((TLorentzVector*)(*eventMet.p4)[0])->Pt(),199.999);}
-        else if(thePlot ==  3 && passAllCuts[SIGSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Abs(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->DeltaPhi(*(TLorentzVector*)(*eventLeptons.p4)[idLep[1]]));}
-        else if(thePlot ==  4 && passAllCuts[SIGSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(theHT,499.999);}
-        else if(thePlot ==  5 && passAllCuts[SIGSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(dilep.M(),799.999);}
-        else if(thePlot ==  6 && passAllCuts[SIGSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(mTWW,399.999);}
+        if     (thePlot ==  0 && passAllCuts[SIGSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(dilep.M(),xbinsWWMLL[nBinWWMLL-1]-0.001);}
+        else if(thePlot ==  1 && passAllCuts[SSSEL]  && typeSel == 2) {makePlot = true;theVar = TMath::Min(dilep.M(),xbinsWWMLL[nBinWWMLL-1]-0.001);}
+        else if(thePlot ==  2 && passAllCuts[TOPSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(dilep.M(),xbinsWWMLL[nBinWWMLL-1]-0.001);}
+        else if(thePlot ==  3 && passAllCuts[DYSEL]  && typeSel == 2) {makePlot = true;theVar = TMath::Min(dilep.M(),xbinsWWMLL[nBinWWMLL-1]-0.001);}
 
-        else if(thePlot ==  7 && passAllCuts[SSSEL] && typeSel == 2)  {makePlot = true;theVar = TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Pt(),199.999);}
-        else if(thePlot ==  8 && passAllCuts[SSSEL] && typeSel == 2)  {makePlot = true;theVar = TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Pt(),199.999);}
-        else if(thePlot ==  9 && passAllCuts[SSSEL] && typeSel == 2)  {makePlot = true;theVar = TMath::Min((double)((TLorentzVector*)(*eventMet.p4)[0])->Pt(),199.999);}
-        else if(thePlot == 10 && passAllCuts[SSSEL] && typeSel == 2)  {makePlot = true;theVar = TMath::Abs(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->DeltaPhi(*(TLorentzVector*)(*eventLeptons.p4)[idLep[1]]));}
-        else if(thePlot == 11 && passAllCuts[SSSEL] && typeSel == 2)  {makePlot = true;theVar = TMath::Min(theHT,499.999);}
-        else if(thePlot == 12 && passAllCuts[SSSEL] && typeSel == 2)  {makePlot = true;theVar = TMath::Min(dilep.M(),799.999);}
-        else if(thePlot == 13 && passAllCuts[SSSEL] && typeSel == 2)  {makePlot = true;theVar = TMath::Min(mTWW,399.999);}
+        else if(thePlot ==  4 && passAllCuts[SIGSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Abs(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->DeltaPhi(*(TLorentzVector*)(*eventLeptons.p4)[idLep[1]]));}
+        else if(thePlot ==  5 && passAllCuts[SSSEL]  && typeSel == 2) {makePlot = true;theVar = TMath::Abs(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->DeltaPhi(*(TLorentzVector*)(*eventLeptons.p4)[idLep[1]]));}
+        else if(thePlot ==  6 && passAllCuts[TOPSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Abs(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->DeltaPhi(*(TLorentzVector*)(*eventLeptons.p4)[idLep[1]]));}
+        else if(thePlot ==  7 && passAllCuts[DYSEL]  && typeSel == 2) {makePlot = true;theVar = TMath::Abs(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->DeltaPhi(*(TLorentzVector*)(*eventLeptons.p4)[idLep[1]]));}
 
-        else if(thePlot == 14 && passAllCuts[TOPSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Pt(),199.999);}
-        else if(thePlot == 15 && passAllCuts[TOPSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Pt(),199.999);}
-        else if(thePlot == 16 && passAllCuts[TOPSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min((double)((TLorentzVector*)(*eventMet.p4)[0])->Pt(),199.999);}
-        else if(thePlot == 17 && passAllCuts[TOPSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Abs(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->DeltaPhi(*(TLorentzVector*)(*eventLeptons.p4)[idLep[1]]));}
-        else if(thePlot == 18 && passAllCuts[TOPSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(theHT,499.999);}
-        else if(thePlot == 19 && passAllCuts[TOPSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(dilep.M(),799.999);}
-        else if(thePlot == 20 && passAllCuts[TOPSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(mTWW,399.999);}
+        else if(thePlot ==  8 && passAllCuts[SIGSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Pt(),xbinsWWPTL1[nBinWWPTL1-1]-0.001);}
+        else if(thePlot ==  9 && passAllCuts[SSSEL]  && typeSel == 2) {makePlot = true;theVar = TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Pt(),xbinsWWPTL1[nBinWWPTL1-1]-0.001);}
+        else if(thePlot == 10 && passAllCuts[TOPSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Pt(),xbinsWWPTL1[nBinWWPTL1-1]-0.001);}
+        else if(thePlot == 11 && passAllCuts[DYSEL]  && typeSel == 2) {makePlot = true;theVar = TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Pt(),xbinsWWPTL1[nBinWWPTL1-1]-0.001);}
 
-        else if(thePlot == 21 && passAllCuts[DYSEL] && typeSel == 2)  {makePlot = true;theVar = TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Pt(),199.999);}
-        else if(thePlot == 22 && passAllCuts[DYSEL] && typeSel == 2)  {makePlot = true;theVar = TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Pt(),199.999);}
-        else if(thePlot == 23 && passAllCuts[DYSEL] && typeSel == 2)  {makePlot = true;theVar = TMath::Min((double)((TLorentzVector*)(*eventMet.p4)[0])->Pt(),199.999);}
-        else if(thePlot == 24 && passAllCuts[DYSEL] && typeSel == 2)  {makePlot = true;theVar = TMath::Abs(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->DeltaPhi(*(TLorentzVector*)(*eventLeptons.p4)[idLep[1]]));}
-        else if(thePlot == 25 && passAllCuts[DYSEL] && typeSel == 2)  {makePlot = true;theVar = TMath::Min(theHT,499.999);}
-        else if(thePlot == 26 && passAllCuts[DYSEL] && typeSel == 2)  {makePlot = true;theVar = TMath::Min(dilep.M(),799.999);}
-        else if(thePlot == 27 && passAllCuts[DYSEL] && typeSel == 2)  {makePlot = true;theVar = TMath::Min(mTWW,399.999);}
+        else if(thePlot == 12 && passAllCuts[SIGSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Pt(),xbinsWWPTL2[nBinWWPTL2-1]-0.001);}
+        else if(thePlot == 13 && passAllCuts[SSSEL]  && typeSel == 2) {makePlot = true;theVar = TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Pt(),xbinsWWPTL2[nBinWWPTL2-1]-0.001);}
+        else if(thePlot == 14 && passAllCuts[TOPSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Pt(),xbinsWWPTL2[nBinWWPTL2-1]-0.001);}
+        else if(thePlot == 15 && passAllCuts[DYSEL]  && typeSel == 2) {makePlot = true;theVar = TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Pt(),xbinsWWPTL2[nBinWWPTL2-1]-0.001);}
 
-        else if(thePlot == 28 && passNoJetCutRegion && typeSel == 2)  {makePlot = true;theVar = TMath::Min(theHT,499.999);}
+        else if(thePlot == 16 && passAllCuts[SIGSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(dilep.Pt(),xbinsWWPTLL[nBinWWPTLL-1]-0.001);}
+        else if(thePlot == 17 && passAllCuts[SSSEL]  && typeSel == 2) {makePlot = true;theVar = TMath::Min(dilep.Pt(),xbinsWWPTLL[nBinWWPTLL-1]-0.001);}
+        else if(thePlot == 18 && passAllCuts[TOPSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(dilep.Pt(),xbinsWWPTLL[nBinWWPTLL-1]-0.001);}
+        else if(thePlot == 19 && passAllCuts[DYSEL]  && typeSel == 2) {makePlot = true;theVar = TMath::Min(dilep.Pt(),xbinsWWPTLL[nBinWWPTLL-1]-0.001);}
+
+        else if(thePlot == 20 && passAllCuts[SIGSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min((double)((TLorentzVector*)(*eventMet.p4)[0])->Pt(),219.999);}
+        else if(thePlot == 21 && passAllCuts[SSSEL]  && typeSel == 2) {makePlot = true;theVar = TMath::Min((double)((TLorentzVector*)(*eventMet.p4)[0])->Pt(),219.999);}
+        else if(thePlot == 22 && passAllCuts[TOPSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min((double)((TLorentzVector*)(*eventMet.p4)[0])->Pt(),219.999);}
+        else if(thePlot == 23 && passAllCuts[DYSEL]  && typeSel == 2) {makePlot = true;theVar = TMath::Min((double)((TLorentzVector*)(*eventMet.p4)[0])->Pt(),219.999);}
+
+        else if(thePlot == 24 && passAllCuts[SIGSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(theHT,799.999);}
+        else if(thePlot == 25 && passAllCuts[SSSEL]  && typeSel == 2) {makePlot = true;theVar = TMath::Min(theHT,799.999);}
+        else if(thePlot == 26 && passAllCuts[TOPSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(theHT,799.999);}
+        else if(thePlot == 27 && passAllCuts[DYSEL]  && typeSel == 2) {makePlot = true;theVar = TMath::Min(theHT,799.999);}
+
+        else if(thePlot == 28 && passAllCuts[SIGSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(mTWW,399.999);}
+        else if(thePlot == 29 && passAllCuts[SSSEL]  && typeSel == 2) {makePlot = true;theVar = TMath::Min(mTWW,399.999);}
+        else if(thePlot == 30 && passAllCuts[TOPSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(mTWW,399.999);}
+        else if(thePlot == 31 && passAllCuts[DYSEL]  && typeSel == 2) {makePlot = true;theVar = TMath::Min(mTWW,399.999);}
+
+        else if(thePlot == 32 && passNoJetCutRegion && typeSel == 2)  {makePlot = true;theVar = TMath::Min(theHT,799.999);}
 
         if(makePlot) histo[thePlot][theCategory]->Fill(theVar,totalWeight);
       }
@@ -1584,23 +1679,26 @@ void wwAnalysis(
         if(typePair == 1) passAllCuts[TOPSEL] = false;
         if(typePair == 1 && shapeAnaType != 0) passAllCuts[SIGSEL] = false;
 	if     (shapeAnaType == 1 && theControlRegion == 0){
-          MVAVar =  TMath::Min(dilep.M(),799.999);
+          MVAVar =  TMath::Min(dilep.M(),1499.999);
         }
 	else if(shapeAnaType == 2 && theControlRegion == 0){
           MVAVar =  TMath::Abs(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->DeltaPhi(*(TLorentzVector*)(*eventLeptons.p4)[idLep[1]]));
         }
 	else if(shapeAnaType == 3 && theControlRegion == 0){
-          MVAVar =  TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Pt(),149.999);
+          MVAVar =  TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[0]])->Pt(),399.999);
         }
 	else if(shapeAnaType == 4 && theControlRegion == 0){
           MVAVar =  TMath::Min(((TLorentzVector*)(*eventLeptons.p4)[idLep[1]])->Pt(),149.999);
         }
-	else if(shapeAnaType == 9){
+	else if(shapeAnaType == 5 && theControlRegion == 0){
+          MVAVar =  TMath::Min(dilep.Pt(),299.999);
+        }
+	else if(shapeAnaType == 10){
           MVAVar =  TMath::Min((double)idJet.size(),2.499);
         }
 
         // Variables for jes/jer systematics
-        if(shapeAnaType == 9){
+        if(shapeAnaType == 10){
           MVAVarSyst[0] =  TMath::Min((double)idJesUp.size(),2.499);
           MVAVarSyst[1] =  TMath::Min((double)idJesDown.size(),2.499);
           MVAVarSyst[2] =  TMath::Min((double)idJerUp.size(),2.499);
@@ -1679,7 +1777,7 @@ void wwAnalysis(
                // ((*eventMonteCarlo.flags)[ngen0] & BareMonteCarlo::DirectPromptTauDecayProductFinalState) == BareMonteCarlo::DirectPromptTauDecayProductFinalState) &&
                ((*eventMonteCarlo.flags)[ngen0] & BareMonteCarlo::PromptFinalState)                      == BareMonteCarlo::PromptFinalState &&
                TMath::Abs(((TLorentzVector*)(*eventMonteCarlo.p4)[ngen0])->Eta()) < 2.5 &&
-               ((TLorentzVector*)(*eventMonteCarlo.p4)[ngen0])->Pt() > 20;
+               ((TLorentzVector*)(*eventMonteCarlo.p4)[ngen0])->Pt() > ptLMinCut;
 	    if(passSelLepton) {
 	      countSelectedGenLeptons++; dilepGen = dilepGen + ( *(TLorentzVector*)(eventMonteCarlo.p4->At(ngen0)) );
 
@@ -1694,10 +1792,10 @@ void wwAnalysis(
 	  }
 
 	  vector<int> idGenJet30;
-	  if(countSelectedGenLeptons >= 2){
+	  if(countSelectedGenLeptons >= 2 && dilepGen.M() > 20 && ((TLorentzVector*)(*eventMet.genP4)[0])->Pt() >= 0){
 	    passFiducial[0] = true;
 	    for(int njetgen=0; njetgen<eventMonteCarlo.jetP4->GetEntriesFast(); njetgen++) {
-              if(TMath::Abs(((TLorentzVector*)(*eventMonteCarlo.jetP4)[njetgen])->Eta()) >= 5.0) continue;
+              if(TMath::Abs(((TLorentzVector*)(*eventMonteCarlo.jetP4)[njetgen])->Eta()) >= jetEtaCut) continue;
               bool isGenLepton = false;
               for(unsigned int nglep = 0; nglep<idGenLep.size(); nglep++) {
              	if(((TLorentzVector*)(*eventMonteCarlo.p4)[idGenLep[nglep]])->DeltaR(*((TLorentzVector*)(*eventMonteCarlo.jetP4)[njetgen])) < 0.3) {
@@ -1734,28 +1832,31 @@ void wwAnalysis(
 	  }
 	  double MVAGenVar = (double)typePair;
           if     (shapeAnaType == 1){
-            MVAGenVar = TMath::Min(dilepGen.M(),799.999);
+            MVAGenVar = TMath::Min(dilepGen.M(),1499.999);
           }
           else if(shapeAnaType == 2){
             MVAGenVar = TMath::Abs(lepMaxGen.DeltaPhi(lepMinGen));
           }
           else if(shapeAnaType == 3){
-            MVAGenVar = TMath::Min(lepMaxGen.Pt(),149.999);
+            MVAGenVar = TMath::Min(lepMaxGen.Pt(),399.999);
           }
           else if(shapeAnaType == 4){
             MVAGenVar = TMath::Min(lepMinGen.Pt(),149.999);
           }
-          else if(shapeAnaType == 9){
+          else if(shapeAnaType == 5){
+            MVAGenVar = TMath::Min(dilepGen.Pt(),299.999);
+          }
+          else if(shapeAnaType == 10){
             MVAGenVar = TMath::Min((double)idGenJet30.size(),2.499);
           }
           int genbin = histoGenMVA->GetXaxis()->FindBin(MVAGenVar)-1;
 	  if     (genbin == -1) {/*printf("%d %d %f\n",genbin,passFiducial[0],MVAGenVar);*/ genbin = nGenBins - 1;}
 	  else if(genbin >= nGenBins) {printf("PROBLEM %d %d %f\n",genbin,passFiducial[0],MVAGenVar);}
-	  if     (shapeAnaType == 9 && passFiducial[0] == false) genbin = nGenBins - 1; // non leptonic fiducial
-	  else if(shapeAnaType == 9 && passFiducial[2] == false) genbin = nGenBins - 2; // non reco to gen jet matching
-	  else if(shapeAnaType <= 5 && passFiducial[0] == false) genbin = nGenBins - 1;
-	  else if(shapeAnaType >  5 && 
-	          shapeAnaType != 9 && passFiducial[1] == false) genbin = nGenBins - 1;
+	  if     (shapeAnaType == 10 && passFiducial[0] == false) genbin = nGenBins - 1; // non leptonic fiducial
+	  else if(shapeAnaType == 10 && passFiducial[2] == false) genbin = nGenBins - 2; // non reco to gen jet matching
+	  else if(shapeAnaType <= 6 && passFiducial[0] == false) genbin = nGenBins - 1;
+	  else if(shapeAnaType >  6 && 
+	          shapeAnaType != 10 && passFiducial[1] == false) genbin = nGenBins - 1;
 	  // End gen fiducial selection
 
 	  if((passAllCuts[SIGSEL] && theControlRegion == 0) || (passAllCuts[TOPSEL] && theControlRegion == 1) || (passAllCuts[DYSEL] && theControlRegion == 2)) {
@@ -2254,22 +2355,22 @@ void wwAnalysis(
            sumEventsBckType[0]+sumEventsSigType[0],sqrt(sumEventsBckTypeE[0]+sumEventsSigTypeE[0]),sumEventsBckType[1]+sumEventsSigType[1],sqrt(sumEventsBckTypeE[1]+sumEventsSigTypeE[1]),sumEventsBckType[2]+sumEventsSigType[2],sqrt(sumEventsBckTypeE[2]+sumEventsSigTypeE[2]));
     printf("--------------------------------------------------------------------------------\n");
   }
-  {
-  char output[200];
-  sprintf(output,"histoww_JetRes.root");	  
-  TFile* outFilePlotsNote = new TFile(output,"recreate");
-  outFilePlotsNote->cd();
-  histoJetRes->Write();
-  outFilePlotsNote->Close();
-  }
-  for(int thePlot=0; thePlot<allPlots; thePlot++){
+  if(theControlRegion == 0 && shapeAnaType <= 1){
     char output[200];
-    sprintf(output,"histoww_nice%d_cr%d_shapeType%d_%d.root",nJetsType,theControlRegion,shapeAnaType,thePlot);	  
+    sprintf(output,"histoww_JetRes.root");	  
     TFile* outFilePlotsNote = new TFile(output,"recreate");
     outFilePlotsNote->cd();
-    histo[thePlot][4]->Scale(DYtautauSF);
-    for(int np=0; np<histBins; np++) histo[thePlot][np]->Write();
+    histoJetRes->Write();
     outFilePlotsNote->Close();
+    for(int thePlot=0; thePlot<allPlots; thePlot++){
+      char output[200];
+      sprintf(output,"histoww_nice%d_cr%d_shapeType%d_%d.root",nJetsType,theControlRegion,shapeAnaType,thePlot);	  
+      TFile* outFilePlotsNote = new TFile(output,"recreate");
+      outFilePlotsNote->cd();
+      histo[thePlot][4]->Scale(DYtautauSF);
+      for(int np=0; np<histBins; np++) histo[thePlot][np]->Write();
+      outFilePlotsNote->Close();
+    }
   }
   printf("QCD Corr: qqWW(%f:%f/%f/%f/%f/%f/%f) ggWW(%f:%f/%f/%f/%f/%f/%f) Top(%f:%f/%f/%f/%f/%f/%f) DY(%f:%f/%f/%f/%f/%f/%f) VV(%f:%f/%f/%f/%f/%f/%f) VVV(%f:%f/%f/%f/%f/%f/%f) WG(%f:%f/%f/%f/%f/%f/%f) WGS(%f:%f/%f/%f/%f/%f/%f) Higgs(%f:%f/%f/%f/%f/%f/%f)\n",
     histo_qqWW->GetSumOfWeights(),histo_qqWW_CMS_QCDScaleBounding[0]->GetSumOfWeights(),histo_qqWW_CMS_QCDScaleBounding[1]->GetSumOfWeights(),histo_qqWW_CMS_QCDScaleBounding[2]->GetSumOfWeights(),histo_qqWW_CMS_QCDScaleBounding[3]->GetSumOfWeights(),histo_qqWW_CMS_QCDScaleBounding[4]->GetSumOfWeights(),histo_qqWW_CMS_QCDScaleBounding[5]->GetSumOfWeights(),
@@ -2342,7 +2443,7 @@ void wwAnalysis(
   }
 
   char outputLimitsAll[200];
-  sprintf(outputLimitsAll,"ww%4s_%dj_input_%s.root",finalStateName,nJetsType,ECMsb.Data());
+  sprintf(outputLimitsAll,"ww%4s_%dj_input_%s_shapeType%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType);
   TFile* outFileLimits = new TFile(outputLimitsAll,"recreate");
   outFileLimits->cd();
   histo_Data ->Write();
@@ -3236,65 +3337,46 @@ void wwAnalysis(
       newcardShape << Form("shapes *   *   %s  histoOneBin_$PROCESS\n",outputLimits);
       newcardShape << Form("shapes data_obs * %s  histoOneBin_Data \n",outputLimits);
       newcardShape << Form("Observation %d\n",(int)histo_Data->GetBinContent(nb));
-      newcardShape << Form("bin ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d\n",finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1);
-      newcardShape << Form("process Top DY VV VVV WG WGS Higgs WjetsM WjetsE qqWW0 qqWW1 qqWW2 qqWW3 qqWW4 qqWW5 qqWW6 qqWW7 qqWW8 qqWW9\n");
-      newcardShape << Form("process 1 2 3 4 5 6 7 8 9 0 -1 -2 -3 -4 -5 -6 -7 -8 -9\n");
-      newcardShape << Form("rate %8.5f %8.5f  %8.5f  %8.5f %8.5f %8.5f %8.5f  %8.5f  %8.5f %8.5f %8.5f  %8.5f  %8.5f %8.5f %8.5f  %8.5f  %8.5f %8.5f %8.5f\n",TMath::Max(histo_Top->GetBinContent(nb),0.0),TMath::Max(histo_DY->GetBinContent(nb)*DYtautauSF,0.0),TMath::Max(histo_VV->GetBinContent(nb),0.0),TMath::Max(histo_VVV->GetBinContent(nb),0.0),TMath::Max(histo_WG->GetBinContent(nb),0.0),TMath::Max(histo_WGS->GetBinContent(nb),0.0),TMath::Max(histo_Higgs->GetBinContent(nb),0.0),TMath::Max(histo_WjetsM->GetBinContent(nb),0.0),TMath::Max(histo_WjetsE->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[0]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[1]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[2]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[3]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[4]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[5]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[6]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[7]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[8]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[9]->GetBinContent(nb),0.0));
-      newcardShape << Form("lumi_%4s                               lnN    -   %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f  -	-  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f\n",ECMsb.Data(),lumiE,lumiE,lumiE,lumiE,lumiE,lumiE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE);  		 
-      newcardShape << Form("%s                                     lnN  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f  -	-  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f\n",effMName,systLepEffM[2],systLepEffM[3],systLepEffM[4],systLepEffM[5],systLepEffM[6],systLepEffM[7],systLepEffM[8],systLepEffMBins[0][0],systLepEffMBins[0][1],systLepEffMBins[0][2],systLepEffMBins[0][3],systLepEffMBins[0][4],systLepEffMBins[0][5],systLepEffMBins[0][6],systLepEffMBins[0][7],systLepEffMBins[0][8],systLepEffMBins[0][9]);
-      newcardShape << Form("%s                                     lnN  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f  -	-  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f\n",effEName,systLepEffE[2],systLepEffE[3],systLepEffE[4],systLepEffE[5],systLepEffE[6],systLepEffE[7],systLepEffE[8],systLepEffEBins[0][0],systLepEffEBins[0][1],systLepEffEBins[0][2],systLepEffEBins[0][3],systLepEffEBins[0][4],systLepEffEBins[0][5],systLepEffEBins[0][6],systLepEffEBins[0][7],systLepEffEBins[0][8],systLepEffEBins[0][9]);
-      newcardShape << Form("%s                                     lnN  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f  -	-  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f\n",momMName,systLepResM[2],systLepResM[3],systLepResM[4],systLepResM[5],systLepResM[6],systLepResM[7],systLepResM[8],systLepResMBins[0][0],systLepResMBins[0][1],systLepResMBins[0][2],systLepResMBins[0][3],systLepResMBins[0][4],systLepResMBins[0][5],systLepResMBins[0][6],systLepResMBins[0][7],systLepResMBins[0][8],systLepResMBins[0][9]);
-      newcardShape << Form("%s                                     lnN  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f  -	-  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f\n",momEName,systLepResE[2],systLepResE[3],systLepResE[4],systLepResE[5],systLepResE[6],systLepResE[7],systLepResE[8],systLepResEBins[0][0],systLepResEBins[0][1],systLepResEBins[0][2],systLepResEBins[0][3],systLepResEBins[0][4],systLepResEBins[0][5],systLepResEBins[0][6],systLepResEBins[0][7],systLepResEBins[0][8],systLepResEBins[0][9]);
-      newcardShape << Form("CMS_pu                                 lnN  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f  -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",systPUUp[2],systPUDown[2],systPUUp[3],systPUDown[3],systPUUp[4],systPUDown[4],systPUUp[5],systPUDown[5],systPUUp[6],systPUDown[6],systPUUp[7],systPUDown[7],systPUUp[8],systPUDown[8],systPUBinsUp[0][0],systPUBinsDown[0][0],systPUBinsUp[0][1],systPUBinsDown[0][1],systPUBinsUp[0][2],systPUBinsDown[0][2],systPUBinsUp[0][3],systPUBinsDown[0][3],systPUBinsUp[0][4],systPUBinsDown[0][4],systPUBinsUp[0][5],systPUBinsDown[0][5],systPUBinsUp[0][6],systPUBinsDown[0][6],systPUBinsUp[0][7],systPUBinsDown[0][7],systPUBinsUp[0][8],systPUBinsDown[0][8],systPUBinsUp[0][9],systPUBinsDown[0][9]);
-      newcardShape << Form("CMS_scale_met                          lnN  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f  -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",systMetUp[2],systMetDown[2],systMetUp[3],systMetDown[3],systMetUp[4],systMetDown[4],systMetUp[5],systMetDown[5],systMetUp[6],systMetDown[6],systMetUp[7],systMetDown[7],systMetUp[8],systMetDown[8],systMetBinsUp[0][0],systMetBinsDown[0][0],systMetBinsUp[0][1],systMetBinsDown[0][1],systMetBinsUp[0][2],systMetBinsDown[0][2],systMetBinsUp[0][3],systMetBinsDown[0][3],systMetBinsUp[0][4],systMetBinsDown[0][4],systMetBinsUp[0][5],systMetBinsDown[0][5],systMetBinsUp[0][6],systMetBinsDown[0][6],systMetBinsUp[0][7],systMetBinsDown[0][7],systMetBinsUp[0][8],systMetBinsDown[0][8],systMetBinsUp[0][9],systMetBinsDown[0][9]);
-      newcardShape << Form("CMS_scale_j                            lnN  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f  -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",systJesUp[2],systJesDown[2],systJesUp[3],systJesDown[3],systJesUp[4],systJesDown[4],systJesUp[5],systJesDown[5],systJesUp[6],systJesDown[6],systJesUp[7],systJesDown[7],systJesUp[8],systJesDown[8],systJesBinsUp[0][0],systJesBinsDown[0][0],systJesBinsUp[0][1],systJesBinsDown[0][1],systJesBinsUp[0][2],systJesBinsDown[0][2],systJesBinsUp[0][3],systJesBinsDown[0][3],systJesBinsUp[0][4],systJesBinsDown[0][4],systJesBinsUp[0][5],systJesBinsDown[0][5],systJesBinsUp[0][6],systJesBinsDown[0][6],systJesBinsUp[0][7],systJesBinsDown[0][7],systJesBinsUp[0][8],systJesBinsDown[0][8],systJesBinsUp[0][9],systJesBinsDown[0][9]);
-      newcardShape << Form("CMS_jer                                lnN  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f  -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",systJerUp[2],systJerDown[2],systJerUp[3],systJerDown[3],systJerUp[4],systJerDown[4],systJerUp[5],systJerDown[5],systJerUp[6],systJerDown[6],systJerUp[7],systJerDown[7],systJerUp[8],systJerDown[8],systJerBinsUp[0][0],systJerBinsDown[0][0],systJerBinsUp[0][1],systJerBinsDown[0][1],systJerBinsUp[0][2],systJerBinsDown[0][2],systJerBinsUp[0][3],systJerBinsDown[0][3],systJerBinsUp[0][4],systJerBinsDown[0][4],systJerBinsUp[0][5],systJerBinsDown[0][5],systJerBinsUp[0][6],systJerBinsDown[0][6],systJerBinsUp[0][7],systJerBinsDown[0][7],systJerBinsUp[0][8],systJerBinsDown[0][8],systJerBinsUp[0][9],systJerBinsDown[0][9]);
-      newcardShape << Form("CMS_eff_btagb_b2016                    lnN  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f  -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",systBtagbUp[2],systBtagbDown[2],systBtagbUp[3],systBtagbDown[3],systBtagbUp[4],systBtagbDown[4],systBtagbUp[5],systBtagbDown[5],systBtagbUp[6],systBtagbDown[6],systBtagbUp[7],systBtagbDown[7],systBtagbUp[8],systBtagbDown[8],systBtagbBinsUp[0][0],systBtagbBinsDown[0][0],systBtagbBinsUp[0][1],systBtagbBinsDown[0][1],systBtagbBinsUp[0][2],systBtagbBinsDown[0][2],systBtagbBinsUp[0][3],systBtagbBinsDown[0][3],systBtagbBinsUp[0][4],systBtagbBinsDown[0][4],systBtagbBinsUp[0][5],systBtagbBinsDown[0][5],systBtagbBinsUp[0][6],systBtagbBinsDown[0][6],systBtagbBinsUp[0][7],systBtagbBinsDown[0][7],systBtagbBinsUp[0][8],systBtagbBinsDown[0][8],systBtagbBinsUp[0][9],systBtagbBinsDown[0][9]);
-      newcardShape << Form("CMS_eff_btagl_b2016                    lnN  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f  -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",systBtaglUp[2],systBtaglDown[2],systBtaglUp[3],systBtaglDown[3],systBtaglUp[4],systBtaglDown[4],systBtaglUp[5],systBtaglDown[5],systBtaglUp[6],systBtaglDown[6],systBtaglUp[7],systBtaglDown[7],systBtaglUp[8],systBtaglDown[8],systBtaglBinsUp[0][0],systBtaglBinsDown[0][0],systBtaglBinsUp[0][1],systBtaglBinsDown[0][1],systBtaglBinsUp[0][2],systBtaglBinsDown[0][2],systBtaglBinsUp[0][3],systBtaglBinsDown[0][3],systBtaglBinsUp[0][4],systBtaglBinsDown[0][4],systBtaglBinsUp[0][5],systBtaglBinsDown[0][5],systBtaglBinsUp[0][6],systBtaglBinsDown[0][6],systBtaglBinsUp[0][7],systBtaglBinsDown[0][7],systBtaglBinsUp[0][8],systBtaglBinsDown[0][8],systBtaglBinsUp[0][9],systBtaglBinsDown[0][9]);
-      newcardShape << Form("pdf_qqbar                              lnN    -   %7.5f %7.5f %7.5f %7.5f %7.5f    -   -	-  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f\n",TMath::Max(systPDF[3],1.01),TMath::Max(systPDF[4],1.01),TMath::Max(systPDF[5],1.01),TMath::Max(systPDF[6],1.01),1.01,TMath::Max(systPDFBins[0][0],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][1],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][2],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][3],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][4],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][5],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][6],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][7],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][8],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][9],1.01)/ww_norm_unc_pdf);
-      newcardShape << Form("pdf_gg                                 lnN  %7.5f	-     -	    -	  -     -   %7.5f  -    -    -     -     -     -     -     -     -     -     -     -\n",TMath::Max(systPDF[2],1.01),TMath::Max(systPDF[8],1.01));
-      newcardShape << Form("QCDscale_VVV		           lnN    -	-     -   %7.5f   -	-     -    -	-    -     -     -     -     -     -     -     -     -     -\n",systQCDScale[5]);	  
-      newcardShape << Form("QCDscale_ggVV		           lnN    -	-     -     -	  -	-     -    -	-  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f\n",1.013,1.013,1.013,1.013,1.013,1.013,1.013,1.013,1.013,1.013);
-      newcardShape << Form("QCDscale_qqVV                          lnN    -	-   %7.5f   -	%7.5f %7.5f   -	   -    -    -     -     -     -     -     -     -     -     -     -\n",systQCDScale[4],systQCDScale[6],systQCDScale[7]);  	
-      newcardShape << Form("QCDscale_ggH		           lnN    -	-     -     -	  -    -   %7.5f   -    -    -     -     -     -     -     -     -     -     -     -\n",systQCDScale[8]); 	
-      newcardShape << Form("QCDscale_Top		           lnN  %7.5f	-     -     -	  -    -      -    -    -    -     -     -     -     -     -     -     -     -     -\n",systQCDScale[2]); 	
-      if(shapeAnaType != 9){
+      newcardShape << Form("bin ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d ww%2s%dj%d\n",finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1,finalStateName,nJetsType,nb-1);
+      newcardShape << Form("process Top DY VV VVV WG WGS Higgs WjetsM WjetsE qqWW0 qqWW1 qqWW2 qqWW3 qqWW4 qqWW5 qqWW6 qqWW7 qqWW8 qqWW9 qqWW10 qqWW11 qqWW12 qqWW13 %s qqNonFid\n",qqWWLastOneName.Data());
+      newcardShape << Form("process 1 2 3 4 5 6 7 8 9 0 -1 -2 -3 -4 -5 -6 -7 -8 -9 -10 -11 -12 -13 -14 -15\n");
+      newcardShape << Form("rate %8.5f %8.5f  %8.5f  %8.5f %8.5f %8.5f %8.5f  %8.5f  %8.5f %8.5f %8.5f  %8.5f  %8.5f %8.5f %8.5f  %8.5f  %8.5f %8.5f %8.5f %8.5f %8.5f  %8.5f  %8.5f %8.5f %8.5f\n",TMath::Max(histo_Top->GetBinContent(nb),0.0),TMath::Max(histo_DY->GetBinContent(nb)*DYtautauSF,0.0),TMath::Max(histo_VV->GetBinContent(nb),0.0),TMath::Max(histo_VVV->GetBinContent(nb),0.0),TMath::Max(histo_WG->GetBinContent(nb),0.0),TMath::Max(histo_WGS->GetBinContent(nb),0.0),TMath::Max(histo_Higgs->GetBinContent(nb),0.0),TMath::Max(histo_WjetsM->GetBinContent(nb),0.0),TMath::Max(histo_WjetsE->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[0]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[1]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[2]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[3]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[4]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[5]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[6]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[7]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[8]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[9]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[10]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[11]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[12]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[13]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[14]->GetBinContent(nb),0.0),TMath::Max(histo_qqWWBins[15]->GetBinContent(nb),0.0));
+      newcardShape << Form("lumi_%4s                               lnN    -   %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f  -	-  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f\n",ECMsb.Data(),lumiE,lumiE,lumiE,lumiE,lumiE,lumiE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE,lumiWWE);  		 
+      newcardShape << Form("%s                                     lnN  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f  -	-  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f\n",effMName,systLepEffM[2],systLepEffM[3],systLepEffM[4],systLepEffM[5],systLepEffM[6],systLepEffM[7],systLepEffM[8],systLepEffMBins[0][0],systLepEffMBins[0][1],systLepEffMBins[0][2],systLepEffMBins[0][3],systLepEffMBins[0][4],systLepEffMBins[0][5],systLepEffMBins[0][6],systLepEffMBins[0][7],systLepEffMBins[0][8],systLepEffMBins[0][9],systLepEffMBins[0][10],systLepEffMBins[0][11],systLepEffMBins[0][12],systLepEffMBins[0][13],systLepEffMBins[0][14],systLepEffMBins[0][15]);
+      newcardShape << Form("%s                                     lnN  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f  -	-  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f\n",effEName,systLepEffE[2],systLepEffE[3],systLepEffE[4],systLepEffE[5],systLepEffE[6],systLepEffE[7],systLepEffE[8],systLepEffEBins[0][0],systLepEffEBins[0][1],systLepEffEBins[0][2],systLepEffEBins[0][3],systLepEffEBins[0][4],systLepEffEBins[0][5],systLepEffEBins[0][6],systLepEffEBins[0][7],systLepEffEBins[0][8],systLepEffEBins[0][9],systLepEffEBins[0][10],systLepEffEBins[0][11],systLepEffEBins[0][12],systLepEffEBins[0][13],systLepEffEBins[0][14],systLepEffEBins[0][15]);
+      newcardShape << Form("%s                                     lnN  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f  -	-  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f\n",momMName,systLepResM[2],systLepResM[3],systLepResM[4],systLepResM[5],systLepResM[6],systLepResM[7],systLepResM[8],systLepResMBins[0][0],systLepResMBins[0][1],systLepResMBins[0][2],systLepResMBins[0][3],systLepResMBins[0][4],systLepResMBins[0][5],systLepResMBins[0][6],systLepResMBins[0][7],systLepResMBins[0][8],systLepResMBins[0][9],systLepResMBins[0][10],systLepResMBins[0][11],systLepResMBins[0][12],systLepResMBins[0][13],systLepResMBins[0][14],systLepResMBins[0][15]);
+      newcardShape << Form("%s                                     lnN  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f  -	-  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f\n",momEName,systLepResE[2],systLepResE[3],systLepResE[4],systLepResE[5],systLepResE[6],systLepResE[7],systLepResE[8],systLepResEBins[0][0],systLepResEBins[0][1],systLepResEBins[0][2],systLepResEBins[0][3],systLepResEBins[0][4],systLepResEBins[0][5],systLepResEBins[0][6],systLepResEBins[0][7],systLepResEBins[0][8],systLepResEBins[0][9],systLepResEBins[0][10],systLepResEBins[0][11],systLepResEBins[0][12],systLepResEBins[0][13],systLepResEBins[0][14],systLepResEBins[0][15]);
+      newcardShape << Form("CMS_pu                                 lnN  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f  -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",   systPUUp[2],   systPUDown[2],   systPUUp[3],   systPUDown[3],   systPUUp[4],   systPUDown[4],   systPUUp[5],   systPUDown[5],   systPUUp[6],   systPUDown[6],   systPUUp[7],   systPUDown[7],   systPUUp[8],   systPUDown[8],   systPUBinsUp[0][0],   systPUBinsDown[0][0],   systPUBinsUp[0][1],   systPUBinsDown[0][1],   systPUBinsUp[0][2],   systPUBinsDown[0][2],   systPUBinsUp[0][3],   systPUBinsDown[0][3],   systPUBinsUp[0][4],   systPUBinsDown[0][4],   systPUBinsUp[0][5],   systPUBinsDown[0][5],   systPUBinsUp[0][6],   systPUBinsDown[0][6],   systPUBinsUp[0][7],   systPUBinsDown[0][7],   systPUBinsUp[0][8],   systPUBinsDown[0][8],   systPUBinsUp[0][9],   systPUBinsDown[0][9],   systPUBinsUp[0][10],   systPUBinsDown[0][10],   systPUBinsUp[0][11],   systPUBinsDown[0][11],   systPUBinsUp[0][12],   systPUBinsDown[0][12],   systPUBinsUp[0][13],   systPUBinsDown[0][13],   systPUBinsUp[0][14],   systPUBinsDown[0][14],   systPUBinsUp[0][15],   systPUBinsDown[0][15]);
+      newcardShape << Form("CMS_scale_met                          lnN  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f  -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",  systMetUp[2],  systMetDown[2],  systMetUp[3],  systMetDown[3],  systMetUp[4],  systMetDown[4],  systMetUp[5],  systMetDown[5],  systMetUp[6],  systMetDown[6],  systMetUp[7],  systMetDown[7],  systMetUp[8],  systMetDown[8],  systMetBinsUp[0][0],  systMetBinsDown[0][0],  systMetBinsUp[0][1],  systMetBinsDown[0][1],  systMetBinsUp[0][2],  systMetBinsDown[0][2],  systMetBinsUp[0][3],  systMetBinsDown[0][3],  systMetBinsUp[0][4],  systMetBinsDown[0][4],  systMetBinsUp[0][5],  systMetBinsDown[0][5],  systMetBinsUp[0][6],  systMetBinsDown[0][6],  systMetBinsUp[0][7],  systMetBinsDown[0][7],  systMetBinsUp[0][8],  systMetBinsDown[0][8],  systMetBinsUp[0][9],  systMetBinsDown[0][9],  systMetBinsUp[0][10],  systMetBinsDown[0][10],  systMetBinsUp[0][11],  systMetBinsDown[0][11],  systMetBinsUp[0][12],  systMetBinsDown[0][12],  systMetBinsUp[0][13],  systMetBinsDown[0][13],  systMetBinsUp[0][14],  systMetBinsDown[0][14],  systMetBinsUp[0][15],  systMetBinsDown[0][15]);
+      newcardShape << Form("CMS_scale_j                            lnN  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f  -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",  systJesUp[2],  systJesDown[2],  systJesUp[3],  systJesDown[3],  systJesUp[4],  systJesDown[4],  systJesUp[5],  systJesDown[5],  systJesUp[6],  systJesDown[6],  systJesUp[7],  systJesDown[7],  systJesUp[8],  systJesDown[8],  systJesBinsUp[0][0],  systJesBinsDown[0][0],  systJesBinsUp[0][1],  systJesBinsDown[0][1],  systJesBinsUp[0][2],  systJesBinsDown[0][2],  systJesBinsUp[0][3],  systJesBinsDown[0][3],  systJesBinsUp[0][4],  systJesBinsDown[0][4],  systJesBinsUp[0][5],  systJesBinsDown[0][5],  systJesBinsUp[0][6],  systJesBinsDown[0][6],  systJesBinsUp[0][7],  systJesBinsDown[0][7],  systJesBinsUp[0][8],  systJesBinsDown[0][8],  systJesBinsUp[0][9],  systJesBinsDown[0][9],  systJesBinsUp[0][10],  systJesBinsDown[0][10],  systJesBinsUp[0][11],  systJesBinsDown[0][11],  systJesBinsUp[0][12],  systJesBinsDown[0][12],  systJesBinsUp[0][13],  systJesBinsDown[0][13],  systJesBinsUp[0][14],  systJesBinsDown[0][14],  systJesBinsUp[0][15],  systJesBinsDown[0][15]);
+      newcardShape << Form("CMS_jer                                lnN  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f  -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",  systJerUp[2],  systJerDown[2],  systJerUp[3],  systJerDown[3],  systJerUp[4],  systJerDown[4],  systJerUp[5],  systJerDown[5],  systJerUp[6],  systJerDown[6],  systJerUp[7],  systJerDown[7],  systJerUp[8],  systJerDown[8],  systJerBinsUp[0][0],  systJerBinsDown[0][0],  systJerBinsUp[0][1],  systJerBinsDown[0][1],  systJerBinsUp[0][2],  systJerBinsDown[0][2],  systJerBinsUp[0][3],  systJerBinsDown[0][3],  systJerBinsUp[0][4],  systJerBinsDown[0][4],  systJerBinsUp[0][5],  systJerBinsDown[0][5],  systJerBinsUp[0][6],  systJerBinsDown[0][6],  systJerBinsUp[0][7],  systJerBinsDown[0][7],  systJerBinsUp[0][8],  systJerBinsDown[0][8],  systJerBinsUp[0][9],  systJerBinsDown[0][9],  systJerBinsUp[0][10],  systJerBinsDown[0][10],  systJerBinsUp[0][11],  systJerBinsDown[0][11],  systJerBinsUp[0][12],  systJerBinsDown[0][12],  systJerBinsUp[0][13],  systJerBinsDown[0][13],  systJerBinsUp[0][14],  systJerBinsDown[0][14],  systJerBinsUp[0][15],  systJerBinsDown[0][15]);
+      newcardShape << Form("CMS_eff_btagb_b2016                    lnN  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f  -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",systBtagbUp[2],systBtagbDown[2],systBtagbUp[3],systBtagbDown[3],systBtagbUp[4],systBtagbDown[4],systBtagbUp[5],systBtagbDown[5],systBtagbUp[6],systBtagbDown[6],systBtagbUp[7],systBtagbDown[7],systBtagbUp[8],systBtagbDown[8],systBtagbBinsUp[0][0],systBtagbBinsDown[0][0],systBtagbBinsUp[0][1],systBtagbBinsDown[0][1],systBtagbBinsUp[0][2],systBtagbBinsDown[0][2],systBtagbBinsUp[0][3],systBtagbBinsDown[0][3],systBtagbBinsUp[0][4],systBtagbBinsDown[0][4],systBtagbBinsUp[0][5],systBtagbBinsDown[0][5],systBtagbBinsUp[0][6],systBtagbBinsDown[0][6],systBtagbBinsUp[0][7],systBtagbBinsDown[0][7],systBtagbBinsUp[0][8],systBtagbBinsDown[0][8],systBtagbBinsUp[0][9],systBtagbBinsDown[0][9],systBtagbBinsUp[0][10],systBtagbBinsDown[0][10],systBtagbBinsUp[0][11],systBtagbBinsDown[0][11],systBtagbBinsUp[0][12],systBtagbBinsDown[0][12],systBtagbBinsUp[0][13],systBtagbBinsDown[0][13],systBtagbBinsUp[0][14],systBtagbBinsDown[0][14],systBtagbBinsUp[0][15],systBtagbBinsDown[0][15]);
+      newcardShape << Form("CMS_eff_btagl_b2016                    lnN  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f  -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",systBtaglUp[2],systBtaglDown[2],systBtaglUp[3],systBtaglDown[3],systBtaglUp[4],systBtaglDown[4],systBtaglUp[5],systBtaglDown[5],systBtaglUp[6],systBtaglDown[6],systBtaglUp[7],systBtaglDown[7],systBtaglUp[8],systBtaglDown[8],systBtaglBinsUp[0][0],systBtaglBinsDown[0][0],systBtaglBinsUp[0][1],systBtaglBinsDown[0][1],systBtaglBinsUp[0][2],systBtaglBinsDown[0][2],systBtaglBinsUp[0][3],systBtaglBinsDown[0][3],systBtaglBinsUp[0][4],systBtaglBinsDown[0][4],systBtaglBinsUp[0][5],systBtaglBinsDown[0][5],systBtaglBinsUp[0][6],systBtaglBinsDown[0][6],systBtaglBinsUp[0][7],systBtaglBinsDown[0][7],systBtaglBinsUp[0][8],systBtaglBinsDown[0][8],systBtaglBinsUp[0][9],systBtaglBinsDown[0][9],systBtaglBinsUp[0][10],systBtaglBinsDown[0][10],systBtaglBinsUp[0][11],systBtaglBinsDown[0][11],systBtaglBinsUp[0][12],systBtaglBinsDown[0][12],systBtaglBinsUp[0][13],systBtaglBinsDown[0][13],systBtaglBinsUp[0][14],systBtaglBinsDown[0][14],systBtaglBinsUp[0][15],systBtaglBinsDown[0][15]);
+      newcardShape << Form("pdf_qqbar                              lnN    -   %7.5f %7.5f %7.5f %7.5f %7.5f    -   -	-  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f\n",TMath::Max(systPDF[3],1.01),TMath::Max(systPDF[4],1.01),TMath::Max(systPDF[5],1.01),TMath::Max(systPDF[6],1.01),1.01,TMath::Max(systPDFBins[0][0],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][1],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][2],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][3],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][4],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][5],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][6],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][7],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][8],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][9],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][10],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][11],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][12],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][13],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][14],1.01)/ww_norm_unc_pdf,TMath::Max(systPDFBins[0][15],1.01)/ww_norm_unc_pdf);
+      newcardShape << Form("pdf_gg                                 lnN  %7.5f	-     -	    -	  -     -   %7.5f  -    -    -     -     -     -     -     -     -     -     -     -     -     -     -     -     -     -\n",TMath::Max(systPDF[2],1.01),TMath::Max(systPDF[8],1.01));
+      newcardShape << Form("QCDscale_VVV		           lnN    -	-     -   %7.5f   -	-     -    -	-    -     -     -     -     -     -     -     -     -     -     -     -     -     -     -     -\n",systQCDScale[5]);	  
+      newcardShape << Form("QCDscale_ggVV		           lnN    -	-     -     -	  -	-     -    -	-  %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f %7.5f\n",1.013,1.013,1.013,1.013,1.013,1.013,1.013,1.013,1.013,1.013,1.013,1.013,1.013,1.013,1.013,1.013);
+      newcardShape << Form("QCDscale_qqVV                          lnN    -	-   %7.5f   -	%7.5f %7.5f   -	   -    -    -     -     -     -     -     -     -     -     -     -     -     -     -     -     -     -\n",systQCDScale[4],systQCDScale[6],systQCDScale[7]);  	
+      newcardShape << Form("QCDscale_ggH		           lnN    -	-     -     -	  -    -   %7.5f   -    -    -     -     -     -     -     -     -     -     -     -     -     -     -     -     -     -\n",systQCDScale[8]); 	
+      newcardShape << Form("QCDscale_Top		           lnN  %7.5f	-     -     -	  -    -      -    -    -    -     -     -     -     -     -     -     -     -     -     -     -     -     -     -     -\n",systQCDScale[2]); 	
+      if(shapeAnaType != 10){
       newcardShape << Form("CMS_ww_Topnorm_jet%d rateParam  * Top 1 [0.1,10]\n",nJetsType);
       }
       else {
       newcardShape << Form("CMS_ww_Topnorm_jet%d rateParam  * Top 1 [0.1,10]\n",nb-1);
       }
-      if(useDYCR == true && shapeAnaType != 9) {
+      if(useDYCR == true && shapeAnaType != 10) {
       newcardShape << Form("CMS_ww_DYnorm_jet%d rateParam  * DY 1 [0.1,10]\n",nJetsType);         
       }
-      newcardShape << Form("QCDscale_DY		                   lnN    -   %7.5f   -     -	  -	-     -    -	-    -     -     -     -     -     -     -     -     -     -\n",systQCDScale[3]);	
-      newcardShape << Form("norm_WGS		                   lnN    -	-     -     -	  -   %7.5f   -    -	-    -     -     -     -     -     -     -     -     -     -\n",1.30);		
-      newcardShape << Form("norm_WjetsM		                   lnN    -	-     -     -	  -	-     -  %7.5f  -    -     -     -     -     -     -     -     -     -     -\n",1.30);		
-      newcardShape << Form("norm_WjetsE		                   lnN    -	-     -     -	  -	-     -    -  %7.5f  -     -     -     -     -     -     -     -     -     -\n",1.30);		
-      newcardShape << Form("WWEWKCorr			           lnN    -	-     -     -	  -	-     -    -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",systWWEWKCorrBinsUp[0][0],systWWEWKCorrBinsDown[0][0],systWWEWKCorrBinsUp[0][1],systWWEWKCorrBinsDown[0][1],systWWEWKCorrBinsUp[0][2],systWWEWKCorrBinsDown[0][2],systWWEWKCorrBinsUp[0][3],systWWEWKCorrBinsDown[0][3],systWWEWKCorrBinsUp[0][4],systWWEWKCorrBinsDown[0][4],systWWEWKCorrBinsUp[0][5],systWWEWKCorrBinsDown[0][5],systWWEWKCorrBinsUp[0][6],systWWEWKCorrBinsDown[0][6],systWWEWKCorrBinsUp[0][7],systWWEWKCorrBinsDown[0][7],systWWEWKCorrBinsUp[0][8],systWWEWKCorrBinsDown[0][8],systWWEWKCorrBinsUp[0][9],systWWEWKCorrBinsDown[0][9]);        
-      newcardShape << Form("WWNNLO_scale			   lnN    -	-     -     -	  -	-     -    -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",systWWNNLOBinsUp[0][0],systWWNNLOBinsDown[0][0],systWWNNLOBinsUp[0][1],systWWNNLOBinsDown[0][1],systWWNNLOBinsUp[0][2],systWWNNLOBinsDown[0][2],systWWNNLOBinsUp[0][3],systWWNNLOBinsDown[0][3],systWWNNLOBinsUp[0][4],systWWNNLOBinsDown[0][4],systWWNNLOBinsUp[0][5],systWWNNLOBinsDown[0][5],systWWNNLOBinsUp[0][6],systWWNNLOBinsDown[0][6],systWWNNLOBinsUp[0][7],systWWNNLOBinsDown[0][7],systWWNNLOBinsUp[0][8],systWWNNLOBinsDown[0][8],systWWNNLOBinsUp[0][9],systWWNNLOBinsDown[0][9]);        
-      newcardShape << Form("WWNNLO_resum			   lnN    -	-     -     -	  -	-     -    -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",systWWNNLOBinsUp[1][0],systWWNNLOBinsDown[1][0],systWWNNLOBinsUp[1][1],systWWNNLOBinsDown[1][1],systWWNNLOBinsUp[1][2],systWWNNLOBinsDown[1][2],systWWNNLOBinsUp[1][3],systWWNNLOBinsDown[1][3],systWWNNLOBinsUp[1][4],systWWNNLOBinsDown[1][4],systWWNNLOBinsUp[1][5],systWWNNLOBinsDown[1][5],systWWNNLOBinsUp[1][6],systWWNNLOBinsDown[1][6],systWWNNLOBinsUp[1][7],systWWNNLOBinsDown[1][7],systWWNNLOBinsUp[1][8],systWWNNLOBinsDown[1][8],systWWNNLOBinsUp[1][9],systWWNNLOBinsDown[1][9]);      
-      newcardShape << Form("UEPS                                   lnN    -	-     -     -	  -	- %7.5f/%7.5f -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",theUEPSUp[2],theUEPSDown[2],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0]);
+      newcardShape << Form("QCDscale_DY		                   lnN    -   %7.5f   -     -	  -	-     -    -	-    -     -     -     -     -     -     -     -     -     -     -     -     -     -     -     -\n",systQCDScale[3]);	
+      newcardShape << Form("norm_WGS		                   lnN    -	-     -     -	  -   %7.5f   -    -	-    -     -     -     -     -     -     -     -     -     -     -     -     -     -     -     -\n",1.30);		
+      newcardShape << Form("norm_WjetsM		                   lnN    -	-     -     -	  -	-     -  %7.5f  -    -     -     -     -     -     -     -     -     -     -     -     -     -     -     -     -\n",1.30);		
+      newcardShape << Form("norm_WjetsE		                   lnN    -	-     -     -	  -	-     -    -  %7.5f  -     -     -     -     -     -     -     -     -     -     -     -     -     -     -     -\n",1.30);		
+      newcardShape << Form("WWEWKCorr			           lnN    -	-     -     -	  -	-     -    -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",systWWEWKCorrBinsUp[0][0],systWWEWKCorrBinsDown[0][0],systWWEWKCorrBinsUp[0][1],systWWEWKCorrBinsDown[0][1],systWWEWKCorrBinsUp[0][2],systWWEWKCorrBinsDown[0][2],systWWEWKCorrBinsUp[0][3],systWWEWKCorrBinsDown[0][3],systWWEWKCorrBinsUp[0][4],systWWEWKCorrBinsDown[0][4],systWWEWKCorrBinsUp[0][5],systWWEWKCorrBinsDown[0][5],systWWEWKCorrBinsUp[0][6],systWWEWKCorrBinsDown[0][6],systWWEWKCorrBinsUp[0][7],systWWEWKCorrBinsDown[0][7],systWWEWKCorrBinsUp[0][8],systWWEWKCorrBinsDown[0][8],systWWEWKCorrBinsUp[0][9],systWWEWKCorrBinsDown[0][9],systWWEWKCorrBinsUp[0][10],systWWEWKCorrBinsDown[0][10],systWWEWKCorrBinsUp[0][11],systWWEWKCorrBinsDown[0][11],systWWEWKCorrBinsUp[0][12],systWWEWKCorrBinsDown[0][12],systWWEWKCorrBinsUp[0][13],systWWEWKCorrBinsDown[0][13],systWWEWKCorrBinsUp[0][14],systWWEWKCorrBinsDown[0][14],systWWEWKCorrBinsUp[0][15],systWWEWKCorrBinsDown[0][15]);	     
+      newcardShape << Form("WWNNLO_scale			   lnN    -	-     -     -	  -	-     -    -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",   systWWNNLOBinsUp[0][0],   systWWNNLOBinsDown[0][0],   systWWNNLOBinsUp[0][1],   systWWNNLOBinsDown[0][1],   systWWNNLOBinsUp[0][2],   systWWNNLOBinsDown[0][2],   systWWNNLOBinsUp[0][3],   systWWNNLOBinsDown[0][3],   systWWNNLOBinsUp[0][4],   systWWNNLOBinsDown[0][4],   systWWNNLOBinsUp[0][5],   systWWNNLOBinsDown[0][5],   systWWNNLOBinsUp[0][6],   systWWNNLOBinsDown[0][6],   systWWNNLOBinsUp[0][7],   systWWNNLOBinsDown[0][7],   systWWNNLOBinsUp[0][8],   systWWNNLOBinsDown[0][8],   systWWNNLOBinsUp[0][9],   systWWNNLOBinsDown[0][9],   systWWNNLOBinsUp[0][10],   systWWNNLOBinsDown[0][10],   systWWNNLOBinsUp[0][11],   systWWNNLOBinsDown[0][11],   systWWNNLOBinsUp[0][12],   systWWNNLOBinsDown[0][12],   systWWNNLOBinsUp[0][13],   systWWNNLOBinsDown[0][13],   systWWNNLOBinsUp[0][14],   systWWNNLOBinsDown[0][14],   systWWNNLOBinsUp[0][15],   systWWNNLOBinsDown[0][15]);	     
+      newcardShape << Form("WWNNLO_resum			   lnN    -	-     -     -	  -	-     -    -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",   systWWNNLOBinsUp[1][0],   systWWNNLOBinsDown[1][0],   systWWNNLOBinsUp[1][1],   systWWNNLOBinsDown[1][1],   systWWNNLOBinsUp[1][2],   systWWNNLOBinsDown[1][2],   systWWNNLOBinsUp[1][3],   systWWNNLOBinsDown[1][3],   systWWNNLOBinsUp[1][4],   systWWNNLOBinsDown[1][4],   systWWNNLOBinsUp[1][5],   systWWNNLOBinsDown[1][5],   systWWNNLOBinsUp[1][6],   systWWNNLOBinsDown[1][6],   systWWNNLOBinsUp[1][7],   systWWNNLOBinsDown[1][7],   systWWNNLOBinsUp[1][8],   systWWNNLOBinsDown[1][8],   systWWNNLOBinsUp[1][9],   systWWNNLOBinsDown[1][9],   systWWNNLOBinsUp[1][10],   systWWNNLOBinsDown[1][10],   systWWNNLOBinsUp[1][11],   systWWNNLOBinsDown[1][11],   systWWNNLOBinsUp[1][12],   systWWNNLOBinsDown[1][12],   systWWNNLOBinsUp[1][13],   systWWNNLOBinsDown[1][13],   systWWNNLOBinsUp[1][14],   systWWNNLOBinsDown[1][14],   systWWNNLOBinsUp[1][15],   systWWNNLOBinsDown[1][15]);	   
+      newcardShape << Form("UEPS         lnN    -	-     -     -	  -	- %7.5f/%7.5f -	-  %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f %7.5f/%7.5f\n",theUEPSUp[2],theUEPSDown[2],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0],theUEPSUp[0],theUEPSDown[0]);
       newcardShape << Form("* autoMCStats 0\n");
-      //if(histo_Top->GetBinContent(nb)	      > 0) newcardShape << Form("CMS_ww%s_%dj_MVATopStatBounding_%s_Bin%d	lnN  %7.5f   -     -	 -     -     -  	-    -    -    -    -	 -    -    -	-    -    -    -     -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_Top->GetBinError(nb)/histo_Top->GetBinContent(nb),0.999));
-      //if(histo_DY->GetBinContent(nb)	      > 0) newcardShape << Form("CMS_ww%s_%dj_MVADYStatBounding_%s_Bin%d	lnN    -   %7.5f   -	 -     -     -  	-    -    -    -    -	 -    -    -	-    -    -    -     -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_DY->GetBinError(nb)/histo_DY->GetBinContent(nb),0.999));
-      //if(histo_VV->GetBinContent(nb)	      > 0) newcardShape << Form("CMS_ww%s_%dj_MVAVVStatBounding_%s_Bin%d	lnN    -     -   %7.5f   -     -     -  	-    -    -    -    -	 -    -    -	-    -    -    -     -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_VV->GetBinError(nb)/histo_VV->GetBinContent(nb),0.999));
-      //if(histo_VVV->GetBinContent(nb)	      > 0) newcardShape << Form("CMS_ww%s_%dj_MVAVVVStatBounding_%s_Bin%d	lnN    -     -     -   %7.5f   -     -    -    -    -  -    -	 -    -    -	-    -    -    -     -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_VVV->GetBinError(nb)/histo_VVV->GetBinContent(nb),0.999));
-      //if(histo_WG->GetBinContent(nb)	      > 0) newcardShape << Form("CMS_ww%s_%dj_MVAWGStatBounding_%s_Bin%d	lnN    -     -     -	 -   %7.5f   -    -    -    -  -    -	 -    -    -	-    -    -    -     -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_WG->GetBinError(nb)/histo_WG->GetBinContent(nb),0.999));
-      //if(histo_WGS->GetBinContent(nb)	      > 0) newcardShape << Form("CMS_ww%s_%dj_MVAWGSStatBounding_%s_Bin%d	lnN    -     -     -	 -     -   %7.5f  -    -    -  -    -	 -    -    -	-    -    -    -     -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_WGS->GetBinError(nb)/histo_WGS->GetBinContent(nb),0.999));
-      //if(histo_Higgs->GetBinContent(nb)       > 0) newcardShape << Form("CMS_ww%s_%dj_MVAHiggsStatBounding_%s_Bin%d	lnN    -     -     -	 -     -     -  %7.5f  -    -	 -    -    -	-    -  	-    -    -    -     -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_Higgs->GetBinError(nb)/histo_Higgs->GetBinContent(nb),0.999));
-      //if(histo_WjetsM ->GetBinContent(nb)     > 0) newcardShape << Form("CMS_ww%s_%dj_MVAWjetsMStatBounding_%s_Bin%d	lnN    -     -     -	 -     -     -  	-  %7.5f  -    -    -	 -    -    -	-    -    -    -     -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_WjetsM ->GetBinError(nb)/histo_WjetsM ->GetBinContent(nb),0.999));
-      //if(histo_WjetsE ->GetBinContent(nb)     > 0) newcardShape << Form("CMS_ww%s_%dj_MVAWjetsEStatBounding_%s_Bin%d	lnN    -     -     -	 -     -     -  	-    -  %7.5f  -    -	 -    -    -	-    -    -    -     -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_WjetsE ->GetBinError(nb)/histo_WjetsE ->GetBinContent(nb),0.999));
-      //if(histo_qqWWBins[0]->GetBinContent(nb) > 0) newcardShape << Form("CMS_ww%s_%dj_MVAqqWWStatBoundingBins0_%s_Bin%d lnN    -     -     -   -     -     -	-    -    -  %7.5f  -	 -    -    -	-    -    -    -     -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_qqWWBins[0]->GetBinError(nb)/histo_qqWWBins[0]->GetBinContent(nb),0.999));
-      //if(histo_qqWWBins[1]->GetBinContent(nb) > 0) newcardShape << Form("CMS_ww%s_%dj_MVAqqWWStatBoundingBins1_%s_Bin%d lnN    -     -     -   -     -     -	-    -    -    -  %7.5f  -    -    -	-    -    -    -     -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_qqWWBins[1]->GetBinError(nb)/histo_qqWWBins[1]->GetBinContent(nb),0.999));
-      //if(histo_qqWWBins[2]->GetBinContent(nb) > 0) newcardShape << Form("CMS_ww%s_%dj_MVAqqWWStatBoundingBins2_%s_Bin%d lnN    -     -     -   -     -     -	-    -    -    -    -  %7.5f  -    -	-    -    -    -     -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_qqWWBins[2]->GetBinError(nb)/histo_qqWWBins[2]->GetBinContent(nb),0.999));
-      //if(histo_qqWWBins[3]->GetBinContent(nb) > 0) newcardShape << Form("CMS_ww%s_%dj_MVAqqWWStatBoundingBins3_%s_Bin%d lnN    -     -     -   -     -     -	-    -    -    -    -	 -  %7.5f  -	-    -    -    -     -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_qqWWBins[3]->GetBinError(nb)/histo_qqWWBins[3]->GetBinContent(nb),0.999));
-      //if(histo_qqWWBins[4]->GetBinContent(nb) > 0) newcardShape << Form("CMS_ww%s_%dj_MVAqqWWStatBoundingBins4_%s_Bin%d lnN    -     -     -   -     -     -	-    -    -    -    -	 -    -  %7.5f  -    -    -    -     -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_qqWWBins[4]->GetBinError(nb)/histo_qqWWBins[4]->GetBinContent(nb),0.999));
-      //if(histo_qqWWBins[5]->GetBinContent(nb) > 0) newcardShape << Form("CMS_ww%s_%dj_MVAqqWWStatBoundingBins5_%s_Bin%d lnN    -     -     -   -     -     -	-    -    -    -    -	 -    -    -  %7.5f  -    -    -     -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_qqWWBins[5]->GetBinError(nb)/histo_qqWWBins[5]->GetBinContent(nb),0.999));
-      //if(histo_qqWWBins[6]->GetBinContent(nb) > 0) newcardShape << Form("CMS_ww%s_%dj_MVAqqWWStatBoundingBins6_%s_Bin%d lnN    -     -     -   -     -     -	-    -    -    -    -	 -    -    -	-  %7.5f  -    -     -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_qqWWBins[6]->GetBinError(nb)/histo_qqWWBins[6]->GetBinContent(nb),0.999));
-      //if(histo_qqWWBins[7]->GetBinContent(nb) > 0) newcardShape << Form("CMS_ww%s_%dj_MVAqqWWStatBoundingBins7_%s_Bin%d lnN    -     -     -   -     -     -	-    -    -    -    -	 -    -    -	-    -  %7.5f  -     -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_qqWWBins[7]->GetBinError(nb)/histo_qqWWBins[7]->GetBinContent(nb),0.999));
-      //if(histo_qqWWBins[8]->GetBinContent(nb) > 0) newcardShape << Form("CMS_ww%s_%dj_MVAqqWWStatBoundingBins8_%s_Bin%d lnN    -     -     -   -     -     -	-    -    -    -    -	 -    -    -	-    -    -  %7.5f   -  \n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_qqWWBins[8]->GetBinError(nb)/histo_qqWWBins[8]->GetBinContent(nb),0.999));
-      //if(histo_qqWWBins[9]->GetBinContent(nb) > 0) newcardShape << Form("CMS_ww%s_%dj_MVAqqWWStatBoundingBins9_%s_Bin%d lnN    -     -     -   -     -     -	-    -    -    -    -	 -    -    -	-    -    -    -   %7.5f\n",finalStateName,nJetsType,ECMsb.Data(),nb-1,1.0+TMath::Min(histo_qqWWBins[9]->GetBinError(nb)/histo_qqWWBins[9]->GetBinContent(nb),0.999));
       newcardShape.close();
     }
   }
@@ -3312,14 +3394,14 @@ void wwAnalysis(
 
   // delete garbage
   system(Form("rm -f %s",outputLimitsAll));
-  if     (shapeAnaType == 0 || (theControlRegion != 0 && shapeAnaType != 9)){ // standard
+  if     (shapeAnaType == 0 || (theControlRegion != 0 && shapeAnaType != 10)){ // standard
     for(int i=1; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
   else if(shapeAnaType == 1){ // mll
-    for(int i=12; i<nRecBins; i++){
+    for(int i=25; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
@@ -3331,42 +3413,48 @@ void wwAnalysis(
     }
   }
   else if(shapeAnaType == 3){ // ptl1
-    for(int i=17; i<nRecBins; i++){
+    for(int i=28; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
   else if(shapeAnaType == 4){ // ptl2
-    for(int i=9; i<nRecBins; i++){
+    for(int i=11; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
-  else if(shapeAnaType == 5){ // lep fiducial
+  else if(shapeAnaType == 5){ // ptll
+    for(int i=20; i<nRecBins; i++){
+      system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+      system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+    }
+  }
+  else if(shapeAnaType == 6){ // lep fiducial
     for(int i=1; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
-  else if(shapeAnaType == 6){ // lep and jet fiducial, ptjet<30
+  else if(shapeAnaType == 7){ // lep and jet fiducial, ptjet<30
     for(int i=1; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
-  else if(shapeAnaType == 7){ // lep and jet fiducial, ptjet<25
+  else if(shapeAnaType == 8){ // lep and jet fiducial, ptjet<25
     for(int i=1; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
-  else if(shapeAnaType == 8){ // lep and jet fiducial, ptjet<35
+  else if(shapeAnaType == 9){ // lep and jet fiducial, ptjet<35
     for(int i=1; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
-  else if(shapeAnaType == 9){ // lep fiducial, njets
+  else if(shapeAnaType == 10){ // lep fiducial, njets
     for(int i=3; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));

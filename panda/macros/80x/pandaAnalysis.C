@@ -1437,6 +1437,9 @@ void pandaAnalysis(int whichDY, int whichAnaFlow = 0, unsigned int period = 0, d
       }
  
       if(passSel){
+        //if(theCategory == 0 && ((v1+v2).Pt() > 1500 || phi_star_eta(v1,v2,thePandaFlat.looseLep1PdgId) > 50)){
+        //  printf("Large VALUE(%d/%d/%llu): %f %f %f\n",thePandaFlat.runNumber,thePandaFlat.lumiNumber,thePandaFlat.eventNumber,(v1+v2).Pt(),TMath::Abs((v1+v2).Rapidity()),phi_star_eta(v1,v2,thePandaFlat.looseLep1PdgId));
+        //}
         double the_cos_theta_star = cos_theta_star(v1,v2,(v1+v2));
         if(theCategory != 5){
 	  histo[lepType+0][theCategory]->Fill((v1+v2).M(),totalWeight);
@@ -2257,7 +2260,7 @@ void pandaAnalysis(int whichDY, int whichAnaFlow = 0, unsigned int period = 0, d
            histoRapRecDY_QCDPart[ntype][3]->GetSumOfWeights(),histoRapRecDY_QCDPart[ntype][4]->GetSumOfWeights(),histoRapRecDY_QCDPart[ntype][5]->GetSumOfWeights(),histoRapRecDY[ntype]->GetSumOfWeights());
   }
   for(int ntype=0; ntype<2; ntype++){
-    for(int nb=1; nb<=nBinRap+1; nb++){
+    for(int nb=1; nb<=nBinRecoRap+1; nb++){
       // QCD study
       double systQCDScale[2] = {TMath::Abs(histoRapRecVV_QCDPart[ntype][0]->GetBinContent(nb)-histoRapRecVV[ntype]->GetBinContent(nb)),
   			        TMath::Abs(histoRapRecDY_QCDPart[ntype][0]->GetBinContent(nb)-histoRapRecDY[ntype]->GetBinContent(nb))};
