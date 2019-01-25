@@ -5,6 +5,7 @@ void checkEqualBinning(TString fileName = "", int intervalType = 0, bool debug =
   TH1F* histo2 = (TH1F*)_file0->Get(Form("bdtValue/histo14"));
   double sum[4]= {0, 0, 0, 0};
   double theInterval[8] = {1/8., 2/8., 3/8., 4/8., 5/8., 6/8., 7/8., 8.001/8.};
+  double toKeep[8];
   bool theCall[8] = {false, false, false, false, false, false, false, false};
   if(intervalType == 1){
     theInterval[0] = 1/6.;
@@ -27,9 +28,14 @@ void checkEqualBinning(TString fileName = "", int intervalType = 0, bool debug =
       if(theCall[i] == false && sum[3] > theInterval[i]){
         printf("%3d %5.2f %5.3f %5.3f %5.3f %5.3f %d\n",nb,-1.0+nb/100.,sum[0],sum[1],sum[2],sum[3],i);
 	theCall[i] = true;
+	toKeep[i] = -1.0+nb/100.;
         break;
       }
     }
   }
 
+  for(int i=0; i<8; i++) {
+   if(theCall[i] == true) printf(",%5.2f",toKeep[i]);
+  }
+  printf("\n");
 }
