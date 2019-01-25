@@ -1,0 +1,57 @@
+{
+    "samples": [
+        {
+            "name": "VH",
+            "samples": ["ZllHbb_mH125", "ggZllHbb_mH125"]
+        },
+        {
+            "name": "VV_forZH_2016",
+            "samples": ["WWTo2L2Nu","WZTo2L2Q","ZZTo2L2Q"]
+        },
+        {
+            "name": "TW_forZH_2016",
+            "samples": ["SingleTop_tW","SingleTop_tbarW"]
+        },
+        {
+            "name": "TT_forZH_2016",
+            "samples": ["TTTo2L2Nu"]
+        },
+        {
+            "name": "ZJets_forZH_2016",
+            "samples": ["ZJets_bHadrons_incl","ZJets_bHadrons_pt100to200","ZJets_bHadrons_pt200toinf",
+	                "ZJets_bQuarks_incl","ZJets_bQuarks_pt100to200","ZJets_bQuarks_pt200toinf",
+			"ZJets_ht100to200","ZJets_ht200to400","ZJets_ht400to600","ZJets_ht600to800","ZJets_ht800to1200","ZJets_ht1200to2500","ZJets_ht2500toinf",
+			"ZJets_pt50to100","ZJets_pt100to250","ZJets_pt250to400","ZJets_pt400to650","ZJets_pt650toinf"
+			]
+        },
+        {
+            "name": "VV_forZH_2017",
+            "samples": ["WWTo2L2Nu_CP5","WZTo2L2Q","ZZTo2L2Q"]
+        },
+        {
+            "name": "TW_forZH_2017",
+            "samples": ["SingleTop_tW_CP5","SingleTop_tbarW_CP5"]
+        },
+        {
+            "name": "TT_forZH_2017",
+            "samples": ["TTTo2L2Nu_CP5"]
+        },
+        {
+            "name": "ZJets_forZH_2017",
+            "samples": ["ZJets_bHadrons_pt100to200","ZJets_bHadrons_pt200toinf",
+	                "ZJets_bQuarks_CP5",
+			"ZJets_inclNLO_CP5",
+			"ZJets_ht100to200_CP5","ZJets_ht200to400_CP5","ZJets_ht400to600_CP5","ZJets_ht600to800_CP5","ZJets_ht800to1200_CP5","ZJets_ht1200to2500_CP5","ZJets_ht2500toinf_CP5"
+			]
+        }
+    ],
+    "features_ZH_boosted": [
+       "nIsojet","fjPt","MSD","Tau21SD","ptBalanceZHFJ","dEtaZHFJ","dPhiZHFJ","dRL1L2","lepton1Pt","lepton2Pt","CosThetaCS","doubleBTag"
+            ],
+    "features_ZH_resolved": [
+       "sumEtSoft1","nSoft5","bjet1Pt","bjet2Pt","bjet1btag","bjet2btag","lepton1Pt","lepton2Pt","ZBosonM","CosThetaCS","CosThetaStar","hbbpt","hbbm","dPhiZH","ptBalanceZH","dRZH","nAddJet"
+            ],
+    "weight": "weight",
+    "cut_ZH_boosted":  "MSD >= 80 && MSD < 150",
+    "cut_ZH_resolved": "hbbm >= 90 && hbbm < 150"
+}
