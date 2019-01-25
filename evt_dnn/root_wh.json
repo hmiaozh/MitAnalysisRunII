@@ -1,0 +1,70 @@
+{
+    "samples": [
+        {
+            "name": "VH",
+            "samples": ["WpLNuHbb_mH125", "WmLNuHbb_mH125"]
+        },
+        {
+            "name": "VV_forWH_2016",
+            "samples": ["WWToLNuQQ","WZTo1L1Nu2Q","WZTo1L3Nu","WZTo2L2Q","ZZTo2L2Nu","ZZTo2L2Q","ZZTo4Q"]
+        },
+        {
+            "name": "TW_forWH_2016",
+            "samples": ["SingleTop_tW","SingleTop_tbarW","SingleTop_tT","SingleTop_tTbar"]
+        },
+        {
+            "name": "TT_forWH_2016",
+            "samples": ["TTbar_Powheg"]
+        },
+        {
+            "name": "ZJets_forWH_2016",
+            "samples": ["ZJets_bHadrons_pt100to200","ZJets_bHadrons_pt200toinf",
+	                "ZJets_bQuarks_pt100to200","ZJets_bQuarks_pt200toinf",
+			"ZJets_ht100to200","ZJets_ht200to400","ZJets_ht400to600","ZJets_ht600to800","ZJets_ht800to1200","ZJets_ht1200to2500","ZJets_ht2500toinf"
+			]
+        },
+        {
+            "name": "WJets_forWH_2016",
+            "samples": ["WJets_bHadrons_pt100to200","WJets_bHadrons_pt200toinf",
+	                "WJets_bQuarks_pt100to200","WJets_bQuarks_pt200toinf",
+			"WJets_ht100to200","WJets_ht200to400","WJets_ht400to600","WJets_ht600to800","WJets_ht800to1200","WJets_ht1200to2500","WJets_ht2500toinf"
+			]
+        },
+        {
+            "name": "VV_forWH_2017",
+            "samples": ["WWTo1L1Nu2Q_AMC","WZTo1L1Nu2Q","WZTo2L2Q","ZZTo2L2Q"]
+        },
+        {
+            "name": "TW_forWH_2017",
+            "samples": ["SingleTop_tW_CP5","SingleTop_tbarW_CP5","SingleTop_tT_CP5","SingleTop_tTbar_CP5"]
+        },
+        {
+            "name": "TT_forWH_2017",
+            "samples": ["TTTo2L2Nu_CP5","TTToSemiLeptonic_CP5","TTToHadronic_CP5"]
+        },
+        {
+            "name": "ZJets_forWH_2017",
+            "samples": ["ZJets_bHadrons_pt100to200","ZJets_bHadrons_pt200toinf",
+	                "ZJets_bQuarks_incl",
+			"ZJets_inclNLO_CP5",
+			"ZJets_ht100to200_CP5","ZJets_ht200to400_CP5","ZJets_ht400to600_CP5","ZJets_ht600to800_CP5","ZJets_ht800to1200_CP5","ZJets_ht1200to2500_CP5","ZJets_ht2500toinf_CP5"
+			]
+        },
+        {
+            "name": "WJets_forWH_2017",
+            "samples": ["WJets_bHadrons_pt100to200","WJets_bHadrons_pt200toinf",
+			"WJets_ht100to200_CP5","WJets_ht200to400_CP5","WJets_ht400to600_CP5","WJets_ht600to800_CP5","WJets_ht800to1200_CP5","WJets_ht1200to2500_CP5"
+			]
+        }
+
+    ],
+    "features_WH_boosted": [
+       "lepton1Pt","lepton1Charge","nIsojet","MSD","Tau21SD","Tau32SD","fjPt","psi022004031003","psi022004030503","ptBalanceWHFJ","dEtaLep1FJ","dPhiWHFJ","HTTFRec","doubleBTag"
+            ],
+    "features_WH_resolved": [
+       "lepton1Pt","lepton1Charge","sumEtSoft1","nSoft5","bjet1Pt","bjet2Pt","bjet2btag","hbbpt","hbbm","dPhiWH","ptBalanceWH","topMass","dEtaLep1H","nAddJet"
+            ],
+    "weight": "weight",
+    "cut_WH_boosted":  "psi022004022003>=0",
+    "cut_WH_resolved": "1==1"
+}
