@@ -32,10 +32,37 @@ int year, int nbjets = 0
   double lumi;
   TString filesPath;
   TString fnpvWeightsFileName;
-  if(year == 2017) {
+  TString puPath;
+  if     (year == 2018) {
+    lumi = 56.1/1000.;
+    filesPath = "/data/t3home000/ceballos/panda/v_007_0/";
+    fnpvWeightsFileName = "MitAnalysisRunII/data/90x/npvWeights_2018_FakeTriggers.root";
+    puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
+
+    infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(0);
+    //infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	           infileCat_.push_back(1);
+    //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	           infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		 infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTT1L.root" ,filesPath.Data()));		 infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                  infileCat_.push_back(1);
+    infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
+    //infileName_.push_back(Form("%sWZno3l.root" ,filesPath.Data()));	           infileCat_.push_back(1);
+    infileName_.push_back(Form("%sWZ3l_amcnlo.root" ,filesPath.Data()));         infileCat_.push_back(1);
+    //infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));  	           infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	         infileCat_.push_back(1);
+    //infileName_.push_back(Form("%sTTVV.root" ,filesPath.Data()));  	           infileCat_.push_back(1);
+    infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));		         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(2);
+    infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));   infileCat_.push_back(2);
+    infileName_.push_back(Form("%sWJets.root" ,filesPath.Data()));               infileCat_.push_back(3);
+  }
+  else if(year == 2017) {
     lumi = 41.5/1000.;
     filesPath = "/data/t3home000/ceballos/panda/v_005_0/";
     fnpvWeightsFileName = "MitAnalysisRunII/data/90x/npvWeights_2017_FakeTriggers.root";
+    puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(0);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
@@ -59,7 +86,8 @@ int year, int nbjets = 0
   else if(year == 2016) {
     lumi = 35.9/1000.;
     filesPath = "/data/t3home000/ceballos/panda/v_003_0/";
-    fnpvWeightsFileName = "MitAnalysisRunII/data/80x/npvWeights_2016_FakeTriggers.root";
+    fnpvWeightsFileName = "MitAnalysisRunII/data/90x/npvWeights_2016_FakeTriggers.root";
+    puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(0);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
@@ -85,6 +113,10 @@ int year, int nbjets = 0
   TFile *fnpvWeights = TFile::Open(fnpvWeightsFileName.Data());
   TH1D* hDnpvWeights = (TH1D*)fnpvWeights->Get("npvWeights"); hDnpvWeights->SetDirectory(0);
   fnpvWeights->Close();
+
+  TFile *fPUFile = TFile::Open(Form("%s",puPath.Data()));
+  TH1D *fhDPU     = (TH1D*)(fPUFile->Get("puWeights"));     assert(fhDPU);     fhDPU    ->SetDirectory(0);
+  delete fPUFile;
 
   const int nLepSel = 16;
   int nBinPlot      = 200;
@@ -150,7 +182,7 @@ int year, int nbjets = 0
         looseLepPt.push_back(thePandaFlat.muonPt[i]);
         looseLepEta.push_back(thePandaFlat.muonEta[i]);
         looseLepPhi.push_back(thePandaFlat.muonPhi[i]);
-        looseLepSF.push_back(thePandaFlat.muonSfReco[i] * thePandaFlat.muonSfTight[i]);
+        looseLepSF.push_back(thePandaFlat.muonSfReco[i] * thePandaFlat.muonSfMedium[i]);
         looseLepSelBit.push_back(thePandaFlat.muonSelBit[i]);
         looseLepPdgId.push_back(thePandaFlat.muonPdgId[i]);
         looseLepTripleCharge.push_back(1);
@@ -163,7 +195,7 @@ int year, int nbjets = 0
         looseLepPt.push_back(thePandaFlat.electronPt[i]);
         looseLepEta.push_back(thePandaFlat.electronEta[i]);
         looseLepPhi.push_back(thePandaFlat.electronPhi[i]);
-        looseLepSF.push_back(thePandaFlat.electronSfReco[i] * thePandaFlat.electronSfTight[i]);
+        looseLepSF.push_back(thePandaFlat.electronSfReco[i] * thePandaFlat.electronSfMedium[i]);
         looseLepSelBit.push_back(thePandaFlat.electronSelBit[i]);
         looseLepPdgId.push_back(thePandaFlat.electronPdgId[i]);
         looseLepTripleCharge.push_back(thePandaFlat.electronTripleCharge[i]);
@@ -213,7 +245,8 @@ int year, int nbjets = 0
       bool passMllSel = false;
       TLorentzVector vMet;
       if     (year == 2016) vMet.SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
-      else if(year == 2017) vMet.SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
+      else if(year == 2017) vMet.SetPtEtaPhiM(thePandaFlat.puppimet,0.0,thePandaFlat.puppimetphi,0.0);
+      else if(year == 2018) vMet.SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
       if(thePandaFlat.nLooseLep == 2) {
         passMllSel = TMath::Abs((vLoose1+vLoose2).M()-91.1876) < 15 && lepType <= 1;
       }
@@ -246,10 +279,11 @@ int year, int nbjets = 0
 
       double totalWeight = 1.0;
       if(theCategory != 0){
+	double puWeight = nPUScaleFactor(fhDPU, thePandaFlat.pu);
         int binNpv = hDnpvWeights->GetXaxis()->FindFixBin(TMath::Min((double)thePandaFlat.npv,49.499));
-	double npvWeights = 1;//hDnpvWeights->GetBinContent(binNpv);
+	double npvWeights = hDnpvWeights->GetBinContent(binNpv);
         
-        totalWeight = thePandaFlat.normalizedWeight * lumi * thePandaFlat.sf_pu * thePandaFlat.sf_l1Prefire * looseLepSF[0] * npvWeights;
+        totalWeight = thePandaFlat.normalizedWeight * lumi * puWeight * thePandaFlat.sf_l1Prefire * looseLepSF[0] * npvWeights;
       }
 
       int binPt = histoZllPt[0][0]->GetXaxis()->FindFixBin(TMath::Min(vLoose1.Pt(),44.999))-1;

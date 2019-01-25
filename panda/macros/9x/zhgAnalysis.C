@@ -48,7 +48,7 @@ int year
     lumi = 41.5;
     filesPath = "/data/t3home000/ceballos/panda/v_004_0/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2017.root";
-    puPath = "MitAnalysisRunII/data/90x/puWeights_90x.root";
+    puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
     photonSFPath = "MitAnalysisRunII/data/90x/egammaEffi.txt_EGM2D_runBCDEF_passingMedium94X.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(kPlotData);
@@ -189,8 +189,8 @@ int year
   TH1D *histo_ggZZCorrDown[nPlotCategories];
   TH1D *histo_JESBoundingUp[nPlotCategories];
   TH1D *histo_JESBoundingDown[nPlotCategories];
-  TH1D *histo_METBoundingUp[nPlotCategories];
-  TH1D *histo_METBoundingDown[nPlotCategories];
+  TH1D *histo_PreFireBoundingUp[nPlotCategories];
+  TH1D *histo_PreFireBoundingDown[nPlotCategories];
   
   for(unsigned ic=kPlotData; ic!=nPlotCategories; ic++) {
     for(int i=0; i<6; i++)  histo_QCDScaleBounding[ic][i] = (TH1D*)histo_MVA->Clone(Form("histo_%s_%d_QCDScaleBounding",plotBaseNames[ic].Data(),i));
@@ -205,10 +205,10 @@ int year
     histo_LepEffEBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_eff_eDown"      , plotBaseNames[ic].Data()));
     histo_PUBoundingUp		[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_puUp"           , plotBaseNames[ic].Data()));
     histo_PUBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_puDown"         , plotBaseNames[ic].Data()));
-    histo_BTAGBBoundingUp	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_btagbUp"        , plotBaseNames[ic].Data()));
-    histo_BTAGBBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_btagbDown"      , plotBaseNames[ic].Data()));
-    histo_BTAGLBoundingUp	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_btaglUp"        , plotBaseNames[ic].Data()));
-    histo_BTAGLBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_btaglDown"      , plotBaseNames[ic].Data()));
+    histo_BTAGBBoundingUp	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_btagb_%dUp"     , plotBaseNames[ic].Data(),year));
+    histo_BTAGBBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_btagb_%dDown"   , plotBaseNames[ic].Data(),year));
+    histo_BTAGLBoundingUp	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_btagl_%dUp"     , plotBaseNames[ic].Data(),year));
+    histo_BTAGLBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_btagl_%dDown"   , plotBaseNames[ic].Data(),year));
     histo_PhoEffBoundingUp	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_eff_photonUp"   , plotBaseNames[ic].Data()));
     histo_PhoEffBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_eff_photonDown" , plotBaseNames[ic].Data()));
     histo_ElToPhRateBoundingUp	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_fake_elUp"      , plotBaseNames[ic].Data()));
@@ -219,10 +219,10 @@ int year
     histo_EWKqqZZCorrDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_EWKqqZZCorrDown"    , plotBaseNames[ic].Data()));
     histo_ggZZCorrUp		[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_ggZZCorrUp"         , plotBaseNames[ic].Data()));
     histo_ggZZCorrDown		[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_ggZZCorrDown"       , plotBaseNames[ic].Data()));
-    histo_JESBoundingUp 	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_jesUp"          , plotBaseNames[ic].Data()));
-    histo_JESBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_jesDown"        , plotBaseNames[ic].Data()));
-    histo_METBoundingUp 	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_metUp"          , plotBaseNames[ic].Data()));
-    histo_METBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_metDown"        , plotBaseNames[ic].Data()));
+    histo_JESBoundingUp 	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_jes_%dUp"       , plotBaseNames[ic].Data(),year));
+    histo_JESBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_jes_%dDown"     , plotBaseNames[ic].Data(),year));
+    histo_PreFireBoundingUp 	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_prefire_%dUp"   , plotBaseNames[ic].Data(),year));
+    histo_PreFireBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_prefire_%dDown" , plotBaseNames[ic].Data(),year));
   }
 
   //*******************************************************
@@ -628,7 +628,7 @@ int year
       bool passSystCuts[nSystTypes] = {dataCardSelUp >= 0, dataCardSelDown >= 0, dataCardSel >= 0, dataCardSel >= 0};
  
       double photonSFUnc[2] = {1.0, 1.0};
-      double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0;
+      double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0; double sf_l1PrefireE = 1.0;
       if(theCategory != kPlotData){
         double triggerWeights[2] = {1.0, 0.0};
 	if(thePandaFlat.nLooseLep == 2) {
@@ -637,6 +637,8 @@ int year
 	puWeight     = nPUScaleFactor(fhDPU,    thePandaFlat.pu);
         puWeightUp   = nPUScaleFactor(fhDPUUp,  thePandaFlat.pu);
         puWeightDown = nPUScaleFactor(fhDPUDown,thePandaFlat.pu);
+
+        sf_l1PrefireE = 1.0 + TMath::Abs(1.0 - thePandaFlat.sf_l1Prefire) * 0.2;
 
         if(infileCat_[ifile] == kPlotBSM) {puWeight = 1.0; puWeightUp = 1.0; puWeightDown = 1.0;} // TEMPORAL UNTIL WE GET OFFICIAL PRODUCTION
 
@@ -770,11 +772,11 @@ int year
 	    histo_EWKqqZZCorrDown[theCategory]->Fill(MVAVar,totalWeight/sf_ewkcorrzz_unc);
 	    histo_ggZZCorrUp  [theCategory]->Fill(MVAVar,totalWeight*sf_ggcorrzz_unc);
 	    histo_ggZZCorrDown[theCategory]->Fill(MVAVar,totalWeight/sf_ggcorrzz_unc);
+            histo_PreFireBoundingUp  [theCategory]->Fill(MVAVar,totalWeight*sf_l1PrefireE);
+            histo_PreFireBoundingDown[theCategory]->Fill(MVAVar,totalWeight/sf_l1PrefireE);
 	  }
           if(passSystCuts[JESUP])  histo_JESBoundingUp  [theCategory]->Fill(MVAVarUp  ,totalWeight);
           if(passSystCuts[JESDOWN])histo_JESBoundingDown[theCategory]->Fill(MVAVarDown,totalWeight);
-          if(passSystCuts[METUP])  histo_METBoundingUp  [theCategory]->Fill(MVAVar    ,totalWeight);
-          if(passSystCuts[METDOWN])histo_METBoundingDown[theCategory]->Fill(MVAVar    ,totalWeight);
         }
       }
 
@@ -786,7 +788,9 @@ int year
 
   double qcdScaleTotal[2] = {0.035, 0.231};
   double pdfTotal[2] = {0.016, 0.051};
-  double lumiE = 1.023; if(year == 2016) lumiE = 1.025;
+  double lumiE = 1.025;
+  if     (year == 2017) lumiE = 1.023;
+  else if(year == 2018) lumiE = 1.050;
   double syst_WZl[2] = {1.010, 1.012};
 
   for(unsigned ic=0; ic<nPlotCategories; ic++) {
@@ -840,8 +844,8 @@ int year
       histo_ggZZCorrDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_ggZZCorrDown  	[ic]->GetBinContent(nb),1e-7f));
       histo_JESBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingUp 	[ic]->GetBinContent(nb),1e-7f));
       histo_JESBoundingDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingDown	[ic]->GetBinContent(nb),1e-7f));
-      histo_METBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_METBoundingUp 	[ic]->GetBinContent(nb),1e-7f));
-      histo_METBoundingDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_METBoundingDown	[ic]->GetBinContent(nb),1e-7f));
+      histo_PreFireBoundingUp     [ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingUp  	[ic]->GetBinContent(nb),1e-7f));
+      histo_PreFireBoundingDown   [ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingDown	[ic]->GetBinContent(nb),1e-7f));
     }
     histo_PUBoundingUp	[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_PUBoundingUp  [ic]->GetSumOfWeights());
     histo_PUBoundingDown[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_PUBoundingDown[ic]->GetSumOfWeights());
@@ -1027,17 +1031,17 @@ int year
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_JESBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
 
-    printf("uncertainties METUp\n");
+    printf("uncertainties PreFireUp\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
       if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
-        for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_METBoundingUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+        for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_PreFireBoundingUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
-    printf("uncertainties METDown\n");
+    printf("uncertainties PreFireDown\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
       if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
-        for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_METBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+        for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_PreFireBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
   }
 
@@ -1077,8 +1081,8 @@ int year
     histo_ggZZCorrDown  	[ic]->Write();
     histo_JESBoundingUp 	[ic]->Write();
     histo_JESBoundingDown	[ic]->Write();
-    histo_METBoundingUp 	[ic]->Write();
-    histo_METBoundingDown	[ic]->Write();
+    histo_PreFireBoundingUp 	[ic]->Write();
+    histo_PreFireBoundingDown	[ic]->Write();
   }
   outFileLimits->Close();
 
@@ -1127,7 +1131,7 @@ int year
   }
   newcardShape << Form("\n");
 
-  newcardShape << Form("lumi_13TeV    lnN     ");
+  newcardShape << Form("lumi_13TeV_%d    lnN     ",year);
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
     newcardShape << Form("%6.3f ",lumiE);
@@ -1151,7 +1155,7 @@ int year
   newcardShape << Form("CMS_trigger    lnN     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    newcardShape << Form("%6.3f ",1.010);
+    newcardShape << Form("%6.3f ",1.005);
   }
   newcardShape << Form("\n");
 
@@ -1250,33 +1254,33 @@ int year
   }
   newcardShape << Form("\n");
 
-  newcardShape << Form("CMS_btagb    shape     ");
+  newcardShape << Form("CMS_btagb_%d    shape     ",year);
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
     newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
-  newcardShape << Form("CMS_btagl    shape     ");
+  newcardShape << Form("CMS_btagl_%d    shape     ",year);
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
     newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
-  newcardShape << Form("CMS_jes    shape     ");
+  newcardShape << Form("CMS_jes_%d    shape     ",year);
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
     newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
-  //newcardShape << Form("CMS_met    shape     ");
-  //for (int ic=0; ic<nPlotCategories; ic++){
-  //  if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-  //  newcardShape << Form("1.0 ");
-  //}
-  //newcardShape << Form("\n");
+  newcardShape << Form("CMS_prefire_%d    shape     ",year);
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    newcardShape << Form("1.0 ");
+  }
+  newcardShape << Form("\n");
 
   newcardShape << Form("CMS_eff_photon    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){

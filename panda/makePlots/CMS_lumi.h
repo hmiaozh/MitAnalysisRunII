@@ -32,6 +32,7 @@ float extraOverCmsTextSize  = 0.65;
 
 TString lumi_13TeV_2016 = "35.9 fb^{-1}";
 TString lumi_13TeV_2017 = "41.5 fb^{-1}";
+TString lumi_13TeV_2018 = "56.1 fb^{-1}";
 TString lumi_8TeV  = "19.4 fb^{-1}";
 TString lumi_7TeV  = "4.9 fb^{-1}";
 

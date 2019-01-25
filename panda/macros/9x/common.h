@@ -1,12 +1,20 @@
 #include "TH1D.h"
 #include "TH2D.h"
 
-double WSSF_2016[5]  = {1.442005,1.193394,0.960448,0.964458,0.908749};
-double WSSFE_2016[5] = {0.283426,0.115993,0.054118,0.024149,0.031017};
-double WSSF_2017[5]  = {2.035983,0.916119,1.532139,1.542232,1.463881};
-double WSSFE_2017[5] = {0.281999,0.132595,0.061420,0.034706,0.035646};
+double WSSF_2016[5]  = {1.439209,1.157926,0.957239,0.965758,0.911145};
+double WSSFE_2016[5] = {0.287751,0.115338,0.054193,0.024139,0.031166};
+double WSSF_2017[5]  = {2.100584,0.945325,1.547102,1.526946,1.472798};
+double WSSFE_2017[5] = {0.285969,0.133781,0.061369,0.034252,0.035351};
+double WSSF_2018[5]  = {1.259327,2.753938,1.866497,1.412805,1.449254};
+double WSSFE_2018[5] = {0.192800,0.152386,0.056561,0.031382,0.030581};
 
 const bool useZZWZEWKUnc = true;
+
+double ewkCorrWpWp(double mjj){
+  double fitPar[2]={ -5.37274e+00, -7.33731e-03};
+  double xs = TMath::Max(1.0+(fitPar[0] + mjj*fitPar[1])*0.01,0.0);
+  return xs;
+}
 
 enum LepSelectionBit {
  kLoose   =(1<<0),
@@ -53,16 +61,21 @@ enum plotCategory {
   kPlotDY        , // 4  
   kPlotZZ        , // 5  
   kPlotWZ        , // 6  
-  kPlotVVV       , // 7  
-  kPlotVG        , // 8  
-  kPlotNonPrompt , // 9  
-  kPlotHiggs     , //10  
-  kPlotSSWWEWK   , //11   
-  kPlotSSWWQCD   , //12   
-  kPlotDPSWW     , //13   
-  kPlotWS        , //14   
-  kPlotEM        , //15   
-  kPlotBSM       , //16 
+  kPlotEWKWZ     , // 7  
+  kPlotVVV       , // 8  
+  kPlotVG        , // 9  
+  kPlotNonPrompt , //10  
+  kPlotHiggs     , //11  
+  kPlotSSWWEWK   , //12   
+  kPlotSSWWQCD   , //13   
+  kPlotDPSWW     , //14   
+  kPlotWS        , //15   
+  kPlotEM        , //16   
+  kPlotBSM       , //17 
+  kPlotSignal0   , //18
+  kPlotSignal1   , //19
+  kPlotSignal2   , //20
+  kPlotSignal3   , //21
   nPlotCategories
 };
 
@@ -74,6 +87,7 @@ std::map<int, TString> plotBaseNames={
   { kPlotDY	   , "DY" },
   { kPlotZZ	   , "ZZ" },
   { kPlotWZ	   , "WZ" },
+  { kPlotEWKWZ	   , "EWKWZ" },
   { kPlotVVV	   , "VVV" },
   { kPlotVG	   , "VG" },
   { kPlotNonPrompt , "NonPrompt" },
@@ -83,7 +97,11 @@ std::map<int, TString> plotBaseNames={
   { kPlotDPSWW     , "DPSWW" },
   { kPlotWS	   , "WS" },
   { kPlotEM	   , "EM" },
-  { kPlotBSM	   , "BSM" }
+  { kPlotBSM	   , "BSM" },
+  { kPlotSignal0   , "Signal0" },
+  { kPlotSignal1   , "Signal1" },
+  { kPlotSignal2   , "Signal2" },
+  { kPlotSignal3   , "Signal3" }
 }; 
 
 std::map<int, int> plotColors={
@@ -94,6 +112,7 @@ std::map<int, int> plotColors={
   { kPlotDY	   , kAzure-2},
   { kPlotZZ	   , TColor::GetColor(155,152,204)},
   { kPlotWZ	   , kViolet-9},
+  { kPlotEWKWZ     , kCyan+3},
   { kPlotVVV	   , 809},
   { kPlotVG	   , 419},
   { kPlotNonPrompt , kAzure-5},
@@ -103,27 +122,36 @@ std::map<int, int> plotColors={
   { kPlotDPSWW     , TColor::GetColor(248,206,104)},
   { kPlotWS	   , kAzure+10},
   { kPlotEM	   , kGreen-5},
-  { kPlotBSM	   , kGreen}
+  { kPlotBSM	   , kGreen},
+  { kPlotSignal0   , kMagenta+1},
+  { kPlotSignal1   , kMagenta+2},
+  { kPlotSignal2   , kMagenta+3},
+  { kPlotSignal3   , kMagenta+4}
 }; 
 
 std::map<int, TString> plotNames={
-    { kPlotData      , "Data"	  },
-    { kPlotqqWW      , "qq #rightarrow WW"	  },
-    { kPlotggWW      , "gg #rightarrow WW"   },
-    { kPlotTop       , "Top quark"    },
-    { kPlotDY	     , "Drell-Yan" },
-    { kPlotZZ	     , "ZZ"	  },
-    { kPlotWZ	     , "WZ"	  },
-    { kPlotVVV       , "VVV"	  },
+    { kPlotData      , "Data"},
+    { kPlotqqWW      , "qq #rightarrow WW"},
+    { kPlotggWW      , "gg #rightarrow WW"},
+    { kPlotTop       , "Top quark"},
+    { kPlotDY	     , "Drell-Yan"},
+    { kPlotZZ	     , "ZZ"},
+    { kPlotWZ	     , "WZ"},
+    { kPlotEWKWZ     , "EWK WZ"},
+    { kPlotVVV       , "VVV"},
     { kPlotVG	     , "V#gamma" },
-    { kPlotNonPrompt , "Nonprompt"	  },
-    { kPlotHiggs     , "Higgs"	  },
-    { kPlotSSWWEWK   , "EWK W^{#pm}W^{#pm}"  },
-    { kPlotSSWWQCD   , "QCD W^{#pm}W^{#pm}"  },
-    { kPlotDPSWW     , "DPS W^{#pm}W^{#pm}"  },
-    { kPlotWS	     , "Wrong sign"  },
-    { kPlotEM	     , "Top-quark/WW"  },
-    { kPlotBSM       , "BSM"}
+    { kPlotNonPrompt , "Nonprompt"},
+    { kPlotHiggs     , "Higgs"},
+    { kPlotSSWWEWK   , "EWK W^{#pm}W^{#pm}"},
+    { kPlotSSWWQCD   , "QCD W^{#pm}W^{#pm}"},
+    { kPlotDPSWW     , "DPS W^{#pm}W^{#pm}"},
+    { kPlotWS	     , "Wrong sign"},
+    { kPlotEM	     , "Top-quark/WW"},
+    { kPlotBSM       , "BSM"},
+    { kPlotSignal0   , "Signal 0"},
+    { kPlotSignal1   , "Signal 1"},
+    { kPlotSignal2   , "Signal 2"},
+    { kPlotSignal3   , "Signal 3"}
 };
 
 const double mass_el = 0.000510998928;

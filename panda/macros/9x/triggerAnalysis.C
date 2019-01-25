@@ -35,10 +35,23 @@ int whichLepSel = 0
   vector<TString> infileName_;
   vector<int> infileCat_;
 
-  if     (year == 2017){
+  if     (year == 2018){
+    filesPath = "/data/t3home000/ceballos/panda/v_006_0/";
+    puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
+    infileName_.push_back(Form("%sMET.root",filesPath.Data()));                   infileCat_.push_back(0);
+    //infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));                 infileCat_.push_back(1);
+    //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data()));                 infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		  infileCat_.push_back(1);
+    infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                   infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));    infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));   infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYNJetsToLL.root",filesPath.Data()));           infileCat_.push_back(1);
+    infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	          infileCat_.push_back(1);
+  }
+  else if(year == 2017){
     filesPath = "/data/t3home000/ceballos/panda/v_004_0/";
-    puPath = "MitAnalysisRunII/data/90x/puWeights_90x.root";
-    infileName_.push_back(Form("%sMET.root",filesPath.Data()));		          infileCat_.push_back(0);
+    puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
+    infileName_.push_back(Form("%sMET.root",filesPath.Data()));                   infileCat_.push_back(0);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));		  infileCat_.push_back(1);
     infileName_.push_back(Form("%sggWW.root" ,filesPath.Data()));		  infileCat_.push_back(1);
     infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		  infileCat_.push_back(1);
@@ -128,7 +141,7 @@ int whichLepSel = 0
         looseLepPdgId.push_back(thePandaFlat.muonPdgId[i]);
         looseLepTripleCharge.push_back(1);
         looseLepMissingHits.push_back(0);
-        looseLepSF.push_back(thePandaFlat.muonSfMedium[i]*thePandaFlat.muonSfReco[i]);
+        looseLepSF.push_back(thePandaFlat.muonSfReco[i]*thePandaFlat.muonSfMedium[i]);
 	if(thePandaFlat.muonPt[i] > 25) ptSelCuts[0]++;
 	if(thePandaFlat.muonPt[i] > 15) ptSelCuts[1]++;
 	if(thePandaFlat.muonPt[i] > 10) ptSelCuts[2]++;
@@ -141,7 +154,7 @@ int whichLepSel = 0
         looseLepPdgId.push_back(thePandaFlat.electronPdgId[i]);
         looseLepTripleCharge.push_back(thePandaFlat.electronTripleCharge[i]);
         looseLepMissingHits.push_back(thePandaFlat.electronNMissingHits[i]);
-        looseLepSF.push_back(thePandaFlat.electronSfMedium[i]*thePandaFlat.electronSfReco[i]);
+        looseLepSF.push_back(thePandaFlat.electronSfReco[i]*thePandaFlat.electronSfMedium[i]);
 	if(thePandaFlat.electronPt[i] > 25) ptSelCuts[0]++;
 	if(thePandaFlat.electronPt[i] > 15) ptSelCuts[1]++;
 	if(thePandaFlat.electronPt[i] > 10) ptSelCuts[2]++;
