@@ -356,7 +356,7 @@ void wwAnalysis(
   Float_t xGenbins[nGenBins+1] = { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16};
   Float_t xRecbins[nRecBins+1] = { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 
                                   16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29};
-  if     (shapeAnaType == 1){ // mll 55,75,85,95,110,125,140,160,185, 220,280,380,600,1500
+  if     (shapeAnaType == 1){ // mll 55,75,85,95,110,125,140,160,185,220,280,380,600,1500
     xGenbins[ 0] =  20;      xGenbins[ 1] =  55;      xGenbins[ 2] =  75;      xGenbins[ 3] =  85;      xGenbins[ 4] =   95;
     xGenbins[ 5] = 110;      xGenbins[ 6] = 125;      xGenbins[ 7] = 140;      xGenbins[ 8] = 160;      xGenbins[ 9] =  185;
     xGenbins[10] = 220;      xGenbins[11] = 280;      xGenbins[12] = 380;      xGenbins[13] = 600;      xGenbins[14] = 1500; 
@@ -402,15 +402,15 @@ void wwAnalysis(
   else if(shapeAnaType == 4){ // ptl2 20,25,30,40,45,50,75,100,150
     xGenbins[ 0] =  20;      xGenbins[ 1] =  25;      xGenbins[ 2] =  30;      xGenbins[ 3] =  35;      xGenbins[ 4] =  40;
     xGenbins[ 5] =  45;      xGenbins[ 6] =  50;      xGenbins[ 7] =  75;      xGenbins[ 8] = 100;      xGenbins[ 9] = 150;
-    xGenbins[10] = 150.001;  xGenbins[11] = 150.002;  xGenbins[12] = 150.003;  xGenbins[13] = 150.004;  xGenbins[14] = 150.004;
+    xGenbins[10] = 150.001;  xGenbins[11] = 150.002;  xGenbins[12] = 150.003;  xGenbins[13] = 150.004;  xGenbins[14] = 150.005;
     xGenbins[15] = 150.006;  xGenbins[16] = 150.007;
     
     if(theControlRegion == 0){
-    xRecbins[ 0] =  25;      xRecbins[ 1] =  30;      xRecbins[ 2] =  35;      xRecbins[ 3] =  40;      xRecbins[ 4] =  45;      
-    xRecbins[ 5] =  50;      xRecbins[ 6] =  62;      xRecbins[ 7] =  75;      xRecbins[ 8] =  87;      xRecbins[ 9] = 100; 
-    xRecbins[10] = 125;      xRecbins[11] = 150;      xRecbins[12] = 150.001;  xRecbins[13] = 150.002;  xRecbins[14] = 150.003;
-    xRecbins[15] = 150.004;  xRecbins[16] = 150.005;  xRecbins[17] = 150.006;  xRecbins[18] = 150.007;  xRecbins[19] = 150.008; 
-    xRecbins[20] = 150.0008; xRecbins[21] = 150.009;  xRecbins[22] = 150.010;  xRecbins[23] = 150.011;  xRecbins[24] = 150.012;
+    xRecbins[ 0] =  20;      xRecbins[ 1] =  25;      xRecbins[ 2] =  30;      xRecbins[ 3] =  35;      xRecbins[ 4] =  40;      
+    xRecbins[ 5] =  45;      xRecbins[ 6] =  50;      xRecbins[ 7] =  62;      xRecbins[ 8] =  75;      xRecbins[ 9] =  87; 
+    xRecbins[10] = 100;      xRecbins[11] = 125;      xRecbins[12] = 150;      xRecbins[13] = 150.001;  xRecbins[14] = 150.002;
+    xRecbins[15] = 150.003;  xRecbins[16] = 150.004;  xRecbins[17] = 150.005;  xRecbins[18] = 150.006;  xRecbins[19] = 150.007; 
+    xRecbins[20] = 150.008;  xRecbins[21] = 150.009;  xRecbins[22] = 150.010;  xRecbins[23] = 150.011;  xRecbins[24] = 150.012;
     xRecbins[25] = 150.013;  xRecbins[26] = 150.014;  xRecbins[27] = 150.015;  xRecbins[28] = 150.016;  xRecbins[29] = 150.017;
     }
   }
@@ -3419,7 +3419,7 @@ void wwAnalysis(
     }
   }
   else if(shapeAnaType == 4){ // ptl2
-    for(int i=11; i<nRecBins; i++){
+    for(int i=12; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
