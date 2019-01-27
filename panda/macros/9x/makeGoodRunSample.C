@@ -54,9 +54,6 @@ void makeGoodRunSample(
  string jsonFile        = "/home/ceballos/cms/cmssw/046/CMSSW_8_0_26_patch1/src/MitAnalysisRunII/json/80x/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
  ){
 
-  TFile *the_input_file = TFile::Open(input_file.Data());
-  TTree *the_input_tree = (TTree*)the_input_file->FindObjectAny("events");
-
   mithep::RunLumiRangeMap rlrm;
   rlrm.AddJSONFile(jsonFile.c_str()); 
 
@@ -64,8 +61,12 @@ void makeGoodRunSample(
   TString eventName = "eventNumber";
   TString lumiName = "lumiNumber";
   TString treeName = "events";
+
+  TFile *the_input_file = TFile::Open(input_file.Data());
+  TTree *the_input_tree = (TTree*)the_input_file->FindObjectAny(treeName.Data());
   int run,lumi;
   ULong64_t event;
+
   the_input_tree->SetBranchAddress(runName.Data(),&run);
   the_input_tree->SetBranchAddress(lumiName.Data(),&lumi);
   the_input_tree->SetBranchAddress(eventName.Data(),&event);
