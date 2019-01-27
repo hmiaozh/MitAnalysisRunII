@@ -41,7 +41,7 @@ int year, TString WZName = "default"
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2018.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
 
-    if(1){
+    if(WZName == "default"){
       infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	             infileCat_.push_back(kPlotData);
       if(usePureMC == true){
 	infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	             infileCat_.push_back(kPlotNonPrompt);
@@ -56,10 +56,23 @@ int year, TString WZName = "default"
       infileName_.push_back(Form("%sWZ3l_amcnlo.root" ,filesPath.Data()));           infileCat_.push_back(kPlotWZ);
       infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data()));	             infileCat_.push_back(kPlotZZ);
       infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data()));	             infileCat_.push_back(kPlotZZ);
-      //infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));	             infileCat_.push_back(kPlotVVV);
+      infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));	             infileCat_.push_back(kPlotVVV);
       infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));	             infileCat_.push_back(kPlotVVV);
-      //infileName_.push_back(Form("%sTTVV.root" ,filesPath.Data()));	             infileCat_.push_back(kPlotVVV);
+      infileName_.push_back(Form("%sTTVV.root" ,filesPath.Data()));	             infileCat_.push_back(kPlotVVV);
       infileName_.push_back(Form("%sH125.root" ,filesPath.Data()));	             infileCat_.push_back(kPlotHiggs);
+    }
+    else if(WZName == "WZ3l_powheg"){
+      infileName_.push_back(Form("%sWZ3l_powheg.root" ,filesPath.Data()));           infileCat_.push_back(kPlotWZ);
+    }
+    else if(WZName == "WZ3l_amcnlo"){
+      infileName_.push_back(Form("%sWZ3l_amcnlo.root" ,filesPath.Data()));           infileCat_.push_back(kPlotWZ);
+    }
+    else if(WZName == "WZ3l_MG"){
+      infileName_.push_back(Form("%sWZ3l_MG_QCD.root" ,filesPath.Data()));           infileCat_.push_back(kPlotWZ);
+    }
+    else {
+      printf("Wrong WZName (%s), exit\n",WZName.Data());
+      return;
     }
   }
   else if(year == 2017) {

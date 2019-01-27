@@ -28,7 +28,7 @@ PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$US
 GluGluH VBFH VBF_H ttHToNonbb VHToNonbb TTG TTZ TTW ST_tW  WGstarTo WGToLNuG ZGTo2LG  WJetsToLNu TT_TuneCUETP8M2T4 \
 --exclude ZpWW_med JetsToLL_M-50_HT DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM \
 DYJetsToLL_Zpt-100to200_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8 DYJetsToLL_Zpt-200toInf_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8 \
-DoubleScattering WZTo3LNu_0Jets WZTo3LNu_1Jets WZTo3LNu_2Jets WZTo3LNu_3Jets
+DoubleScattering WZTo3LNu_0Jets WZTo3LNu_1Jets WZTo3LNu_2Jets WZTo3LNu_3Jets ZZJJ
 
 # standard 2017
 PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$USER/catalog/test.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/012 \
@@ -42,7 +42,7 @@ PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$US
 TTG TTZ TTW ST_tW TT WGstarTo WGToLNuG ZGTo2LG ZGToLLG JetsToLL  WJetsToLNu \
 --exclude ZpWW_med JetsToLL_M-50_HT NNPDF30_13TeV-powheg DYJetsToLL_Zpt-100to200 DYJetsToLL_Zpt-200toInf \
 ZZ_TuneCP5_13TeV-pythia8 WZ_TuneCP5_13TeV-pythia8 DoubleScattering WZTo3LNu_mllmin01 Jets_MLL DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8 \
-DY1JetsToLL DY2JetsToLL DY3JetsToLL DY4JetsToLL TTTo2L2Nu_TuneCP5_13TeV TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8
+DY1JetsToLL DY2JetsToLL DY3JetsToLL DY4JetsToLL TTTo2L2Nu_TuneCP5_13TeV TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8 ZZJJ
 
 # standard 2018
 PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$USER/catalog/test.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/013 \
@@ -58,7 +58,7 @@ PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$US
 TTG TTZ TTW ST_tW TT WGstarTo WGToLNuG ZGTo2LG ZGToLLG JetsToLL  WJetsToLNu \
 --exclude ZpWW_med JetsToLL_M-50_HT NNPDF30_13TeV-powheg DYJetsToLL_Zpt-100to200 DYJetsToLL_Zpt-200toInf \
 ZZ_TuneCP5_13TeV-pythia8 WZ_TuneCP5_13TeV-pythia8 DoubleScattering WZTo3LNu_mllmin01 Jets_MLL DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8 \
-DY1JetsToLL DY2JetsToLL DY3JetsToLL DY4JetsToLL
+DY1JetsToLL DY2JetsToLL DY3JetsToLL DY4JetsToLL ZZJJ
 
 grep -vE '(Run2018A-PromptReco|Run2018B-PromptReco|Run2018C-PromptReco)' ~/public_html/$USER/catalog/test3.cfg > lll;wc lll;mv lll ~/public_html/$USER/catalog/test3.cfg;
 

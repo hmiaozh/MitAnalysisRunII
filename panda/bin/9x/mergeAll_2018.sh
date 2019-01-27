@@ -3,6 +3,7 @@
 export NSEL=$1;
 
 if [ $NSEL == 'mc' ]; then
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2018 ZZJJ
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2018 qqZZ
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2018 ggZZ
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2018 WZno3l

@@ -39,6 +39,7 @@ int whichLepSel = 0
     filesPath = "/data/t3home000/ceballos/panda/v_006_0/";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
     infileName_.push_back(Form("%sMET.root",filesPath.Data()));                   infileCat_.push_back(0);
+    infileName_.push_back(Form("%sWWinc.root" ,filesPath.Data()));                infileCat_.push_back(1);
     //infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));                 infileCat_.push_back(1);
     //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data()));                 infileCat_.push_back(1);
     infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		  infileCat_.push_back(1);
@@ -47,6 +48,7 @@ int whichLepSel = 0
     infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));   infileCat_.push_back(1);
     infileName_.push_back(Form("%sDYNJetsToLL.root",filesPath.Data()));           infileCat_.push_back(1);
     infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	          infileCat_.push_back(1);
+    infileName_.push_back(Form("%sDYNJetsToLL_NLO.root",filesPath.Data()));       infileCat_.push_back(1);
   }
   else if(year == 2017){
     filesPath = "/data/t3home000/ceballos/panda/v_004_0/";

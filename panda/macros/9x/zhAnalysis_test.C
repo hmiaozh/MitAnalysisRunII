@@ -335,7 +335,7 @@ thePandaFlat.eventNumber==8677700;
       for(int i=0; i<thePandaFlat.nLooseLep; i++) {
         idLep.push_back(0);
         if     (abs(looseLepPdgId[i])==13 && (looseLepSelBit[i] & kTight)  == kTight  && (looseLepSelBit[i] & kDxyz)  == kDxyz) idLep[i] = 1;
-        else if(abs(looseLepPdgId[i])==11 && (looseLepSelBit[i] & kEleMvaWP90) == kEleMvaWP90) idLep[i] = 1;
+        else if(abs(looseLepPdgId[i])==11 && (looseLepSelBit[i] & kMedium) == kMedium) idLep[i] = 1;
 	countLeptonTight = countLeptonTight + (idLep[i] > 0);
 
         double thePDGMass = mass_mu;

@@ -43,21 +43,22 @@ int year
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	           infileCat_.push_back(kPlotData);
     if(usePureMC == true){
+      infileName_.push_back(Form("%sWWinc.root" ,filesPath.Data())); 	           infileCat_.push_back(kPlotNonPrompt);
       //infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	           infileCat_.push_back(kPlotNonPrompt);
       //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	           infileCat_.push_back(kPlotNonPrompt);
       infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		   infileCat_.push_back(kPlotNonPrompt);
       infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));		   infileCat_.push_back(kPlotNonPrompt);
       infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(kPlotNonPrompt);
       infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));   infileCat_.push_back(kPlotNonPrompt);
-      //infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));                infileCat_.push_back(kPlotNonPrompt);
+      infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));                  infileCat_.push_back(kPlotNonPrompt);
       //infileName_.push_back(Form("%sWZno3l.root" ,filesPath.Data()));            infileCat_.push_back(kPlotNonPrompt);
       infileName_.push_back(Form("%sWZ3l_amcnlo.root" ,filesPath.Data()));         infileCat_.push_back(kPlotNonPrompt);
     }
     infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	           infileCat_.push_back(kPlotZZ);
     infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data())); 	           infileCat_.push_back(kPlotZZ);
-    //infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));  	           infileCat_.push_back(kPlotVVV);
+    infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));  	           infileCat_.push_back(kPlotVVV);
     infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	           infileCat_.push_back(kPlotVVV);
-    //infileName_.push_back(Form("%sTTVV.root" ,filesPath.Data()));  	           infileCat_.push_back(kPlotVVV);
+    infileName_.push_back(Form("%sTTVV.root" ,filesPath.Data()));  	           infileCat_.push_back(kPlotVVV);
     infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	           infileCat_.push_back(kPlotHiggs);
   }
   else if(year == 2017) {
@@ -542,6 +543,7 @@ int year
 
     } // end events loop
     the_input_file->Close();
+    if(nTrigger[5] > 0)
     printf("%6.3f %6.3f %6.3f %6.3f %6.3f\n",nTrigger[0]/nTrigger[5],nTrigger[1]/nTrigger[5],nTrigger[2]/nTrigger[5],nTrigger[3]/nTrigger[5],nTrigger[4]/nTrigger[5]);
   } // end chain loop
 

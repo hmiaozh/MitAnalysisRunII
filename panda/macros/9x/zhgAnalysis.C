@@ -44,7 +44,32 @@ int year
   TString fLepton_FakesName;
   TString puPath;
   TString photonSFPath;
-  if(year == 2017) {
+  if(year == 2018) {
+    lumi = 56.1;
+    filesPath = "/data/t3home000/ceballos/panda/v_006_0/";
+    fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2018.root";
+    puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
+    photonSFPath = "MitAnalysisRunII/data/90x/egammaEffi.txt_EGM2D_runBCDEF_passingMedium94X.root";
+
+    infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(kPlotData);
+    infileName_.push_back(Form("%sWWinc.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotEM);
+    //infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotEM);
+    //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotEM);
+    infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		 infileCat_.push_back(kPlotEM);
+    infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));		         infileCat_.push_back(kPlotEM);
+    infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotEM);
+    infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(kPlotVG);
+    infileName_.push_back(Form("%sDYNJetsToLL_NLO.root",filesPath.Data()));      infileCat_.push_back(kPlotVG);
+    infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));		         infileCat_.push_back(kPlotVG);
+    infileName_.push_back(Form("%sWZ3l_amcnlo.root" ,filesPath.Data()));         infileCat_.push_back(kPlotWZ);
+    infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotZZ);
+    infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotZZ);
+    infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));  	         infileCat_.push_back(kPlotVVV);
+    infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	         infileCat_.push_back(kPlotVVV);
+    infileName_.push_back(Form("%sTTVV.root" ,filesPath.Data()));  	         infileCat_.push_back(kPlotVVV);
+    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M125.root" ,filesPath.Data())); infileCat_.push_back(kPlotBSM);
+  }
+  else if(year == 2017) {
     lumi = 41.5;
     filesPath = "/data/t3home000/ceballos/panda/v_004_0/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2017.root";
@@ -347,7 +372,7 @@ int year
 
       TLorentzVector vMet,vTrkMet,vMetUp,vMetDown;
       vTrkMet.SetPtEtaPhiM(thePandaFlat.trkmet,0.0,thePandaFlat.trkmetphi,0.0);
-      if     (year == 2016) {
+      if     (year == 2016 || year == 2018) {
         vMet    .SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
         vMetUp  .SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalUp  ,0.0,thePandaFlat.pfmetphi_JESTotalUp  ,0.0);
         vMetDown.SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalDown,0.0,thePandaFlat.pfmetphi_JESTotalDown,0.0);
