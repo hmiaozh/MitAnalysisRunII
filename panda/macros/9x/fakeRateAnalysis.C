@@ -17,6 +17,11 @@
 void fakeRateAnalysis(
 int year, int nbjets = 0
 ){
+  int whichYear = -1;
+  if     (year == 2016) whichYear = Y2016;
+  else if(year == 2017) whichYear = Y2017;
+  else if(year == 2018) whichYear = Y2018;
+  else {printf("Wrong year (%d)!\n",year); return;}
 
   double minLepPt[2] = {10.0, 12.0};
 
@@ -29,12 +34,10 @@ int year, int nbjets = 0
   vector<TString> infileName_;
   vector<int> infileCat_;
 
-  double lumi;
   TString filesPath;
   TString fnpvWeightsFileName;
   TString puPath;
   if     (year == 2018) {
-    lumi = 56.1/1000.;
     filesPath = "/data/t3home000/ceballos/panda/v_007_0/";
     fnpvWeightsFileName = "MitAnalysisRunII/data/90x/npvWeights_2018_FakeTriggers.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
@@ -60,7 +63,6 @@ int year, int nbjets = 0
     infileName_.push_back(Form("%sWJets.root" ,filesPath.Data()));               infileCat_.push_back(3);
   }
   else if(year == 2017) {
-    lumi = 41.5/1000.;
     filesPath = "/data/t3home000/ceballos/panda/v_005_0/";
     fnpvWeightsFileName = "MitAnalysisRunII/data/90x/npvWeights_2017_FakeTriggers.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
@@ -85,7 +87,6 @@ int year, int nbjets = 0
     infileName_.push_back(Form("%sWJets.root" ,filesPath.Data()));               infileCat_.push_back(3);
   }
   else if(year == 2016) {
-    lumi = 35.9/1000.;
     filesPath = "/data/t3home000/ceballos/panda/v_003_0/";
     fnpvWeightsFileName = "MitAnalysisRunII/data/90x/npvWeights_2016_FakeTriggers.root";
     puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
@@ -284,7 +285,7 @@ int year, int nbjets = 0
         int binNpv = hDnpvWeights->GetXaxis()->FindFixBin(TMath::Min((double)thePandaFlat.npv,49.499));
 	double npvWeights = hDnpvWeights->GetBinContent(binNpv);
         
-        totalWeight = thePandaFlat.normalizedWeight * lumi * puWeight * thePandaFlat.sf_l1Prefire * looseLepSF[0] * npvWeights;
+        totalWeight = thePandaFlat.normalizedWeight * (lumiV[whichYear]/1000.) * puWeight * thePandaFlat.sf_l1Prefire * looseLepSF[0] * npvWeights;
       }
 
       int binPt = histoZllPt[0][0]->GetXaxis()->FindFixBin(TMath::Min(vLoose1.Pt(),44.999))-1;
@@ -320,8 +321,8 @@ int year, int nbjets = 0
 			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kMiniIsoTight) == kMiniIsoTight,
 			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kMvaMedium) == kMvaMedium && (looseLepSelBit[0] & kMiniIsoMedium) == kMiniIsoMedium,
 			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kMvaTight) == kMvaTight && (looseLepSelBit[0] & kMiniIsoTight) == kMiniIsoTight,
-			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kMvaMedium) == kMvaMedium && (looseLepSelBit[0] & kMiniIsoMedium) == kMiniIsoMedium && (looseLepSelBit[0] & kDxyz) == kDxyz,
-			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kMvaTight) == kMvaTight && (looseLepSelBit[0] & kMiniIsoTight) == kMiniIsoTight && (looseLepSelBit[0] & kDxyz) == kDxyz			       
+			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kTight) == kTight && (looseLepSelBit[0] & kDxyz) == kDxyz && (looseLepSelBit[0] & kMiniIsoMedium) == kMiniIsoMedium,
+			              (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kTight) == kTight && (looseLepSelBit[0] & kDxyz) == kDxyz && (looseLepSelBit[0] & kMiniIsoTight) == kMiniIsoTight
 			             };
         if(passLepSel[0]) histoFakeDenEtaPt[lepType][theCategory]->Fill(TMath::Min(TMath::Abs(vLoose1.Eta()),2.499),TMath::Min(vLoose1.Pt(),44.999),totalWeight);
         for(int nsel=0; nsel<nLepSel; nsel++){

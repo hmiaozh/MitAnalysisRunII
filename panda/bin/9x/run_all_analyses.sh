@@ -11,13 +11,13 @@ elif [ $NSEL == 1 ]; then
   root -q -l -b MitAnalysisRunII/panda/macros/9x/fakeRateAnalysis.C+
   nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/fakeRateAnalysis.C+'('${YEAR}')'   >& log_fake_${YEAR} &
   nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/fakeRateAnalysis.C+'('${YEAR}',1)' >& log_fake_${YEAR}_btagged &
-  
+
 elif [ $NSEL == 2 ]; then
   root -q -l -b MitAnalysisRunII/panda/macros/9x/zAnalysis.C+
   nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zAnalysis.C+'('${YEAR}')'     >& log_z_${YEAR} &
   nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zAnalysis.C+'('${YEAR}',0,1)' >& log_z_${YEAR}_0_1 &
-  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zAnalysis.C+'('${YEAR}',1)'   >& log_z_${YEAR}_topsel &
-  
+  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zAnalysis.C+'('${YEAR}',0,2)' >& log_z_${YEAR}_0_2 &
+
 elif [ $NSEL == 3 ]; then
   root -q -l -b MitAnalysisRunII/panda/macros/9x/wwAnalysis.C+
   root -q -l -b MitAnalysisRunII/panda/macros/9x/sswwAnalysis.C+

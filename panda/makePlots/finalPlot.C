@@ -68,7 +68,7 @@ void atributes(TH1D *histo, TString xtitle = "", TString ytitle = "Fraction", TS
 
 void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString units = "", TString plotName = "histoWW_56.root", TString outputName = "njets",
                 bool isLogY = false, int year = 2017, TString higgsLabel = "", double lumi = 1.0, bool isBlind = false, TString extraLabel = "",
-		bool show2D = true, bool applyScaling = false) {
+		bool show2D = true, bool applyScaling = false, TString mlfitResult = "", TString channelName = "") {
 
   //gInterpreter->ExecuteMacro("GoodStyle.C");
   //gROOT->LoadMacro("StandardPlot.C");
@@ -83,12 +83,18 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   myPlot.setHiggsLabel(higgsLabel.Data());
   myPlot.setUnits(units);
 
+  double SF_yield[nPlotCategories]; 
+  double SF_yield_unc[nPlotCategories];
+  TFile *mlfit=0;
+  if(mlfitResult!="") {
+    mlfit=TFile::Open(mlfitResult); assert(mlfit);
+  }
   TH1F* _hist[nPlotCategories];
   TH1F* hData = 0;
   TH1F* hBck = 0;
   for(int ic=0; ic<nPlotCategories; ic++){
     _hist[ic] = (TH1F*)file->Get(Form("histo%d",ic));
-   if(ic == kPlotData) {
+    if(ic == kPlotData) {
       //for(int i=1; i<=_hist[ic]->GetNbinsX(); i++){
       //  if(i>20)_hist[ic]->SetBinContent(i,0);
       //}
@@ -96,12 +102,36 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
       hBck  = (TH1F*)_hist[ic]->Clone(); hBck->Scale(0);
     }
     if(isBlind == true && ic == kPlotData) continue;
+
+    if(mlfitResult!="" && ic != kPlotData && ic != kPlotBSM) {
+      if     ((TH1F*)mlfit->Get(Form("shapes_prefit/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) {
+        double sum[3] = {0, 0, 0};
+        for(int i=1; i<=((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetNbinsX(); i++){
+          sum[0] = sum[0] + ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetBinContent(i);
+	  sum[1] = sum[1] + ((TH1F*)mlfit->Get(Form("shapes_prefit/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetBinContent(i);
+	  sum[2] = sum[2] + TMath::Power(((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetBinError(i),2);
+        }
+        SF_yield[ic]     = sum[0] / sum[1];
+        SF_yield_unc[ic] = TMath::Sqrt(sum[2]) / sum[0];
+        printf("POST FIT SFs: SF[%s] = %.3f +/- %.3f | %.3f\n",plotBaseNames[ic].Data(),SF_yield[ic],SF_yield_unc[ic],
+	       ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetSumOfWeights()/
+	       ((TH1F*)mlfit->Get(Form("shapes_prefit/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetSumOfWeights());
+      }
+      //_hist[ic]->Scale(SF_yield[ic]);
+      for(int i=1; i<=_hist[ic]->GetNbinsX(); i++){
+        _hist[ic]->SetBinContent(i,_hist[ic]->GetBinContent(i)*SF_yield[ic]);
+        _hist[ic]->SetBinError(i,TMath::Sqrt(TMath::Power(_hist[ic]->GetBinError(i)*SF_yield[ic],2)+TMath::Power(_hist[ic]->GetBinContent(i)*SF_yield_unc[ic],2)));
+      }
+    } // mltFit result
+
     if(ic == kPlotDY) _hist[ic]->Scale(lumi);
     if(ic != kPlotData && ic != kPlotBSM) hBck->Add(_hist[ic]);
+
     if(_hist[ic]->GetSumOfWeights() > 0) myPlot.setMCHist(ic, _hist[ic]);
   }
+  if(hBck->GetSumOfWeights() == 0) return;
   double scale = hData->GetSumOfWeights()/hBck->GetSumOfWeights();
-  printf("data/bck: %f / %f = %f",hData->GetSumOfWeights(),hBck->GetSumOfWeights(),scale);
+  printf("data/bck: %f / %f = %f\n",hData->GetSumOfWeights(),hBck->GetSumOfWeights(),scale);
   if(applyScaling == true) hBck->Scale(scale);
 
   for(int ic=0; ic<nPlotCategories; ic++){

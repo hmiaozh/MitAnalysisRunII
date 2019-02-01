@@ -19,6 +19,12 @@ const double mcPrescale = 1;
 
 void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
 {
+  int whichYear = -1;
+  if     (year == 2016) whichYear = Y2016;
+  else if(year == 2017) whichYear = Y2017;
+  else if(year == 2018) whichYear = Y2018;
+  else {printf("Wrong year (%d)!\n",year); return;}
+
   // trigger
   double trgEff [3][nTrgBinPt1][nTrgBinPt2][nTrgBinEta1][nTrgBinEta2];
   double trgEffE[3][nTrgBinPt1][nTrgBinPt2][nTrgBinEta1][nTrgBinEta2];
@@ -42,13 +48,11 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
   vector<TString> infileName_;
   vector<int> infileCat_;
 
-  double lumi;
   TString filesPath;
   TString fLepton_FakesName;
   TString puPath;
   TString npvPath;
   if     (year == 2018){
-    lumi = 56.1;
     filesPath = "/data/t3home000/ceballos/panda/v_006_0/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2018.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
@@ -67,7 +71,8 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
     //infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));  infileCat_.push_back(kPlotDY);
     }
     else if(whichDY == 2){
-    infileName_.push_back(Form("%sDYNJetsToLL.root",filesPath.Data()));          infileCat_.push_back(kPlotDY);
+    //infileName_.push_back(Form("%sDYNJetsToLL.root",filesPath.Data()));          infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sDYNJetsToLL_NLO.root",filesPath.Data()));      infileCat_.push_back(kPlotDY);
     }
     infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));                infileCat_.push_back(kPlotTop);
     infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                  infileCat_.push_back(kPlotTop);
@@ -81,7 +86,6 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
     infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotHiggs);
   }
   else if(year == 2017) {
-    lumi = 41.5;
     filesPath = "/data/t3home000/ceballos/panda/v_004_0/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2017.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
@@ -99,7 +103,8 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
     //infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));  infileCat_.push_back(kPlotDY);
     }
     else if(whichDY == 2){
-    infileName_.push_back(Form("%sDYNJetsToLL.root",filesPath.Data()));          infileCat_.push_back(kPlotDY);
+    //infileName_.push_back(Form("%sDYNJetsToLL.root",filesPath.Data()));          infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sDYNJetsToLL_NLO.root",filesPath.Data()));      infileCat_.push_back(kPlotDY);
     }
     infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));                infileCat_.push_back(kPlotTop);
     infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                  infileCat_.push_back(kPlotTop);
@@ -114,7 +119,6 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
     infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotHiggs);
   }
   else if(year == 2016) {
-    lumi = 35.9;
     filesPath = "/data/t3home000/ceballos/panda/v_002_0/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2016.root";
     puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
@@ -123,7 +127,7 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));                  infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotqqWW);
     infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotggWW);
-    if     (whichDY == 0 || whichDY == 1){
+    if     (whichDY == 0 || whichDY == 1 || whichDY == 2){
     infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data()));  infileCat_.push_back(kPlotDY);
     infileName_.push_back(Form("%sDYJetsToLL_Pt0To50.root",filesPath.Data()));    infileCat_.push_back(kPlotDY);
     infileName_.push_back(Form("%sDYJetsToLL_Pt50To100.root",filesPath.Data()));  infileCat_.push_back(kPlotDY);
@@ -337,8 +341,10 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
 
       // Different requirements depending on the DY sample
       bool passDYSampleSel = true;
-      if     (whichDY == 1) passDYSampleSel = dilep.Pt() > 60;
-      else if(whichDY == 2) passDYSampleSel = thePandaFlat.nJot >= 1;
+      //if     (whichDY == 1) passDYSampleSel = dilep.Pt() > 60;
+      //else if(whichDY == 2) passDYSampleSel = thePandaFlat.nJot >= 1;
+      if     (whichDY == 1) passDYSampleSel = dilep.Pt() > 100 && thePandaFlat.nJot == 0;
+      else if(whichDY == 2) passDYSampleSel = dilep.Pt() > 100 && thePandaFlat.nJot == 1;
       if(passDYSampleSel == false) continue;
 
       bool passSel = ((lepType != 2 && TMath::Abs(dilep.M()-91.1876) < 15) || (lepType == 2 && dilep.M() > 50 && thePandaFlat.jetNBtags > 0)) && vLoose[0].Pt() > 25 && vLoose[1].Pt() > 25;
@@ -354,8 +360,11 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
         puWeight  = nPUScaleFactor(fhDPU,  thePandaFlat.pu);
         //npvWeight = nPUScaleFactor(fhDNPV, thePandaFlat.npv);
 
-        //totalWeight = thePandaFlat.normalizedWeight * lumi * puWeight * thePandaFlat.sf_l1Prefire * looseLepSF[0] * looseLepSF[1] * triggerWeights[0] * npvWeight;
-        totalWeight = thePandaFlat.normalizedWeight * lumi * puWeight * thePandaFlat.sf_l1Prefire * looseLepSF[0] * looseLepSF[1] * triggerWeights[0];
+        //totalWeight = thePandaFlat.normalizedWeight * lumiV[year] * puWeight * thePandaFlat.sf_l1Prefire * looseLepSF[0] * looseLepSF[1] * triggerWeights[0] * npvWeight;
+        totalWeight = thePandaFlat.normalizedWeight * lumiV[year] * puWeight * thePandaFlat.sf_l1Prefire * looseLepSF[0] * looseLepSF[1] * triggerWeights[0];
+
+        if     (infileCat_[ifile] == kPlotWZ)                                                totalWeight = totalWeight * thePandaFlat.sf_wz;
+	else if(infileCat_[ifile] == kPlotZZ && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;
 
         bool isRS = thePandaFlat.looseGenLep1PdgId > 0 && thePandaFlat.looseGenLep2PdgId > 0;
         if(thePandaFlat.nLooseLep >= 3) isRS = isRS && thePandaFlat.looseGenLep3PdgId > 0;
@@ -380,11 +389,11 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
       }
 
       bool passSSWWLepId = false;
-      if     (year == 2016) {
+      if     (year == 2016 || year == 2018) {
         passSSWWLepId = (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kEleMvaWP80) == kEleMvaWP80 && looseLepTripleCharge[0] == 1 &&
          	        (looseLepSelBit[1] & kFake) == kFake && (looseLepSelBit[1] & kEleMvaWP80) == kEleMvaWP80 && looseLepTripleCharge[1] == 1;
       }
-      else if(year == 2017 || year == 2018){
+      else if(year == 2017){
         passSSWWLepId = (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kTight) == kTight && (looseLepSelBit[0] & kDxyz) == kDxyz && looseLepMissingHits[0] == 0 && looseLepTripleCharge[0] == 1 &&
            		(looseLepSelBit[1] & kFake) == kFake && (looseLepSelBit[1] & kTight) == kTight && (looseLepSelBit[1] & kDxyz) == kDxyz && looseLepMissingHits[1] == 0 && looseLepTripleCharge[1] == 1;
       }
@@ -457,8 +466,8 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
 	      (looseLepSelBit[ilep] & kFake) == kFake && (looseLepSelBit[ilep] & kMiniIsoTight) == kMiniIsoTight,
 	      (looseLepSelBit[ilep] & kFake) == kFake && (looseLepSelBit[ilep] & kMvaMedium) == kMvaMedium && (looseLepSelBit[ilep] & kMiniIsoMedium) == kMiniIsoMedium,
 	      (looseLepSelBit[ilep] & kFake) == kFake && (looseLepSelBit[ilep] & kMvaTight) == kMvaTight && (looseLepSelBit[ilep] & kMiniIsoTight) == kMiniIsoTight,
-	      (looseLepSelBit[ilep] & kFake) == kFake && (looseLepSelBit[ilep] & kMvaMedium) == kMvaMedium && (looseLepSelBit[ilep] & kMiniIsoMedium) == kMiniIsoMedium && (looseLepSelBit[ilep] & kDxyz) == kDxyz,
-	      (looseLepSelBit[ilep] & kFake) == kFake && (looseLepSelBit[ilep] & kMvaTight) == kMvaTight && (looseLepSelBit[ilep] & kMiniIsoTight) == kMiniIsoTight && (looseLepSelBit[ilep] & kDxyz) == kDxyz  	      
+	      (looseLepSelBit[ilep] & kFake) == kFake && (looseLepSelBit[ilep] & kTight) == kTight && (looseLepSelBit[ilep] & kDxyz) == kDxyz && (looseLepSelBit[ilep] & kMiniIsoMedium) == kMiniIsoMedium,
+	      (looseLepSelBit[ilep] & kFake) == kFake && (looseLepSelBit[ilep] & kTight) == kTight && (looseLepSelBit[ilep] & kDxyz) == kDxyz && (looseLepSelBit[ilep] & kMiniIsoTight) == kMiniIsoTight	      
 	     };
 
         if(qTot == 0 && lepType != 2) { // only for opposite-sign mm/ee events
@@ -468,6 +477,8 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
           }
 	}
         if(ilep == 1 && lepType == 0 && qTot != 0) { // only for same-sign mm events
+	  // 0/2/4/6 mm eta<1.475&&pt>40 / eta>1.475&&pt>40 / eta<1.475&&pt<40 / eta>1.475&&pt<40
+	  // 1/3/5/7 ee eta<1.475&&pt>40 / eta>1.475&&pt>40 / eta<1.475&&pt<40 / eta>1.475&&pt<40
           for(int nsel=0; nsel<nLepSel; nsel++){
 	    if(passLepSel[nsel]) histoFakeStudy[0+2*(TMath::Abs(looseLepEta[ilep]) > 1.475)+4*(looseLepPt[ilep] < 40)][theCategory]->Fill((double)nsel,totalWeight);
           }

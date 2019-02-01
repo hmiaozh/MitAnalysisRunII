@@ -28,6 +28,12 @@ TString systTypeName[nSystTypes]= {"JESUP","JESDOWN","METUP","METDOWN"};
 void zhAnalysis_test(
 int year = 2017, bool isBlinded = false
 ){
+  int whichYear = -1;
+  if     (year == 2016) whichYear = Y2016;
+  else if(year == 2017) whichYear = Y2017;
+  else if(year == 2018) whichYear = Y2018;
+  else {printf("Wrong year (%d)!\n",year); return;}
+
   // trigger
   double trgEff [3][nTrgBinPt1][nTrgBinPt2][nTrgBinEta1][nTrgBinEta2];
   double trgEffE[3][nTrgBinPt1][nTrgBinPt2][nTrgBinEta1][nTrgBinEta2];
@@ -39,13 +45,11 @@ int year = 2017, bool isBlinded = false
   vector<TString> infileName_;
   vector<int> infileCat_;
 
-  double lumi;
   TString filesPath;
   TString fLepton_FakesName;
   TString puPath;
   TString npvPath;
   if     (year == 2018) {
-    lumi = 56.1;
     filesPath = "/data/t3home000/ceballos/panda/v_006_0/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2018.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
@@ -69,7 +73,6 @@ int year = 2017, bool isBlinded = false
     infileName_.push_back(Form("%sggZH125inv.root" ,filesPath.Data()));          infileCat_.push_back(kPlotBSM);
   }
   else if(year == 2017) {
-    lumi = 41.5;
     filesPath = "/data/t3home000/ceballos/panda/v_004_0/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2017.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
@@ -95,7 +98,6 @@ int year = 2017, bool isBlinded = false
     //infileName_.push_back(Form("%sggZH125inv.root" ,filesPath.Data()));          infileCat_.push_back(kPlotBSM);
   }
   else if(year == 2016) {
-    lumi = 35.9;
     filesPath = "/data/t3home000/ceballos/panda/v_002_0/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2016.root";
     puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
@@ -491,7 +493,7 @@ thePandaFlat.eventNumber==8677700;
 
         sf_l1PrefireE = 1.0 + TMath::Abs(1.0 - thePandaFlat.sf_l1Prefire) * 0.2;
 
-        totalWeight = thePandaFlat.normalizedWeight * lumi;
+        totalWeight = thePandaFlat.normalizedWeight * lumiV[whichYear];
         if     (infileCat_[ifile] == kPlotWZ) totalWeight = totalWeight * 5.052 / (5.06180*1.109*0.85);
 	else if(infileCat_[ifile] == kPlotZZ) totalWeight = totalWeight * 0.5644 / 0.6008;
       }
@@ -630,9 +632,6 @@ thePandaFlat.eventNumber==8677700;
 
   double qcdScaleTotal[2] = {0.035, 0.231};
   double pdfTotal[2] = {0.016, 0.051};
-  double lumiE = 1.025;
-  if     (year == 2017) lumiE = 1.023;
-  else if(year == 2018) lumiE = 1.050;
   double syst_WZl[2] = {1.010, 1.012};
 
   for(unsigned ic=0; ic<nPlotCategories; ic++) {
@@ -989,7 +988,7 @@ thePandaFlat.eventNumber==8677700;
   newcardShape << Form("lumi_13TeV_%d    lnN     ",year);
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    newcardShape << Form("%6.3f ",lumiE);
+    newcardShape << Form("%6.3f ",lumiE[whichYear]);
   }
   newcardShape << Form("\n");
 
