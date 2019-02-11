@@ -20,14 +20,18 @@ bool multithread=true;
 
 void zAnalysis_cern(int year, int type = 0)
 {
+  int whichYear = -1;
+  if     (year == 2016) whichYear = Y2016;
+  else if(year == 2017) whichYear = Y2017;
+  else if(year == 2018) whichYear = Y2018;
+  else {printf("Wrong year (%d)!\n",year); return;}
+
   vector<TString> infileName_;
   vector<int> infileCat_;
 
-  double lumi;
   TString filesPath;
   TString puPath;
   if     (year == 2017) {
-    lumi = 41.5;
     filesPath = "/eos/cms/store/user/ceballos/Zstudy/y2017/";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
 
@@ -50,7 +54,6 @@ void zAnalysis_cern(int year, int type = 0)
     }
   }
   else if(year == 2016) {
-    lumi = 35.9;
     filesPath = "/eos/cms/store/user/ceballos/Zstudy/y2016/";
     puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
 
@@ -220,7 +223,7 @@ void zAnalysis_cern(int year, int type = 0)
       if     (theCategory != kPlotData){
         puWeight  = nPUScaleFactor(fhDPU,  thePandaFlat.pu);
 
-        totalWeight = thePandaFlat.normalizedWeight * lumi * puWeight * thePandaFlat.sf_l1Prefire * looseLepSF[0] * looseLepSF[1];
+        totalWeight = thePandaFlat.normalizedWeight * lumiV[whichYear] * puWeight * thePandaFlat.sf_l1Prefire * looseLepSF[0] * looseLepSF[1];
       }
 
       if(qTot == 0) histo[lepType+ 0][theCategory]->Fill(dilep.M(),totalWeight);
