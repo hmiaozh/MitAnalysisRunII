@@ -162,6 +162,18 @@ std::map<int, TString> plotNames={
 const double mass_el = 0.000510998928;
 const double mass_mu = 0.10566;
 
+double mcCorrection(int year, int jetNMBtags, int jetNBtags, int infileCat){
+  double totalWeight = 1.0;
+
+  if	 (year == 2017 && jetNMBtags > 0) totalWeight = totalWeight * 0.60;
+  else if(year == 2017 && jetNBtags  > 0) totalWeight = totalWeight * 0.85;
+
+  if	 (year == 2018 && jetNMBtags > 0) totalWeight = totalWeight * 0.65;
+  else if(year == 2018 && jetNBtags  > 0) totalWeight = totalWeight * 1.00;
+
+  return totalWeight;
+}
+
 double fakeRateFactor(double pt, double eta, int pdgId, bool applyTight, TH2D *histoFakeEffSelMediumEtaPt_m, TH2D *histoFakeEffSelMediumEtaPt_e, TH2D *histoFakeEffSelTightEtaPt_m, TH2D *histoFakeEffSelTightEtaPt_e){
   double etal = eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
   int binXT = histoFakeEffSelMediumEtaPt_m->GetXaxis()->FindFixBin(etal);

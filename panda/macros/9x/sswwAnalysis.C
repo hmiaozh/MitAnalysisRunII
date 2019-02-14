@@ -60,7 +60,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
   TString fLepton_FakesName;
   TString puPath;
   if     (year == 2018) {
-    filesPath = "/data/t3home000/ceballos/panda/v_006_0/";
+    filesPath = "/data/t3home000/ceballos/panda/v_006_1/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2018.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
 
@@ -72,7 +72,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
       infileName_.push_back(Form("%sWpWp_QCD.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotSSWWQCD);
 
       infileName_.push_back(Form("%sWZ3l_MG_QCD.root" ,filesPath.Data()));        infileCat_.push_back(kPlotWZ);
-      //infileName_.push_back(Form("%sWZ3l_MG_EWK.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ); // remove artificial weighting once sample exists
+      infileName_.push_back(Form("%sWZ3l_MG_EWK.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
 
       infileName_.push_back(Form("%sZZJJ.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotZZ);
       //infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotZZ);
@@ -90,15 +90,14 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
       infileName_.push_back(Form("%sDYNJetsToLL.root" ,filesPath.Data()));        infileCat_.push_back(kPlotWS);
       infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotWS);
 
-      //infileName_.push_back(Form("%sVG_M120.root" ,filesPath.Data()));            infileCat_.push_back(kPlotVG);
-      infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));                 infileCat_.push_back(kPlotVG);
+      infileName_.push_back(Form("%sVG_M120.root" ,filesPath.Data()));            infileCat_.push_back(kPlotVG);
 
       infileName_.push_back(Form("%sWWdps.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotDPSWW);
 
     }
   }
   else if(year == 2017) {
-    filesPath = "/data/t3home000/ceballos/panda/v_004_0/";
+    filesPath = "/data/t3home000/ceballos/panda/v_004_1/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2017.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
 
@@ -149,7 +148,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
     }
   }
   else if(year == 2016) {
-    filesPath = "/data/t3home000/ceballos/panda/v_002_0/";
+    filesPath = "/data/t3home000/ceballos/panda/v_002_1/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2016.root";
     puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
 
@@ -226,7 +225,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
 						          6800, 7100, 7500, 8000,
 						          8800, 9100, 9500,10000,
 						         10800,11100,11500,12000};*/
-  const int nBinMVA = 44; Float_t xbins[nBinMVA+1] = {500, 800, 1100, 1500, 2000,
+  const int nBinMVA = 80; Float_t xbins[nBinMVA+1] = {500, 800, 1100, 1500, 2000,
                                                           2800, 3100, 3500, 4000,
 						          4800, 5100, 5500, 6000,
 						          6800, 7100, 7500, 8000,
@@ -236,7 +235,17 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
 						         14800,15100,15500,16000,
 						         16800,17100,17500,18000,
 						         18800,19100,19500,20000,
-						         20800,21100,21500,22000};
+						         20800,21100,21500,22000,
+						         22800,23100,23500,24000,
+						         24800,25100,25500,26000,
+						         26800,27100,27500,28000,
+						         28800,29100,29500,30000,
+						         30800,31100,31500,32000,
+						         32800,33100,33500,34000,
+						         34800,35100,35500,36000,
+						         36800,37100,37500,38000,
+						         38800,39100,39500,40000
+							 };
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
@@ -680,13 +689,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
       }
 
       if(theCategory != kPlotData){
-        if     (year == 2017 && thePandaFlat.jetNMBtags > 0) totalWeight = totalWeight * 0.60;
-        else if(year == 2017 && thePandaFlat.jetNBtags  > 0) totalWeight = totalWeight * 0.85;
-
-        if     (year == 2018 && thePandaFlat.jetNMBtags > 0) totalWeight = totalWeight * 0.65;
-        else if(year == 2018 && thePandaFlat.jetNBtags  > 0) totalWeight = totalWeight * 1.00;
-
-        if     (year == 2018 && infileCat_[ifile] == kPlotWZ) totalWeight = totalWeight * 1.35;
+        totalWeight = totalWeight * mcCorrection(year, thePandaFlat.jetNMBtags,thePandaFlat.jetNBtags, infileCat_[ifile]);
       }
 
       if(theCategory == kPlotSSWWEWK && fidAna == 1 && 
@@ -724,8 +727,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
       if(passPresel)         histo[lepType+ 64][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,4.499),totalWeight);
       if(passPresel && thePandaFlat.jetNBtags > 0)
                              histo[lepType+ 67][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,4.499),totalWeight);
-      if(passPresel)         histo[lepType+ 70][theCategory]->Fill(TMath::Min(vJot1.Pt(),199.999),totalWeight);
-      if(passPresel)         histo[lepType+ 70][theCategory]->Fill(TMath::Min(vJot2.Pt(),199.999),totalWeight);
+      if(passPresel)         histo[lepType+ 70][theCategory]->Fill(TMath::Min((vJot1.Pt()+vJot2.Pt())/2.0,199.999),totalWeight);
       if(passPresel)         histo[lepType+ 73][theCategory]->Fill(vJot1.Eta(),totalWeight);
       if(passPresel)         histo[lepType+ 73][theCategory]->Fill(vJot2.Eta(),totalWeight);
       if(passPresel)         histo[lepType+ 76][theCategory]->Fill(TMath::Min(vZ1l1.Pt(),199.999),totalWeight);
@@ -753,18 +755,20 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
         else                typeSelAux0 = 3;
         double typeSelAux1 = 0;
 	if(qTot>0) typeSelAux1 = 1;
+        double typeSelAux2 = 0;
+        if     (deltaEtaJJ > 4.5) typeSelAux2 = 1;
         double MVAVar     = TMath::Min(massJJ     ,xbinsMJJ[nBinMJJ]-0.0001);
         double MVAVarUp   = TMath::Min(massJJUp   ,xbinsMJJ[nBinMJJ]-0.0001);
         double MVAVarDown = TMath::Min(massJJDown ,xbinsMJJ[nBinMJJ]-0.0001);
-        if     (dataCardSel     == 0) MVAVar     = MVAVar     + 2000 * typeSelAux0 + 8000 * typeSelAux1;
-        else if(dataCardSel     == 1) MVAVar     = MVAVar     + 16000 + 2000 * typeSelAux1;
-        else if(dataCardSel     == 2) MVAVar     = MVAVar     + 20000;
-        if     (dataCardSelUp   == 0) MVAVarUp   = MVAVarUp   + 2000 * typeSelAux0 + 8000 * typeSelAux1;
-        else if(dataCardSelUp   == 1) MVAVarUp   = MVAVarUp   + 16000 + 2000 * typeSelAux1;
-        else if(dataCardSelUp   == 2) MVAVarUp   = MVAVarUp   + 20000;
-        if     (dataCardSelDown == 0) MVAVarDown = MVAVarDown + 2000 * typeSelAux0 + 8000 * typeSelAux1;
-        else if(dataCardSelDown == 1) MVAVarDown = MVAVarDown + 16000 + 2000 * typeSelAux1;
-        else if(dataCardSelDown == 2) MVAVarDown = MVAVarDown + 20000;
+        if     (dataCardSel     == 0) MVAVar     = MVAVar     + 2000 * typeSelAux0 + 8000 * typeSelAux1 + 16000 * typeSelAux2;
+        else if(dataCardSel     == 1) MVAVar     = MVAVar     + 32000 + 2000 * typeSelAux1;
+        else if(dataCardSel     == 2) MVAVar     = MVAVar     + 36000 + 2000 * typeSelAux2;
+        if     (dataCardSelUp   == 0) MVAVarUp   = MVAVarUp   + 2000 * typeSelAux0 + 8000 * typeSelAux1 + 16000 * typeSelAux2;
+        else if(dataCardSelUp   == 1) MVAVarUp   = MVAVarUp   + 32000 + 2000 * typeSelAux1;
+        else if(dataCardSelUp   == 2) MVAVarUp   = MVAVarUp   + 36000 + 2000 * typeSelAux2;
+        if     (dataCardSelDown == 0) MVAVarDown = MVAVarDown + 2000 * typeSelAux0 + 8000 * typeSelAux1 + 16000 * typeSelAux2;
+        else if(dataCardSelDown == 1) MVAVarDown = MVAVarDown + 32000 + 2000 * typeSelAux1;
+        else if(dataCardSelDown == 2) MVAVarDown = MVAVarDown + 36000 + 2000 * typeSelAux2;
 
         // Avoid QCD scale weights that are anomalous high
         double maxQCDscale = (TMath::Abs(thePandaFlat.scale[0])+TMath::Abs(thePandaFlat.scale[1])+TMath::Abs(thePandaFlat.scale[2])+

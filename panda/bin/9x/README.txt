@@ -84,6 +84,27 @@ PandaAnalysis/T3/bin/task.py --submit
 --> Merge files once all jobs are done
 PandaAnalysis/T3/merging/merge.py --cfg leptonic qqZZ                  
 
+-> Avoiding duplicate files
+ls -l /mnt/hadoop/cms/store/user/ceballos/panda/v_002_0/batch/*.root|awk '($5==0){print"rm "$9}' > lll
+wc lll
+source lll
+
+ls -l /mnt/hadoop/cms/store/user/ceballos/panda/v_007_0/batch/*.root
+ls -lrt /mnt/hadoop/cms/store/user/ceballos/panda/v_007_0/batch/*.root|wc
+ls -lrt /mnt/hadoop/cms/store/user/ceballos/panda/v_007_0/batch/*.root| awk '{print$9}' > lll0
+# edit, separate file_A.root to file _A  .root
+
+awk '{print$3}' lll0|sort -u
+awk '{print$1}' lll0|sort  > lll1
+awk '{print$1}' lll0|sort -u > lll2
+diff lll1 lll2|wc
+diff lll1 lll2|grep "<"| awk '{print"grep "$2" lll0"}' > lll
+source lll | sort -u > lll3
+# edit, remove files not to be removed
+
+awk '{print"rm "$1$2$3}' lll3 > lll
+source lll
+
 --> Git commands:
 export PATH=/home/ceballos/bin:$PATH
 git lfs clone -b master https://github.com/GuillelmoGomezCeballos/PandaAnalysis

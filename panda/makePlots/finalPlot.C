@@ -70,6 +70,8 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
                 bool isLogY = false, int year = 2017, TString higgsLabel = "", double lumi = 1.0, bool isBlind = false, TString extraLabel = "",
 		bool show2D = true, bool applyScaling = false, TString mlfitResult = "", TString channelName = "") {
 
+  if(isBlind) show2D = false;
+
   //gInterpreter->ExecuteMacro("GoodStyle.C");
   //gROOT->LoadMacro("StandardPlot.C");
   gStyle->SetOptStat(0);
