@@ -630,6 +630,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
         sf_l1PrefireE = 1.0 + TMath::Abs(1.0 - thePandaFlat.sf_l1Prefire) * 0.2;
 
         totalWeight = thePandaFlat.normalizedWeight * lumiV[whichYear] * puWeight * thePandaFlat.sf_l1Prefire * looseLepSF[0] * looseLepSF[1] * triggerWeights[0] * theMCPrescale;
+	if(thePandaFlat.nLooseLep == 3) totalWeight = totalWeight * looseLepSF[2];
 
         if(passBtagVeto) totalWeight = totalWeight * thePandaFlat.sf_btag0;
         else             totalWeight = totalWeight * thePandaFlat.sf_btagGT0;
