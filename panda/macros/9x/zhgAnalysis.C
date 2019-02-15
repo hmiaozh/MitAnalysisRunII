@@ -50,10 +50,10 @@ int year
   TString puPath;
   TString photonSFPath;
   if(year == 2018) {
-    filesPath = "/data/t3home000/ceballos/panda/v_006_0/";
+    filesPath = "/data/t3home000/ceballos/panda/v_006_1/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2018.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
-    photonSFPath = "MitAnalysisRunII/data/90x/egammaEffi.txt_EGM2D_runBCDEF_passingMedium94X.root";
+    photonSFPath = "MitAnalysisRunII/data/90x/2018_PhotonsMedium.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sWWinc.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotEM);
@@ -74,7 +74,7 @@ int year
     infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M125.root" ,filesPath.Data())); infileCat_.push_back(kPlotBSM);
   }
   else if(year == 2017) {
-    filesPath = "/data/t3home000/ceballos/panda/v_004_0/";
+    filesPath = "/data/t3home000/ceballos/panda/v_004_1/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2017.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
     photonSFPath = "MitAnalysisRunII/data/90x/egammaEffi.txt_EGM2D_runBCDEF_passingMedium94X.root";
@@ -97,7 +97,7 @@ int year
     infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M125.root" ,filesPath.Data())); infileCat_.push_back(kPlotBSM);
   }
   else if(year == 2016) {
-    filesPath = "/data/t3home000/ceballos/panda/v_002_0/";
+    filesPath = "/data/t3home000/ceballos/panda/v_002_1/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2016.root";
     puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
     photonSFPath = "MitAnalysisRunII/data/80x/photon_scalefactors_37ifb.root";
@@ -580,7 +580,9 @@ int year
       bool passZMassSB = mllZ > 110 && mllZ < 200;
       bool passMET    = vMet.Pt() > 110; bool passMETUp    = vMetUp.Pt() > 110; bool passMETDown    = vMetDown.Pt() > 110;
       bool passMETMin = vMet.Pt() > 70;  bool passMETMinUp = vMetUp.Pt() > 70;  bool passMETMinDown = vMetDown.Pt() > 70;
-      bool passPTLL   = dilep.Pt() > 50;
+      bool passPTLL   = dilep.Pt() > 60;
+
+      if(!(dilep.Pt() > 60 && (vMet.Pt() > 70 || vMetUp.Pt() > 70 ||vMetDown.Pt() > 70) && (thePandaFlat.nLooseLep != 2 || TMath::Abs(dilep.M()-125) < 75))) continue;
 
       double ptFracG     = TMath::Abs(dilep.Pt()-(vMet    +theG).Pt())/dilep.Pt();
       double ptFracGUp   = TMath::Abs(dilep.Pt()-(vMetUp  +theG).Pt())/dilep.Pt();
@@ -602,8 +604,8 @@ int year
       bool passTauVeto      = thePandaFlat.nTau == 0;
       bool passMT = mTGMET < 200.0; bool passMTUp = mTGMETUp < 200.0; bool passMTDown = mTGMETDown < 200.0;
 
-      //                                                   0            1         2           3           4             5         6              7       8      9
-      bool passCutEvol[10] = {theMinSelType == 0 && passPTLL,passBtagVeto,passZMass,passTauVeto,passPTFracG,passDPhiZGMET,passNjets,passDPhiJetMET,passMET,passMT};
+      //                                                   0       1         2            3           4           5             6         7              8      9
+      bool passCutEvol[10] = {theMinSelType == 0 && passPTLL,passMET,passZMass,passBtagVeto,passTauVeto,passPTFracG,passDPhiZGMET,passNjets,passDPhiJetMET,passMT};
       bool passCutEvolAll = true;
 
       if(isDEBUG && vLoose.size() == 4) printf("DEBUG %d %d %d %d %d %d %d %d %d %d %d | %f %f\n",theMinSelType,passZMass,passNjets,passMET,passPTFracG,passDPhiZGMET,passBtagVeto,passPTLL,passDPhiJetMET,passTauVeto,passMT,mllmin,TMath::Abs(mllZ-91.1876));

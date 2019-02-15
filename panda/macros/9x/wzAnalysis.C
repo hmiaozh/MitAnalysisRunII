@@ -40,7 +40,7 @@ int year, TString WZName = "default"
   TString fLepton_FakesName;
   TString puPath;
   if    (year == 2018) {
-    filesPath = "/data/t3home000/ceballos/panda/v_006_0/";
+    filesPath = "/data/t3home000/ceballos/panda/v_006_1/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2018.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
 
@@ -79,7 +79,7 @@ int year, TString WZName = "default"
     }
   }
   else if(year == 2017) {
-    filesPath = "/data/t3home000/ceballos/panda/v_004_0/";
+    filesPath = "/data/t3home000/ceballos/panda/v_004_1/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2017.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
 
@@ -121,7 +121,7 @@ int year, TString WZName = "default"
     }
   }
   else if(year == 2016) {
-    filesPath = "/data/t3home000/ceballos/panda/v_002_0/";
+    filesPath = "/data/t3home000/ceballos/panda/v_002_1/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2016.root";
     puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
 

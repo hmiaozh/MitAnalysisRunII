@@ -50,7 +50,7 @@ int year, bool isBlinded = false
   TString puPath;
   TString npvPath;
   if     (year == 2018) {
-    filesPath = "/data/t3home000/ceballos/panda/v_006_0/";
+    filesPath = "/data/t3home000/ceballos/panda/v_006_1/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2018.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
     //npvPath = "MitAnalysisRunII/data/90x/npvWeights_2017.root";
@@ -74,7 +74,7 @@ int year, bool isBlinded = false
     infileName_.push_back(Form("%sggZH125inv.root" ,filesPath.Data()));          infileCat_.push_back(kPlotBSM);
   }
   else if(year == 2017) {
-    filesPath = "/data/t3home000/ceballos/panda/v_004_0/";
+    filesPath = "/data/t3home000/ceballos/panda/v_004_1/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2017.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
     //npvPath = "MitAnalysisRunII/data/90x/npvWeights_2017.root";
@@ -99,7 +99,7 @@ int year, bool isBlinded = false
     infileName_.push_back(Form("%sggZH125inv.root" ,filesPath.Data()));          infileCat_.push_back(kPlotBSM);
   }
   else if(year == 2016) {
-    filesPath = "/data/t3home000/ceballos/panda/v_002_0/";
+    filesPath = "/data/t3home000/ceballos/panda/v_002_1/";
     fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2016.root";
     puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
     //npvPath = "MitAnalysisRunII/data/90x/npvWeights_2016.root";
@@ -417,6 +417,8 @@ int year, bool isBlinded = false
       bool passMETDown  = vMetDown.Pt() >  70 && (lepType != 2 || vMetDown.Pt() > 100);
       bool passPTLL   = dilep.Pt() > 60;
 
+      if(!(dilep.Pt() > 60 && (vMet.Pt() > 70 || vMetUp.Pt() > 70 ||vMetDown.Pt() > 70) && (thePandaFlat.nLooseLep != 2 || TMath::Abs(dilep.M()-125) < 75))) continue;
+
       double ptFrac     = TMath::Abs(dilep.Pt()-vMet.Pt()    )/dilep.Pt();
       double ptFracUp   = TMath::Abs(dilep.Pt()-vMetUp.Pt()  )/dilep.Pt();
       double ptFracDown = TMath::Abs(dilep.Pt()-vMetDown.Pt())/dilep.Pt();
@@ -451,7 +453,7 @@ int year, bool isBlinded = false
       passZMass   && passNjets && passMETTight && passPTFrac && passDPhiZMETTight && !passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,   // BTAGSEL
       passZMass   &&              passMETTight &&                                                     passPTLL &&                   passTauVeto,               // ZLLSEL
       passZMassSB && passNjets && passMETTight && passPTFrac && passDPhiZMETTight &&  passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,   // WWSEL
-      passZMass   && passNjets &&                                                                     passPTLL && passDPhiJetMET && passTauVeto && passDRLL    // PRESEL
+      passZMass   && passNjets && passMET      &&                                                     passPTLL && passDPhiJetMET && passTauVeto && passDRLL    // PRESEL
                                     };
 
       bool passNMinusOne[10] = {
