@@ -217,34 +217,28 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
   TH1D *fhDPUDown = (TH1D*)(fPUFile->Get("puWeightsDown")); assert(fhDPUDown); fhDPUDown->SetDirectory(0);
   delete fPUFile;
 
-  const int nBinMJJ = 4; Float_t xbinsMJJ[nBinMJJ+1] = {500, 800, 1100, 1500, 2000};
-  const int nBinMLL = 4; Float_t xbinsMLL[nBinMLL+1] = {0, 100, 180, 300, 500};
-  /*const int nBinMVA = 24; Float_t xbins[nBinMVA+1] = {500, 800, 1100, 1500, 2000,
-                                                          2800, 3100, 3500, 4000,
-						          4800, 5100, 5500, 6000,
-						          6800, 7100, 7500, 8000,
-						          8800, 9100, 9500,10000,
-						         10800,11100,11500,12000};*/
-  const int nBinMVA = 80; Float_t xbins[nBinMVA+1] = {500, 800, 1100, 1500, 2000,
-                                                          2800, 3100, 3500, 4000,
-						          4800, 5100, 5500, 6000,
-						          6800, 7100, 7500, 8000,
-						          8800, 9100, 9500,10000,
-						         10800,11100,11500,12000,
-						         12800,13100,13500,14000,
-						         14800,15100,15500,16000,
-						         16800,17100,17500,18000,
-						         18800,19100,19500,20000,
-						         20800,21100,21500,22000,
-						         22800,23100,23500,24000,
-						         24800,25100,25500,26000,
-						         26800,27100,27500,28000,
-						         28800,29100,29500,30000,
-						         30800,31100,31500,32000,
-						         32800,33100,33500,34000,
-						         34800,35100,35500,36000,
-						         36800,37100,37500,38000,
-						         38800,39100,39500,40000
+  const int nBinMJJ = 4; Float_t xbinsMJJ[nBinMJJ+1] = {500, 800, 1150, 1700, 2000};
+  const int nBinMLL = 4; Float_t xbinsMLL[nBinMLL+1] = {20, 85, 135, 210, 500};
+  const int nBinMVA = 80; Float_t xbins[nBinMVA+1] = {500, 800, 1150, 1700, 2000,
+                                                          2800, 3150, 3700, 4000,
+						          4800, 5150, 5700, 6000,
+						          6800, 7150, 7700, 8000,
+						          8800, 9150, 9700,10000,
+						         10800,11150,11700,12000,
+						         12800,13150,13700,14000,
+						         14800,15150,15700,16000,
+						         16800,17150,17700,18000,
+						         18800,19150,19700,20000,
+						         20800,21150,21700,22000,
+						         22800,23150,23700,24000,
+						         24800,25150,25700,26000,
+						         26800,27150,27700,28000,
+						         28800,29150,29700,30000,
+						         30800,31150,31700,32000,
+						         32800,33150,33700,34000,
+						         34800,35150,35700,36000,
+						         36800,37150,37700,38000,
+						         38800,39150,39700,40000
 							 };
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
@@ -696,9 +690,9 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
          thePandaFlat.genLep1Pt > 20 and TMath::Abs(thePandaFlat.genLep1Eta) < 2.5 &&
 	 thePandaFlat.genLep2Pt > 20 and TMath::Abs(thePandaFlat.genLep2Eta) < 2.5){
         if     (thePandaFlat.genMjj >  500 && thePandaFlat.genMjj <=  800) theCategory = kPlotSignal0;
-	else if(thePandaFlat.genMjj >  800 && thePandaFlat.genMjj <= 1100) theCategory = kPlotSignal1;
-	else if(thePandaFlat.genMjj > 1100 && thePandaFlat.genMjj <= 1500) theCategory = kPlotSignal2;
-	else if(thePandaFlat.genMjj > 1500)                                theCategory = kPlotSignal3;
+	else if(thePandaFlat.genMjj >  800 && thePandaFlat.genMjj <= 1150) theCategory = kPlotSignal1;
+	else if(thePandaFlat.genMjj > 1150 && thePandaFlat.genMjj <= 1700) theCategory = kPlotSignal2;
+	else if(thePandaFlat.genMjj > 1700)                                theCategory = kPlotSignal3;
       }
 
       if(passAllButOneSel[0])histo[lepType+  0][theCategory]->Fill(TMath::Min(mllZ,199.999),totalWeight);
@@ -749,9 +743,9 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
 
       if(1){
         double typeSelAux0 = 0;
-        if     (mllZ < 100) typeSelAux0 = 0;
-        else if(mllZ < 180) typeSelAux0 = 1;
-        else if(mllZ < 300) typeSelAux0 = 2;
+        if     (mllZ <  85) typeSelAux0 = 0;
+        else if(mllZ < 135) typeSelAux0 = 1;
+        else if(mllZ < 210) typeSelAux0 = 2;
         else                typeSelAux0 = 3;
         double typeSelAux1 = 0;
 	if(qTot>0) typeSelAux1 = 1;
