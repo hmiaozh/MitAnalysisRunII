@@ -20,6 +20,7 @@
 
 const bool isSingleLeptonAna = true;
 const double mcPrescale = 1;
+const bool wantedChargedHLT = false;
 
 void pandaAnalysis(int whichDY, int whichAnaFlow = 0, unsigned int period = 0, double dileptonPtCut = 0, bool isMIT = true)
 {
@@ -214,13 +215,29 @@ void pandaAnalysis(int whichDY, int whichAnaFlow = 0, unsigned int period = 0, d
   TH2D *eff_HLT_Electron_DA[nBinHLTRap];
   TH2D *eff_HLT_Muon_MC[nBinHLTRap];
   TH2D *eff_HLT_Electron_MC[nBinHLTRap];
+  TH2D *eff_HLT_MuonP_DA[nBinHLTRap];
+  TH2D *eff_HLT_ElectronP_DA[nBinHLTRap];
+  TH2D *eff_HLT_MuonP_MC[nBinHLTRap];
+  TH2D *eff_HLT_ElectronP_MC[nBinHLTRap];
+  TH2D *eff_HLT_MuonM_DA[nBinHLTRap];
+  TH2D *eff_HLT_ElectronM_DA[nBinHLTRap];
+  TH2D *eff_HLT_MuonM_MC[nBinHLTRap];
+  TH2D *eff_HLT_ElectronM_MC[nBinHLTRap];
   TFile *feff_hlt = TFile::Open(Form("MitAnalysisRunII/data/80x/efficiency_hlt_80x_period%d.root",period));
   eff_HLT_Rap = (TH1D*)feff_hlt->Get("eff_HLT_Rap"); eff_HLT_Rap->SetDirectory(0);
   for(int k=0; k<nBinHLTRap; k++){
-    eff_HLT_Muon_DA[k]     = (TH2D*)feff_hlt->Get(Form("eff_HLT_Muon_%d_0",k));     eff_HLT_Muon_DA[k]    ->SetDirectory(0);
-    eff_HLT_Electron_DA[k] = (TH2D*)feff_hlt->Get(Form("eff_HLT_Electron_%d_0",k)); eff_HLT_Electron_DA[k]->SetDirectory(0);
-    eff_HLT_Muon_MC[k]     = (TH2D*)feff_hlt->Get(Form("eff_HLT_Muon_%d_1",k));     eff_HLT_Muon_MC[k]    ->SetDirectory(0);
-    eff_HLT_Electron_MC[k] = (TH2D*)feff_hlt->Get(Form("eff_HLT_Electron_%d_1",k)); eff_HLT_Electron_MC[k]->SetDirectory(0);
+    eff_HLT_Muon_DA[k]      = (TH2D*)feff_hlt->Get(Form("eff_HLT_Muon_%d_0",k));      eff_HLT_Muon_DA[k]     ->SetDirectory(0);
+    eff_HLT_Electron_DA[k]  = (TH2D*)feff_hlt->Get(Form("eff_HLT_Electron_%d_0",k));  eff_HLT_Electron_DA[k] ->SetDirectory(0);
+    eff_HLT_Muon_MC[k]      = (TH2D*)feff_hlt->Get(Form("eff_HLT_Muon_%d_1",k));      eff_HLT_Muon_MC[k]     ->SetDirectory(0);
+    eff_HLT_Electron_MC[k]  = (TH2D*)feff_hlt->Get(Form("eff_HLT_Electron_%d_1",k));  eff_HLT_Electron_MC[k] ->SetDirectory(0);
+    eff_HLT_MuonP_DA[k]     = (TH2D*)feff_hlt->Get(Form("eff_HLT_MuonP_%d_0",k));     eff_HLT_MuonP_DA[k]    ->SetDirectory(0);
+    eff_HLT_ElectronP_DA[k] = (TH2D*)feff_hlt->Get(Form("eff_HLT_ElectronP_%d_0",k)); eff_HLT_ElectronP_DA[k]->SetDirectory(0);
+    eff_HLT_MuonP_MC[k]     = (TH2D*)feff_hlt->Get(Form("eff_HLT_MuonP_%d_1",k));     eff_HLT_MuonP_MC[k]    ->SetDirectory(0);
+    eff_HLT_ElectronP_MC[k] = (TH2D*)feff_hlt->Get(Form("eff_HLT_ElectronP_%d_1",k)); eff_HLT_ElectronP_MC[k]->SetDirectory(0);
+    eff_HLT_MuonM_DA[k]     = (TH2D*)feff_hlt->Get(Form("eff_HLT_MuonM_%d_0",k));     eff_HLT_MuonM_DA[k]    ->SetDirectory(0);
+    eff_HLT_ElectronM_DA[k] = (TH2D*)feff_hlt->Get(Form("eff_HLT_ElectronM_%d_0",k)); eff_HLT_ElectronM_DA[k]->SetDirectory(0);
+    eff_HLT_MuonM_MC[k]     = (TH2D*)feff_hlt->Get(Form("eff_HLT_MuonM_%d_1",k));     eff_HLT_MuonM_MC[k]    ->SetDirectory(0);
+    eff_HLT_ElectronM_MC[k] = (TH2D*)feff_hlt->Get(Form("eff_HLT_ElectronM_%d_1",k)); eff_HLT_ElectronM_MC[k]->SetDirectory(0);
   }
   feff_hlt->Close();
 
@@ -286,11 +303,11 @@ void pandaAnalysis(int whichDY, int whichAnaFlow = 0, unsigned int period = 0, d
   const int nBinEtaPlot = 26; Float_t xbinsEtaPlot[nBinEtaPlot+1] = {-2.4,-2.3,-2.2,-2.0,-1.8,-1.63,-1.566,-1.4442,-1.2,-1.0,-0.6,-0.4,-0.2,0.0,
                                                                      0.2,0.4,0.6,1.0,1.2,1.4442,1.566,1.63,1.8,2.0,2.2,2.3,2.4};
 
-  const int muBinxX = scalefactors_Medium_Muon_stat_error_hi->GetNbinsX();
-  const int muBinxY = scalefactors_Medium_Muon_stat_error_hi->GetNbinsY();
+  const int muBinxX = 0;//scalefactors_Medium_Muon_stat_error_hi->GetNbinsX();
+  const int muBinxY = 0;//scalefactors_Medium_Muon_stat_error_hi->GetNbinsY();
   const int nMuSFBins = muBinxX*muBinxY;
-  const int elBinxX = scalefactors_Medium_Electron_stat_error_hi->GetNbinsX();
-  const int elBinxY = scalefactors_Medium_Electron_stat_error_hi->GetNbinsY();
+  const int elBinxX = 0;//scalefactors_Medium_Electron_stat_error_hi->GetNbinsX();
+  const int elBinxY = 0;//scalefactors_Medium_Electron_stat_error_hi->GetNbinsY();
   const int nElSFBins = elBinxX*elBinxY;
   const int nRecNuisances = 4;
   const int nEffNuisances = 8+nElSFBins;
@@ -1221,6 +1238,18 @@ void pandaAnalysis(int whichDY, int whichAnaFlow = 0, unsigned int period = 0, d
             trigEffE_DA[0] = eff_HLT_Muon_DA[nEvtRap]->GetBinError  (binXT,binYT);
 	    trigEff_MC[0]  = eff_HLT_Muon_MC[nEvtRap]->GetBinContent(binXT,binYT);
             trigEffE_MC[0] = eff_HLT_Muon_MC[nEvtRap]->GetBinError  (binXT,binYT);
+	    if     (wantedChargedHLT && thePandaFlat.looseLep1PdgId > 0) {
+	      trigEff_DA[0]  = eff_HLT_MuonM_DA[nEvtRap]->GetBinContent(binXT,binYT);
+              trigEffE_DA[0] = eff_HLT_MuonM_DA[nEvtRap]->GetBinError  (binXT,binYT);
+	      trigEff_MC[0]  = eff_HLT_MuonM_MC[nEvtRap]->GetBinContent(binXT,binYT);
+              trigEffE_MC[0] = eff_HLT_MuonM_MC[nEvtRap]->GetBinError  (binXT,binYT);
+	    }
+	    else if(wantedChargedHLT && thePandaFlat.looseLep1PdgId < 0) {
+	      trigEff_DA[0]  = eff_HLT_MuonP_DA[nEvtRap]->GetBinContent(binXT,binYT);
+              trigEffE_DA[0] = eff_HLT_MuonP_DA[nEvtRap]->GetBinError  (binXT,binYT);
+	      trigEff_MC[0]  = eff_HLT_MuonP_MC[nEvtRap]->GetBinContent(binXT,binYT);
+              trigEffE_MC[0] = eff_HLT_MuonP_MC[nEvtRap]->GetBinError  (binXT,binYT);
+	    }
           } else {
             double etal = thePandaFlat.looseLep1Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
             int binXT = eff_HLT_Electron_DA[nEvtRap]->GetXaxis()->FindFixBin(etal);
@@ -1229,6 +1258,18 @@ void pandaAnalysis(int whichDY, int whichAnaFlow = 0, unsigned int period = 0, d
             trigEffE_DA[0] = eff_HLT_Electron_DA[nEvtRap]->GetBinError  (binXT,binYT);
 	    trigEff_MC[0]  = eff_HLT_Electron_MC[nEvtRap]->GetBinContent(binXT,binYT);
             trigEffE_MC[0] = eff_HLT_Electron_MC[nEvtRap]->GetBinError  (binXT,binYT);
+	    if     (wantedChargedHLT && thePandaFlat.looseLep1PdgId > 0) {
+	      trigEff_DA[0]  = eff_HLT_ElectronM_DA[nEvtRap]->GetBinContent(binXT,binYT);
+              trigEffE_DA[0] = eff_HLT_ElectronM_DA[nEvtRap]->GetBinError  (binXT,binYT);
+	      trigEff_MC[0]  = eff_HLT_ElectronM_MC[nEvtRap]->GetBinContent(binXT,binYT);
+              trigEffE_MC[0] = eff_HLT_ElectronM_MC[nEvtRap]->GetBinError  (binXT,binYT);
+	    }
+	    else if(wantedChargedHLT && thePandaFlat.looseLep1PdgId < 0) {
+	      trigEff_DA[0]  = eff_HLT_ElectronP_DA[nEvtRap]->GetBinContent(binXT,binYT);
+              trigEffE_DA[0] = eff_HLT_ElectronP_DA[nEvtRap]->GetBinError  (binXT,binYT);
+	      trigEff_MC[0]  = eff_HLT_ElectronP_MC[nEvtRap]->GetBinContent(binXT,binYT);
+              trigEffE_MC[0] = eff_HLT_ElectronP_MC[nEvtRap]->GetBinError  (binXT,binYT);
+	    }
           }        
           if(abs(thePandaFlat.looseLep2PdgId)==13){
             double etal = thePandaFlat.looseLep2Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
@@ -1238,6 +1279,18 @@ void pandaAnalysis(int whichDY, int whichAnaFlow = 0, unsigned int period = 0, d
             trigEffE_DA[1] = eff_HLT_Muon_DA[nEvtRap]->GetBinError  (binXT,binYT);
 	    trigEff_MC[1]  = eff_HLT_Muon_MC[nEvtRap]->GetBinContent(binXT,binYT);
             trigEffE_MC[1] = eff_HLT_Muon_MC[nEvtRap]->GetBinError  (binXT,binYT);
+	    if     (wantedChargedHLT && thePandaFlat.looseLep2PdgId > 0) {
+	      trigEff_DA[1]  = eff_HLT_MuonM_DA[nEvtRap]->GetBinContent(binXT,binYT);
+              trigEffE_DA[1] = eff_HLT_MuonM_DA[nEvtRap]->GetBinError  (binXT,binYT);
+	      trigEff_MC[1]  = eff_HLT_MuonM_MC[nEvtRap]->GetBinContent(binXT,binYT);
+              trigEffE_MC[1] = eff_HLT_MuonM_MC[nEvtRap]->GetBinError  (binXT,binYT);
+	    }
+	    else if(wantedChargedHLT && thePandaFlat.looseLep2PdgId < 0) {
+	      trigEff_DA[1]  = eff_HLT_MuonP_DA[nEvtRap]->GetBinContent(binXT,binYT);
+              trigEffE_DA[1] = eff_HLT_MuonP_DA[nEvtRap]->GetBinError  (binXT,binYT);
+	      trigEff_MC[1]  = eff_HLT_MuonP_MC[nEvtRap]->GetBinContent(binXT,binYT);
+              trigEffE_MC[1] = eff_HLT_MuonP_MC[nEvtRap]->GetBinError  (binXT,binYT);
+	    }
           } else {
             double etal = thePandaFlat.looseLep2Eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
             int binXT = eff_HLT_Electron_DA[nEvtRap]->GetXaxis()->FindFixBin(etal);
@@ -1246,6 +1299,18 @@ void pandaAnalysis(int whichDY, int whichAnaFlow = 0, unsigned int period = 0, d
             trigEffE_DA[1] = eff_HLT_Electron_DA[nEvtRap]->GetBinError  (binXT,binYT);
 	    trigEff_MC[1]  = eff_HLT_Electron_MC[nEvtRap]->GetBinContent(binXT,binYT);
             trigEffE_MC[1] = eff_HLT_Electron_MC[nEvtRap]->GetBinError  (binXT,binYT);
+	    if     (wantedChargedHLT && thePandaFlat.looseLep2PdgId > 0) {
+	      trigEff_DA[1]  = eff_HLT_ElectronM_DA[nEvtRap]->GetBinContent(binXT,binYT);
+              trigEffE_DA[1] = eff_HLT_ElectronM_DA[nEvtRap]->GetBinError  (binXT,binYT);
+	      trigEff_MC[1]  = eff_HLT_ElectronM_MC[nEvtRap]->GetBinContent(binXT,binYT);
+              trigEffE_MC[1] = eff_HLT_ElectronM_MC[nEvtRap]->GetBinError  (binXT,binYT);
+	    }
+	    else if(wantedChargedHLT && thePandaFlat.looseLep2PdgId < 0) {
+	      trigEff_DA[1]  = eff_HLT_ElectronP_DA[nEvtRap]->GetBinContent(binXT,binYT);
+              trigEffE_DA[1] = eff_HLT_ElectronP_DA[nEvtRap]->GetBinError  (binXT,binYT);
+	      trigEff_MC[1]  = eff_HLT_ElectronP_MC[nEvtRap]->GetBinContent(binXT,binYT);
+              trigEffE_MC[1] = eff_HLT_ElectronP_MC[nEvtRap]->GetBinError  (binXT,binYT);
+	    }
           }
 	  double trg_DA   = TMath::Max((1.0 - (1-trigEff_DA[0])                * (1-trigEff_DA[1])),0.0001);
 	  double trg_DA_e = TMath::Max((1.0 - (1-trigEff_DA[0]-trigEffE_DA[0]) * (1-trigEff_DA[1]-trigEffE_DA[1])),0.0001);
