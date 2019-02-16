@@ -458,7 +458,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
         else if(abs(looseLepPdgId[0])==13 && abs(looseLepPdgId[1])==13) {lepType = 2; muSFUnc = 1.015*1.015; elSFUnc = 1.015;}
         else if(abs(looseLepPdgId[0])==13 && abs(looseLepPdgId[2])==13) {lepType = 2; muSFUnc = 1.015*1.015; elSFUnc = 1.015;}
         else if(abs(looseLepPdgId[1])==13 && abs(looseLepPdgId[2])==13) {lepType = 2; muSFUnc = 1.015*1.015; elSFUnc = 1.015;}
-        else {printf("Impossible dilepton combination: %d %d %d\n",looseLepPdgId[0],looseLepPdgId[1],looseLepPdgId[2]); continue;}
+        else {printf("Impossible lepton combination: %d %d %d\n",looseLepPdgId[0],looseLepPdgId[1],looseLepPdgId[2]); continue;}
       }
       else if(thePandaFlat.nLooseLep == 4){
         int nmu = (abs(looseLepPdgId[0])==13) + (abs(looseLepPdgId[1])==13) + (abs(looseLepPdgId[2])==13) + (abs(looseLepPdgId[3])==13);
@@ -468,7 +468,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
         else if(nmu == 2 && nel == 2) {lepType = 2; muSFUnc = 1.015*1.015; elSFUnc = 1.015*1.015;}
         else if(nmu == 3 && nel == 1) {lepType = 3; muSFUnc = 1.015*1.015*1.015; elSFUnc = 1.015;}
         else if(nmu == 1 && nel == 3) {lepType = 3; muSFUnc = 1.015; elSFUnc = 1.015*1.015*1.015;}
-        else {printf("Impossible dilepton combination: %d %d %d %d\n",looseLepPdgId[0],looseLepPdgId[1],looseLepPdgId[2],looseLepPdgId[3]); continue;}
+        else {printf("Impossible lepton combination: %d %d %d %d\n",looseLepPdgId[0],looseLepPdgId[1],looseLepPdgId[2],looseLepPdgId[3]); continue;}
       }
 
       TLorentzVector vMet,vTrkMet,vMetUp,vMetDown;
@@ -485,7 +485,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
       }
 
       double mllZ = 10000; double mllmin = 10000;
-      TLorentzVector vZ1l1,vZ1l2,vWln;
+      TLorentzVector vZ1l1,vZ1l2,vWln,trilep;
       int whichWln = -1;
       if     (vLoose.size() == 2){
         vZ1l1  = vLoose[0];
@@ -498,6 +498,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
         if((vLoose[0]+vLoose[1]).M() < mllmin) mllmin = (vLoose[0]+vLoose[1]).M();
         if((vLoose[0]+vLoose[2]).M() < mllmin) mllmin = (vLoose[0]+vLoose[2]).M();
         if((vLoose[1]+vLoose[2]).M() < mllmin) mllmin = (vLoose[1]+vLoose[2]).M();
+	trilep = vLoose[0]+vLoose[1]+vLoose[2];
 	if(abs(looseLepPdgId[0]) == abs(looseLepPdgId[1]) && looseLepPdgId[0] != looseLepPdgId[1]) {
           if(fabs((vLoose[0]+vLoose[1]).M()-91.1876) < fabs(mllZ-91.1876)) {
 	    mllZ  = (vLoose[0]+vLoose[1]).M();
@@ -536,7 +537,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
       TLorentzVector vJot1Down; vJot1Down.SetPtEtaPhiM(thePandaFlat.jotPt_JESTotalDown[0],thePandaFlat.jotEta[0],thePandaFlat.jotPhi[0],0.0);
       TLorentzVector vJot2Down; vJot2Down.SetPtEtaPhiM(thePandaFlat.jotPt_JESTotalDown[1],thePandaFlat.jotEta[1],thePandaFlat.jotPhi[1],0.0);
 
-      double massJJ         = thePandaFlat.jot12Mass;               //(vJot1+vJot2).M();
+      double massJJ         = thePandaFlat.jot12Mass;              //(vJot1+vJot2).M();
       double massJJUp       = thePandaFlat.jot12Mass_JESTotalUp;   //(vJot1Up+vJot2Up).M();
       double massJJDown     = thePandaFlat.jot12Mass_JESTotalDown; //(vJot1Down+vJot2Down).M();
       double deltaEtaJJ     = thePandaFlat.jot12DEta;              //TMath::Abs(vJot1.Eta()    -vJot2.Eta());
@@ -553,30 +554,39 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
       bool passDEtaJJUp   = thePandaFlat.nJot_JESTotalUp   >= 2 && deltaEtaJJUp   > 2.5;
       bool passDEtaJJDown = thePandaFlat.nJot_JESTotalDown >= 2 && deltaEtaJJDown > 2.5;
 
-      double maxLeptonZ = 0; double maxLeptonZUp = 0; double maxLeptonZDown = 0;
+      double maxLeptonZep = 0; double maxLeptonZepUp = 0; double maxLeptonZepDown = 0;
       for(unsigned int i=0; i<vLoose.size(); i++) {
-        if(TMath::Abs(vLoose[i].Eta()-(vJot1.Eta()+vJot2.Eta())/2.)/deltaEtaJJ > maxLeptonZ)
-          maxLeptonZ     = TMath::Abs(vLoose[i].Eta()-(vJot1.Eta()+vJot2.Eta())/2.)/deltaEtaJJ;
-        if(TMath::Abs(vLoose[i].Eta()-(vJot1Up.Eta()+vJot2Up.Eta())/2.)/deltaEtaJJUp > maxLeptonZUp)
-	  maxLeptonZUp   = TMath::Abs(vLoose[i].Eta()-(vJot1Up.Eta()+vJot2Up.Eta())/2.)/deltaEtaJJUp;
-        if(TMath::Abs(vLoose[i].Eta()-(vJot1Down.Eta()+vJot2Down.Eta())/2.)/deltaEtaJJDown > maxLeptonZDown)
-	  maxLeptonZDown = TMath::Abs(vLoose[i].Eta()-(vJot1Down.Eta()+vJot2Down.Eta())/2.)/deltaEtaJJDown;
+        if(TMath::Abs(vLoose[i].Eta()-(vJot1.Eta()+vJot2.Eta())/2.)/deltaEtaJJ > maxLeptonZep)
+          maxLeptonZep     = TMath::Abs(vLoose[i].Eta()-(vJot1.Eta()+vJot2.Eta())/2.)/deltaEtaJJ;
+        if(TMath::Abs(vLoose[i].Eta()-(vJot1Up.Eta()+vJot2Up.Eta())/2.)/deltaEtaJJUp > maxLeptonZepUp)
+	  maxLeptonZepUp   = TMath::Abs(vLoose[i].Eta()-(vJot1Up.Eta()+vJot2Up.Eta())/2.)/deltaEtaJJUp;
+        if(TMath::Abs(vLoose[i].Eta()-(vJot1Down.Eta()+vJot2Down.Eta())/2.)/deltaEtaJJDown > maxLeptonZepDown)
+	  maxLeptonZepDown = TMath::Abs(vLoose[i].Eta()-(vJot1Down.Eta()+vJot2Down.Eta())/2.)/deltaEtaJJDown;
       }
-      bool passZMax     = thePandaFlat.nJot              >= 2 && maxLeptonZ     < 0.75;
-      bool passZMaxUp   = thePandaFlat.nJot_JESTotalUp   >= 2 && maxLeptonZUp   < 0.75;
-      bool passZMaxDown = thePandaFlat.nJot_JESTotalDown >= 2 && maxLeptonZDown < 0.75;
+      bool passZepMax     = thePandaFlat.nJot              >= 2 && maxLeptonZep     < 0.75;
+      bool passZepMaxUp   = thePandaFlat.nJot_JESTotalUp   >= 2 && maxLeptonZepUp   < 0.75;
+      bool passZepMaxDown = thePandaFlat.nJot_JESTotalDown >= 2 && maxLeptonZepDown < 0.75;
 
+     double wzZep = 0; double wzZepUp = 0; double wzZepDown = 0;
+      wzZep	= TMath::Abs(trilep.Eta()-(vJot1.Eta()+vJot2.Eta())/2.)/deltaEtaJJ;
+      wzZepUp	= TMath::Abs(trilep.Eta()-(vJot1Up.Eta()+vJot2Up.Eta())/2.)/deltaEtaJJUp;
+      wzZepDown = TMath::Abs(trilep.Eta()-(vJot1Down.Eta()+vJot2Down.Eta())/2.)/deltaEtaJJDown;
+      bool passwzZep	 = thePandaFlat.nJot		  >= 2 && wzZep     < 0.75;
+      bool passwzZepUp   = thePandaFlat.nJot_JESTotalUp   >= 2 && wzZepUp   < 0.75;
+      bool passwzZepDown = thePandaFlat.nJot_JESTotalDown >= 2 && wzZepDown < 0.75;
+ 
       bool passMLL   = mllZ > 20 && (fabs(mllZ-91.1876) > 15 || lepType != 1);
-      bool passMET = vMet.Pt() > 40; bool passMETUp = vMetUp.Pt() > 40;bool passMETDown = vMetDown.Pt() > 40;
+      bool passWWMET = vMet.Pt() > 40; bool passWWMETUp = vMetUp.Pt() > 40;bool passWWMETDown = vMetDown.Pt() > 40;
+      bool passWZMET = vMet.Pt() > 30; bool passWZMETUp = vMetUp.Pt() > 30;bool passWZMETDown = vMetDown.Pt() > 30;
       bool passNjets = thePandaFlat.nJot >= 2; bool passNjetsUp = thePandaFlat.nJot_JESTotalUp >= 2; bool passNjetsDown = thePandaFlat.nJot_JESTotalDown >= 2;
       bool passBtagVeto = thePandaFlat.jetNMBtags == 0; bool passBtagVetoUp = thePandaFlat.jetNMBtags_JESTotalUp == 0; bool passBtagVetoDown = thePandaFlat.jetNMBtags_JESTotalDown == 0;
       bool passTauVeto = thePandaFlat.nTau == 0;
-      //                                                            0        1            2              3               4            5             6                 7            8     
-      bool passSel[9]     = {qTot != 0 && thePandaFlat.nLooseLep == 2, passMLL, passMET    , passNjets    , passDEtaJJ    , passMJJ    , passZMax    , passBtagVeto    , passTauVeto};
-      bool passSelUp[9]   = {qTot != 0 && thePandaFlat.nLooseLep == 2, passMLL, passMETUp  , passNjetsUp  , passDEtaJJUp  , passMJJUp  , passZMaxUp  , passBtagVetoUp  , passTauVeto};
-      bool passSelDown[9] = {qTot != 0 && thePandaFlat.nLooseLep == 2, passMLL, passMETDown, passNjetsDown, passDEtaJJDown, passMJJDown, passZMaxDown, passBtagVetoDown, passTauVeto};
+      //                                                            0        1              2              3               4            5             6                 7            8     
+      bool passSel[9]     = {qTot != 0 && thePandaFlat.nLooseLep == 2, passMLL, passWWMET    , passNjets    , passDEtaJJ    , passMJJ    , passZepMax    , passBtagVeto    , passTauVeto};
+      bool passSelUp[9]   = {qTot != 0 && thePandaFlat.nLooseLep == 2, passMLL, passWWMETUp  , passNjetsUp  , passDEtaJJUp  , passMJJUp  , passZepMaxUp  , passBtagVetoUp  , passTauVeto};
+      bool passSelDown[9] = {qTot != 0 && thePandaFlat.nLooseLep == 2, passMLL, passWWMETDown, passNjetsDown, passDEtaJJDown, passMJJDown, passZepMaxDown, passBtagVetoDown, passTauVeto};
 
-      bool passWZPresel = whichWln >= 0 && thePandaFlat.nLooseLep == 3 && 
+      bool passWZPresel = whichWln >= 0 && thePandaFlat.nLooseLep == 3 && trilep.M() > 100 &&
                           fabs(mllZ-91.1876) < 15 && mllmin > 4 && vWln.Pt() > 20;
       bool passWWSel     = passSel[0]     && passSel[1]     && passSel[2]     && passSel[3]     && passSel[4]     && passSel[5]     && passSel[6]     && passSel[7]     && passSel[8];
       bool passWWSelUp   = passSelUp[0]   && passSelUp[1]   && passSelUp[2]   && passSelUp[3]   && passSelUp[4]   && passSelUp[5]   && passSelUp[6]   && passSelUp[7]   && passSelUp[8];
@@ -584,11 +594,14 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
       bool passBtagSel     = passSel[0]     && passSel[1]     && passSel[2]     && passSel[3]     && passSel[4]     && passSel[5]     && passSel[6]     && !passSel[7]     && passSel[8];
       bool passBtagSelUp   = passSelUp[0]   && passSelUp[1]   && passSelUp[2]   && passSelUp[3]   && passSelUp[4]   && passSelUp[5]   && passSelUp[6]   && !passSelUp[7]   && passSelUp[8];
       bool passBtagSelDown = passSelDown[0] && passSelDown[1] && passSelDown[2] && passSelDown[3] && passSelDown[4] && passSelDown[5] && passSelDown[6] && !passSelDown[7] && passSelDown[8];
-      bool passWZSel     = passWZPresel && passSel[2]     && passSel[3]     && passSel[4]     && passSel[5]     && passSel[6]     && passSel[7]     && passSel[8];
-      bool passWZSelUp   = passWZPresel && passSelUp[2]   && passSelUp[3]   && passSelUp[4]   && passSelUp[5]   && passSelUp[6]   && passSelUp[7]   && passSelUp[8];
-      bool passWZSelDown = passWZPresel && passSelDown[2] && passSelDown[3] && passSelDown[4] && passSelDown[5] && passSelDown[6] && passSelDown[7] && passSelDown[8];
+      //bool passWZSel     = passWZPresel && passSel[2]     && passSel[3]     && passSel[4]     && passSel[5]     && passSel[6]     && passSel[7]     && passSel[8];
+      //bool passWZSelUp   = passWZPresel && passSelUp[2]   && passSelUp[3]   && passSelUp[4]   && passSelUp[5]   && passSelUp[6]   && passSelUp[7]   && passSelUp[8];
+      //bool passWZSelDown = passWZPresel && passSelDown[2] && passSelDown[3] && passSelDown[4] && passSelDown[5] && passSelDown[6] && passSelDown[7] && passSelDown[8];
+      bool passWZSel     = passWZPresel && passWZMET     && passSel[3]     && passSel[4]      && passSel[5]	&&  passwzZep     && passSel[7]     && passSel[8];
+      bool passWZSelUp   = passWZPresel && passWZMETUp   && passSelUp[3]   && passSelUp[4]    && passSelUp[5]	&&  passwzZepUp   && passSelUp[7]   && passSelUp[8];
+      bool passWZSelDown = passWZPresel && passWZMETDown && passSelDown[3] && passSelDown[4]  && passSelDown[5] &&  passwzZepDown && passSelDown[7] && passSelDown[8];
 
-      bool passZSel      = passSel[0]     && mllZ > 20      &&!passSel[2]     && passSel[3]     && passSel[4]     && passSel[5]     && passSel[6]     && passSel[7]     && passSel[8];
+      bool passZSel      = passSel[0]     && mllZ > 20      && !passSel[2]     && passSel[3]     && passSel[4]     && passSel[5]     && passSel[6]     && passSel[7]     && passSel[8];
 
       bool passPresel    = passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[5];
 
@@ -701,7 +714,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
       if(passAllButOneSel[2])histo[lepType+  6][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,5.499),totalWeight);
       if(passAllButOneSel[3])histo[lepType+  9][theCategory]->Fill(TMath::Min(deltaEtaJJ,7.999),totalWeight);
       if(passAllButOneSel[4])histo[lepType+ 12][theCategory]->Fill(TMath::Min(massJJ,1999.999),totalWeight);
-      if(passAllButOneSel[5])histo[lepType+ 15][theCategory]->Fill(TMath::Min(maxLeptonZ,0.999),totalWeight);
+      if(passAllButOneSel[5])histo[lepType+ 15][theCategory]->Fill(TMath::Min(maxLeptonZep,0.999),totalWeight);
       if(passAllButOneSel[6])histo[lepType+ 18][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,4.499),totalWeight);
       if(passAllButOneSel[7])histo[lepType+ 21][theCategory]->Fill(TMath::Min((double)thePandaFlat.nTau,4.499),totalWeight);
       if(passWWSel)          histo[lepType+ 24][theCategory]->Fill(TMath::Min(vZ1l1.Pt(),199.999),totalWeight);
@@ -717,7 +730,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
       if(passBtagSel)        histo[lepType+ 49][theCategory]->Fill(vJot2.Eta(),totalWeight);
       if(passPresel)         histo[lepType+ 52][theCategory]->Fill(TMath::Min(deltaEtaJJ,7.999),totalWeight);
       if(passPresel)         histo[lepType+ 55][theCategory]->Fill(TMath::Min(massJJ,2499.999),totalWeight);
-      if(passPresel)         histo[lepType+ 58][theCategory]->Fill(TMath::Min(maxLeptonZ,0.999),totalWeight);
+      if(passPresel)         histo[lepType+ 58][theCategory]->Fill(TMath::Min(maxLeptonZep,0.999),totalWeight);
       if(passPresel)         histo[lepType+ 61][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNBtags,4.499),totalWeight);
       if(passPresel)         histo[lepType+ 64][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,4.499),totalWeight);
       if(passPresel && thePandaFlat.jetNBtags > 0)
@@ -737,7 +750,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
         printf("DATA %d %d %llu | %d %d | %d -> %d %d %d %d %d %d %d %d %d | %.1f %.1f %.1f %.1f %.2f | %.1f %.1f %.1f %d | %.2f %.2f %.2f %.2f %.2f %.2f / %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\n",
 	thePandaFlat.runNumber,thePandaFlat.lumiNumber,thePandaFlat.eventNumber,theCategory,lepType,
 	passWZSel,passSel[0],passSel[1],passSel[2],passSel[3],passSel[4],passSel[5],passSel[6],passSel[7],passSel[8],
-	mllZ,vMet.Pt(),deltaEtaJJ,massJJ,maxLeptonZ,
+	mllZ,vMet.Pt(),deltaEtaJJ,massJJ,maxLeptonZep,
 	fabs(mllZ-91.1876),mllmin,vWln.Pt(),whichWln,vJot1.Pt(),vJot1.Eta(),vJot1.Phi(),vJot2.Pt(),vJot2.Eta(),vJot2.Phi(),
 	vLoose[0].Pt(),vLoose[0].Eta(),vLoose[0].Phi(),vLoose[1].Pt(),vLoose[1].Eta(),vLoose[1].Phi(),vLoose[2].Pt(),vLoose[2].Eta(),vLoose[2].Phi());
       }
