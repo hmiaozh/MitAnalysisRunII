@@ -71,8 +71,8 @@ enum plotCategory {
   kPlotVG        , // 9  
   kPlotNonPrompt , //10  
   kPlotHiggs     , //11  
-  kPlotSSWWEWK   , //12   
-  kPlotSSWWQCD   , //13   
+  kPlotEWKSSWW   , //12   
+  kPlotQCDSSWW   , //13   
   kPlotDPSWW     , //14   
   kPlotWS        , //15   
   kPlotEM        , //16   
@@ -97,8 +97,8 @@ std::map<int, TString> plotBaseNames={
   { kPlotVG	   , "VG" },
   { kPlotNonPrompt , "NonPrompt" },
   { kPlotHiggs     , "Higgs" },
-  { kPlotSSWWEWK   , "SSWWEWK" },
-  { kPlotSSWWQCD   , "SSWWQCD" },
+  { kPlotEWKSSWW   , "EWKSSWW" },
+  { kPlotQCDSSWW   , "QCDSSWW" },
   { kPlotDPSWW     , "DPSWW" },
   { kPlotWS	   , "WS" },
   { kPlotEM	   , "EM" },
@@ -122,8 +122,8 @@ std::map<int, int> plotColors={
   { kPlotVG	   , 419},
   { kPlotNonPrompt , kAzure-5},
   { kPlotHiggs     , 842},
-  { kPlotSSWWEWK   , 832},
-  { kPlotSSWWQCD   , 798},
+  { kPlotEWKSSWW   , 832},
+  { kPlotQCDSSWW   , 798},
   { kPlotDPSWW     , TColor::GetColor(248,206,104)},
   { kPlotWS	   , kAzure+10},
   { kPlotEM	   , kGreen-5},
@@ -147,8 +147,8 @@ std::map<int, TString> plotNames={
     { kPlotVG	     , "V#gamma" },
     { kPlotNonPrompt , "Nonprompt"},
     { kPlotHiggs     , "Higgs"},
-    { kPlotSSWWEWK   , "EWK W^{#pm}W^{#pm}"},
-    { kPlotSSWWQCD   , "QCD W^{#pm}W^{#pm}"},
+    { kPlotEWKSSWW   , "EWK W^{#pm}W^{#pm}"},
+    { kPlotQCDSSWW   , "QCD W^{#pm}W^{#pm}"},
     { kPlotDPSWW     , "DPS W^{#pm}W^{#pm}"},
     { kPlotWS	     , "Wrong sign"},
     { kPlotEM	     , "Top-quark/WW"},

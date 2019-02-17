@@ -66,7 +66,7 @@ void makeSSWWDataCards(TString outputLimits = "ssww_comb_input.root", int fidAna
   for (int ic=0; ic<nPlotCategories; ic++){
     if(!histo_Baseline[ic]) continue;
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if     (ic != kPlotSSWWEWK && 
+    if     (ic != kPlotEWKSSWW && 
             ic != kPlotSignal0 && ic != kPlotSignal1 && 
             ic != kPlotSignal2 && ic != kPlotSignal2) newcardShape << Form("%d  ", ic);
     else if(ic == kPlotSignal0) newcardShape << Form("%d  ", -1);

@@ -67,9 +67,9 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
     if     (1){
       infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	          infileCat_.push_back(kPlotData);
 
-      infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotSSWWEWK);
+      infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotEWKSSWW);
 
-      infileName_.push_back(Form("%sWpWp_QCD.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotSSWWQCD);
+      infileName_.push_back(Form("%sWpWp_QCD.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotQCDSSWW);
 
       infileName_.push_back(Form("%sWZ3l_MG_QCD.root" ,filesPath.Data()));        infileCat_.push_back(kPlotWZ);
       infileName_.push_back(Form("%sWZ3l_MG_EWK.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
@@ -104,9 +104,9 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
     if     (WZName == "WZ3l_MG"){
       infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	          infileCat_.push_back(kPlotData);
 
-      infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotSSWWEWK);
+      infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotEWKSSWW);
 
-      infileName_.push_back(Form("%sWpWp_QCD.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotSSWWQCD);
+      infileName_.push_back(Form("%sWpWp_QCD.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotQCDSSWW);
 
       infileName_.push_back(Form("%sWZ3l_MG_QCD.root" ,filesPath.Data()));        infileCat_.push_back(kPlotWZ);
       infileName_.push_back(Form("%sWZ3l_MG_EWK.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
@@ -155,9 +155,9 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
     if     (WZName == "WZ3l_MG"){
       infileName_.push_back(Form("%sdata.root",filesPath.Data()));		  infileCat_.push_back(kPlotData);
 
-      infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data()));		  infileCat_.push_back(kPlotSSWWEWK);
+      infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data()));		  infileCat_.push_back(kPlotEWKSSWW);
 
-      infileName_.push_back(Form("%sWpWp_QCD.root" ,filesPath.Data()));		  infileCat_.push_back(kPlotSSWWQCD);
+      infileName_.push_back(Form("%sWpWp_QCD.root" ,filesPath.Data()));		  infileCat_.push_back(kPlotQCDSSWW);
 
       infileName_.push_back(Form("%sWZ3l_MG_QCD.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotWZ);
       infileName_.push_back(Form("%sWZ3l_MG_EWK.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
@@ -651,7 +651,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
         if     (infileCat_[ifile] == kPlotWZ)                                                totalWeight = totalWeight * thePandaFlat.sf_wz;
 	else if(infileCat_[ifile] == kPlotZZ && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;
 
-        if(infileCat_[ifile] == kPlotSSWWEWK) totalWeight = totalWeight * ewkCorrWpWp(thePandaFlat.genMjj);
+        if(infileCat_[ifile] == kPlotEWKSSWW) totalWeight = totalWeight * ewkCorrWpWp(thePandaFlat.genMjj);
 
         bool isRS = thePandaFlat.looseGenLep1PdgId > 0 && thePandaFlat.looseGenLep2PdgId > 0;
         if(thePandaFlat.nLooseLep >= 3) isRS = isRS && thePandaFlat.looseGenLep3PdgId > 0;
@@ -700,7 +700,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
         totalWeight = totalWeight * mcCorrection(year, thePandaFlat.jetNMBtags,thePandaFlat.jetNBtags, infileCat_[ifile]);
       }
 
-      if(theCategory == kPlotSSWWEWK && fidAna == 1 && 
+      if(theCategory == kPlotEWKSSWW && fidAna == 1 && 
          thePandaFlat.genLep1Pt > 20 and TMath::Abs(thePandaFlat.genLep1Eta) < 2.5 &&
 	 thePandaFlat.genLep2Pt > 20 and TMath::Abs(thePandaFlat.genLep2Eta) < 2.5){
         if     (thePandaFlat.genMjj >  500 && thePandaFlat.genMjj <=  800) theCategory = kPlotSignal0;
@@ -908,7 +908,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
     }
     histo_PUBoundingUp	[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_PUBoundingUp  [ic]->GetSumOfWeights());
     histo_PUBoundingDown[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_PUBoundingDown[ic]->GetSumOfWeights());
-    if(ic == kPlotWZ) {
+    if(fidAna == 1 && (ic == kPlotWZ || ic == kPlotEWKWZ || ic == kPlotEWKSSWW)) {
       histo_QCDScaleUp  [ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_QCDScaleUp  [ic]->GetSumOfWeights());
       histo_QCDScaleDown[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_QCDScaleDown[ic]->GetSumOfWeights());
     }
@@ -1169,7 +1169,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
   newcardShape << Form("process  ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if     (ic != kPlotSSWWEWK && 
+    if     (ic != kPlotEWKSSWW && 
             ic != kPlotSignal0 && ic != kPlotSignal1 && 
             ic != kPlotSignal2 && ic != kPlotSignal2) newcardShape << Form("%d  ", ic);
     else if(ic == kPlotSignal0) newcardShape << Form("%d  ", -1);
