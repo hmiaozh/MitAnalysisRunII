@@ -517,7 +517,7 @@ void wwAnalysis(
     else if(thePlot >= 20 && thePlot <= 23) {nBinPlot = 25; xminPlot =20.0; xmaxPlot = 220.0;}
     else if(thePlot >= 24 && thePlot <= 27) {nBinPlot = 40; xminPlot = 0.0; xmaxPlot = 800.0;}
     else if(thePlot >= 28 && thePlot <= 31) {nBinPlot = 40; xminPlot = 0.0; xmaxPlot = 400.0;}
-    else if(thePlot >= 32 && thePlot <= 32) {nBinPlot = 80; xminPlot = 0.0; xmaxPlot = 800.0;}
+    else if(thePlot >= 32 && thePlot <= 32) {nBinPlot =400; xminPlot = 0.0; xmaxPlot = 400.0;}
 
     if(shapeAnaType == 0) {
       if     (thePlot >=  0 && thePlot <=  3) {nBinPlot =  25; xminPlot =20.0; xmaxPlot = 320.0;}
@@ -1338,6 +1338,7 @@ void wwAnalysis(
 
       double deltaPhiDileptonMet = TMath::Abs(dilep.DeltaPhi(theMET));
       double mTWW = TMath::Sqrt(2.0*dilep.Pt()*theMET.Pt()*(1.0 - cos(deltaPhiDileptonMet)));
+      TLorentzVector theWW = dilep + theMET;
 
       if(useDYMVA == true){
         if(nlep_ != idLep.size()) {printf("PROBLEM nlep %d != %d\n",(int)nlep_,(int)idLep.size()); assert(1); return;}
@@ -1662,7 +1663,7 @@ void wwAnalysis(
         else if(thePlot == 30 && passAllCuts[TOPSEL] && typeSel == 2) {makePlot = true;theVar = TMath::Min(mTWW,399.999);}
         else if(thePlot == 31 && passAllCuts[DYSEL]  && typeSel == 2) {makePlot = true;theVar = TMath::Min(mTWW,399.999);}
 
-        else if(thePlot == 32 && passNoJetCutRegion && typeSel == 2)  {makePlot = true;theVar = TMath::Min(theHT,799.999);}
+        else if(thePlot == 32 && passNoJetCutRegion && typeSel == 2)  {makePlot = true;theVar = TMath::Min(theWW.Pt(),399.999);}
 
         if(makePlot) histo[thePlot][theCategory]->Fill(theVar,totalWeight);
       }
