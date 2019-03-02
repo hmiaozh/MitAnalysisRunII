@@ -39,6 +39,7 @@ double ww_norm_unc_ptwei[4] = {0.996073,1.000986,1.011810,0.953619};
 //double ww_norm_unc_qcd[6] = {1,1,1,1,1,1};
 //double ww_norm_unc_pdf = 1;
 //double ww_norm_unc_ptwei[4] = {1,1,1,1};
+const double wwpt_norm = 1.035;
 
 bool isMINIAOD = true;
 int whichSkim = 3;
@@ -1466,7 +1467,7 @@ void wwAnalysis(
 	                     fhDWWPtRatio_scaledown->GetXaxis()->FindBin(TMath::Min(wwSystem.Pt(),499.999)),
 	                     fhDWWPtRatio_resumup  ->GetXaxis()->FindBin(TMath::Min(wwSystem.Pt(),499.999)),
 	                     fhDWWPtRatio_resumdown->GetXaxis()->FindBin(TMath::Min(wwSystem.Pt(),499.999))};
-        thePtwwWeight[0] = fhDWWPtRatio 	 ->GetBinContent(nptwwbin[0]);
+        thePtwwWeight[0] = fhDWWPtRatio          ->GetBinContent(nptwwbin[0]) * wwpt_norm;
 	thePtwwWeight[1] = fhDWWPtRatio_scaleup  ->GetBinContent(nptwwbin[1]);
 	thePtwwWeight[2] = fhDWWPtRatio_scaledown->GetBinContent(nptwwbin[2]);
 	thePtwwWeight[3] = fhDWWPtRatio_resumup  ->GetBinContent(nptwwbin[3]);
