@@ -315,6 +315,10 @@ void wwAnalysis(
   fhDWWPtRatio_resumdown->SetDirectory(0);
   delete fWWPtRatio;
 
+  const int nBinRuns = 13; Float_t xBinRuns[nBinRuns+1] = {
+       272007, 275377, 275656, 276284, 276314, 276812, 276830,
+       277421, 277771, 278809, 278819, 280386, 281612, 284044};
+
   const int nBinWWMLL = 25;
   Float_t xbinsWWMLL[nBinWWMLL+1];
     xbinsWWMLL[ 0] =  20;      xbinsWWMLL[ 1] =  37;      xbinsWWMLL[ 2] =  55;      xbinsWWMLL[ 3] =  65;      xbinsWWMLL[ 4] =  75;
@@ -507,7 +511,7 @@ void wwAnalysis(
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 33;
+  const int allPlots = 34;
   const int histBins = 12;
   TH1D* histo[allPlots][histBins];
   TString processName[histBins] = {".Data", ".qqWW", ".ggWW", "..Top", "...DY", "...VV", "..VVV", "...WG", "..WGS", "WjetsM", "WjetsE", "Higgs"};
@@ -521,7 +525,7 @@ void wwAnalysis(
     else if(thePlot >= 28 && thePlot <= 31) {nBinPlot = 40; xminPlot = 0.0; xmaxPlot = 400.0;}
     else if(thePlot >= 32 && thePlot <= 32) {nBinPlot =400; xminPlot = 0.0; xmaxPlot = 400.0;}
 
-    if(shapeAnaType == 0) {
+    if(shapeAnaType == 0 && thePlot != 33) {
       if     (thePlot >=  0 && thePlot <=  3) {nBinPlot =  25; xminPlot =20.0; xmaxPlot = 320.0;}
       else if(thePlot >=  4 && thePlot <=  7) {nBinPlot =  18; xminPlot = 0.0; xmaxPlot = TMath::Pi();}
       else if(thePlot >=  8 && thePlot <= 11) {nBinPlot =  25; xminPlot =25.0; xmaxPlot = 225.0;}
@@ -535,6 +539,7 @@ void wwAnalysis(
       else if(thePlot >=  8 && thePlot <= 11) histos = new TH1D("histos", "histos", nBinWWPTL1, xbinsWWPTL1);
       else if(thePlot >= 12 && thePlot <= 15) histos = new TH1D("histos", "histos", nBinWWPTL2, xbinsWWPTL2);
       else if(thePlot >= 16 && thePlot <= 18) histos = new TH1D("histos", "histos", nBinWWPTLL, xbinsWWPTLL);
+      else if(thePlot >= 33 && thePlot <= 33) histos = new TH1D("histos", "histos", nBinRuns, xBinRuns);
       else                                    histos = new TH1D("histos", "histos", nBinPlot, xminPlot, xmaxPlot);
     }
     histos->Sumw2();
@@ -1689,12 +1694,26 @@ void wwAnalysis(
         if(makePlot) histo[thePlot][theCategory]->Fill(theVar,totalWeight);
       }
 
-       // DY computation
-       if(passAllCuts[DYSEL] && dilep.M() < 80.0 && typeSel == 2){
-         if     (theCategory == 0) DYSFComputation[0] = DYSFComputation[0] + totalWeight;
-         else if(theCategory == 4) DYSFComputation[1] = DYSFComputation[1] + totalWeight;
-         else                      DYSFComputation[2] = DYSFComputation[2] + totalWeight;
-       }
+      // DY computation
+      if(passAllCuts[DYSEL] && dilep.M() < 80.0 && typeSel == 2){
+        if     (theCategory == 0) DYSFComputation[0] = DYSFComputation[0] + totalWeight;
+        else if(theCategory == 4) DYSFComputation[1] = DYSFComputation[1] + totalWeight;
+        else			  DYSFComputation[2] = DYSFComputation[2] + totalWeight;
+      }
+
+      // Run dependent plot
+      if(passAllCuts[PRESEL] && typeSel == 2){
+        if(theCategory == 0) histo[33][theCategory]->Fill((double)eventEvent.runNum,totalWeight);
+	else {
+	  histo[33][theCategory]->SetBinContent( 1, histo[33][theCategory]->GetBinContent( 1)+totalWeight*0.16007);
+	  histo[33][theCategory]->SetBinContent( 3, histo[33][theCategory]->GetBinContent( 3)+totalWeight*0.07163);
+	  histo[33][theCategory]->SetBinContent( 5, histo[33][theCategory]->GetBinContent( 5)+totalWeight*0.11809);
+	  histo[33][theCategory]->SetBinContent( 7, histo[33][theCategory]->GetBinContent( 7)+totalWeight*0.11205);
+	  histo[33][theCategory]->SetBinContent( 9, histo[33][theCategory]->GetBinContent( 9)+totalWeight*0.08644);
+	  histo[33][theCategory]->SetBinContent(11, histo[33][theCategory]->GetBinContent(11)+totalWeight*0.21091);
+	  histo[33][theCategory]->SetBinContent(13, histo[33][theCategory]->GetBinContent(13)+totalWeight*0.24081);
+	}
+      }
 
       if(1) {
 	double MVAVar = (double)typePair; double MVAVarSyst[4];
