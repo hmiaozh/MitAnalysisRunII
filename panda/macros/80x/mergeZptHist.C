@@ -623,7 +623,7 @@ TFile *_file[nFiles];
 _file[0] = TFile::Open(Form("%s/qqWW.root", inputFolder.Data()));
 _file[1] = TFile::Open(Form("%s/ggWW.root", inputFolder.Data()));
 
-double xs[nFiles] = {(118.7-3.974)*0.1086*0.1086*9,3.974*0.1086*0.1086*9*1.4};
+double xs[nFiles] = {(118.7-3.974)*0.1086*0.1086*9*1.035,3.974*0.1086*0.1086*9*1.4};
 
 TH1D *hDITotalMCWeight[nFiles];
 

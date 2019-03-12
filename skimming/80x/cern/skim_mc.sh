@@ -107,7 +107,7 @@ root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/WZ
 
 root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/WWTo2L2Nu_DoubleScattering_13TeV-pythia8_0000.root\",\"$OUTPUTDIR/${PREFIX}WWTo2L2Nu_DoubleScattering_13TeV-pythia8.root\",\"wwlnln_dps\",$1\)
 
-root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/WGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_0000.root\",\"$OUTPUTDIR/${PREFIX}WGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root\",\"wlg\",$1\)
+root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/WGToLNuG_01J_5f_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_0000.root\",\"$OUTPUTDIR/${PREFIX}WGToLNuG_01J_5f_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root\",\"wlg\",$1\)
 root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_0000.root\",\"$OUTPUTDIR/${PREFIX}ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root\",\"zllg\",$1\)
 root -l -q -b MitAnalysisRunII/skimming/80x/makeOneSkimSample.C+\(\"$INPUTDIR/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0000.root\",\"$OUTPUTDIR/${PREFIX}WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root\",\"wln\",$1\)
 

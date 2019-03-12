@@ -39,6 +39,7 @@ double ww_norm_unc_ptwei[4] = {0.996073,1.000986,1.011810,0.953619};
 //double ww_norm_unc_qcd[6] = {1,1,1,1,1,1};
 //double ww_norm_unc_pdf = 1;
 //double ww_norm_unc_ptwei[4] = {1,1,1,1};
+const double wwpt_norm = 1.035;
 
 bool isMINIAOD = true;
 int whichSkim = 3;
@@ -174,6 +175,7 @@ void wwAnalysis(
   if(infilenamev.size() != infilecatv.size()) {assert(0); return;}
 
   //infilenamev.clear();infilecatv.clear();
+  //infilenamev.push_back(Form("/eos/cms/store/caf/user/ceballos/Nero/output_80x/WWTo2L2Nu_13TeV-powheg_nocuts.root")); infilecatv.push_back(1);
   //infilenamev.push_back(Form("%sTTTo2L2Nu_13TeV-powheg.root",filesPathMC2.Data()));					      infilecatv.push_back(3);
   //infilenamev.push_back(Form("%sWWTo2L2Nu_13TeV-amcnlo.root",filesPathMC.Data())); infilecatv.push_back(1);
   //infilenamev.push_back(Form("%sWWTo2L2Nu_13TeV-powheg.root",filesPathMC.Data())); infilecatv.push_back(1);
@@ -540,7 +542,13 @@ void wwAnalysis(
     histos->Reset();histos->Clear();
   }
 
-  TH1D* histoJetRes = new TH1D("histosJetRes", "histosJetRes", 50, -10, 10);
+  TH1D* histoJetRes = new TH1D("histoJetRes", "histoJetRes", 50, -10, 10);
+  TH1D* histoWWPT[10];
+  for(int thePlot=0; thePlot<10; thePlot++){
+    nBinPlot = 40; xminPlot = 0.0; xmaxPlot =  200.0;
+    TH1D* histos = new TH1D(Form("histoWWPT_%d",thePlot), Form("histoWWPT_%d",thePlot), nBinPlot, xminPlot, xmaxPlot);
+    histoWWPT[thePlot] = (TH1D*) histos->Clone(Form("histoWWPT_%d",thePlot));
+  }
 
   char finalStateName[2],effMName[10],effEName[10],momMName[10],momEName[10];
   sprintf(effMName,"CMS_eff_m");sprintf(momMName,"CMS_scale_m");
@@ -1459,14 +1467,15 @@ void wwAnalysis(
       }
 
       double thePtwwWeight[5] = {1.0,1.0,1.0,1.0,1.0};
+      TLorentzVector wwSystem;
       if(infilecatv[ifile] == 1 && wBoson.size() == 2){
-        TLorentzVector wwSystem(( ( *(TLorentzVector*)(eventMonteCarlo.p4->At(wBoson[0])) ) + ( *(TLorentzVector*)(eventMonteCarlo.p4->At(wBoson[1])) ) )); 
+        wwSystem = ( *(TLorentzVector*)(eventMonteCarlo.p4->At(wBoson[0])) ) + ( *(TLorentzVector*)(eventMonteCarlo.p4->At(wBoson[1])) ); 
         Int_t nptwwbin[5] = {fhDWWPtRatio	   ->GetXaxis()->FindBin(TMath::Min(wwSystem.Pt(),499.999)),
 	                     fhDWWPtRatio_scaleup  ->GetXaxis()->FindBin(TMath::Min(wwSystem.Pt(),499.999)),
 	                     fhDWWPtRatio_scaledown->GetXaxis()->FindBin(TMath::Min(wwSystem.Pt(),499.999)),
 	                     fhDWWPtRatio_resumup  ->GetXaxis()->FindBin(TMath::Min(wwSystem.Pt(),499.999)),
 	                     fhDWWPtRatio_resumdown->GetXaxis()->FindBin(TMath::Min(wwSystem.Pt(),499.999))};
-        thePtwwWeight[0] = fhDWWPtRatio 	 ->GetBinContent(nptwwbin[0]);
+        thePtwwWeight[0] = fhDWWPtRatio          ->GetBinContent(nptwwbin[0]) * wwpt_norm;
 	thePtwwWeight[1] = fhDWWPtRatio_scaleup  ->GetBinContent(nptwwbin[1]);
 	thePtwwWeight[2] = fhDWWPtRatio_scaledown->GetBinContent(nptwwbin[2]);
 	thePtwwWeight[3] = fhDWWPtRatio_resumup  ->GetBinContent(nptwwbin[3]);
@@ -1617,6 +1626,18 @@ void wwAnalysis(
         if(passAllCuts[i]) {
           bgdDecay[i+typePair*nSelTypes][theCategory] += totalWeight;
           weiDecay[i+typePair*nSelTypes][theCategory] += totalWeight*totalWeight;
+        }
+      }
+
+      if(theCategory == 1 && typeSel == 2){
+        double totalWeightWW = mcWeight*theLumi*thePtwwWeight[0]*theEWKCorr;
+        histoWWPT[TMath::Min((int)idJet.size(),2)]->Fill(TMath::Min(wwSystem.Pt(),199.999),totalWeightWW);
+        if(idJet.size() <= 1) histoWWPT[3]->Fill(TMath::Min(wwSystem.Pt(),199.999),totalWeightWW);
+        histoWWPT[4]->Fill(TMath::Min(wwSystem.Pt(),199.999),totalWeightWW);
+        if(passNoJetCutRegion){
+          histoWWPT[TMath::Min((int)idJet.size(),2)+5]->Fill(TMath::Min(wwSystem.Pt(),199.999),totalWeightWW);
+          if(idJet.size() <= 1) histoWWPT[8]->Fill(TMath::Min(wwSystem.Pt(),199.999),totalWeightWW);
+          histoWWPT[9]->Fill(TMath::Min(wwSystem.Pt(),199.999),totalWeightWW);
         }
       }
 
@@ -2371,6 +2392,14 @@ void wwAnalysis(
       histo[thePlot][4]->Scale(DYtautauSF);
       for(int np=0; np<histBins; np++) histo[thePlot][np]->Write();
       outFilePlotsNote->Close();
+    }
+
+    if(shapeAnaType == 0){
+      sprintf(output,"histowwPt.root");	  
+      TFile* outFilePlotsWW = new TFile(output,"recreate");
+      outFilePlotsWW->cd();
+      for(int thePlot=0; thePlot<10; thePlot++) histoWWPT[thePlot]->Write();
+      outFilePlotsWW->Close();
     }
   }
   printf("QCD Corr: qqWW(%f:%f/%f/%f/%f/%f/%f) ggWW(%f:%f/%f/%f/%f/%f/%f) Top(%f:%f/%f/%f/%f/%f/%f) DY(%f:%f/%f/%f/%f/%f/%f) VV(%f:%f/%f/%f/%f/%f/%f) VVV(%f:%f/%f/%f/%f/%f/%f) WG(%f:%f/%f/%f/%f/%f/%f) WGS(%f:%f/%f/%f/%f/%f/%f) Higgs(%f:%f/%f/%f/%f/%f/%f)\n",
