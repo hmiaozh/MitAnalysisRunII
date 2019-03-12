@@ -16,7 +16,7 @@
 
 const double mcPrescale = 1;
 
-void triggerMCAnalysis()
+void triggerMCStudy()
 {
   double lumi = 40.0;
   TString filesPath    = "/data/t3home000/ceballos/panda/v_004_0/";

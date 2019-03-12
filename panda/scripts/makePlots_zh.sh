@@ -143,6 +143,69 @@ root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHVZbbCR,  "MitVHBBAna
 root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHVZbbCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2017/plots_ZeeHVZbbCR_ZptBin2.root", "Z(ee)H VZ CR selection, high p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2017","'${MLFITVZ2017}'",'${YEAR}')'
 root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHVZbbFJCR,"MitVHBBAnalysis/datacards/zhbb/testcondor2017/plots_ZeeHVZbbFJCR.root", "Z(ee)H VZ CR selection, boosted", "", false, false, "MitVHBBAnalysis/plots2017","'${MLFITVZ2017}'",'${YEAR}')'
 
+
+### 2018
+elif [ $1 == "2018" ]; then
+export YEAR=2018;
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHSR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmHSR_ZptBin0.root", "Z(#mu#mu)H SR selection, low p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHSR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmHSR_ZptBin1.root", "Z(#mu#mu)H SR selection, medium p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHSR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmHSR_ZptBin2.root", "Z(#mu#mu)H SR selection, high p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHFJSR,"MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmHFJSR.root",       "Z(#mu#mu)H SR selection, boosted", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHSR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeHSR_ZptBin0.root", "Z(ee)H SR selection, low p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHSR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeHSR_ZptBin1.root", "Z(ee)H SR selection, medium p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHSR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeHSR_ZptBin2.root", "Z(ee)H SR selection, high p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHFJSR,"MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeHFJSR.root",       "Z(ee)H SR selection, boosted", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHSR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZemHSR_ZptBin0.root", "Z(e#mu)H SR selection, low p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHSR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZemHSR_ZptBin1.root", "Z(e#mu)H SR selection, medium p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHSR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZemHSR_ZptBin2.root", "Z(e#mu)H SR selection, high p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHFJSR,"MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZemHFJSR.root",       "Z(e#mu)H SR selection, boosted", "", false, false, "MitVHBBAnalysis/plots2018")'
+
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHLightFlavorCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmHLightFlavorCR_ZptBin0.root", "Z(#mu#mu)H Light Flavor CR selection, low p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHLightFlavorCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmHLightFlavorCR_ZptBin1.root", "Z(#mu#mu)H Light Flavor CR selection, medium p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHLightFlavorCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmHLightFlavorCR_ZptBin2.root", "Z(#mu#mu)H Light Flavor CR selection, high p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHLightFlavorFJCR,"MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmHLightFlavorFJCR.root",       "Z(#mu#mu)H Light Flavor CR selection, boosted", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHLightFlavorCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeHLightFlavorCR_ZptBin0.root", "Z(ee)H Light Flavor CR selection, low p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHLightFlavorCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeHLightFlavorCR_ZptBin1.root", "Z(ee)H Light Flavor CR selection, medium p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHLightFlavorCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeHLightFlavorCR_ZptBin2.root", "Z(ee)H Light Flavor CR selection, high p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHLightFlavorFJCR,"MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeHLightFlavorFJCR.root",       "Z(ee)H Light Flavor CR selection, boosted", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHHeavyFlavorCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmHHeavyFlavorCR_ZptBin0.root", "Z(#mu#mu)H Heavy flavor CR selection, low p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHHeavyFlavorCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmHHeavyFlavorCR_ZptBin1.root", "Z(#mu#mu)H Heavy flavor CR selection, medium p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHHeavyFlavorCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmHHeavyFlavorCR_ZptBin2.root", "Z(#mu#mu)H Heavy flavor CR selection, high p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHHeavyFlavorFJCR,"MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmHHeavyFlavorFJCR.root",       "Z(#mu#mu)H Heavy flavor CR selection, boosted", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHHeavyFlavorCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeHHeavyFlavorCR_ZptBin0.root", "Z(ee)H Heavy flavor CR selection, low p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHHeavyFlavorCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeHHeavyFlavorCR_ZptBin1.root", "Z(ee)H Heavy flavor CR selection, medium p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHHeavyFlavorCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeHHeavyFlavorCR_ZptBin2.root", "Z(ee)H Heavy flavor CR selection, high p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHHeavyFlavorFJCR,"MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeHHeavyFlavorFJCR.root",       "Z(ee)H Heavy flavor CR selection, boosted", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllH2TopCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmH2TopCR_ZptBin0.root", "Z(#mu#mu)H Top CR selection, low p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllH2TopCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmH2TopCR_ZptBin1.root", "Z(#mu#mu)H Top CR selection, medium p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllH2TopCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmH2TopCR_ZptBin2.root", "Z(#mu#mu)H Top CR selection, high p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+#root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHTT1bFJCR,"MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmHTT1bFJCR.root",       "Z(#mu#mu)H Top CR selection, boosted", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllH2TopCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeH2TopCR_ZptBin0.root", "Z(ee)H Top CR selection, low p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllH2TopCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeH2TopCR_ZptBin1.root", "Z(ee)H Top CR selection, medium p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllH2TopCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeH2TopCR_ZptBin2.root", "Z(ee)H Top CR selection, high p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+#root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHTT1bFJCR,"MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeHTT1bFJCR.root",       "Z(ee)H Top CR selection, boosted", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITZH2018}'",'${YEAR}')'
+
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHVZbbCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmHVZbbCR_ZptBin0.root", "Z(#mu#mu)H VZ CR selection, low p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITVZ2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHVZbbCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmHVZbbCR_ZptBin1.root", "Z(#mu#mu)H VZ CR selection, medium p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITVZ2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHVZbbCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmHVZbbCR_ZptBin2.root", "Z(#mu#mu)H VZ CR selection, high p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITVZ2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHVZbbFJCR,"MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZmmHVZbbFJCR.root", "Z(#mu#mu)H VZ CR selection, boosted", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITVZ2018}'",'${YEAR}')'
+
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHVZbbCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZemHVZbbCR_ZptBin0.root", "Z(e#mu)H VZ CR selection, low p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITVZ2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHVZbbCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZemHVZbbCR_ZptBin1.root", "Z(e#mu)H VZ CR selection, medium p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITVZ2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHVZbbCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZemHVZbbCR_ZptBin2.root", "Z(e#mu)H VZ CR selection, high p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITVZ2018}'",'${YEAR}')'
+
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHVZbbCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeHVZbbCR_ZptBin0.root", "Z(ee)H VZ CR selection, low p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITVZ2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHVZbbCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeHVZbbCR_ZptBin1.root", "Z(ee)H VZ CR selection, medium p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITVZ2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHVZbbCR,  "MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeHVZbbCR_ZptBin2.root", "Z(ee)H VZ CR selection, high p_{T} resolved", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITVZ2018}'",'${YEAR}')'
+root -q -b -l MitVHBBAnalysis/macros/finalPlot2018.C+'(kZllHVZbbFJCR,"MitVHBBAnalysis/datacards/zhbb/testcondor2018/plots_ZeeHVZbbFJCR.root", "Z(ee)H VZ CR selection, boosted", "", false, false, "MitVHBBAnalysis/plots2018","'${MLFITVZ2018}'",'${YEAR}')'
+
 ### log(1+s/b) plot
 elif [ $# -eq 2 ] && [ $1 == "stob" ]; then
 root -q -b -l MitAnalysisRunII/panda/scripts/signalToBackground.C+'("'${MLFITZH2016}'","stob_ZH2016",false)';

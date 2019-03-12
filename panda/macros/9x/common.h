@@ -1,18 +1,18 @@
 #include "TH1D.h"
 #include "TH2D.h"
 
-double WSSF_2016[5]  = {1.442872,1.158301,0.957394,0.965762,0.911107};
-double WSSFE_2016[5] = {0.287472,0.115321,0.054188,0.024140,0.031171};
-double WSSF_2017[5]  = {2.100562,0.945322,1.547166,1.527053,1.472856};
-double WSSFE_2017[5] = {0.285970,0.133781,0.061368,0.034251,0.035350};
-double WSSF_2018[5]  = {1.621258,1.985028,1.382802,1.429252,1.247797};
-double WSSFE_2018[5] = {0.164411,0.078717,0.038409,0.018284,0.018743};
+double WSSF_2016[5]  = {1.440485,1.159540,0.956023,0.965658,0.909149};
+double WSSFE_2016[5] = {0.287653,0.115263,0.054230,0.024146,0.031198};
+double WSSF_2017[5]  = {2.100747,0.945282,1.547374,1.526615,1.471581};
+double WSSFE_2017[5] = {0.285963,0.133784,0.061376,0.034253,0.035358};
+double WSSF_2018[5]  = {1.581403,1.989889,1.376742,1.423457,1.246083};
+double WSSFE_2018[5] = {0.257292,0.132026,0.055731,0.026520,0.026289};
 
 const bool useZZWZEWKUnc = true;
 
 enum selYear {Y2016, Y2017, Y2018, nYears};
-const double lumiV[nYears] = {35.9, 41.5, 56.1};
-const double lumiE[nYears] = {1.025, 1.023, 1.050};
+const double lumiV[nYears] = {35.9, 41.5, 59.7};
+const double lumiE[nYears] = {1.025, 1.023, 1.025};
 const double totalLumiV = lumiV[Y2016] + lumiV[Y2017] + lumiV[Y2018];
 
 double ewkCorrWpWp(double mjj){
@@ -120,7 +120,7 @@ std::map<int, int> plotColors={
   { kPlotEWKWZ     , kCyan+3},
   { kPlotVVV	   , 809},
   { kPlotVG	   , 419},
-  { kPlotNonPrompt , kAzure-5},
+  { kPlotNonPrompt , kAzure-9},
   { kPlotHiggs     , 842},
   { kPlotEWKSSWW   , 832},
   { kPlotQCDSSWW   , 798},
@@ -175,20 +175,39 @@ double mcCorrection(int year, int jetNMBtags, int jetNBtags, int infileCat){
 }
 
 double fakeRateFactor(double pt, double eta, int pdgId, bool applyTight, TH2D *histoFakeEffSelMediumEtaPt_m, TH2D *histoFakeEffSelMediumEtaPt_e, TH2D *histoFakeEffSelTightEtaPt_m, TH2D *histoFakeEffSelTightEtaPt_e){
-  double etal = eta; if(etal >= 2.4) etal = 2.3999; else if(etal <= -2.4) etal = -2.3999;
-  int binXT = histoFakeEffSelMediumEtaPt_m->GetXaxis()->FindFixBin(etal);
+  if(eta >= 2.4) eta = 2.3999; else if(eta <= -2.4) eta = -2.3999;
+  if(pt >= 45) pt = 44.999;
+  int binXT = histoFakeEffSelMediumEtaPt_m->GetXaxis()->FindFixBin(eta);
   int binYT = histoFakeEffSelMediumEtaPt_m->GetYaxis()->FindFixBin(pt);
   
   double rate = 1.0;
-  if     (TMath::Abs(pdgId) == 13 && applyTight == false) rate = TMath::Min(histoFakeEffSelMediumEtaPt_m->GetBinContent(binXT,binYT),0.999);
-  else if(TMath::Abs(pdgId) == 13 && applyTight == true)  rate = TMath::Min(histoFakeEffSelTightEtaPt_m ->GetBinContent(binXT,binYT),0.999);
-  else if(TMath::Abs(pdgId) == 11 && applyTight == false) rate = TMath::Min(histoFakeEffSelMediumEtaPt_e->GetBinContent(binXT,binYT),0.999);
-  else if(TMath::Abs(pdgId) == 11 && applyTight == true)  rate = TMath::Min(histoFakeEffSelTightEtaPt_e ->GetBinContent(binXT,binYT),0.999);
+  if     (TMath::Abs(pdgId) == 13 && applyTight == false) rate = TMath::Min(histoFakeEffSelMediumEtaPt_m->GetBinContent(binXT,binYT),0.999999);
+  else if(TMath::Abs(pdgId) == 13 && applyTight == true)  rate = TMath::Min(histoFakeEffSelTightEtaPt_m ->GetBinContent(binXT,binYT),0.999999);
+  else if(TMath::Abs(pdgId) == 11 && applyTight == false) rate = TMath::Min(histoFakeEffSelMediumEtaPt_e->GetBinContent(binXT,binYT),0.999999);
+  else if(TMath::Abs(pdgId) == 11 && applyTight == true)  rate = TMath::Min(histoFakeEffSelTightEtaPt_e ->GetBinContent(binXT,binYT),0.999999);
   else printf("IMPOSSIBLE COMPUTING FAKE RATES\n");
 
   //if(pt<20 && applyTight == true) rate = 2*rate/(1+rate);
 
   return rate/(1-rate);
+}
+
+double lepScaleFactor(double pt, double eta, int pdgId, bool applyTight, TH2D *histoLepEffSelMediumEtaPt_m, TH2D *histoLepEffSelMediumEtaPt_e, TH2D *histoLepEffSelTightEtaPt_m, TH2D *histoLepEffSelTightEtaPt_e){
+  if(eta >= 2.4) eta = 2.3999; else if(eta <= -2.4) eta = -2.3999;
+  if(pt >= 100) pt = 99.999; else if(pt <= 20) pt = 20.001;
+  int binXT = histoLepEffSelMediumEtaPt_m->GetXaxis()->FindFixBin(eta);
+  int binYT = histoLepEffSelMediumEtaPt_m->GetYaxis()->FindFixBin(pt);
+
+  double sf = 1.0;
+  if     (TMath::Abs(pdgId) == 13 && applyTight == false) sf = histoLepEffSelMediumEtaPt_m->GetBinContent(binXT,binYT);
+  else if(TMath::Abs(pdgId) == 13 && applyTight == true)  sf = histoLepEffSelTightEtaPt_m ->GetBinContent(binXT,binYT);
+  else if(TMath::Abs(pdgId) == 11 && applyTight == false) sf = histoLepEffSelMediumEtaPt_e->GetBinContent(binXT,binYT);
+  else if(TMath::Abs(pdgId) == 11 && applyTight == true)  sf = histoLepEffSelTightEtaPt_e ->GetBinContent(binXT,binYT);
+  else printf("IMPOSSIBLE COMPUTING Lep SF\n");
+  
+  if(sf == 0){printf("SF == 0!: %f %f %d %d %d\n",pt,eta,pdgId,binXT,binYT);}
+
+  return sf;
 }
 
 double nPUScaleFactor(TH1D *fhDPU, float npu){
@@ -200,7 +219,7 @@ double nPUScaleFactor(TH1D *fhDPU, float npu){
 double electronToPhotonSF(double pt, int year){
   double effDA = 1.0;
   double effMC = 1.0;
-  if     (year == 2016) {
+  if	 (year == 2016) {
      effDA = (0.0052 + 1.114 * TMath::Power(pt + 122.84, -0.75));
      effMC = (0.0050 + 2.922 * TMath::Power(pt +  87.23, -1.18));
   }
@@ -238,77 +257,53 @@ double effhDPhotonScaleFactor(double pt, double eta, TString type, TH2D *fhDIdSF
   return idSF*vetoSF;
 }
 
-double effhDScaleFactor(double pt, double eta, int nsel, TString type, TH2D *fhDMuMediumSF, TH2D *fhDElMediumSF, TH2D *fhDElTightSF, 
-TH1D *fhDMuTrkSF, TH2D *fhDElTrkSF, int npv, bool useMuIsoSF, TH2D *fhDMuIsoSF, TH1D *fhDVeryTightSF, bool applyTrkSF = true){
+void trigger_sf(double trgRes[2], int nlep,
+	TH2D* trgSFMMBB, TH2D* trgSFMMEB, TH2D* trgSFMMBE, TH2D* trgSFMMEE, TH2D* trgSFEEBB, TH2D* trgSFEEEB, TH2D* trgSFEEBE, TH2D* trgSFEEEE,
+        TH2D* trgSFMEBB, TH2D* trgSFMEEB, TH2D* trgSFMEBE, TH2D* trgSFMEEE, TH2D* trgSFEMBB, TH2D* trgSFEMEB, TH2D* trgSFEMBE, TH2D* trgSFEMEE,
+        double pt1, double eta1, int pdgid1, 
+	double pt2, double eta2, int pdgid2){
 
-  if     (pt>=100 && TMath::Abs(nsel) == 13) pt =  +99.999;
-  else if(pt>=200 && TMath::Abs(nsel) == 11) pt = +199.999;
+  trgRes[0] = 1.0;
+  trgRes[1] = 0.0;
+  if(nlep == 2){
+    if     (pt1 <= 20) pt1 = 20.001;
+    else if(pt1 >= 70) pt1 = 69.999;
+    if     (pt2 <= 20) pt2 = 20.001;
+    else if(pt2 >= 70) pt2 = 69.999;
+    double ptaux = pt1;
+    double etaaux = eta1;
+    double pdgidaux = pdgid1;
+    if(pt1 < pt2) {
+      pt1 = pt2; pt2 = ptaux; 
+      pdgid1 = pdgid2; pdgid2 = pdgidaux;
+      eta1 = eta2; eta2 = etaaux;
+    }
+    int binPt1 = trgSFMMBB->GetXaxis()->FindFixBin(pt1);
+    int binPt2 = trgSFMMBB->GetXaxis()->FindFixBin(pt2);
+    int lepType = -1;
+    if     (abs(pdgid1)==13 && abs(pdgid2)==13) lepType = 0;
+    else if(abs(pdgid1)==11 && abs(pdgid2)==11) lepType = 1;
+    else if(abs(pdgid1)==13 && abs(pdgid2)==11) lepType = 2;
+    else if(abs(pdgid1)==11 && abs(pdgid2)==13) lepType = 3;
+    int neta1 = 0; if(TMath::Abs(eta1) > 1.5) neta1 = 1;
+    int neta2 = 0; if(TMath::Abs(eta2) > 1.5) neta2 = 1;
 
-  if     (eta>=+2.4) eta = +2.399;
-  else if(eta<=-2.4) eta = -2.399;
-
-  double trkSF = 1.0;
-  if(TMath::Abs(nsel) == 13){
-    Int_t binXT = fhDMuTrkSF->GetXaxis()->FindFixBin(eta);
-    if(applyTrkSF) trkSF = fhDMuTrkSF->GetBinContent(binXT);
-    if(trkSF <= 0) printf("trkSF <= 0! %f %d - %f %f\n",trkSF,binXT,pt,eta);
+    if     (lepType == 0 && neta1 == 0 && neta2 == 0) {trgRes[0] = trgSFMMBB->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFMMBB->GetBinError(binPt1,binPt2);}
+    else if(lepType == 0 && neta1 == 1 && neta2 == 0) {trgRes[0] = trgSFMMEB->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFMMEB->GetBinError(binPt1,binPt2);}
+    else if(lepType == 0 && neta1 == 0 && neta2 == 1) {trgRes[0] = trgSFMMBE->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFMMBE->GetBinError(binPt1,binPt2);}
+    else if(lepType == 0 && neta1 == 1 && neta2 == 1) {trgRes[0] = trgSFMMEE->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFMMEE->GetBinError(binPt1,binPt2);}
+    else if(lepType == 1 && neta1 == 0 && neta2 == 0) {trgRes[0] = trgSFEEBB->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFEEBB->GetBinError(binPt1,binPt2);}
+    else if(lepType == 1 && neta1 == 1 && neta2 == 0) {trgRes[0] = trgSFEEEB->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFEEEB->GetBinError(binPt1,binPt2);}
+    else if(lepType == 1 && neta1 == 0 && neta2 == 1) {trgRes[0] = trgSFEEBE->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFEEBE->GetBinError(binPt1,binPt2);}
+    else if(lepType == 1 && neta1 == 1 && neta2 == 1) {trgRes[0] = trgSFEEEE->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFEEEE->GetBinError(binPt1,binPt2);}
+    else if(lepType == 2 && neta1 == 0 && neta2 == 0) {trgRes[0] = trgSFMEBB->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFMEBB->GetBinError(binPt1,binPt2);}
+    else if(lepType == 2 && neta1 == 1 && neta2 == 0) {trgRes[0] = trgSFMEEB->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFMEEB->GetBinError(binPt1,binPt2);}
+    else if(lepType == 2 && neta1 == 0 && neta2 == 1) {trgRes[0] = trgSFMEBE->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFMEBE->GetBinError(binPt1,binPt2);}
+    else if(lepType == 2 && neta1 == 1 && neta2 == 1) {trgRes[0] = trgSFMEEE->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFMEEE->GetBinError(binPt1,binPt2);}
+    else if(lepType == 3 && neta1 == 0 && neta2 == 0) {trgRes[0] = trgSFEMBB->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFEMBB->GetBinError(binPt1,binPt2);}
+    else if(lepType == 3 && neta1 == 1 && neta2 == 0) {trgRes[0] = trgSFEMEB->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFEMEB->GetBinError(binPt1,binPt2);}
+    else if(lepType == 3 && neta1 == 0 && neta2 == 1) {trgRes[0] = trgSFEMBE->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFEMBE->GetBinError(binPt1,binPt2);}
+    else if(lepType == 3 && neta1 == 1 && neta2 == 1) {trgRes[0] = trgSFEMEE->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFEMEE->GetBinError(binPt1,binPt2);}
+    else {printf("Problem trgSF\n"); return;}
   }
-  else if(TMath::Abs(nsel) == 11){
-    Int_t binXT = fhDElTrkSF->GetXaxis()->FindFixBin(eta);
-    Int_t binYT = fhDElTrkSF->GetYaxis()->FindFixBin(200.0);
-    if(applyTrkSF) trkSF = fhDElTrkSF->GetBinContent(binXT,binYT);
-    if(trkSF <= 0) printf("trkSF <= 0! %f %d %d - %f %f %d\n",trkSF,binXT,binYT,pt,eta,npv);
-    //Int_t binXT = fhDElTrkSF->GetXaxis()->FindFixBin(eta);
-    //Int_t binYT = fhDElTrkSF->GetYaxis()->FindFixBin(npv);
-    //if(applyTrkSF) trkSF = fhDElTrkSF->GetBinContent(binXT,binYT);
-    //if(trkSF <= 0) printf("trkSF <= 0! %f %d %d - %f %f %d\n",trkSF,binXT,binYT,pt,eta,npv);
-  }
-  if(trkSF <= 0) trkSF = 1.0;
-
-  if(TMath::Abs(nsel) == 13) eta = abs(eta);
-  if(TMath::Abs(nsel) == 13 && useMuIsoSF == true && pt <= 20) pt = 20.001;
-
-  Int_t binXA = 0;
-  Int_t binYA = 0;
-  Int_t binXB = 0;
-  Int_t binYB = 0;
-
-  if     (TMath::Abs(nsel) == 13 && (type== "medium" || type== "default"   || type== "defaultTight"   || type== "verytight" || type== "veryverytight" || type== "medium_mva" || type== "default_mva"))  {binXA = fhDMuMediumSF->GetXaxis()->FindFixBin(eta);binYA = fhDMuMediumSF->GetYaxis()->FindFixBin(pt);}
-  else if(TMath::Abs(nsel) == 11 && (type== "medium" || type== "medium_mva"))                                                                                                                           {binXA = fhDElMediumSF->GetXaxis()->FindFixBin(eta);binYA = fhDElMediumSF->GetYaxis()->FindFixBin(pt);}
-  else if(TMath::Abs(nsel) == 11 && (type== "default"||type== "defaultTight" || type== "verytight" || type== "veryverytight" || type== "default_mva"))                                                  {binXA = fhDElTightSF ->GetXaxis()->FindFixBin(eta);binYA = fhDElTightSF ->GetYaxis()->FindFixBin(pt);}
-  else    printf("PROBLEM WITH BINS\n");
-
-  double result = 0.0;
-  if     (TMath::Abs(nsel) == 13 && (type== "medium" || type== "default"   || type== "defaultTight"   || type== "verytight" || type== "veryverytight" || type== "medium_mva" || type== "default_mva")) result = fhDMuMediumSF->GetBinContent(binXA, binYA);
-  else if(TMath::Abs(nsel) == 11 && (type== "medium" || type== "medium_mva"))                                                                                                                          result = fhDElMediumSF->GetBinContent(binXA, binYA);
-  else if(TMath::Abs(nsel) == 11 &&( type== "default"|| type== "defaultTight"   || type== "verytight" || type== "veryverytight" || type== "default_mva"))                                              result = fhDElTightSF ->GetBinContent(binXA, binYA);
-
-  if(result <= 0) printf("Result <= 0! %f %d %d %d - %f %f\n",result,nsel,binXA,binYA,pt,eta);
-  if(result <= 0) result = 1.0;
-
-  double isoSF = 1.0;
-  if(useMuIsoSF == true && TMath::Abs(nsel) == 13) {
-    binXB = fhDMuIsoSF->GetXaxis()->FindFixBin(eta);binYB = fhDMuIsoSF->GetYaxis()->FindFixBin(pt);
-    isoSF = fhDMuIsoSF->GetBinContent(binXB, binYB);
-    if(isoSF <= 0) printf("IsoSF <= 0! %f %d %d %d - %f %f\n",isoSF,nsel,binXA,binYA,pt,eta);
-    if(isoSF <= 0) isoSF = 1.0;
-  }
-
-  double effVeryTight = 1.0;
-  if     (TMath::Abs(nsel) == 11 && (type== "verytight" || type== "veryverytight")) {
-    Int_t binXT = fhDVeryTightSF->GetXaxis()->FindFixBin(eta);
-    effVeryTight = fhDVeryTightSF->GetBinContent(binXT);
-  }
-  //else if(TMath::Abs(nsel) == 13 && (type== "verytight" || type== "veryverytight")) {
-  //  if     (pt <  30) effVeryTight = 0.992754;
-  //  else if(pt <  40) effVeryTight = 0.993588;
-  //  else if(pt <  50) effVeryTight = 0.994453;
-  //  else if(pt <  60) effVeryTight = 0.995199;
-  //  else if(pt <  80) effVeryTight = 0.996272;
-  //  else if(pt < 100) effVeryTight = 0.996282;
-  //  else              effVeryTight = 0.996406;
-  //}
-  //printf("eff: %f %f %f - %f %f - %d %d %d %d\n",result,trkSF,isoSF,pt,eta,binXA,binYA,binXB,binYB);
-
-  return result*trkSF*isoSF*effVeryTight;
 }

@@ -85,13 +85,14 @@ PandaAnalysis/T3/bin/task.py --submit
 PandaAnalysis/T3/merging/merge.py --cfg leptonic qqZZ                  
 
 -> Avoiding duplicate files
-ls -l /mnt/hadoop/cms/store/user/ceballos/panda/v_002_0/batch/*.root|awk '($5==0){print"rm "$9}' > lll
+ls -l /mnt/hadoop/cms/store/user/ceballos/panda/v_004_0/batch/*.root|awk '($5==0){print"rm "$9}' > lll
 wc lll
 source lll
+rm lll
 
-ls -l /mnt/hadoop/cms/store/user/ceballos/panda/v_007_0/batch/*.root
-ls -lrt /mnt/hadoop/cms/store/user/ceballos/panda/v_007_0/batch/*.root|wc
-ls -lrt /mnt/hadoop/cms/store/user/ceballos/panda/v_007_0/batch/*.root| awk '{print$9}' > lll0
+ls -l /mnt/hadoop/cms/store/user/ceballos/panda/v_004_0/batch/*.root
+ls -lrt /mnt/hadoop/cms/store/user/ceballos/panda/v_004_0/batch/*.root|wc
+ls -lrt /mnt/hadoop/cms/store/user/ceballos/panda/v_004_0/batch/*.root| awk '{print$9}' > lll0
 # edit, separate file_A.root to file _A  .root
 
 awk '{print$3}' lll0|sort -u
@@ -112,6 +113,12 @@ cd PandaAnalysis
 git remote add sid https://github.com/sidnarayanan/PandaAnalysis.git 
 git fetch sid
 git merge sid/master
+git push -u origin master
+rm .git/hooks/pre-push
+
+git remote add bmaier https://github.com/PandaPhysics/PandaAnalysis.git
+git fetch bmaier
+git merge bmaier/jecs
 git push -u origin master
 rm .git/hooks/pre-push
 

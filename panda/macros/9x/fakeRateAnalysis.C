@@ -35,11 +35,10 @@ int year, int nbjets = 0
   vector<int> infileCat_;
 
   TString filesPath;
-  TString fnpvWeightsFileName;
+  TString fnpvWeightsFileName = Form("MitAnalysisRunII/data/90x/npvWeights_%d_FakeTriggers.root",year);
   TString puPath;
   if     (year == 2018) {
     filesPath = "/data/t3home000/ceballos/panda/v_007_0/";
-    fnpvWeightsFileName = "MitAnalysisRunII/data/90x/npvWeights_2018_FakeTriggers.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(0);
@@ -64,7 +63,6 @@ int year, int nbjets = 0
   }
   else if(year == 2017) {
     filesPath = "/data/t3home000/ceballos/panda/v_005_0/";
-    fnpvWeightsFileName = "MitAnalysisRunII/data/90x/npvWeights_2017_FakeTriggers.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(0);
@@ -88,7 +86,6 @@ int year, int nbjets = 0
   }
   else if(year == 2016) {
     filesPath = "/data/t3home000/ceballos/panda/v_003_0/";
-    fnpvWeightsFileName = "MitAnalysisRunII/data/90x/npvWeights_2016_FakeTriggers.root";
     puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(0);
@@ -179,7 +176,6 @@ int year, int nbjets = 0
 
       vector<float>  looseLepPt,looseLepEta,looseLepPhi,looseLepSF;
       vector<int> looseLepSelBit,looseLepPdgId,looseLepTripleCharge,looseLepMissingHits;
-      int ptSelCuts[3] = {0,0,0};
       for(int i=0; i<thePandaFlat.nLooseMuon; i++){
         looseLepPt.push_back(thePandaFlat.muonPt[i]);
         looseLepEta.push_back(thePandaFlat.muonEta[i]);
@@ -189,9 +185,6 @@ int year, int nbjets = 0
         looseLepPdgId.push_back(thePandaFlat.muonPdgId[i]);
         looseLepTripleCharge.push_back(1);
         looseLepMissingHits.push_back(0);
-	if(thePandaFlat.muonPt[i] > 25) ptSelCuts[0]++;
-	if(thePandaFlat.muonPt[i] > 20) ptSelCuts[1]++;
-	if(thePandaFlat.muonPt[i] > 10) ptSelCuts[2]++;
       }
       for(int i=0; i<thePandaFlat.nLooseElectron; i++){
         looseLepPt.push_back(thePandaFlat.electronPt[i]);
@@ -202,9 +195,6 @@ int year, int nbjets = 0
         looseLepPdgId.push_back(thePandaFlat.electronPdgId[i]);
         looseLepTripleCharge.push_back(thePandaFlat.electronTripleCharge[i]);
         looseLepMissingHits.push_back(thePandaFlat.electronNMissingHits[i]);
-	if(thePandaFlat.electronPt[i] > 25) ptSelCuts[0]++;
-	if(thePandaFlat.electronPt[i] > 20) ptSelCuts[1]++;
-	if(thePandaFlat.electronPt[i] > 10) ptSelCuts[2]++;
       }
 
       if((int)looseLepPt.size() != thePandaFlat.nLooseLep) printf("IMPOSSIBLE\n");

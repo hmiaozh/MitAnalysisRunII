@@ -13,7 +13,6 @@
 
 #include "MitAnalysisRunII/panda/macros/9x/pandaFlat.C"
 #include "MitAnalysisRunII/panda/macros/9x/common.h"
-#include "MitAnalysisRunII/panda/macros/9x/trigger_auxiliar.h"
 
 const bool isDEBUG = false;
 const bool showSyst = true;
@@ -34,11 +33,6 @@ int year, bool isBlinded = false
   else if(year == 2018) whichYear = Y2018;
   else {printf("Wrong year (%d)!\n",year); return;}
 
-  // trigger
-  double trgEff [3][nTrgBinPt1][nTrgBinPt2][nTrgBinEta1][nTrgBinEta2];
-  double trgEffE[3][nTrgBinPt1][nTrgBinPt2][nTrgBinEta1][nTrgBinEta2];
-  initialize_trgEff(trgEff, trgEffE, year);
-
   //*******************************************************
   //Inputs
   //*******************************************************
@@ -46,14 +40,14 @@ int year, bool isBlinded = false
   vector<int> infileCat_;
 
   TString filesPath;
-  TString fLepton_FakesName;
+  TString fLepton_FakesName = Form("MitAnalysisRunII/data/90x/histoFakeEtaPt_%d.root",year);
   TString puPath;
-  TString npvPath;
+  //TString npvPath = Form("MitAnalysisRunII/data/90x/npvWeights_%d.root",year);
+  TString trgSFPath = Form("MitAnalysisRunII/data/90x/histo_triggerEff_sel0_%d.root",year);
+  TString effSFPath = Form("MitAnalysisRunII/data/90x/histoDY0EffSFStudy_%d.root",year);
   if     (year == 2018) {
     filesPath = "/data/t3home000/ceballos/panda/v_006_1/";
-    fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2018.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
-    //npvPath = "MitAnalysisRunII/data/90x/npvWeights_2017.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sWWinc.root" ,filesPath.Data()));               infileCat_.push_back(kPlotEM);
@@ -75,9 +69,7 @@ int year, bool isBlinded = false
   }
   else if(year == 2017) {
     filesPath = "/data/t3home000/ceballos/panda/v_004_1/";
-    fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2017.root";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
-    //npvPath = "MitAnalysisRunII/data/90x/npvWeights_2017.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotEM);
@@ -100,9 +92,7 @@ int year, bool isBlinded = false
   }
   else if(year == 2016) {
     filesPath = "/data/t3home000/ceballos/panda/v_002_1/";
-    fLepton_FakesName = "MitAnalysisRunII/data/90x/histoFakeEtaPt_2016.root";
     puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
-    //npvPath = "MitAnalysisRunII/data/90x/npvWeights_2016.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	          infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotEM);
@@ -137,6 +127,13 @@ int year, bool isBlinded = false
   TH2D* histoFakeEffSelTightEtaPt_m  = (TH2D*)fLepton_Fakes->Get("histoFakeEffSelEtaPt_2_0"); histoFakeEffSelTightEtaPt_m ->SetDirectory(0);
   TH2D* histoFakeEffSelTightEtaPt_e  = (TH2D*)fLepton_Fakes->Get("histoFakeEffSelEtaPt_0_1"); histoFakeEffSelTightEtaPt_e ->SetDirectory(0);
 
+  TFile *fLepton_Eff = TFile::Open(effSFPath.Data());
+  TH2D* histoLepEffSelMediumEtaPt_m = (TH2D*)fLepton_Eff->Get("histoEffSFStudy_2_0"); histoLepEffSelMediumEtaPt_m->SetDirectory(0);
+  TH2D* histoLepEffSelMediumEtaPt_e = (TH2D*)fLepton_Eff->Get("histoEffSFStudy_0_1"); histoLepEffSelMediumEtaPt_e->SetDirectory(0);
+  TH2D* histoLepEffSelTightEtaPt_m  = (TH2D*)fLepton_Eff->Get("histoEffSFStudy_2_0"); histoLepEffSelTightEtaPt_m ->SetDirectory(0);   
+  TH2D* histoLepEffSelTightEtaPt_e  = (TH2D*)fLepton_Eff->Get("histoEffSFStudy_0_1"); histoLepEffSelTightEtaPt_e ->SetDirectory(0);
+  fLepton_Eff->Close();
+
   TFile *fPUFile = TFile::Open(Form("%s",puPath.Data()));
   TH1D *fhDPU     = (TH1D*)(fPUFile->Get("puWeights"));     assert(fhDPU);     fhDPU    ->SetDirectory(0);
   TH1D *fhDPUUp   = (TH1D*)(fPUFile->Get("puWeightsUp"));   assert(fhDPUUp);   fhDPUUp  ->SetDirectory(0);
@@ -146,6 +143,25 @@ int year, bool isBlinded = false
   //TFile *fNPVFile = TFile::Open(Form("%s",npvPath.Data()));
   //TH1D *fhDNPV    = (TH1D*)(fNPVFile->Get("npvWeights"));   assert(fhDNPV);    fhDNPV   ->SetDirectory(0);
   //delete fNPVFile;
+
+  TFile *ftrgSF = TFile::Open(trgSFPath.Data());
+  TH2D *trgSFMMBB = (TH2D*)(ftrgSF->Get("trgSFMMBB")); assert(trgSFMMBB); trgSFMMBB->SetDirectory(0);
+  TH2D *trgSFMMEB = (TH2D*)(ftrgSF->Get("trgSFMMEB")); assert(trgSFMMEB); trgSFMMEB->SetDirectory(0);
+  TH2D *trgSFMMBE = (TH2D*)(ftrgSF->Get("trgSFMMBE")); assert(trgSFMMBE); trgSFMMBE->SetDirectory(0);
+  TH2D *trgSFMMEE = (TH2D*)(ftrgSF->Get("trgSFMMEE")); assert(trgSFMMEE); trgSFMMEE->SetDirectory(0);
+  TH2D *trgSFEEBB = (TH2D*)(ftrgSF->Get("trgSFEEBB")); assert(trgSFEEBB); trgSFEEBB->SetDirectory(0);
+  TH2D *trgSFEEEB = (TH2D*)(ftrgSF->Get("trgSFEEEB")); assert(trgSFEEEB); trgSFEEEB->SetDirectory(0);
+  TH2D *trgSFEEBE = (TH2D*)(ftrgSF->Get("trgSFEEBE")); assert(trgSFEEBE); trgSFEEBE->SetDirectory(0);
+  TH2D *trgSFEEEE = (TH2D*)(ftrgSF->Get("trgSFEEEE")); assert(trgSFEEEE); trgSFEEEE->SetDirectory(0);
+  TH2D *trgSFMEBB = (TH2D*)(ftrgSF->Get("trgSFMEBB")); assert(trgSFMEBB); trgSFMEBB->SetDirectory(0);
+  TH2D *trgSFMEEB = (TH2D*)(ftrgSF->Get("trgSFMEEB")); assert(trgSFMEEB); trgSFMEEB->SetDirectory(0);
+  TH2D *trgSFMEBE = (TH2D*)(ftrgSF->Get("trgSFMEBE")); assert(trgSFMEBE); trgSFMEBE->SetDirectory(0);
+  TH2D *trgSFMEEE = (TH2D*)(ftrgSF->Get("trgSFMEEE")); assert(trgSFMEEE); trgSFMEEE->SetDirectory(0);
+  TH2D *trgSFEMBB = (TH2D*)(ftrgSF->Get("trgSFEMBB")); assert(trgSFEMBB); trgSFEMBB->SetDirectory(0);
+  TH2D *trgSFEMEB = (TH2D*)(ftrgSF->Get("trgSFEMEB")); assert(trgSFEMEB); trgSFEMEB->SetDirectory(0);
+  TH2D *trgSFEMBE = (TH2D*)(ftrgSF->Get("trgSFEMBE")); assert(trgSFEMBE); trgSFEMBE->SetDirectory(0);
+  TH2D *trgSFEMEE = (TH2D*)(ftrgSF->Get("trgSFEMEE")); assert(trgSFEMEE); trgSFEMEE->SetDirectory(0);
+  delete ftrgSF;
 
   const int nBinMVA = 38; Float_t xbins[nBinMVA+1] = {0,  70, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600,
   						        1070,1100,1125,1150,1175,1200,1250,1300,1350,1400,1500,1600,
@@ -158,7 +174,7 @@ int year, bool isBlinded = false
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 85;
+  const int allPlots = 88;
   TH1D* histo[allPlots][nPlotCategories];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     if     (thePlot >=   0 && thePlot <=   2) {nBinPlot = 100; xminPlot =100.0; xmaxPlot = 500;}
@@ -183,12 +199,9 @@ int year, bool isBlinded = false
     else if(thePlot >=  69 && thePlot <=  71) {nBinPlot =100;  xminPlot = -5.0; xmaxPlot = 5.0;}
     else if(thePlot >=  72 && thePlot <=  77) {nBinPlot = 5;   xminPlot = -0.5; xmaxPlot = 4.5;}
     else if(thePlot >=  78 && thePlot <=  83) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = TMath::Pi();}
-    TH1D* histos;
-    if(thePlot == allPlots-1) histos = new TH1D("histos", "histos", nBinMVA, xbins);
-    else                      histos = new TH1D("histos", "histos", nBinPlot, xminPlot, xmaxPlot);
-    histos->Sumw2();
-    for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = (TH1D*) histos->Clone(Form("histo%d",i));
-    histos->Reset();histos->Clear();
+    else if(thePlot >=  84 && thePlot <=  86) {nBinPlot = 100; xminPlot = -TMath::Pi(); xmaxPlot = TMath::Pi();}
+    if(thePlot == allPlots-1) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMVA, xbins);
+    else                      for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinPlot, xminPlot, xmaxPlot);
   }
 
   TH1D* histo_MVA = new TH1D("histo_MVA", "histo_MVA", nBinMVA, xbins); histo_MVA->Sumw2();
@@ -480,9 +493,11 @@ int year, bool isBlinded = false
       double sf_EWKZH = 1.0; double sf_EWKZHUp = 1.0; double sf_EWKZHDown = 1.0;
       if(theCategory != kPlotData){
         double triggerWeights[2] = {1.0, 0.0};
-	if(thePandaFlat.nLooseLep == 2) {
-          trigger_sf(triggerWeights, trgEff, trgEffE, lepType, looseLepPt[0], TMath::Abs(looseLepEta[0]), looseLepPt[1], TMath::Abs(looseLepEta[1]));
-        }
+	trigger_sf(triggerWeights,thePandaFlat.nLooseLep,
+	trgSFMMBB,trgSFMMEB,trgSFMMBE,trgSFMMEE,trgSFEEBB,trgSFEEEB,trgSFEEBE,trgSFEEEE,
+	trgSFMEBB,trgSFMEEB,trgSFMEBE,trgSFMEEE,trgSFEMBB,trgSFEMEB,trgSFEMBE,trgSFEMEE,
+	looseLepPt[0], TMath::Abs(looseLepEta[0]), abs(looseLepPdgId[0]),
+	looseLepPt[1], TMath::Abs(looseLepEta[1]), abs(looseLepPdgId[1]));
 	puWeight     = nPUScaleFactor(fhDPU,    thePandaFlat.pu);
         puWeightUp   = nPUScaleFactor(fhDPUUp,  thePandaFlat.pu);
         puWeightDown = nPUScaleFactor(fhDPUDown,thePandaFlat.pu);
@@ -496,17 +511,17 @@ int year, bool isBlinded = false
 
         if     (infileCat_[ifile] == kPlotWZ)                                                totalWeight = totalWeight * thePandaFlat.sf_wz;
 	else if(infileCat_[ifile] == kPlotZZ && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;
+/*
 	else if(infileCat_[ifile] == kPlotEM && passBtagVeto && year == 2016) totalWeight = totalWeight * 1.30;
 	else if(infileCat_[ifile] == kPlotEM && passBtagVeto && year == 2017) totalWeight = totalWeight * 1.20;
 	else if(infileCat_[ifile] == kPlotEM &&                 year == 2018) totalWeight = totalWeight * 1.55;
-/*
+
 	else if(infileCat_[ifile] == kPlotDY && year == 2016) totalWeight = totalWeight * 0.75;
 	else if(infileCat_[ifile] == kPlotDY && year == 2017) totalWeight = totalWeight * 0.90;
 	else if(infileCat_[ifile] == kPlotDY && year == 2018) totalWeight = totalWeight * 1.50;
 
         if     (infileCat_[ifile] == kPlotDY && year == 2016 && lepType == 0) totalWeight = totalWeight * (1.09180-ptFrac*0.104392);
         else if(infileCat_[ifile] == kPlotDY && year == 2016 && lepType == 1) totalWeight = totalWeight * (1.15117-ptFrac*0.141021);
-*/
 
         if     (infileCat_[ifile] == kPlotDY && year == 2017 && TMath::Abs(thePandaFlat.jotEta[0]) < 10 && lepType == 0) {
 	  if     (thePandaFlat.jotEta[0] >= -4.0 && thePandaFlat.jotEta[0] < -3.5) totalWeight = totalWeight * 2.35;
@@ -531,6 +546,7 @@ int year, bool isBlinded = false
 	else if(infileCat_[ifile] == kPlotDY && year == 2017 && thePandaFlat.nJot == 1) totalWeight = totalWeight * 0.8;
 	else if(infileCat_[ifile] == kPlotDY && year == 2018 && thePandaFlat.nJot == 0) totalWeight = totalWeight * 5.0;
 	else if(infileCat_[ifile] == kPlotDY && year == 2018 && thePandaFlat.nJot == 1) totalWeight = totalWeight * 1.0;
+*/
 	
 	if(infileCat_[ifile] == kPlotBSM && infileName_[ifile].Contains("qqZH") == true){
 	  sf_EWKZH     = thePandaFlat.sf_vh;
@@ -538,6 +554,15 @@ int year, bool isBlinded = false
 	  sf_EWKZHDown = thePandaFlat.sf_vhDown;
 	}
 	totalWeight = totalWeight * sf_EWKZH;
+
+        double effSF = 1.0;
+        for(unsigned int nl=0; nl<idLep.size(); nl++){
+          if(idLep[nl] == 0) continue;
+          bool applyTight = false;
+          effSF = effSF * lepScaleFactor(looseLepPt[nl],looseLepEta[nl],TMath::Abs(looseLepPdgId[nl]),applyTight,histoLepEffSelMediumEtaPt_m,histoLepEffSelMediumEtaPt_e,histoLepEffSelTightEtaPt_m,histoLepEffSelTightEtaPt_e);
+          if(effSF == 0){printf("effSF == 0!: %f %f %d \n",looseLepPt[nl],looseLepEta[nl],TMath::Abs(looseLepPdgId[nl])); return;}
+        }
+        totalWeight = totalWeight * effSF;
       }
 
       if(usePureMC == false && countLeptonTight != idLep.size()){
@@ -595,6 +620,7 @@ int year, bool isBlinded = false
 	    histo[lepType+ 78][theCategory]->Fill(dPhiDiLepMET,totalWeight);
 	    histo[lepType+ 81][theCategory]->Fill(dPhiJetMET,totalWeight);
       }
+      if(passAllCuts[ZHTIGHTSEL] && thePandaFlat.nJot >= 1) histo[lepType+ 84][theCategory]->Fill(thePandaFlat.jotPhi[0],totalWeight);
 
       //double MVAVar = TMath::Min(vMet.Pt(),xbins[nBinMVA]-0.0001); double MVAVarUp = TMath::Min(vMetUp.Pt(),xbins[nBinMVA]-0.0001); double MVAVarDown = TMath::Min(vMetDown.Pt(),xbins[nBinMVA]-0.0001);
       double MVAVar = TMath::Min(vMet.Pt(),metMax); double MVAVarUp = TMath::Min(vMetUp.Pt(),metMax); double MVAVarDown = TMath::Min(vMetDown.Pt(),metMax);
@@ -1253,7 +1279,7 @@ int year, bool isBlinded = false
     printf("(");
     for(int i=1; i<nPlotCategories; i++) printf("%7.1f ",histo[thePlot][i]->GetSumOfWeights());
     printf(")\n");
-    for(int np=0; np<nPlotCategories; np++) histo[thePlot][np]->Write();
+    for(int np=0; np<nPlotCategories; np++) {histo[thePlot][np]->SetNameTitle(Form("histo%d",np),Form("histo%d",np));histo[thePlot][np]->Write();}
     outFilePlotsNote->Close();
   }
 
