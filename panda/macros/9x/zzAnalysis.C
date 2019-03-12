@@ -142,7 +142,7 @@ int year
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 67;
+  const int allPlots = 71;
   TH1D* histo[allPlots][nPlotCategories];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     if     (thePlot >=  0 && thePlot <= 14) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 100;}
@@ -150,7 +150,7 @@ int year
     else if(thePlot >= 20 && thePlot <= 44) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
     else if(thePlot >= 45 && thePlot <= 54) {nBinPlot =   5; xminPlot = -0.5; xmaxPlot = 4.5;}
     else if(thePlot >= 55 && thePlot <= 64) {nBinPlot =  50; xminPlot =100.0; xmaxPlot = 300;}
-    else if(thePlot >= 65 && thePlot <= 65) {nBinPlot =   7; xminPlot = -0.5; xmaxPlot = 6.5;}
+    else if(thePlot >= 65 && thePlot <= 69) {nBinPlot =   7; xminPlot = -0.5; xmaxPlot = 6.5;}
     if(thePlot == allPlots-1) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMVA, xbins);
     else                      for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinPlot, xminPlot, xmaxPlot);
   }
@@ -503,8 +503,11 @@ int year
       if(passZZSel)          {histo[lepType+50][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,4.499),totalWeight);        if(lepType != 3) histo[54][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,4.499),totalWeight);}
       if(passZXLikeSel)      {histo[lepType+55][theCategory]->Fill(TMath::Min(vMetZXLikeUp.Pt(),299.999),totalWeight);                    if(lepType != 3) histo[59][theCategory]->Fill(TMath::Min(vMetZXLikeUp.Pt(),299.999),totalWeight);}
       if(passZXLooseLikeSel) {histo[lepType+60][theCategory]->Fill(TMath::Min(vMetZXLikeUp.Pt(),299.999),totalWeight);                    if(lepType != 3) histo[64][theCategory]->Fill(TMath::Min(vMetZXLikeUp.Pt(),299.999),totalWeight);}
-      bool passCutEvolAll = lepType != 3;
-      for(int i=0; i<7; i++) {passCutEvolAll = passCutEvolAll && passEvolSel[i]; if(passCutEvolAll) histo[65][theCategory]->Fill((double)i,totalWeight);}
+      bool passCutEvolAll = true;
+      for(int i=0; i<7; i++) {
+        passCutEvolAll = passCutEvolAll && passEvolSel[i]; 
+	if(passCutEvolAll) {histo[lepType+65][theCategory]->Fill((double)i,totalWeight); if(lepType != 3) histo[69][theCategory]->Fill((double)i,totalWeight);}
+      }
 
       double MVAVar = TMath::Min(vMetZXLike.Pt(),xbins[nBinMVA]-0.0001); double MVAVarUp = TMath::Min(vMetZXLikeUp.Pt(),xbins[nBinMVA]-0.0001); double MVAVarDown = TMath::Min(vMetZXLikeDown.Pt(),xbins[nBinMVA]-0.0001);
       if(1){
