@@ -12,7 +12,6 @@ PandaAnalysis/T3/merging/merge.py --cfg leptonic_2018 WZ3l_powheg
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2018 WZ3l_amcnlo
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2018 WZ3l_MG_QCD
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2018 WZ3l_MG_EWK
-PandaAnalysis/T3/merging/merge.py --cfg leptonic_2018 WWinc
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2018 qqWW
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2018 ggWW
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2018 WWdps
@@ -54,5 +53,5 @@ PandaAnalysis/T3/merging/merge.py --cfg leptonic_2018 WpWp_QCD
 elif [ $NSEL == 'da' ]; then
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2018 data_2018_overlaps
 
-root -q -l -b MitAnalysisRunII/panda/macros/9x/makeGoodRunSample.C+'("${PANDA_FLATDIR}/data_2018_overlaps.root","${PANDA_FLATDIR}/data.root","PandaAnalysis/data/certs/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt")'
+root -q -l -b MitAnalysisRunII/panda/macros/9x/makeGoodRunSample.C+'("${PANDA_FLATDIR}/data_2018_overlaps.root","${PANDA_FLATDIR}/data.root","PandaAnalysis/data/certs/Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt")'
 fi

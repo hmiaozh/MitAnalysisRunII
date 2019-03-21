@@ -42,7 +42,7 @@ int year, bool isBlinded = false
   TString filesPath;
   TString fLepton_FakesName = Form("MitAnalysisRunII/data/90x/histoFakeEtaPt_%d.root",year);
   TString puPath;
-  //TString npvPath = Form("MitAnalysisRunII/data/90x/npvWeights_%d.root",year);
+  TString npvPath = Form("MitAnalysisRunII/data/90x/npvWeights_%d.root",year);
   TString trgSFPath = Form("MitAnalysisRunII/data/90x/histo_triggerEff_sel0_%d.root",year);
   TString effSFPath = Form("MitAnalysisRunII/data/90x/histoDY0EffSFStudy_%d.root",year);
   if     (year == 2018) {
@@ -50,8 +50,8 @@ int year, bool isBlinded = false
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(kPlotData);
-    infileName_.push_back(Form("%sWWinc.root" ,filesPath.Data()));               infileCat_.push_back(kPlotEM);
-    //infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));                infileCat_.push_back(kPlotEM);
+    //infileName_.push_back(Form("%sWWinc.root" ,filesPath.Data()));               infileCat_.push_back(kPlotEM);
+    infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));                infileCat_.push_back(kPlotEM);
     //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data()));                infileCat_.push_back(kPlotEM);
     infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		 infileCat_.push_back(kPlotEM);
     infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                  infileCat_.push_back(kPlotEM);
@@ -121,6 +121,10 @@ int year, bool isBlinded = false
     return;
   }
 
+  //infileName_.clear();infileCat_.clear();
+  //infileName_.push_back(Form("%sqqZH125inv.root" ,filesPath.Data()));          infileCat_.push_back(kPlotBSM);
+  //infileName_.push_back(Form("%sggZH125inv.root" ,filesPath.Data()));          infileCat_.push_back(kPlotBSM);
+
   TFile *fLepton_Fakes = TFile::Open(fLepton_FakesName.Data());
   TH2D* histoFakeEffSelMediumEtaPt_m = (TH2D*)fLepton_Fakes->Get("histoFakeEffSelEtaPt_2_0"); histoFakeEffSelMediumEtaPt_m->SetDirectory(0);
   TH2D* histoFakeEffSelMediumEtaPt_e = (TH2D*)fLepton_Fakes->Get("histoFakeEffSelEtaPt_0_1"); histoFakeEffSelMediumEtaPt_e->SetDirectory(0);
@@ -140,9 +144,9 @@ int year, bool isBlinded = false
   TH1D *fhDPUDown = (TH1D*)(fPUFile->Get("puWeightsDown")); assert(fhDPUDown); fhDPUDown->SetDirectory(0);
   delete fPUFile;
 
-  //TFile *fNPVFile = TFile::Open(Form("%s",npvPath.Data()));
-  //TH1D *fhDNPV    = (TH1D*)(fNPVFile->Get("npvWeights"));   assert(fhDNPV);    fhDNPV   ->SetDirectory(0);
-  //delete fNPVFile;
+  TFile *fNPVFile = TFile::Open(Form("%s",npvPath.Data()));
+  TH1D *fhDNPV    = (TH1D*)(fNPVFile->Get("npvWeights"));   assert(fhDNPV);    fhDNPV	->SetDirectory(0);
+  delete fNPVFile;
 
   TFile *ftrgSF = TFile::Open(trgSFPath.Data());
   TH2D *trgSFMMBB = (TH2D*)(ftrgSF->Get("trgSFMMBB")); assert(trgSFMMBB); trgSFMMBB->SetDirectory(0);
@@ -163,10 +167,10 @@ int year, bool isBlinded = false
   TH2D *trgSFEMEE = (TH2D*)(ftrgSF->Get("trgSFEMEE")); assert(trgSFEMEE); trgSFEMEE->SetDirectory(0);
   delete ftrgSF;
 
-  const int nBinMVA = 38; Float_t xbins[nBinMVA+1] = {0,  70, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600,
+  const int nBinMVA = 34; Float_t xbins[nBinMVA+1] = {0,  70, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600,
   						        1070,1100,1125,1150,1175,1200,1250,1300,1350,1400,1500,1600,
-  						        2070,2100,2125,2150,2200,2300,2600,
-  						        3070,3100,3125,3150,3200,3300,3600};
+  						        2100,2125,2150,2200,2600,
+  						        3100,3125,3150,3200,3600};
   //const int nBinMVA = 12; Float_t xbins[nBinMVA+1] = {0, 70, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600};
 
   const double metMax = 599.999;
@@ -301,6 +305,13 @@ int year, bool isBlinded = false
       if(passTrigger == false) continue;
       if(thePandaFlat.metFilter == 0) continue;
 
+      // Remove jet forward events right away
+      bool passJetEtaCut = true;
+      if(thePandaFlat.nJot >= 1){
+        passJetEtaCut = TMath::Abs(thePandaFlat.jotEta[0]) < 2.5;
+      }
+      if(passJetEtaCut == false) continue;
+
       if(thePandaFlat.nLooseLep != 2) continue;
 
       vector<float>  looseLepPt,looseLepEta,looseLepPhi,looseLepSF;
@@ -379,6 +390,12 @@ int year, bool isBlinded = false
         vMetUp  .SetPtEtaPhiM(thePandaFlat.puppimet_JESTotalUp  ,0.0,thePandaFlat.puppimetphi_JESTotalUp  ,0.0);
         vMetDown.SetPtEtaPhiM(thePandaFlat.puppimet_JESTotalDown,0.0,thePandaFlat.puppimetphi_JESTotalDown,0.0);
       }
+      //vMet    .SetPx(vMet    .Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
+      //vMet    .SetPy(vMet    .Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
+      //vMetUp  .SetPx(vMetUp  .Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
+      //vMetUp  .SetPy(vMetUp  .Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
+      //vMetDown.SetPx(vMetDown.Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
+      //vMetDown.SetPy(vMetDown.Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
 
       double dPhiLepMETMin = 999; double dPhiLepTrackMETMin = 999;
       for(unsigned int i=0; i<vLoose.size(); i++){
@@ -438,9 +455,10 @@ int year, bool isBlinded = false
       bool passPTFrac     = ptFrac     < 0.4;
       bool passPTFracUp   = ptFracUp   < 0.4;
       bool passPTFracDown = ptFracDown < 0.4;
-      bool passDPhiZMET     = dPhiDiLepMET     > 1.5; bool passDPhiZMETTight = dPhiDiLepMET > 2.8;
-      bool passDPhiZMETUp   = dPhiDiLepMETUp   > 1.5;
-      bool passDPhiZMETDown = dPhiDiLepMETDown > 1.5;
+      bool passDPhiZMET     = dPhiDiLepMET     > 1.5 && (dPhiDiLepMET     > 2.8 || vMet.Pt()     > 100);
+      bool passDPhiZMETUp   = dPhiDiLepMETUp   > 1.5 && (dPhiDiLepMETUp   > 2.8 || vMetUp.Pt()   > 100) ;
+      bool passDPhiZMETDown = dPhiDiLepMETDown > 1.5 && (dPhiDiLepMETDown > 2.8 || vMetDown.Pt() > 100) ;
+      bool passDPhiZMETTight = dPhiDiLepMET > 2.8;
       bool passNjets     = thePandaFlat.nJot              <= 1;
       bool passNjetsUp   = thePandaFlat.nJot_JESTotalUp   <= 1;
       bool passNjetsDown = thePandaFlat.nJot_JESTotalDown <= 1;
@@ -489,7 +507,7 @@ int year, bool isBlinded = false
       passZMass   && passNjets     && passMET     && passPTFrac     && passDPhiZMET     &&  passBtagVeto     && passPTLL && passDPhiJetMET     && passTauVeto && passDRLL
                                     };
 
-      double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0; double npvWeight = 1.0; double sf_l1PrefireE = 1.0;
+      double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0; double sf_l1PrefireE = 1.0;
       double sf_EWKZH = 1.0; double sf_EWKZHUp = 1.0; double sf_EWKZHDown = 1.0;
       if(theCategory != kPlotData){
         double triggerWeights[2] = {1.0, 0.0};
@@ -504,13 +522,15 @@ int year, bool isBlinded = false
 
         sf_l1PrefireE = 1.0 + TMath::Abs(1.0 - thePandaFlat.sf_l1Prefire) * 0.2;
 
-	//npvWeight = nPUScaleFactor(fhDNPV, thePandaFlat.npv);
+	double npvWeight = nPUScaleFactor(fhDNPV, thePandaFlat.npv);
 
-        if(passBtagVeto) totalWeight = thePandaFlat.normalizedWeight * lumiV[whichYear] * puWeight * thePandaFlat.sf_l1Prefire * thePandaFlat.sf_btag0   * looseLepSF[0] * looseLepSF[1] * triggerWeights[0] * theMCPrescale;
-        else	         totalWeight = thePandaFlat.normalizedWeight * lumiV[whichYear] * puWeight * thePandaFlat.sf_l1Prefire * thePandaFlat.sf_btagGT0 * looseLepSF[0] * looseLepSF[1] * triggerWeights[0] * theMCPrescale;
+        if(passBtagVeto) totalWeight = thePandaFlat.normalizedWeight * lumiV[whichYear] * npvWeight * puWeight * thePandaFlat.sf_l1Prefire * thePandaFlat.sf_btag0   * looseLepSF[0] * looseLepSF[1] * triggerWeights[0] * theMCPrescale;
+        else	         totalWeight = thePandaFlat.normalizedWeight * lumiV[whichYear] * npvWeight * puWeight * thePandaFlat.sf_l1Prefire * thePandaFlat.sf_btagGT0 * looseLepSF[0] * looseLepSF[1] * triggerWeights[0] * theMCPrescale;
 
         if     (infileCat_[ifile] == kPlotWZ)                                                totalWeight = totalWeight * thePandaFlat.sf_wz;
 	else if(infileCat_[ifile] == kPlotZZ && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;
+
+        totalWeight = totalWeight * mcCorrection(1, year, thePandaFlat.jetNMBtags,thePandaFlat.jetNBtags, thePandaFlat.nJot, dPhiDiLepMET, infileCat_[ifile]);
 /*
 	else if(infileCat_[ifile] == kPlotEM && passBtagVeto && year == 2016) totalWeight = totalWeight * 1.30;
 	else if(infileCat_[ifile] == kPlotEM && passBtagVeto && year == 2017) totalWeight = totalWeight * 1.20;

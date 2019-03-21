@@ -57,6 +57,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
   TString puPath;
   TString trgSFPath = Form("MitAnalysisRunII/data/90x/histo_triggerEff_sel0_%d.root",year);
   TString effSFPath = Form("MitAnalysisRunII/data/90x/histoDY0EffSFStudy_%d.root",year);
+  //TString npvPath = Form("MitAnalysisRunII/data/90x/npvWeights_%d.root",year);
   if     (year == 2018) {
     filesPath = "/data/t3home000/ceballos/panda/v_006_1/";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
@@ -79,8 +80,8 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
       infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	          infileCat_.push_back(kPlotVVV);
       infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	          infileCat_.push_back(kPlotVVV);
 
-      infileName_.push_back(Form("%sWWinc.root" ,filesPath.Data()));		  infileCat_.push_back(kPlotWS);
-      //infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));		  infileCat_.push_back(kPlotWS);
+      //infileName_.push_back(Form("%sWWinc.root" ,filesPath.Data()));		  infileCat_.push_back(kPlotWS);
+      infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));		  infileCat_.push_back(kPlotWS);
       //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data()));		  infileCat_.push_back(kPlotWS);
       infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		  infileCat_.push_back(kPlotWS);
       infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));		  infileCat_.push_back(kPlotWS);
@@ -229,6 +230,10 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
   TH2D *trgSFEMBE = (TH2D*)(ftrgSF->Get("trgSFEMBE")); assert(trgSFEMBE); trgSFEMBE->SetDirectory(0);
   TH2D *trgSFEMEE = (TH2D*)(ftrgSF->Get("trgSFEMEE")); assert(trgSFEMEE); trgSFEMEE->SetDirectory(0);
   delete ftrgSF;
+
+  //TFile *fNPVFile = TFile::Open(Form("%s",npvPath.Data()));
+  //TH1D *fhDNPV    = (TH1D*)(fNPVFile->Get("npvWeights"));   assert(fhDNPV);    fhDNPV	->SetDirectory(0);
+  //delete fNPVFile;
 
   const int nBinMJJ = 4; Float_t xbinsMJJ[nBinMJJ+1] = {500, 800, 1150, 1700, 2000};
   const int nBinMLL = 4; Float_t xbinsMLL[nBinMLL+1] = {20, 85, 135, 210, 500};
@@ -482,7 +487,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
 
       TLorentzVector vMet,vTrkMet,vMetUp,vMetDown;
       vTrkMet.SetPtEtaPhiM(thePandaFlat.trkmet,0.0,thePandaFlat.trkmetphi,0.0);
-      if     (year == 2016 | year == 2018) {
+      if     (year == 2016 || year == 2018) {
         vMet    .SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
         vMetUp  .SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalUp  ,0.0,thePandaFlat.pfmetphi_JESTotalUp  ,0.0);
         vMetDown.SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalDown,0.0,thePandaFlat.pfmetphi_JESTotalDown,0.0);
@@ -492,6 +497,12 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
         vMetUp  .SetPtEtaPhiM(thePandaFlat.puppimet_JESTotalUp  ,0.0,thePandaFlat.puppimetphi_JESTotalUp  ,0.0);
         vMetDown.SetPtEtaPhiM(thePandaFlat.puppimet_JESTotalDown,0.0,thePandaFlat.puppimetphi_JESTotalDown,0.0);
       }
+      //vMet    .SetPx(vMet    .Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
+      //vMet    .SetPy(vMet    .Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
+      //vMetUp  .SetPx(vMetUp  .Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
+      //vMetUp  .SetPy(vMetUp  .Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
+      //vMetDown.SetPx(vMetDown.Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
+      //vMetDown.SetPy(vMetDown.Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
 
       double mllZ = 10000; double mllmin = 10000;
       TLorentzVector vZ1l1,vZ1l2,vWln,trilep;
@@ -653,6 +664,8 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
 
         sf_l1PrefireE = 1.0 + TMath::Abs(1.0 - thePandaFlat.sf_l1Prefire) * 0.2;
 
+	//double npvWeight = nPUScaleFactor(fhDNPV, thePandaFlat.npv);
+
         totalWeight = thePandaFlat.normalizedWeight * lumiV[whichYear] * puWeight * thePandaFlat.sf_l1Prefire * looseLepSF[0] * looseLepSF[1] * triggerWeights[0] * theMCPrescale;
 	if(thePandaFlat.nLooseLep == 3) totalWeight = totalWeight * looseLepSF[2];
 
@@ -717,7 +730,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
       }
 
       if(theCategory != kPlotData){
-        totalWeight = totalWeight * mcCorrection(year, thePandaFlat.jetNMBtags,thePandaFlat.jetNBtags, infileCat_[ifile]);
+        totalWeight = totalWeight * mcCorrection(0, year, thePandaFlat.jetNMBtags,thePandaFlat.jetNBtags, thePandaFlat.nJot, 0.0, infileCat_[ifile]);
       }
 
       if(theCategory == kPlotEWKSSWW && fidAna == 1 && 

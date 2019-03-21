@@ -22,7 +22,7 @@ double scaling[8] = {1,1,1,1,1,1,1,1};
 
 bool isLogSpecial = false;
 bool isLogX = false;
-bool printRatios = true;
+bool printRatios = false;
 
 void eraselabel(TPad *p,Double_t h){
   p->cd();
@@ -271,7 +271,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
     myOutputFile = Form("plots/%s.pdf",outputName.Data());
     c1->SaveAs(myOutputFile.Data());
     myOutputFile = Form("plots/%s.root",outputName.Data());
-    //c1->SaveAs(myOutputFile.Data());
+    c1->SaveAs(myOutputFile.Data());
   }
 
   bool computePU = false;
@@ -281,8 +281,8 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
     npvWeights->Sumw2();
     npvWeights->Divide(hBck);
     for(int i=1; i<=npvWeights->GetNbinsX(); i++){
-      if(npvWeights->GetBinContent(i) > 2) {
-        printf("Big number in (%d): %f, set to 2\n",i,npvWeights->GetBinContent(i));npvWeights->SetBinContent(i,2);
+      if(npvWeights->GetBinContent(i) > 3) {
+        printf("Big number in (%d): %f, set to 3\n",i,npvWeights->GetBinContent(i));npvWeights->SetBinContent(i,3);
       }
     }
     TFile output(Form("npvWeights_%d.root",year),"RECREATE");

@@ -1,5 +1,9 @@
 #!/bin/sh
 
+root -q -b -l MitAnalysisRunII/panda/makePlots/make2DPlots.C+'(2016,"pdf")';
+root -q -b -l MitAnalysisRunII/panda/makePlots/make2DPlots.C+'(2017,"pdf")';
+root -q -b -l MitAnalysisRunII/panda/makePlots/make2DPlots.C+'(2018,"pdf")';
+
 ./MitAnalysisRunII/panda/makePlots/mergeHistograms.sh;
 
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh wz 1 2016;
