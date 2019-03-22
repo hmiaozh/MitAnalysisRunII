@@ -194,7 +194,7 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 69;
+  const int allPlots = 88;
   TH1D* histo[allPlots][nPlotCategories];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     if     (thePlot >=  0 && thePlot <=  1) {nBinPlot = 120; xminPlot = 91.1876-15; xmaxPlot = 91.1876+15;}
@@ -215,8 +215,8 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
     else if(thePlot >= 58 && thePlot <= 58) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 1.0;}
     else if(thePlot >= 59 && thePlot <= 59) {nBinPlot = 200; xminPlot = -5.0; xmaxPlot = 5.0;}
     else if(thePlot >= 60 && thePlot <= 60) {nBinPlot = 100; xminPlot = -TMath::Pi(); xmaxPlot = TMath::Pi();}
-    else if(thePlot >= 61 && thePlot <= 67) {nBinPlot = 400; xminPlot =  0.0; xmaxPlot = 400;}
-    else if(thePlot >= 68 && thePlot <= 68) {nBinPlot = 100; xminPlot =  -TMath::Pi(); xmaxPlot = TMath::Pi();}
+    else if(thePlot >= 61 && thePlot <= 86) {nBinPlot = 400; xminPlot =  0.0; xmaxPlot = 400;}
+    else if(thePlot >= 87 && thePlot <= 87) {nBinPlot = 100; xminPlot =  -TMath::Pi(); xmaxPlot = TMath::Pi();}
 
     if(isTopSel == true && (thePlot >= 0 && thePlot <= 5)) {nBinPlot = 200; xminPlot = 15.0; xmaxPlot = 55;}
 
@@ -599,23 +599,46 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
       if(thePandaFlat.nJot == 1){
         histo[57][theCategory]->Fill(TMath::Min((double)thePandaFlat.jotPt[0],199.9999),totalWeight);
         histo[58][theCategory]->Fill(TMath::Max(TMath::Min((double)thePandaFlat.jotCSV[0],0.999),0.001),totalWeight);
-        histo[58][theCategory]->Fill(thePandaFlat.jotEta[0],totalWeight);     
+        histo[59][theCategory]->Fill(thePandaFlat.jotEta[0],totalWeight);     
         histo[60][theCategory]->Fill(thePandaFlat.jotPhi[0],totalWeight);
 	if     (TMath::Abs(thePandaFlat.jotEta[0]) < 2.5){
           histo[61][theCategory]->Fill(TMath::Min((double)vMet.Pt(), 399.999),totalWeight);
+          histo[62][theCategory]->Fill(TMath::Min((double)vCorrMet.Pt(), 399.999),totalWeight);
+          histo[63][theCategory]->Fill(TMath::Min((double)vMet.Pt(), 399.999),totalWeightNoVtx);
+          histo[64][theCategory]->Fill(TMath::Min((double)vCorrMet.Pt(), 399.999),totalWeightNoVtx);
         }
 	else if(TMath::Abs(thePandaFlat.jotEta[0]) < 2.5 || TMath::Abs(thePandaFlat.jotEta[0]) > 3.0){
-          histo[62][theCategory]->Fill(TMath::Min((double)vMet.Pt(), 399.999),totalWeight);
+          histo[65][theCategory]->Fill(TMath::Min((double)vMet.Pt(), 399.999),totalWeight);
+          histo[66][theCategory]->Fill(TMath::Min((double)vCorrMet.Pt(), 399.999),totalWeight);
+          histo[67][theCategory]->Fill(TMath::Min((double)vMet.Pt(), 399.999),totalWeightNoVtx);
+          histo[68][theCategory]->Fill(TMath::Min((double)vCorrMet.Pt(), 399.999),totalWeightNoVtx);
         }
 	else {
-          histo[63][theCategory]->Fill(TMath::Min((double)vMet.Pt(), 399.999),totalWeight);
+          histo[69][theCategory]->Fill(TMath::Min((double)vMet.Pt(), 399.999),totalWeight);
+          histo[70][theCategory]->Fill(TMath::Min((double)vCorrMet.Pt(), 399.999),totalWeight);
+          histo[71][theCategory]->Fill(TMath::Min((double)vMet.Pt(), 399.999),totalWeightNoVtx);
+          histo[72][theCategory]->Fill(TMath::Min((double)vCorrMet.Pt(), 399.999),totalWeightNoVtx);
 	}
       }
-      histo[64][theCategory]->Fill(TMath::Min((double)vMet.Pt(), 399.999),totalWeightNoVtx);
-      histo[65][theCategory]->Fill(TMath::Min((double)vCorrMet.Pt(), 399.999),totalWeightNoVtx);
-      histo[66][theCategory]->Fill(TMath::Min((double)thePandaFlat.pfmetRaw, 399.999),totalWeight);
-      histo[67][theCategory]->Fill(TMath::Min((double)thePandaFlat.calomet, 399.999),totalWeight);
-      histo[68][theCategory]->Fill(vCorrMet.Phi(),totalWeight);
+      histo[73][theCategory]->Fill(TMath::Min((double)vMet.Pt(), 399.999),totalWeight);
+      histo[74][theCategory]->Fill(TMath::Min((double)vCorrMet.Pt(), 399.999),totalWeight);
+      histo[75][theCategory]->Fill(TMath::Min((double)vMet.Pt(), 399.999),totalWeightNoVtx);
+      histo[76][theCategory]->Fill(TMath::Min((double)vCorrMet.Pt(), 399.999),totalWeightNoVtx);
+      if(thePandaFlat.jotPt[0] > 100){
+        histo[77][theCategory]->Fill(TMath::Min((double)vMet.Pt(), 399.999),totalWeight);
+        histo[78][theCategory]->Fill(TMath::Min((double)vCorrMet.Pt(), 399.999),totalWeight);
+        histo[79][theCategory]->Fill(TMath::Min((double)vMet.Pt(), 399.999),totalWeightNoVtx);
+        histo[80][theCategory]->Fill(TMath::Min((double)vCorrMet.Pt(), 399.999),totalWeightNoVtx);
+      }
+      if(thePandaFlat.jotPt[0] > 100 && TMath::Abs(thePandaFlat.jotEta[0]) < 2.5){
+        histo[81][theCategory]->Fill(TMath::Min((double)vMet.Pt(), 399.999),totalWeight);
+        histo[82][theCategory]->Fill(TMath::Min((double)vCorrMet.Pt(), 399.999),totalWeight);
+        histo[83][theCategory]->Fill(TMath::Min((double)vMet.Pt(), 399.999),totalWeightNoVtx);
+        histo[84][theCategory]->Fill(TMath::Min((double)vCorrMet.Pt(), 399.999),totalWeightNoVtx);
+      }
+      histo[85][theCategory]->Fill(TMath::Min((double)thePandaFlat.pfmetRaw, 399.999),totalWeight);
+      histo[86][theCategory]->Fill(TMath::Min((double)thePandaFlat.calomet, 399.999),totalWeight);
+      histo[87][theCategory]->Fill(vCorrMet.Phi(),totalWeight);
 
       // Lepton efficiency study     
       int theEffStudyCategory = 0; double totalEffStudyWeight = totalWeight;
