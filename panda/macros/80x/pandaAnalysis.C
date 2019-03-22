@@ -251,15 +251,22 @@ void pandaAnalysis(int whichDY, int whichAnaFlow = 0, unsigned int period = 0, d
   TH1D* scalefactors_Electron_Eta = (TH1D*)fLepton_Eta_SF->Get("scalefactors_Electron_Eta"); scalefactors_Electron_Eta->SetDirectory(0);
   fLepton_Eta_SF->Close();
 
-  TFile *fLepton_SF_mu_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period%d.root",period));
-  TH2D* scalefactors_Medium_Muon = (TH2D*)fLepton_SF_mu_central->Get("scalefactors_Medium_Muon"); scalefactors_Medium_Muon->SetDirectory(0);
+  TString periodName = "BCDEF";
+  if(period == 2) periodName = "GH";
+
+  //TFile *fLepton_SF_mu_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period%d.root",period));
+  //TH2D* scalefactors_Medium_Muon = (TH2D*)fLepton_SF_mu_central->Get("scalefactors_Medium_Muon"); scalefactors_Medium_Muon->SetDirectory(0);
+  TFile *fLepton_SF_mu_central = TFile::Open(Form("MitAnalysisRunII/data/80x/sfMediumLepton_period%d.root",period));
+  TH2D* scalefactors_Medium_Muon = (TH2D*)fLepton_SF_mu_central->Get(Form("scalefactors_Medium2016Muon%s",periodName.Data())); scalefactors_Medium_Muon->SetDirectory(0);
   fLepton_SF_mu_central->Close();
 
-  TFile *fLepton_SF_el_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period%d.root",period));
-  TH2D* scalefactors_Medium_Electron = (TH2D*)fLepton_SF_el_central->Get("scalefactors_Medium_Electron"); scalefactors_Medium_Electron->SetDirectory(0);
+  //TFile *fLepton_SF_el_central = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period%d.root",period));
+  //TH2D* scalefactors_Medium_Electron = (TH2D*)fLepton_SF_el_central->Get("scalefactors_Medium_Electron"); scalefactors_Medium_Electron->SetDirectory(0);
+  TFile *fLepton_SF_el_central = TFile::Open(Form("MitAnalysisRunII/data/80x/sfMediumLepton_period%d.root",period));
+  TH2D* scalefactors_Medium_Electron = (TH2D*)fLepton_SF_el_central->Get(Form("scalefactors_MediumElectron%s",periodName.Data())); scalefactors_Medium_Electron->SetDirectory(0);
   fLepton_SF_el_central->Close();
 
-  TFile *fLepton_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/scalefactors_80x_dylan_MediumIdOnly_period%d.root",period));
+  TFile *fLepton_SF = TFile::Open(Form("MitAnalysisRunII/data/80x/sfMediumLepton_period%d.root",period));
 
   TFile *fRecoEfficiencies_Lep_Unc = TFile::Open(Form("MitAnalysisRunII/data/80x/recoEfficiencies_Lep_Unc_2016.root"));
   TH1D* recoEfficiencies_Muon_Unc_Sig	  = (TH1D*)fRecoEfficiencies_Lep_Unc->Get("h_muEffSigSys"); recoEfficiencies_Muon_Unc_Sig    ->SetDirectory(0);
@@ -268,25 +275,19 @@ void pandaAnalysis(int whichDY, int whichAnaFlow = 0, unsigned int period = 0, d
   TH1D* recoEfficiencies_Electron_Unc_Bck = (TH1D*)fRecoEfficiencies_Lep_Unc->Get("h_elEffBkgSys"); recoEfficiencies_Electron_Unc_Bck->SetDirectory(0);
   fRecoEfficiencies_Lep_Unc->Close();
 
-  TH2D* scalefactors_Medium_Muon_stat_error_hi      = (TH2D*)fLepton_SF->Get("scalefactors_Medium_Muon_stat_error_hi");      scalefactors_Medium_Muon_stat_error_hi     ->SetDirectory(0);
-  TH2D* scalefactors_Medium_Muon_signalFsrTNP	    = (TH2D*)fLepton_SF->Get("scalefactors_Medium_Muon_signalFsrTNP");       scalefactors_Medium_Muon_signalFsrTNP      ->SetDirectory(0);
-  TH2D* scalefactors_Medium_Muon_signalResTNP	    = (TH2D*)fLepton_SF->Get("scalefactors_Medium_Muon_signalResTNP");       scalefactors_Medium_Muon_signalResTNP      ->SetDirectory(0);
-  TH2D* scalefactors_Medium_Muon_bkgModelTNP	    = (TH2D*)fLepton_SF->Get("scalefactors_Medium_Muon_bkgModelTNP");        scalefactors_Medium_Muon_bkgModelTNP       ->SetDirectory(0);
-  TH2D* scalefactors_Medium_Muon_tagBiasTNP	    = (TH2D*)fLepton_SF->Get("scalefactors_Medium_Muon_tagBiasTNP");         scalefactors_Medium_Muon_tagBiasTNP        ->SetDirectory(0);
-  TH2D* scalefactors_Medium_Muon_generatorChoiceTNP = (TH2D*)fLepton_SF->Get("scalefactors_Medium_Muon_generatorChoiceTNP"); scalefactors_Medium_Muon_generatorChoiceTNP->SetDirectory(0);
+  TH2D* scalefactors_Medium_Muon_stat_error_hi      = (TH2D*)fLepton_SF->Get(Form("scalefactors_Medium2016Muon%s_statErrorHigh",periodName.Data())); scalefactors_Medium_Muon_stat_error_hi     ->SetDirectory(0);
+  TH2D* scalefactors_Medium_Muon_signalFsrTNP	    = (TH2D*)fLepton_SF->Get(Form("scalefactors_Medium2016Muon%s_FsrModeling",periodName.Data()));   scalefactors_Medium_Muon_signalFsrTNP      ->SetDirectory(0);
+  TH2D* scalefactors_Medium_Muon_signalResTNP	    = (TH2D*)fLepton_SF->Get(Form("scalefactors_Medium2016Muon%s_ResFunc",periodName.Data()));       scalefactors_Medium_Muon_signalResTNP      ->SetDirectory(0);
+  TH2D* scalefactors_Medium_Muon_bkgModelTNP	    = (TH2D*)fLepton_SF->Get(Form("scalefactors_Medium2016Muon%s_AltBkg",periodName.Data()));        scalefactors_Medium_Muon_bkgModelTNP       ->SetDirectory(0);
+  TH2D* scalefactors_Medium_Muon_tagBiasTNP	    = (TH2D*)fLepton_SF->Get(Form("scalefactors_Medium2016Muon%s_AltTag",periodName.Data()));        scalefactors_Medium_Muon_tagBiasTNP        ->SetDirectory(0);
+  TH2D* scalefactors_Medium_Muon_generatorChoiceTNP = (TH2D*)fLepton_SF->Get(Form("scalefactors_Medium2016Muon%s_AltGen",periodName.Data()));        scalefactors_Medium_Muon_generatorChoiceTNP->SetDirectory(0);
 
-  //TH2F* scalefactors_Medium_Muon_stat_error_hi_bins[nMuSFBins];
-  //for(int nj=0; nj<nMuSFBins; nj++) {scalefactors_Medium_Muon_stat_error_hi_bins[nj] =(TH2F*)fLepton_SF->Get(Form("scalefactors_Medium_Muon_stat_error_hi_bins_%d",nj));scalefactors_Medium_Muon_stat_error_hi_bins[nj]->SetDirectory(0);}
-
-  TH2D* scalefactors_Medium_Electron_stat_error_hi      = (TH2D*)fLepton_SF->Get("scalefactors_Medium_Electron_stat_error_hi");      scalefactors_Medium_Electron_stat_error_hi     ->SetDirectory(0);
-  TH2D* scalefactors_Medium_Electron_signalFsrTNP       = (TH2D*)fLepton_SF->Get("scalefactors_Medium_Electron_signalFsrTNP");       scalefactors_Medium_Electron_signalFsrTNP      ->SetDirectory(0);
-  TH2D* scalefactors_Medium_Electron_signalResTNP       = (TH2D*)fLepton_SF->Get("scalefactors_Medium_Electron_signalResTNP");       scalefactors_Medium_Electron_signalResTNP      ->SetDirectory(0);
-  TH2D* scalefactors_Medium_Electron_bkgModelTNP        = (TH2D*)fLepton_SF->Get("scalefactors_Medium_Electron_bkgModelTNP");        scalefactors_Medium_Electron_bkgModelTNP       ->SetDirectory(0);
-  TH2D* scalefactors_Medium_Electron_tagBiasTNP         = (TH2D*)fLepton_SF->Get("scalefactors_Medium_Electron_tagBiasTNP");         scalefactors_Medium_Electron_tagBiasTNP        ->SetDirectory(0);
-  TH2D* scalefactors_Medium_Electron_generatorChoiceTNP = (TH2D*)fLepton_SF->Get("scalefactors_Medium_Electron_generatorChoiceTNP"); scalefactors_Medium_Electron_generatorChoiceTNP->SetDirectory(0);
-
-  //TH2F* scalefactors_Medium_Electron_stat_error_hi_bins[nElSFBins];
-  //for(int nj=0; nj<nElSFBins; nj++) {scalefactors_Medium_Electron_stat_error_hi_bins[nj] = (TH2F*)fLepton_SF->Get(Form("scalefactors_Medium_Electron_stat_error_hi_bins_%d",nj)); scalefactors_Medium_Electron_stat_error_hi_bins[nj]->SetDirectory(0);}
+  TH2D* scalefactors_Medium_Electron_stat_error_hi      = (TH2D*)fLepton_SF->Get(Form("scalefactors_MediumElectron%s_statErrorHigh",periodName.Data())); scalefactors_Medium_Electron_stat_error_hi     ->SetDirectory(0);
+  TH2D* scalefactors_Medium_Electron_signalFsrTNP       = (TH2D*)fLepton_SF->Get(Form("scalefactors_MediumElectron%s_FsrModeling",periodName.Data()));   scalefactors_Medium_Electron_signalFsrTNP      ->SetDirectory(0);
+  TH2D* scalefactors_Medium_Electron_signalResTNP       = (TH2D*)fLepton_SF->Get(Form("scalefactors_MediumElectron%s_ResFunc",periodName.Data()));       scalefactors_Medium_Electron_signalResTNP      ->SetDirectory(0);
+  TH2D* scalefactors_Medium_Electron_bkgModelTNP        = (TH2D*)fLepton_SF->Get(Form("scalefactors_MediumElectron%s_AltBkg",periodName.Data()));        scalefactors_Medium_Electron_bkgModelTNP       ->SetDirectory(0);
+  TH2D* scalefactors_Medium_Electron_tagBiasTNP         = (TH2D*)fLepton_SF->Get(Form("scalefactors_MediumElectron%s_AltTag",periodName.Data()));        scalefactors_Medium_Electron_tagBiasTNP        ->SetDirectory(0);
+  TH2D* scalefactors_Medium_Electron_generatorChoiceTNP = (TH2D*)fLepton_SF->Get(Form("scalefactors_MediumElectron%s_AltGen",periodName.Data()));        scalefactors_Medium_Electron_generatorChoiceTNP->SetDirectory(0);
 
   fLepton_SF->Close();
 
@@ -303,11 +304,11 @@ void pandaAnalysis(int whichDY, int whichAnaFlow = 0, unsigned int period = 0, d
   const int nBinEtaPlot = 26; Float_t xbinsEtaPlot[nBinEtaPlot+1] = {-2.4,-2.3,-2.2,-2.0,-1.8,-1.63,-1.566,-1.4442,-1.2,-1.0,-0.6,-0.4,-0.2,0.0,
                                                                      0.2,0.4,0.6,1.0,1.2,1.4442,1.566,1.63,1.8,2.0,2.2,2.3,2.4};
 
-  const int muBinxX = 0;//scalefactors_Medium_Muon_stat_error_hi->GetNbinsX();
-  const int muBinxY = 0;//scalefactors_Medium_Muon_stat_error_hi->GetNbinsY();
+  const int muBinxX = scalefactors_Medium_Muon_stat_error_hi->GetNbinsX();
+  const int muBinxY = scalefactors_Medium_Muon_stat_error_hi->GetNbinsY();
   const int nMuSFBins = muBinxX*muBinxY;
-  const int elBinxX = 0;//scalefactors_Medium_Electron_stat_error_hi->GetNbinsX();
-  const int elBinxY = 0;//scalefactors_Medium_Electron_stat_error_hi->GetNbinsY();
+  const int elBinxX = scalefactors_Medium_Electron_stat_error_hi->GetNbinsX();
+  const int elBinxY = scalefactors_Medium_Electron_stat_error_hi->GetNbinsY();
   const int nElSFBins = elBinxX*elBinxY;
   const int nRecNuisances = 4;
   const int nEffNuisances = 8+nElSFBins;
