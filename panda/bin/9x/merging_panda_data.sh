@@ -34,6 +34,6 @@ elif [ $1 = "2018" ]; then
           /scratch5/bmaier/hbb/2018/v_013_full/MuonEG.root \
           /scratch5/bmaier/hbb/2018/v_013_full/SingleMuon.root
 
-  root -q -l -b MitAnalysisRunII/panda/macros/9x/makeGoodRunSample.C+'("/data/t3home000/ceballos/panda/zllhbb/v4/data_overlaps_2018.root","/data/t3home000/ceballos/panda/zllhbb/v4/data_2018.root","PandaAnalysis/data/certs/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt")'
+  root -q -l -b MitAnalysisRunII/panda/macros/9x/makeGoodRunSample.C+'("/data/t3home000/ceballos/panda/zllhbb/v4/data_overlaps_2018.root","/data/t3home000/ceballos/panda/zllhbb/v4/data_2018.root","PandaAnalysis/data/certs/Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt")'
 
 fi

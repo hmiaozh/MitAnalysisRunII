@@ -1,10 +1,10 @@
 #include "TH1D.h"
 #include "TH2D.h"
 
-double WSSF_2016[5]  = {1.440485,1.159540,0.956023,0.965658,0.909149};
-double WSSFE_2016[5] = {0.287653,0.115263,0.054230,0.024146,0.031198};
-double WSSF_2017[5]  = {2.100747,0.945282,1.547374,1.526615,1.471581};
-double WSSFE_2017[5] = {0.285963,0.133784,0.061376,0.034253,0.035358};
+double WSSF_2016[5]  = {1.415098,1.106398,0.931233,0.986408,0.956510};
+double WSSFE_2016[5] = {0.269473,0.110044,0.051492,0.022977,0.029175};
+double WSSF_2017[5]  = {1.982977,1.050244,1.569809,1.521270,1.480177};
+double WSSFE_2017[5] = {0.282616,0.132504,0.059150,0.032803,0.033772};
 double WSSF_2018[5]  = {1.581403,1.989889,1.376742,1.423457,1.246083};
 double WSSFE_2018[5] = {0.257292,0.132026,0.055731,0.026520,0.026289};
 
@@ -162,14 +162,34 @@ std::map<int, TString> plotNames={
 const double mass_el = 0.000510998928;
 const double mass_mu = 0.10566;
 
-double mcCorrection(int year, int jetNMBtags, int jetNBtags, int infileCat){
+double mcCorrection(int type, int year, int jetNMBtags, int jetNBtags, int nJot, double dphillmet, int infileCat){
   double totalWeight = 1.0;
 
-  if	 (year == 2017 && jetNMBtags > 0) totalWeight = totalWeight * 0.60;
-  else if(year == 2017 && jetNBtags  > 0) totalWeight = totalWeight * 0.85;
+  if     (type == 0){ // SSWW
+    if     (year == 2017 && jetNMBtags > 0) totalWeight = totalWeight * 0.70;
+    else if(year == 2017 && jetNBtags  > 0) totalWeight = totalWeight * 0.95;
 
-  if	 (year == 2018 && jetNMBtags > 0) totalWeight = totalWeight * 0.65;
-  else if(year == 2018 && jetNBtags  > 0) totalWeight = totalWeight * 1.00;
+    if     (year == 2018 && jetNMBtags > 0) totalWeight = totalWeight * 0.70;
+    else if(year == 2018 && jetNBtags  > 0) totalWeight = totalWeight * 1.00;
+  }
+  else if(type == 1){ // ZH
+    if     (year == 2016 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 1.20;
+    else if(year == 2016 && infileCat == kPlotDY && nJot >= 1) totalWeight = totalWeight * 0.86;
+
+    else if(year == 2017 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 1.50;
+    else if(year == 2017 && infileCat == kPlotDY && nJot >= 1) totalWeight = totalWeight * 1.05;
+
+    else if(year == 2018 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 3.00;
+    else if(year == 2018 && infileCat == kPlotDY && nJot >= 1) totalWeight = totalWeight * 1.60;
+  }
+
+  if(type == 1 || type  == 2){ // ZH or Z
+    if     (year == 2016 && infileCat == kPlotDY) totalWeight = totalWeight * (0.986772 + 0.00796195 * dphillmet);
+ 
+    else if(year == 2017 && infileCat == kPlotDY) totalWeight = totalWeight * (0.968796 + 0.01901070 * dphillmet);
+
+    else if(year == 2018 && infileCat == kPlotDY) totalWeight = totalWeight * (0.917654 + 0.04973930 * dphillmet);
+  }
 
   return totalWeight;
 }
@@ -211,7 +231,7 @@ double lepScaleFactor(double pt, double eta, int pdgId, bool applyTight, TH2D *h
 }
 
 double nPUScaleFactor(TH1D *fhDPU, float npu){
-  double mynpu = TMath::Min(npu,(float)99.999);
+  double mynpu = TMath::Min(npu,(float)79.999);
   Int_t npuxbin = fhDPU->GetXaxis()->FindBin(mynpu);
   return fhDPU->GetBinContent(npuxbin);
 }
@@ -306,4 +326,49 @@ void trigger_sf(double trgRes[2], int nlep,
     else if(lepType == 3 && neta1 == 1 && neta2 == 1) {trgRes[0] = trgSFEMEE->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFEMEE->GetBinError(binPt1,binPt2);}
     else {printf("Problem trgSF\n"); return;}
   }
+}
+
+double metPhiCorr(int year, int npv, bool isData, int metCoord){
+  double corr = 1.0;
+  if     (year == 2016 && isData == true && metCoord == 0){
+    corr = 1.01096e+00+1.42312e-01*npv;
+  }
+  else if(year == 2016 && isData == true && metCoord == 1){
+    corr = 2.89820e-01+4.64643e-02*npv;
+  }
+  else if(year == 2016 && isData == false && metCoord == 0){
+    corr = -1.11824e-01-2.19837e-01*npv;
+  }
+  else if(year == 2016 && isData == false && metCoord == 1){
+    corr = 8.03025e-01-3.89610e-02*npv;
+  }
+  else if(year == 2017 && isData == true && metCoord == 0){
+    corr = 3.15705e-01-1.77717e-01*npv;
+  }
+  else if(year == 2017 && isData == true && metCoord == 1){
+    corr = 4.48257e-01+2.36009e-01*npv;
+  }
+  else if(year == 2017 && isData == false && metCoord == 0){
+    corr = 3.61535e-01-2.30149e-01*npv;
+  }
+  else if(year == 2017 && isData == false && metCoord == 1){
+    corr = -1.96483e-01+1.81803e-01*npv;
+  }
+  else if(year == 2018 && isData == true && metCoord == 0){
+    corr = 1.09883e+00+4.23750e-01*npv;
+  }
+  else if(year == 2018 && isData == true && metCoord == 1){
+    corr = -1.14832e+00+1.14040e-01*npv;
+  }
+  else if(year == 2018 && isData == false && metCoord == 0){
+    corr = -1.60410e-01+3.41247e-01*npv;
+  }
+  else if(year == 2018 && isData == false && metCoord == 1){
+    corr = 2.05019e-01+1.37506e-01*npv;
+  }
+  else {
+    printf("WRONG CHOICE!\n");
+  }
+
+  return corr;
 }

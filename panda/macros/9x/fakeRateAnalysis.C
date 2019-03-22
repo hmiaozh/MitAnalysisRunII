@@ -42,8 +42,8 @@ int year, int nbjets = 0
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(0);
-    infileName_.push_back(Form("%sWWinc.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
-    //infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	           infileCat_.push_back(1);
+    //infileName_.push_back(Form("%sWWinc.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
+    infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	           infileCat_.push_back(1);
     //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	           infileCat_.push_back(1);
     infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		 infileCat_.push_back(1);
     infileName_.push_back(Form("%sTT1L.root" ,filesPath.Data()));		 infileCat_.push_back(1);
@@ -236,9 +236,15 @@ int year, int nbjets = 0
 
       bool passMllSel = false;
       TLorentzVector vMet;
-      if     (year == 2016) vMet.SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
-      else if(year == 2017) vMet.SetPtEtaPhiM(thePandaFlat.puppimet,0.0,thePandaFlat.puppimetphi,0.0);
-      else if(year == 2018) vMet.SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
+      if     (year == 2016 || year == 2018) {
+        vMet    .SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
+      } 
+      else if(year == 2017){
+        vMet    .SetPtEtaPhiM(thePandaFlat.puppimet,0.0,thePandaFlat.puppimetphi,0.0);
+      }
+      //vMet    .SetPx(vMet    .Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
+      //vMet    .SetPy(vMet    .Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
+
       if(thePandaFlat.nLooseLep == 2) {
         passMllSel = TMath::Abs((vLoose1+vLoose2).M()-91.1876) < 15 && lepType <= 1;
       }
