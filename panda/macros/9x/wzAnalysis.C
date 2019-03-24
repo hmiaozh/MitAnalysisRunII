@@ -22,7 +22,7 @@ enum systType                     {JESUP=0, JESDOWN,  METUP,  METDOWN, nSystType
 TString systTypeName[nSystTypes]= {"JESUP","JESDOWN","METUP","METDOWN"};
 
 void wzAnalysis(
-int year, TString WZName = "default"
+int year, bool isDesk014 = false, TString WZName = "default"
 ){
   int nTypeLepSel[2] = {-1, -1};
   int whichYear = -1;
@@ -34,6 +34,9 @@ int year, TString WZName = "default"
   //else if(year == 2018) {whichYear = Y2018; nTypeLepSel[0] =  2; nTypeLepSel[1] = 0;}
   else {printf("Wrong year (%d)!\n",year); return;}
 
+  TString inputFolder = "/data/t3home000";
+  if(isDesk014 == true) inputFolder = "/local";
+
   //*******************************************************
   //Inputs
   //*******************************************************
@@ -43,11 +46,14 @@ int year, TString WZName = "default"
   TString filesPath;
   TString fLepton_FakesName = Form("MitAnalysisRunII/data/90x/histoFakeEtaPt_%d.root",year);
   TString puPath;
+  TString photonSFPath;
+  TString elephoSFPath = Form("MitAnalysisRunII/data/90x/histoDY0LGSF_%d.root",year);
   TString effSFPath = Form("MitAnalysisRunII/data/90x/histoDY0EffSFStudy_%d.root",year);
   //TString npvPath = Form("MitAnalysisRunII/data/90x/npvWeights_%d.root",year);
   if    (year == 2018) {
-    filesPath = "/data/t3home000/ceballos/panda/v_006_1/";
+    filesPath = Form("%s/ceballos/panda/v_006_1/",inputFolder.Data());
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
+    photonSFPath = "MitAnalysisRunII/data/90x/2018_PhotonsMedium.root";
 
     if(WZName == "default"){
       infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	             infileCat_.push_back(kPlotData);
@@ -85,8 +91,9 @@ int year, TString WZName = "default"
     }
   }
   else if(year == 2017) {
-    filesPath = "/data/t3home000/ceballos/panda/v_004_1/";
+    filesPath = Form("%s/ceballos/panda/v_004_1/",inputFolder.Data());
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
+    photonSFPath = "MitAnalysisRunII/data/90x/egammaEffi.txt_EGM2D_runBCDEF_passingMedium94X.root";
 
     if(WZName == "default"){
       infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	             infileCat_.push_back(kPlotData);
@@ -126,8 +133,9 @@ int year, TString WZName = "default"
     }
   }
   else if(year == 2016) {
-    filesPath = "/data/t3home000/ceballos/panda/v_002_1/";
+    filesPath = Form("%s/ceballos/panda/v_002_1/",inputFolder.Data());
     puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
+    photonSFPath = "MitAnalysisRunII/data/80x/photon_scalefactors_37ifb.root";
 
     if(WZName == "WZ3l_powheg"){
       infileName_.push_back(Form("%sWZ.root" ,filesPath.Data()));                     infileCat_.push_back(kPlotWZ);
@@ -185,6 +193,16 @@ int year, TString WZName = "default"
   TH1D *fhDPUDown = (TH1D*)(fPUFile->Get("puWeightsDown")); assert(fhDPUDown); fhDPUDown->SetDirectory(0);
   delete fPUFile;
 
+  TFile *fPhotonSF = TFile::Open(photonSFPath.Data());
+  TH2D *fhDPhotonSF       = (TH2D*)(fPhotonSF->Get("EGamma_SF2D")); assert(fhDPhotonSF); fhDPhotonSF->SetDirectory(0);
+  TH2D *fhDElectronVetoSF = (TH2D*)(fPhotonSF->Get("Scaling_Factors_HasPix_R9 Inclusive")); assert(fhDElectronVetoSF); fhDElectronVetoSF->SetDirectory(0);
+  delete fPhotonSF;
+
+  TFile *fElePhoSF = TFile::Open(elephoSFPath.Data());
+  TH2D *fhDElePhoSF    = (TH2D*)(fElePhoSF->Get("histoLGSF"));    assert(fhDElePhoSF);    fhDElePhoSF  ->SetDirectory(0);
+  TH2D *fhDElePhoEffda = (TH2D*)(fElePhoSF->Get("histoLGEffda")); assert(fhDElePhoEffda); fhDElePhoEffda->SetDirectory(0);
+  delete fElePhoSF;
+
   //TFile *fNPVFile = TFile::Open(Form("%s",npvPath.Data()));
   //TH1D *fhDNPV    = (TH1D*)(fNPVFile->Get("npvWeights"));   assert(fhDNPV);    fhDNPV	->SetDirectory(0);
   //delete fNPVFile;
@@ -194,7 +212,7 @@ int year, TString WZName = "default"
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 79;
+  const int allPlots = 82;
   TH1D* histo[allPlots][nPlotCategories];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     if     (thePlot >=  0 && thePlot <=  9) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 100;}
@@ -205,6 +223,9 @@ int year, TString WZName = "default"
     else if(thePlot >= 71 && thePlot <= 71) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 1.0;}
     else if(thePlot >= 72 && thePlot <= 72) {nBinPlot =  30; xminPlot =  0.0; xmaxPlot = 3.0;}
     else if(thePlot >= 73 && thePlot <= 77) {nBinPlot =  12; xminPlot = -0.5; xmaxPlot =11.5;}
+    else if(thePlot >= 78 && thePlot <= 78) {nBinPlot =  20; xminPlot = 25.0; xmaxPlot = 125.0;}
+    else if(thePlot >= 79 && thePlot <= 79) {nBinPlot =  10; xminPlot =  0.0; xmaxPlot = 2.5;}
+    else if(thePlot >= 80 && thePlot <= 80) {nBinPlot =  20; xminPlot =  0.0; xmaxPlot = 200;}
     if(thePlot == allPlots-1) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMVA, xbins);
     else                      for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinPlot, xminPlot, xmaxPlot);
   }
@@ -362,6 +383,13 @@ int year, TString WZName = "default"
       else if(abs(looseLepPdgId[1])==13 && abs(looseLepPdgId[2])==13) {lepType = 2; muSFUnc = 1.015*1.015; elSFUnc = 1.015;}
       else {printf("Impossible dilepton combination: %d %d %d\n",looseLepPdgId[0],looseLepPdgId[1],looseLepPdgId[2]); continue;}
 
+      bool passPhoSel = thePandaFlat.loosePho1Pt > 25 && TMath::Abs(thePandaFlat.loosePho1Eta) < 2.5
+             && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium 
+	     && (thePandaFlat.loosePho1SelBit & pCsafeVeto) == pCsafeVeto 
+	     && (thePandaFlat.loosePho1SelBit & pPixelVeto) == pPixelVeto;
+      TLorentzVector vPhoton;
+      if(passPhoSel == true) vPhoton.SetPtEtaPhiM(thePandaFlat.loosePho1Pt, thePandaFlat.loosePho1Eta, thePandaFlat.loosePho1Phi, 0);
+
       double mllZ = 10000; double mllmin = 10000;
       TLorentzVector vLoose1,vLoose2,vLoose3;
       TLorentzVector vZl1,vZl2,vWln;
@@ -478,6 +506,7 @@ int year, TString WZName = "default"
       bool passEvolSel[12] = {passSel[2], passSel[0], passSel[5], passPTLL, passSel[1], passSel[3], passMET, passSel[4], passNjets, passPTFrac, passDPhiZMET, passDRLL};
       bool passWZSel  = passSel[0] && passSel[1] && passSel[2] && passSel[3] && passSel[4] &&  passSel[5];
       bool passTopSel = passSel[0] && passSel[1] && passSel[2]               && passSel[4] && !passSel[5];
+      bool passWZGSel = passWZSel && passPhoSel == true;
       bool passAllButOneSel[6] = {
                       passSel[1] && passSel[2] && passSel[3] && passSel[4] && passSel[5],
         passSel[0] &&               passSel[2] && passSel[3] && passSel[4] && passSel[5],
@@ -497,7 +526,7 @@ int year, TString WZName = "default"
       passWZSel && passNjets     && passMET     && passPTFrac      && passDPhiZMET     && passPTLL && passDRLL
                                     };
 
-      double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0; double sf_l1PrefireE = 1.0;
+      double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0; double sf_l1PrefireE = 1.0; double photonSF = 1.0;
       if(theCategory != kPlotData){
 	puWeight     = nPUScaleFactor(fhDPU,    thePandaFlat.pu);
         puWeightUp   = nPUScaleFactor(fhDPUUp,  thePandaFlat.pu);
@@ -512,6 +541,20 @@ int year, TString WZName = "default"
 
         if     (infileCat_[ifile] == kPlotWZ)                                                totalWeight = totalWeight * thePandaFlat.sf_wz;
 	else if(infileCat_[ifile] == kPlotZZ && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;
+
+	if(passPhoSel == true) {
+          if     (thePandaFlat.looseGenPho1PdgId == 1) {
+	    int nxbin = fhDElePhoSF->GetXaxis()->FindBin(TMath::Abs(vPhoton.Eta()));
+	    int nybin = fhDElePhoSF->GetYaxis()->FindBin(TMath::Min((double)vPhoton.Pt(), 124.999));
+            photonSF = fhDElePhoSF->GetBinContent(nxbin, nybin);
+	  }
+          else if(thePandaFlat.looseGenPho1PdgId == 3) {
+            photonSF = effhDPhotonScaleFactor(vPhoton.Pt(), vPhoton.Eta(), "medium", fhDPhotonSF, fhDElectronVetoSF);
+	  }
+          else  {
+            photonSF = 1.0;
+	  }
+	}
 
         double effSF = 1.0;
         for(unsigned int nl=0; nl<idLep.size(); nl++){
@@ -565,6 +608,9 @@ int year, TString WZName = "default"
         passCutEvolAll = passCutEvolAll && passEvolSel[i]; 
 	if(passCutEvolAll) {histo[lepType+73][theCategory]->Fill((double)i,totalWeight); histo[77][theCategory]->Fill((double)i,totalWeight);}
       }
+      if(passWZGSel) histo[78][theCategory]->Fill(TMath::Min(vPhoton.Pt(),124.999),totalWeight*photonSF);
+      if(passWZGSel) histo[79][theCategory]->Fill(TMath::Abs(vPhoton.Eta()),totalWeight*photonSF);
+      if(passWZGSel) histo[80][theCategory]->Fill(TMath::Min((vWln+vPhoton).M(),199.999),totalWeight*photonSF);
 
       double MVAVar = TMath::Min(vMetZXLike.Pt(),xbins[nBinMVA]-0.0001); double MVAVarUp = TMath::Min(vMetZXLikeUp.Pt(),xbins[nBinMVA]-0.0001); double MVAVarDown = TMath::Min(vMetZXLikeDown.Pt(),xbins[nBinMVA]-0.0001);
       if(1){

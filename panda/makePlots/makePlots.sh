@@ -20,6 +20,9 @@ if [ $NSEL == 'wz' ]; then
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"Emulated E_{T}^{miss}","GeV","done_ana/histoWZ_'${YEAR}'_64.root","wz_zxliketight_met",0,'${YEAR}',"",1,0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,5,"Emulated E_{T}^{miss}","GeV","done_ana/histoWZ_'${YEAR}'_69.root","wz_zxlikeloose_met",0,'${YEAR}',"",1,0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"Cut evolution","","done_ana/histoWZ_'${YEAR}'_77.root","wz_cutevol",0,'${YEAR}',"",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"p_{T}^{#gamma}","GeV","done_ana/histoWZ_'${YEAR}'_78.root","wzgsel_ptg",0,'${YEAR}',"",1,0,"WZ#gamma region",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"|#eta^{#gamma}","","done_ana/histoWZ_'${YEAR}'_79.root","wzgsel_etag",0,'${YEAR}',"",1,0,"WZ#gamma region",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,1,"m_{l#gamma}","GeV","done_ana/histoWZ_'${YEAR}'_80.root","wzgsel_mlg",0,'${YEAR}',"",1,0,"",1,'${APPLYSCALING}')';
 
 elif [ $NSEL == 'zz' ]; then
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot.C+'(0,10,"m_{ll}","GeV", "done_ana/histoZZ_'${YEAR}'_4.root","zz_mllmin",0,'${YEAR}',"",1,0,"",1,'${APPLYSCALING}')';

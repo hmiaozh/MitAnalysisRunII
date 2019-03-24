@@ -22,13 +22,16 @@ enum systType                     {JESUP=0, JESDOWN,  METUP,  METDOWN, nSystType
 TString systTypeName[nSystTypes]= {"JESUP","JESDOWN","METUP","METDOWN"};
 
 void zzAnalysis(
-int year
+int year, bool isDesk014 = false
 ){
   int whichYear = -1;
   if     (year == 2016) whichYear = Y2016;
   else if(year == 2017) whichYear = Y2017;
   else if(year == 2018) whichYear = Y2018;
   else {printf("Wrong year (%d)!\n",year); return;}
+
+  TString inputFolder = "/data/t3home000";
+  if(isDesk014 == true) inputFolder = "/local";
 
   //*******************************************************
   //Inputs
@@ -42,7 +45,7 @@ int year
   TString effSFPath = Form("MitAnalysisRunII/data/90x/histoDY0EffSFStudy_%d.root",year);
   //TString npvPath = Form("MitAnalysisRunII/data/90x/npvWeights_%d.root",year);
   if    (year == 2018) {
-    filesPath = "/data/t3home000/ceballos/panda/v_006_1/";
+    filesPath = Form("%s/ceballos/panda/v_006_1/",inputFolder.Data());
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	           infileCat_.push_back(kPlotData);
@@ -66,7 +69,7 @@ int year
     infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	           infileCat_.push_back(kPlotHiggs);
   }
   else if(year == 2017) {
-    filesPath = "/data/t3home000/ceballos/panda/v_004_1/";
+    filesPath = Form("%s/ceballos/panda/v_004_1/",inputFolder.Data());
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	           infileCat_.push_back(kPlotData);
@@ -89,7 +92,7 @@ int year
     infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	           infileCat_.push_back(kPlotHiggs);
   }
   else if(year == 2016) {
-    filesPath = "/data/t3home000/ceballos/panda/v_002_1/";
+    filesPath = Form("%s/ceballos/panda/v_002_1/",inputFolder.Data());
     puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	            infileCat_.push_back(kPlotData);

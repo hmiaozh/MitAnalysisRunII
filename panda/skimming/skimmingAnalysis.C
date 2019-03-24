@@ -61,7 +61,6 @@ void skimmingAnalysis(int year)
   infileName_.push_back(Form("WGstar.root"));
   infileName_.push_back(Form("WJets.root"));
   infileName_.push_back(Form("WWdps.root"));
-  infileName_.push_back(Form("WWinc.root"));
   infileName_.push_back(Form("WZ.root"));
   infileName_.push_back(Form("WZ3l_MG_EWK.root"));
   infileName_.push_back(Form("WZ3l_MG_QCD.root"));

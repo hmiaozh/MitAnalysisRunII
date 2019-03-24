@@ -29,12 +29,12 @@ elif [ $NSEL == 4 ]; then
   root -q -l -b MitAnalysisRunII/panda/macros/9x/zzAnalysis.C+
   root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+
   root -q -l -b MitAnalysisRunII/panda/macros/9x/zhgAnalysis.C+
-  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/wwAnalysis.C+'('${YEAR}')'     >& log_ww_${YEAR} &
-  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/sswwAnalysis.C+'('${YEAR}')'   >& log_ssww_${YEAR} &
-  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/sswwAnalysis.C+'('${YEAR}',1)' >& log_ssww_fid_${YEAR} &
-  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/wzAnalysis.C+'('${YEAR}')'     >& log_wz_${YEAR} &
-  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zzAnalysis.C+'('${YEAR}')'     >& log_zz_${YEAR} &
-  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}')'     >& log_zh_${YEAR} &
-  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhgAnalysis.C+'('${YEAR}')'    >& log_zhg_${YEAR} &
+  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/wwAnalysis.C+'('${YEAR}')'       >& log_ww_${YEAR} &
+  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/sswwAnalysis.C+'('${YEAR}',1)'   >& log_ssww_${YEAR} &
+  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/sswwAnalysis.C+'('${YEAR}',1,1)' >& log_ssww_fid_${YEAR} &
+  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/wzAnalysis.C+'('${YEAR}',1)'     >& log_wz_${YEAR} &
+  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zzAnalysis.C+'('${YEAR}',1)'     >& log_zz_${YEAR} &
+  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1)'     >& log_zh_${YEAR} &
+  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhgAnalysis.C+'('${YEAR}',1)'    >& log_zhg_${YEAR} &
 
 fi

@@ -23,7 +23,7 @@ enum systType                     {JESUP=0, JESDOWN,  METUP,  METDOWN, nSystType
 TString systTypeName[nSystTypes]= {"JESUP","JESDOWN","METUP","METDOWN"};
 
 void sswwAnalysis(
-int year, int fidAna = 0, TString WZName = "WZ3l_MG"
+int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 ){
   int nTypeLepSel[2] = {-1, -1};
   int whichYear = -1;
@@ -34,6 +34,9 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
 
   TString fidAnaName = "";
   if(fidAna == 1) fidAnaName = "_fiducial";
+
+  TString inputFolder = "/data/t3home000";
+  if(isDesk014 == true) inputFolder = "/local";
 
   //*******************************************************
   //Inputs
@@ -59,7 +62,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
   TString effSFPath = Form("MitAnalysisRunII/data/90x/histoDY0EffSFStudy_%d.root",year);
   //TString npvPath = Form("MitAnalysisRunII/data/90x/npvWeights_%d.root",year);
   if     (year == 2018) {
-    filesPath = "/data/t3home000/ceballos/panda/v_006_1/";
+    filesPath = Form("%s/ceballos/panda/v_006_1/",inputFolder.Data());
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
 
     if     (1){
@@ -95,7 +98,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
     }
   }
   else if(year == 2017) {
-    filesPath = "/data/t3home000/ceballos/panda/v_004_1/";
+    filesPath = Form("%s/ceballos/panda/v_004_1/",inputFolder.Data());
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
 
     if     (WZName == "WZ3l_MG"){
@@ -145,7 +148,7 @@ int year, int fidAna = 0, TString WZName = "WZ3l_MG"
     }
   }
   else if(year == 2016) {
-    filesPath = "/data/t3home000/ceballos/panda/v_002_1/";
+    filesPath = Form("%s/ceballos/panda/v_002_1/",inputFolder.Data());
     puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
 
     if     (WZName == "WZ3l_MG"){

@@ -85,6 +85,8 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   myPlot.setHiggsLabel(higgsLabel.Data());
   myPlot.setUnits(units);
 
+  double totalSystUnc = 0.0;
+  double totalStatUnc = 0.0;
   double SF_yield[nPlotCategories]; 
   double SF_yield_unc[nPlotCategories];
   TFile *mlfit=0;
@@ -122,20 +124,32 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
 	       ((TH1F*)mlfit->Get(Form("shapes_prefit/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetSumOfWeights());
       }
       _hist[ic]->Scale(SF_yield[ic]);
+      totalSystUnc = totalSystUnc + TMath::Power(_hist[ic]->GetSumOfWeights()*SF_yield_unc[ic],2);
       for(int i=1; i<=_hist[ic]->GetNbinsX(); i++){
+        totalStatUnc = totalStatUnc + TMath::Power(_hist[ic]->GetBinError(i)*SF_yield[ic],2);
         //_hist[ic]->SetBinContent(i,_hist[ic]->GetBinContent(i)*SF_yield[ic]);
         _hist[ic]->SetBinError(i,TMath::Sqrt(TMath::Power(_hist[ic]->GetBinError(i)*SF_yield[ic],2)+TMath::Power(_hist[ic]->GetBinContent(i)*SF_yield_unc[ic],2)));
       }
     } // mltFit result
 
     if(ic == kPlotDY) _hist[ic]->Scale(lumi);
-    if(ic != kPlotData && ic != kPlotBSM) hBck->Add(_hist[ic]);
+
+    if(ic != kPlotData && ic != kPlotBSM) {
+      hBck->Add(_hist[ic]);
+      if(mlfitResult==""){
+        for(int i=1; i<=_hist[ic]->GetNbinsX(); i++){
+          totalStatUnc = totalStatUnc + TMath::Power(_hist[ic]->GetBinError(i),2);
+        }
+      }
+    }
 
     if(_hist[ic]->GetSumOfWeights() > 0) myPlot.setMCHist(ic, _hist[ic]);
   }
   if(hBck->GetSumOfWeights() == 0) return;
   double scale = hData->GetSumOfWeights()/hBck->GetSumOfWeights();
-  printf("data/bck: %f / %f = %f\n",hData->GetSumOfWeights(),hBck->GetSumOfWeights(),scale);
+  double daUnc = 1.0; if(hData->GetSumOfWeights() > 0) daUnc = 1/hData->GetSumOfWeights();
+  double mcUnc = (totalStatUnc+totalSystUnc)/hBck->GetSumOfWeights()/hBck->GetSumOfWeights();
+  printf("data/bck: %f / %f +/- %f/%f/%f = %f +/- %f\n",hData->GetSumOfWeights(),hBck->GetSumOfWeights(),TMath::Sqrt(totalStatUnc),TMath::Sqrt(totalSystUnc),TMath::Sqrt(totalStatUnc+totalSystUnc),scale,TMath::Sqrt(daUnc+mcUnc)*scale);
   if(applyScaling == true) hBck->Scale(scale);
 
   for(int ic=0; ic<nPlotCategories; ic++){
@@ -271,7 +285,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
     myOutputFile = Form("plots/%s.pdf",outputName.Data());
     c1->SaveAs(myOutputFile.Data());
     myOutputFile = Form("plots/%s.root",outputName.Data());
-    c1->SaveAs(myOutputFile.Data());
+    //c1->SaveAs(myOutputFile.Data());
   }
 
   bool computePU = false;
