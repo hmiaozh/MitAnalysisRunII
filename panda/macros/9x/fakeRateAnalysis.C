@@ -174,7 +174,7 @@ int year, int nbjets = 0
 
       if(thePandaFlat.metFilter == 0) continue;
 
-      vector<float>  looseLepPt,looseLepEta,looseLepPhi,looseLepSF;
+      vector<float>  looseLepPt,looseLepEta,looseLepPhi,looseLepSF,looseLepIso;
       vector<int> looseLepSelBit,looseLepPdgId,looseLepTripleCharge,looseLepMissingHits;
       for(int i=0; i<thePandaFlat.nLooseMuon; i++){
         looseLepPt.push_back(thePandaFlat.muonPt[i]);
@@ -185,6 +185,7 @@ int year, int nbjets = 0
         looseLepPdgId.push_back(thePandaFlat.muonPdgId[i]);
         looseLepTripleCharge.push_back(1);
         looseLepMissingHits.push_back(0);
+        looseLepIso.push_back(thePandaFlat.muonCombIso[i]);
       }
       for(int i=0; i<thePandaFlat.nLooseElectron; i++){
         looseLepPt.push_back(thePandaFlat.electronPt[i]);
@@ -195,6 +196,7 @@ int year, int nbjets = 0
         looseLepPdgId.push_back(thePandaFlat.electronPdgId[i]);
         looseLepTripleCharge.push_back(thePandaFlat.electronTripleCharge[i]);
         looseLepMissingHits.push_back(thePandaFlat.electronNMissingHits[i]);
+        looseLepIso.push_back(thePandaFlat.electronCombIso[i]);
       }
 
       if((int)looseLepPt.size() != thePandaFlat.nLooseLep) printf("IMPOSSIBLE\n");

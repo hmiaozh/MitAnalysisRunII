@@ -125,15 +125,6 @@ void makeSSWWDataCards(TString outputLimits = "ssww_comb_input.root", int fidAna
   }
   newcardShape << Form("\n");
 
-  newcardShape << Form("CMS_trigger    lnN     ");
-  for (int ic=0; ic<nPlotCategories; ic++){
-    if(!histo_Baseline[ic]) continue;
-    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-    else                     newcardShape << Form("%6.3f ",1.005);
-  }
-  newcardShape << Form("\n");
-
   newcardShape << Form("EWKWZCorr    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(!histo_Baseline[ic]) continue;
@@ -257,6 +248,15 @@ void makeSSWWDataCards(TString outputLimits = "ssww_comb_input.root", int fidAna
      newcardShape << Form("\n");
 
      newcardShape << Form("CMS_prefire_%d    shape     ",ny);
+     for (int ic=0; ic<nPlotCategories; ic++){
+       if(!histo_Baseline[ic]) continue;
+       if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+       if(ic == kPlotNonPrompt) newcardShape << Form("- ");
+       else                     newcardShape << Form("1.0 ");
+     }
+     newcardShape << Form("\n");
+
+     newcardShape << Form("CMS_trigger_%d    shape     ",ny);
      for (int ic=0; ic<nPlotCategories; ic++){
        if(!histo_Baseline[ic]) continue;
        if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;

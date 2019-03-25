@@ -233,6 +233,8 @@ int year, bool isDesk014 = false, bool isBlinded = false
   TH1D *histo_JESBoundingDown[nYears][nPlotCategories];
   TH1D *histo_PreFireBoundingUp[nYears][nPlotCategories];
   TH1D *histo_PreFireBoundingDown[nYears][nPlotCategories];
+  TH1D *histo_TriggerBoundingUp[nYears][nPlotCategories];
+  TH1D *histo_TriggerBoundingDown[nYears][nPlotCategories];
   TH1D *histo_EWKCorrWZUp[nPlotCategories];
   TH1D *histo_EWKCorrWZDown[nPlotCategories];
   TH1D *histo_EWKqqZZCorrUp[nPlotCategories];
@@ -268,6 +270,8 @@ int year, bool isDesk014 = false, bool isBlinded = false
     histo_JESBoundingDown    [ny][ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_jes_%dDown"	   , plotBaseNames[ic].Data(),2016+ny));
     histo_PreFireBoundingUp  [ny][ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_prefire_%dUp"   , plotBaseNames[ic].Data(),2016+ny));
     histo_PreFireBoundingDown[ny][ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_prefire_%dDown" , plotBaseNames[ic].Data(),2016+ny));
+    histo_TriggerBoundingUp  [ny][ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_trigger_%dUp"   , plotBaseNames[ic].Data(),2016+ny));
+    histo_TriggerBoundingDown[ny][ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_trigger_%dDown" , plotBaseNames[ic].Data(),2016+ny));
     }
     histo_EWKCorrWZUp		[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_EWKWZCorrUp"        , plotBaseNames[ic].Data()));
     histo_EWKCorrWZDown 	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_EWKWZCorrDown"      , plotBaseNames[ic].Data()));
@@ -317,7 +321,7 @@ int year, bool isDesk014 = false, bool isBlinded = false
 
       if(thePandaFlat.nLooseLep != 2) continue;
 
-      vector<float>  looseLepPt,looseLepEta,looseLepPhi,looseLepSF;
+      vector<float>  looseLepPt,looseLepEta,looseLepPhi,looseLepSF,looseLepIso;
       vector<int> looseLepSelBit,looseLepPdgId;
       int ptSelCuts[3] = {0,0,0};
       for(int i=0; i<thePandaFlat.nLooseMuon; i++){
@@ -327,6 +331,7 @@ int year, bool isDesk014 = false, bool isBlinded = false
         looseLepSF.push_back(thePandaFlat.muonSfReco[i] * thePandaFlat.muonSfTight[i]);
         looseLepSelBit.push_back(thePandaFlat.muonSelBit[i]);
         looseLepPdgId.push_back(thePandaFlat.muonPdgId[i]);
+        looseLepIso.push_back(thePandaFlat.muonCombIso[i]);
 	if(thePandaFlat.muonPt[i] > 25) ptSelCuts[0]++;
 	if(thePandaFlat.muonPt[i] > 20) ptSelCuts[1]++;
 	if(thePandaFlat.muonPt[i] > 10) ptSelCuts[2]++;
@@ -338,6 +343,7 @@ int year, bool isDesk014 = false, bool isBlinded = false
         looseLepSF.push_back(thePandaFlat.electronSfReco[i] * thePandaFlat.electronSfMedium[i]);
         looseLepSelBit.push_back(thePandaFlat.electronSelBit[i]);
         looseLepPdgId.push_back(thePandaFlat.electronPdgId[i]);
+        looseLepIso.push_back(thePandaFlat.electronCombIso[i]);
 	if(thePandaFlat.electronPt[i] > 25) ptSelCuts[0]++;
 	if(thePandaFlat.electronPt[i] > 20) ptSelCuts[1]++;
 	if(thePandaFlat.electronPt[i] > 10) ptSelCuts[2]++;
@@ -512,8 +518,8 @@ int year, bool isDesk014 = false, bool isBlinded = false
 
       double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0; double sf_l1PrefireE = 1.0;
       double sf_EWKZH = 1.0; double sf_EWKZHUp = 1.0; double sf_EWKZHDown = 1.0;
+      double triggerWeights[2] = {1.0, 0.0};
       if(theCategory != kPlotData){
-        double triggerWeights[2] = {1.0, 0.0};
 	trigger_sf(triggerWeights,thePandaFlat.nLooseLep,
 	trgSFMMBB,trgSFMMEB,trgSFMMBE,trgSFMMEE,trgSFEEBB,trgSFEEEB,trgSFEEBE,trgSFEEEE,
 	trgSFMEBB,trgSFMEEB,trgSFMEBE,trgSFMEEE,trgSFEMBB,trgSFEMEB,trgSFEMBE,trgSFEMEE,
@@ -699,6 +705,8 @@ int year, bool isDesk014 = false, bool isBlinded = false
                 histo_BTAGLBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MDown/thePandaFlat.sf_btag0);
                 histo_PreFireBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight*sf_l1PrefireE);
                 histo_PreFireBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight/sf_l1PrefireE);
+                histo_TriggerBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight*(1+triggerWeights[1]));
+                histo_TriggerBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight/(1+triggerWeights[1]));
               } else {
                 histo_BTAGBBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight);
                 histo_BTAGBBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight);
@@ -706,6 +714,8 @@ int year, bool isDesk014 = false, bool isBlinded = false
                 histo_BTAGLBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight);
                 histo_PreFireBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight);
                 histo_PreFireBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight);		
+                histo_TriggerBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight);
+                histo_TriggerBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight);
 	      }
 	    }
 	    histo_EWKCorrWZUp  [theCategory]->Fill(MVAVar,totalWeight*sf_ewkcorrwz_unc);
@@ -785,6 +795,8 @@ int year, bool isDesk014 = false, bool isBlinded = false
       histo_JESBoundingDown    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingDown    [ny][ic]->GetBinContent(nb),1e-7f));
       histo_PreFireBoundingUp  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingUp  [ny][ic]->GetBinContent(nb),1e-7f));
       histo_PreFireBoundingDown[ny][ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingDown[ny][ic]->GetBinContent(nb),1e-7f));
+      histo_TriggerBoundingUp  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_TriggerBoundingUp  [ny][ic]->GetBinContent(nb),1e-7f));
+      histo_TriggerBoundingDown[ny][ic]->SetBinContent(nb, TMath::Max((float)histo_TriggerBoundingDown[ny][ic]->GetBinContent(nb),1e-7f));
       }
       histo_EWKCorrWZUp 	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKCorrWZUp		[ic]->GetBinContent(nb),1e-7f));
       histo_EWKCorrWZDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKCorrWZDown 	[ic]->GetBinContent(nb),1e-7f));
@@ -808,12 +820,12 @@ int year, bool isDesk014 = false, bool isBlinded = false
   histo_DYNorm1jetUp  ->Add(histo_Baseline[kPlotDY]);
   histo_DYNorm1jetDown->Add(histo_Baseline[kPlotDY]);
   for(int i=13; i<=24; i++) {
-    histo_DYNorm1jetUp  ->SetBinContent(i,histo_DYNorm1jetUp  ->GetBinContent(i)*2.0);
-    histo_DYNorm1jetDown->SetBinContent(i,histo_DYNorm1jetDown->GetBinContent(i)/2.0);
+    histo_DYNorm1jetUp  ->SetBinContent(i,histo_DYNorm1jetUp  ->GetBinContent(i)*10.0);
+    histo_DYNorm1jetDown->SetBinContent(i,histo_DYNorm1jetDown->GetBinContent(i)/10.0);
   }
   for(int i=32; i<=38; i++) {
-    histo_DYNorm1jetUp  ->SetBinContent(i,histo_DYNorm1jetUp  ->GetBinContent(i)*2.0);
-    histo_DYNorm1jetDown->SetBinContent(i,histo_DYNorm1jetDown->GetBinContent(i)/2.0);
+    histo_DYNorm1jetUp  ->SetBinContent(i,histo_DYNorm1jetUp  ->GetBinContent(i)*10.0);
+    histo_DYNorm1jetDown->SetBinContent(i,histo_DYNorm1jetDown->GetBinContent(i)/10.0);
   }
 
   if(showSyst == true){
@@ -941,6 +953,19 @@ int year, bool isDesk014 = false, bool isBlinded = false
            printf("%10s: ",plotBaseNames[ic].Data());
           for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_PreFireBoundingDown[ny][ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
       }
+
+      printf("uncertainties TriggerUp\n");
+      for(unsigned ic=0; ic<nPlotCategories; ic++) {
+	if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+           printf("%10s: ",plotBaseNames[ic].Data());
+          for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_TriggerBoundingUp[ny][ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+      }
+      printf("uncertainties TriggerDown\n");
+      for(unsigned ic=0; ic<nPlotCategories; ic++) {
+	if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+           printf("%10s: ",plotBaseNames[ic].Data());
+          for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_TriggerBoundingDown[ny][ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+      }
       printf("---------\n");
     }
 
@@ -1039,6 +1064,8 @@ int year, bool isDesk014 = false, bool isBlinded = false
     histo_JESBoundingDown	[ny][ic]->Write();
     histo_PreFireBoundingUp 	[ny][ic]->Write();
     histo_PreFireBoundingDown	[ny][ic]->Write();
+    histo_TriggerBoundingUp 	[ny][ic]->Write();
+    histo_TriggerBoundingDown	[ny][ic]->Write();
     }
     histo_EWKCorrWZUp		[ic]->Write();
     histo_EWKCorrWZDown 	[ic]->Write();
@@ -1115,13 +1142,6 @@ int year, bool isDesk014 = false, bool isBlinded = false
   newcardShape << Form("\n");
 
   newcardShape << Form("CMS_momres_e    lnN     ");
-  for (int ic=0; ic<nPlotCategories; ic++){
-    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    newcardShape << Form("%6.3f ",1.005);
-  }
-  newcardShape << Form("\n");
-
-  newcardShape << Form("CMS_trigger    lnN     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
     newcardShape << Form("%6.3f ",1.005);
@@ -1268,6 +1288,14 @@ int year, bool isDesk014 = false, bool isBlinded = false
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
     newcardShape << Form("1.0 ");
+  }
+  newcardShape << Form("\n");
+
+  newcardShape << Form("CMS_trigger_%d    shape     ",year);
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
+    else                     newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 

@@ -102,14 +102,6 @@ void makeZHGDataCards(TString outputLimits = "zhg_comb_input.root"){
   }
   newcardShape << Form("\n");
 
-  newcardShape << Form("CMS_trigger    lnN     ");
-  for (int ic=0; ic<nPlotCategories; ic++){
-    if(!histo_Baseline[ic]) continue;
-    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    newcardShape << Form("%6.3f ",1.005);
-  }
-  newcardShape << Form("\n");
-
   newcardShape << Form("UEPS    lnN     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(!histo_Baseline[ic]) continue;
@@ -250,6 +242,15 @@ void makeZHGDataCards(TString outputLimits = "zhg_comb_input.root"){
       newcardShape << Form("1.0 ");
     }
     newcardShape << Form("\n");
+
+     newcardShape << Form("CMS_trigger_%d    shape     ",ny);
+     for (int ic=0; ic<nPlotCategories; ic++){
+       if(!histo_Baseline[ic]) continue;
+       if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+       if(ic == kPlotNonPrompt) newcardShape << Form("- ");
+       else                     newcardShape << Form("1.0 ");
+     }
+     newcardShape << Form("\n");
   }
 
   newcardShape << Form("CMS_eff_photon    shape     ");

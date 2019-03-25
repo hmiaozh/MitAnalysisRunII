@@ -30,7 +30,7 @@ elif [ $NSEL == 4 ]; then
   root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+
   root -q -l -b MitAnalysisRunII/panda/macros/9x/zhgAnalysis.C+
   nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/wwAnalysis.C+'('${YEAR}')'       >& log_ww_${YEAR} &
-  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/sswwAnalysis.C+'('${YEAR}',1)'   >& log_ssww_${YEAR} &
+  nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/sswwAnalysis.C+'('${YEAR}',0,1)' >& log_ssww_${YEAR} &
   nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/sswwAnalysis.C+'('${YEAR}',1,1)' >& log_ssww_fid_${YEAR} &
   nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/wzAnalysis.C+'('${YEAR}',1)'     >& log_wz_${YEAR} &
   nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zzAnalysis.C+'('${YEAR}',1)'     >& log_zz_${YEAR} &
