@@ -36,6 +36,21 @@ int year, bool isDesk014 = false
   //*******************************************************
   //Inputs
   //*******************************************************
+  double WSSF[nBinEtaCorr],WSSFE[nBinEtaCorr];
+  double muScaleCorr[nBinEtaCorr],elScaleCorr[nBinEtaCorr];
+  if     (year == 2016){
+    for(int i=0; i<nBinEtaCorr; i++) {WSSF[i] = WSSF_2016[i]; WSSFE[i] = WSSFE_2016[i]; muScaleCorr[i] = muScaleCorr_2016[i]; elScaleCorr[i] = elScaleCorr_2016[i];}
+  }
+  else if(year == 2017){
+    for(int i=0; i<nBinEtaCorr; i++) {WSSF[i] = WSSF_2017[i]; WSSFE[i] = WSSFE_2017[i]; muScaleCorr[i] = muScaleCorr_2017[i]; elScaleCorr[i] = elScaleCorr_2017[i];}
+  }
+  else if(year == 2018){
+    for(int i=0; i<nBinEtaCorr; i++) {WSSF[i] = WSSF_2018[i]; WSSFE[i] = WSSFE_2018[i]; muScaleCorr[i] = muScaleCorr_2018[i]; elScaleCorr[i] = elScaleCorr_2018[i];}
+  }
+
+  printf("muScale:\n");for(int i=0; i<nBinEtaCorr; i++) printf("%f,",muScaleCorr[i]); printf("\n");
+  printf("elScale:\n");for(int i=0; i<nBinEtaCorr; i++) printf("%f,",elScaleCorr[i]); printf("\n");
+
   vector<TString> infileName_;
   vector<int> infileCat_;
 
@@ -260,31 +275,43 @@ int year, bool isDesk014 = false
       if(thePandaFlat.nLooseLep != 4) continue;
 
       vector<float>  looseLepPt,looseLepEta,looseLepPhi,looseLepSF,looseLepIso;
-      vector<int> looseLepSelBit,looseLepPdgId;
+      vector<int> looseLepSelBit,looseLepPdgId,looseLepTripleCharge,looseLepMissingHits;
       int ptSelCuts[3] = {0,0,0};
       for(int i=0; i<thePandaFlat.nLooseMuon; i++){
+        int nBinEtaCorr = histoEtaCorr->GetXaxis()->FindBin(TMath::Min((double)TMath::Abs(thePandaFlat.muonEta[i]),2.4999))-1;
+        if(infileCat_[ifile]==kPlotData)
         looseLepPt.push_back(thePandaFlat.muonPt[i]);
+        else
+        looseLepPt.push_back(thePandaFlat.muonPt[i] * muScaleCorr[nBinEtaCorr]);
         looseLepEta.push_back(thePandaFlat.muonEta[i]);
         looseLepPhi.push_back(thePandaFlat.muonPhi[i]);
         looseLepSF.push_back(thePandaFlat.muonSfReco[i] * thePandaFlat.muonSfTight[i]);
         looseLepSelBit.push_back(thePandaFlat.muonSelBit[i]);
         looseLepPdgId.push_back(thePandaFlat.muonPdgId[i]);
+        looseLepTripleCharge.push_back(1);
+        looseLepMissingHits.push_back(0);
         looseLepIso.push_back(thePandaFlat.muonCombIso[i]);
-	if(thePandaFlat.muonPt[i] > 25) ptSelCuts[0]++;
-	if(thePandaFlat.muonPt[i] > 20) ptSelCuts[1]++;
-	if(thePandaFlat.muonPt[i] > 10) ptSelCuts[2]++;
+	if(looseLepPt[looseLepPt.size()-1] > 25) ptSelCuts[0]++;
+	if(looseLepPt[looseLepPt.size()-1] > 20) ptSelCuts[1]++;
+	if(looseLepPt[looseLepPt.size()-1] > 10) ptSelCuts[2]++;
       }
       for(int i=0; i<thePandaFlat.nLooseElectron; i++){
+        int nBinEtaCorr = histoEtaCorr->GetXaxis()->FindBin(TMath::Min((double)TMath::Abs(thePandaFlat.electronEta[i]),2.4999))-1;
+        if(infileCat_[ifile]==kPlotData)
         looseLepPt.push_back(thePandaFlat.electronPt[i]);
+        else
+        looseLepPt.push_back(thePandaFlat.electronPt[i] * elScaleCorr[nBinEtaCorr]);
         looseLepEta.push_back(thePandaFlat.electronEta[i]);
         looseLepPhi.push_back(thePandaFlat.electronPhi[i]);
-        looseLepSF.push_back(thePandaFlat.electronSfReco[i] * thePandaFlat.electronSfTight[i]);
         looseLepSelBit.push_back(thePandaFlat.electronSelBit[i]);
+        looseLepSF.push_back(thePandaFlat.electronSfReco[i] * thePandaFlat.electronSfMedium[i]);
         looseLepPdgId.push_back(thePandaFlat.electronPdgId[i]);
+        looseLepTripleCharge.push_back(thePandaFlat.electronTripleCharge[i]);
+        looseLepMissingHits.push_back(thePandaFlat.electronNMissingHits[i]);
         looseLepIso.push_back(thePandaFlat.electronCombIso[i]);
-	if(thePandaFlat.electronPt[i] > 25) ptSelCuts[0]++;
-	if(thePandaFlat.electronPt[i] > 20) ptSelCuts[1]++;
-	if(thePandaFlat.electronPt[i] > 10) ptSelCuts[2]++;
+	if(looseLepPt[looseLepPt.size()-1] > 25) ptSelCuts[0]++;
+	if(looseLepPt[looseLepPt.size()-1] > 20) ptSelCuts[1]++;
+	if(looseLepPt[looseLepPt.size()-1] > 10) ptSelCuts[2]++;
       }
 
       if((int)looseLepPt.size() != thePandaFlat.nLooseLep) printf("IMPOSSIBLE\n");
@@ -300,6 +327,7 @@ int year, bool isDesk014 = false
       bool passLooseLepId = ((looseLepSelBit[0] & kFake) == kFake) && ((looseLepSelBit[1] & kFake) == kFake) && ((looseLepSelBit[2] & kFake) == kFake) && ((looseLepSelBit[3] & kFake) == kFake);
       if(passLooseLepId == false && usePureMC == false) continue;
 
+      vector<TLorentzVector> vLoose;
       vector<int> idLep;
       unsigned int countLeptonTight = 0;
       for(int i=0; i<thePandaFlat.nLooseLep; i++) {
@@ -307,6 +335,11 @@ int year, bool isDesk014 = false
         if     (abs(looseLepPdgId[i])==13 && (looseLepSelBit[i] & kTight)  == kTight  && (looseLepSelBit[i] & kDxyz)  == kDxyz) idLep[i] = 1;
         else if(abs(looseLepPdgId[i])==11 && (looseLepSelBit[i] & kMedium) == kMedium) idLep[i] = 1;
 	countLeptonTight = countLeptonTight + (idLep[i] > 0);
+
+        double thePDGMass = mass_mu;
+        if(abs(looseLepPdgId[i])==11) thePDGMass = mass_el;
+	TLorentzVector vLepTemp; vLepTemp.SetPtEtaPhiM(looseLepPt[i],looseLepEta[i],looseLepPhi[i],thePDGMass);
+        vLoose.push_back(vLepTemp);
       }
 
       if(usePureMC == true && countLeptonTight != idLep.size()) continue;
@@ -325,7 +358,6 @@ int year, bool isDesk014 = false
       else {printf("Impossible dilepton combination: %d %d %d %d\n",looseLepPdgId[0],looseLepPdgId[1],looseLepPdgId[2],looseLepPdgId[3]); continue;}
 
       double mllZ = 10000; double mllmin = 10000;
-      TLorentzVector vLoose1,vLoose2,vLoose3,vLoose4;
       TLorentzVector vZ1l1,vZ1l2,vZ2l1,vZ2l2;
       TLorentzVector vMet,vTrkMet,vMetUp,vMetDown;
       vTrkMet.SetPtEtaPhiM(thePandaFlat.trkmet,0.0,thePandaFlat.trkmetphi,0.0);
@@ -346,74 +378,64 @@ int year, bool isDesk014 = false
       //vMetDown.SetPx(vMetDown.Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
       //vMetDown.SetPy(vMetDown.Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
 
-      double thePDGMass[4] = {mass_mu, mass_mu, mass_mu, mass_mu};
-      if(abs(looseLepPdgId[0])==11) thePDGMass[0] = mass_el;
-      if(abs(looseLepPdgId[1])==11) thePDGMass[1] = mass_el;
-      if(abs(looseLepPdgId[2])==11) thePDGMass[2] = mass_el;
-      if(abs(looseLepPdgId[3])==11) thePDGMass[3] = mass_el;
-      vLoose1.SetPtEtaPhiM(looseLepPt[0],looseLepEta[0],looseLepPhi[0],thePDGMass[0]);
-      vLoose2.SetPtEtaPhiM(looseLepPt[1],looseLepEta[1],looseLepPhi[1],thePDGMass[1]);
-      vLoose3.SetPtEtaPhiM(looseLepPt[2],looseLepEta[2],looseLepPhi[2],thePDGMass[2]);
-      vLoose4.SetPtEtaPhiM(looseLepPt[3],looseLepEta[3],looseLepPhi[3],thePDGMass[3]);
-
       if(abs(looseLepPdgId[0]) == abs(looseLepPdgId[1]) && looseLepPdgId[0] != looseLepPdgId[1]) {
-        if((vLoose1+vLoose2).M() < mllmin) mllmin = (vLoose1+vLoose2).M();
-        if(fabs((vLoose1+vLoose2).M()-91.1876) < fabs(mllZ-91.1876)) {
-	  mllZ = (vLoose1+vLoose2).M();
-	  vZ1l1 = vLoose1;
-	  vZ1l2 = vLoose2;
-	  vZ2l1 = vLoose3;
-	  vZ2l2 = vLoose4;
+        if((vLoose[0]+vLoose[1]).M() < mllmin) mllmin = (vLoose[0]+vLoose[1]).M();
+        if(fabs((vLoose[0]+vLoose[1]).M()-91.1876) < fabs(mllZ-91.1876)) {
+	  mllZ = (vLoose[0]+vLoose[1]).M();
+	  vZ1l1 = vLoose[0];
+	  vZ1l2 = vLoose[1];
+	  vZ2l1 = vLoose[2];
+	  vZ2l2 = vLoose[3];
 	}
       }
       if(abs(looseLepPdgId[0]) == abs(looseLepPdgId[2]) && looseLepPdgId[0] != looseLepPdgId[2]) {
-        if((vLoose1+vLoose3).M() < mllmin) mllmin = (vLoose1+vLoose3).M();
-        if(fabs((vLoose1+vLoose3).M()-91.1876) < fabs(mllZ-91.1876)) {
-          mllZ = (vLoose1+vLoose3).M();
-	  vZ1l1 = vLoose1;
-	  vZ1l2 = vLoose3;
-	  vZ2l1 = vLoose2;
-	  vZ2l2 = vLoose4;
+        if((vLoose[0]+vLoose[2]).M() < mllmin) mllmin = (vLoose[0]+vLoose[2]).M();
+        if(fabs((vLoose[0]+vLoose[2]).M()-91.1876) < fabs(mllZ-91.1876)) {
+          mllZ = (vLoose[0]+vLoose[2]).M();
+	  vZ1l1 = vLoose[0];
+	  vZ1l2 = vLoose[2];
+	  vZ2l1 = vLoose[1];
+	  vZ2l2 = vLoose[3];
 	}
       }
       if(abs(looseLepPdgId[0]) == abs(looseLepPdgId[3]) && looseLepPdgId[0] != looseLepPdgId[3]) {
-        if((vLoose1+vLoose4).M() < mllmin) mllmin = (vLoose1+vLoose4).M();
-        if(fabs((vLoose1+vLoose4).M()-91.1876) < fabs(mllZ-91.1876)) {
-          mllZ = (vLoose1+vLoose4).M();
-	  vZ1l1 = vLoose1;
-	  vZ1l2 = vLoose4;
-	  vZ2l1 = vLoose2;
-	  vZ2l2 = vLoose3;
+        if((vLoose[0]+vLoose[3]).M() < mllmin) mllmin = (vLoose[0]+vLoose[3]).M();
+        if(fabs((vLoose[0]+vLoose[3]).M()-91.1876) < fabs(mllZ-91.1876)) {
+          mllZ = (vLoose[0]+vLoose[3]).M();
+	  vZ1l1 = vLoose[0];
+	  vZ1l2 = vLoose[3];
+	  vZ2l1 = vLoose[1];
+	  vZ2l2 = vLoose[2];
 	}
       }
       if(abs(looseLepPdgId[1]) == abs(looseLepPdgId[2]) && looseLepPdgId[1] != looseLepPdgId[2]) {
-        if((vLoose2+vLoose3).M() < mllmin) mllmin = (vLoose2+vLoose3).M();
-        if(fabs((vLoose2+vLoose3).M()-91.1876) < fabs(mllZ-91.1876)) {
-          mllZ = (vLoose2+vLoose3).M();
-	  vZ1l1 = vLoose2;
-	  vZ1l2 = vLoose3;
-	  vZ2l1 = vLoose1;
-	  vZ2l2 = vLoose4;
+        if((vLoose[1]+vLoose[2]).M() < mllmin) mllmin = (vLoose[1]+vLoose[2]).M();
+        if(fabs((vLoose[1]+vLoose[2]).M()-91.1876) < fabs(mllZ-91.1876)) {
+          mllZ = (vLoose[1]+vLoose[2]).M();
+	  vZ1l1 = vLoose[1];
+	  vZ1l2 = vLoose[2];
+	  vZ2l1 = vLoose[0];
+	  vZ2l2 = vLoose[3];
 	}
       }
       if(abs(looseLepPdgId[1]) == abs(looseLepPdgId[3]) && looseLepPdgId[1] != looseLepPdgId[3]) {
-        if((vLoose2+vLoose4).M() < mllmin) mllmin = (vLoose2+vLoose4).M();
-        if(fabs((vLoose2+vLoose4).M()-91.1876) < fabs(mllZ-91.1876)) {
-          mllZ = (vLoose2+vLoose4).M();
-	  vZ1l1 = vLoose2;
-	  vZ1l2 = vLoose4;
-	  vZ2l1 = vLoose1;
-	  vZ2l2 = vLoose3;
+        if((vLoose[1]+vLoose[3]).M() < mllmin) mllmin = (vLoose[1]+vLoose[3]).M();
+        if(fabs((vLoose[1]+vLoose[3]).M()-91.1876) < fabs(mllZ-91.1876)) {
+          mllZ = (vLoose[1]+vLoose[3]).M();
+	  vZ1l1 = vLoose[1];
+	  vZ1l2 = vLoose[3];
+	  vZ2l1 = vLoose[0];
+	  vZ2l2 = vLoose[2];
 	}
       }
       if(abs(looseLepPdgId[2]) == abs(looseLepPdgId[3]) && looseLepPdgId[2] != looseLepPdgId[3]) {
-        if((vLoose3+vLoose4).M() < mllmin) mllmin = (vLoose3+vLoose4).M();
-        if(fabs((vLoose3+vLoose4).M()-91.1876) < fabs(mllZ-91.1876)) {
-          mllZ = (vLoose3+vLoose4).M();
-	  vZ1l1 = vLoose3;
-	  vZ1l2 = vLoose4;
-	  vZ2l1 = vLoose1;
-	  vZ2l2 = vLoose2;
+        if((vLoose[2]+vLoose[3]).M() < mllmin) mllmin = (vLoose[2]+vLoose[3]).M();
+        if(fabs((vLoose[2]+vLoose[3]).M()-91.1876) < fabs(mllZ-91.1876)) {
+          mllZ = (vLoose[2]+vLoose[3]).M();
+	  vZ1l1 = vLoose[2];
+	  vZ1l2 = vLoose[3];
+	  vZ2l1 = vLoose[0];
+	  vZ2l2 = vLoose[1];
 	}
       }
 
@@ -478,8 +500,8 @@ int year, bool isDesk014 = false
         for(unsigned int nl=0; nl<idLep.size(); nl++){
           if(idLep[nl] == 0) continue;
           bool applyTight = false;
-          effSF = effSF * lepScaleFactor(looseLepPt[nl],looseLepEta[nl],TMath::Abs(looseLepPdgId[nl]),applyTight,histoLepEffSelMediumEtaPt_m,histoLepEffSelMediumEtaPt_e,histoLepEffSelTightEtaPt_m,histoLepEffSelTightEtaPt_e);
-          if(effSF == 0){printf("effSF == 0!: %f %f %d \n",looseLepPt[nl],looseLepEta[nl],TMath::Abs(looseLepPdgId[nl])); return;}
+          effSF = effSF * lepScaleFactor(vLoose[nl].Pt(),vLoose[nl].Eta(),TMath::Abs(looseLepPdgId[nl]),applyTight,histoLepEffSelMediumEtaPt_m,histoLepEffSelMediumEtaPt_e,histoLepEffSelTightEtaPt_m,histoLepEffSelTightEtaPt_e);
+          if(effSF == 0){printf("effSF == 0!: %f %f %d \n",vLoose[nl].Pt(),vLoose[nl].Eta(),TMath::Abs(looseLepPdgId[nl])); return;}
         }
         totalWeight = totalWeight * effSF;
       }
@@ -489,7 +511,7 @@ int year, bool isDesk014 = false
         for(unsigned int nl=0; nl<idLep.size(); nl++){
           if(idLep[nl] == 1) continue;
           bool applyTight = false;
-          fakeSF = fakeSF * fakeRateFactor(TMath::Min((double)looseLepPt[nl],44.999),TMath::Abs(looseLepEta[nl]),TMath::Abs(looseLepPdgId[nl]),applyTight,histoFakeEffSelMediumEtaPt_m,histoFakeEffSelMediumEtaPt_e,histoFakeEffSelTightEtaPt_m,histoFakeEffSelTightEtaPt_e);
+          fakeSF = fakeSF * fakeRateFactor(TMath::Min((double)vLoose[nl].Pt(),44.999),TMath::Abs(vLoose[nl].Eta()),TMath::Abs(looseLepPdgId[nl]),applyTight,histoFakeEffSelMediumEtaPt_m,histoFakeEffSelMediumEtaPt_e,histoFakeEffSelTightEtaPt_m,histoFakeEffSelTightEtaPt_e);
           theCategory = kPlotNonPrompt;
         }
         if     (infileCat_[ifile] != kPlotData && countLeptonTight == idLep.size()-4) fakeSF = +1.0 * fakeSF; // fourth fake, MC
@@ -516,7 +538,7 @@ int year, bool isDesk014 = false
       if(passAllButOneSel[0]){histo[lepType+ 0][theCategory]->Fill(TMath::Min(mllmin,99.999),totalWeight);                                if(lepType != 3) histo[ 4][theCategory]->Fill(TMath::Min(mllmin,99.999),totalWeight);}
       if(passAllButOneSel[1]){histo[lepType+ 5][theCategory]->Fill(TMath::Min(fabs(mllZ-91.1876),99.999),totalWeight);                    if(lepType != 3) histo[ 9][theCategory]->Fill(TMath::Min(fabs(mllZ-91.1876),99.999),totalWeight);}
       if(passAllButOneSel[2]){histo[lepType+10][theCategory]->Fill(TMath::Min(fabs((vZ2l1+vZ2l2).M()-91.1876),99.999),totalWeight);       if(lepType != 3) histo[14][theCategory]->Fill(TMath::Min(fabs((vZ2l1+vZ2l2).M()-91.1876),99.999),totalWeight);}
-      if(passZZSel)          {histo[lepType+15][theCategory]->Fill(TMath::Min((vLoose1+vLoose2+vLoose3+vLoose4).M(),799.999),totalWeight);if(lepType != 3) histo[19][theCategory]->Fill(TMath::Min((vLoose1+vLoose2+vLoose3).M(),799.999),totalWeight);}
+      if(passZZSel)          {histo[lepType+15][theCategory]->Fill(TMath::Min((vLoose[0]+vLoose[1]+vLoose[2]+vLoose[3]).M(),799.999),totalWeight);if(lepType != 3) histo[19][theCategory]->Fill(TMath::Min((vLoose[0]+vLoose[1]+vLoose[2]).M(),799.999),totalWeight);}
       if(passZZSel)          {histo[lepType+20][theCategory]->Fill(TMath::Min(vZ1l1.Pt(),199.999),totalWeight);                           if(lepType != 3) histo[24][theCategory]->Fill(TMath::Min(vZ1l1.Pt(),199.999),totalWeight);}
       if(passZZSel)          {histo[lepType+25][theCategory]->Fill(TMath::Min(vZ1l2.Pt(),199.999),totalWeight);                           if(lepType != 3) histo[29][theCategory]->Fill(TMath::Min(vZ1l2.Pt(),199.999),totalWeight);}
       if(passZZSel)          {histo[lepType+30][theCategory]->Fill(TMath::Min(vZ2l1.Pt(),199.999),totalWeight);                           if(lepType != 3) histo[34][theCategory]->Fill(TMath::Min(vZ2l1.Pt(),199.999),totalWeight);}

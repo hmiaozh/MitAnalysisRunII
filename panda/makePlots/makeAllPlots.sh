@@ -34,3 +34,7 @@ root -q -b -l MitAnalysisRunII/panda/makePlots/make2DPlots.C+'(2018,"pdf")';
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh ssww 0 2017;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh ssww 0 2018;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh ssww 0 2019;
+
+./MitAnalysisRunII/panda/makePlots/makePlots.sh ww 0 2016;
+./MitAnalysisRunII/panda/makePlots/makePlots.sh ww 0 2017;
+./MitAnalysisRunII/panda/makePlots/makePlots.sh ww 0 2018;
