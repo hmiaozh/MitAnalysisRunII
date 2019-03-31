@@ -68,7 +68,8 @@ void atributes(TH1D *histo, TString xtitle = "", TString ytitle = "Fraction", TS
 
 void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString units = "", TString plotName = "histoWW_56.root", TString outputName = "njets",
                 bool isLogY = false, int year = 2017, TString higgsLabel = "", double lumi = 1.0, bool isBlind = false, TString extraLabel = "",
-		bool show2D = true, bool applyScaling = false, TString mlfitResult = "", TString channelName = "") {
+		bool show2D = true, bool applyScaling = false,
+		TString mlfitResult = "", TString channelName = "", bool applyBBBBSF = false) {
 
   if(isBlind) show2D = false;
 
@@ -108,18 +109,31 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
     if(isBlind == true && ic == kPlotData) continue;
 
     if(mlfitResult!="" && ic != kPlotData && ic != kPlotBSM) {
+      SF_yield[ic]     = 1.0;
+      SF_yield_unc[ic] = 0.0;
       if     ((TH1F*)mlfit->Get(Form("shapes_prefit/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) {
         double sum[3] = {0, 0, 0};
         for(int i=1; i<=((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetNbinsX(); i++){
           //sum[0] = sum[0] + ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetBinContent(i);
 	  //sum[1] = sum[1] + ((TH1F*)mlfit->Get(Form("shapes_prefit/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetBinContent(i);
 	  sum[2] = sum[2] + ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetBinError(i);
+	  if(((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetNbinsX() ==_hist[ic]->GetNbinsX() && 
+	     applyBBBBSF == true){
+	     _hist[ic]->SetBinContent(i,((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetBinContent(i));
+             _hist[ic]->SetBinError(i,((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetBinError(i));
+	  }
         }
         sum[0] = ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetSumOfWeights();
 	sum[1] = ((TH1F*)mlfit->Get(Form("shapes_prefit/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetSumOfWeights();
-        SF_yield[ic]     = sum[0] / sum[1];
-        SF_yield_unc[ic] = sum[2] / sum[0];
-        printf("POST FIT SFs: SF[%s] = %.3f +/- %.3f | %.3f\n",plotBaseNames[ic].Data(),SF_yield[ic],SF_yield_unc[ic],
+	if(((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetNbinsX() ==_hist[ic]->GetNbinsX() && 
+	   applyBBBBSF == true){
+          // do nothing
+	}
+	else {   
+          SF_yield[ic]     = sum[0] / sum[1];
+          SF_yield_unc[ic] = sum[2] / sum[0];
+        }
+	printf("POST FIT SFs: SF[%s] = %.3f +/- %.3f | %.3f\n",plotBaseNames[ic].Data(),SF_yield[ic],SF_yield_unc[ic],
 	       ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetSumOfWeights()/
 	       ((TH1F*)mlfit->Get(Form("shapes_prefit/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetSumOfWeights());
       }
