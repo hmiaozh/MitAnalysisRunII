@@ -13,6 +13,7 @@
 
 #include "MitAnalysisRunII/panda/macros/9x/pandaFlat.C"
 #include "MitAnalysisRunII/panda/macros/9x/common.h"
+#include "MitAnalysisRunII/panda/macros/9x/applyCorrections.h"
 
 const bool showSyst = true;
 const double mcPrescale = 1;
@@ -65,15 +66,14 @@ int year, bool isDesk014 = false
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	           infileCat_.push_back(kPlotData);
     if(usePureMC == true){
-      //infileName_.push_back(Form("%sWWinc.root" ,filesPath.Data())); 	           infileCat_.push_back(kPlotNonPrompt);
       infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	           infileCat_.push_back(kPlotNonPrompt);
-      //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	           infileCat_.push_back(kPlotNonPrompt);
+      infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	           infileCat_.push_back(kPlotNonPrompt);
       infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		   infileCat_.push_back(kPlotNonPrompt);
       infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));		   infileCat_.push_back(kPlotNonPrompt);
       infileName_.push_back(Form("%sDYJetsToLL_M-10to50.root" ,filesPath.Data())); infileCat_.push_back(kPlotNonPrompt);
       infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));   infileCat_.push_back(kPlotNonPrompt);
       infileName_.push_back(Form("%sVG.root" ,filesPath.Data()));                  infileCat_.push_back(kPlotNonPrompt);
-      //infileName_.push_back(Form("%sWZno3l.root" ,filesPath.Data()));            infileCat_.push_back(kPlotNonPrompt);
+      infileName_.push_back(Form("%sWZno3l.root" ,filesPath.Data()));              infileCat_.push_back(kPlotNonPrompt);
       infileName_.push_back(Form("%sWZ3l_amcnlo.root" ,filesPath.Data()));         infileCat_.push_back(kPlotNonPrompt);
     }
     infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	           infileCat_.push_back(kPlotZZ);
@@ -371,12 +371,12 @@ int year, bool isDesk014 = false
         vMetUp  .SetPtEtaPhiM(thePandaFlat.puppimet_JESTotalUp  ,0.0,thePandaFlat.puppimetphi_JESTotalUp  ,0.0);
         vMetDown.SetPtEtaPhiM(thePandaFlat.puppimet_JESTotalDown,0.0,thePandaFlat.puppimetphi_JESTotalDown,0.0);
       }
-      //vMet    .SetPx(vMet    .Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
-      //vMet    .SetPy(vMet    .Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
-      //vMetUp  .SetPx(vMetUp  .Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
-      //vMetUp  .SetPy(vMetUp  .Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
-      //vMetDown.SetPx(vMetDown.Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
-      //vMetDown.SetPy(vMetDown.Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
+      vMet    .SetPx(vMet    .Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
+      vMet    .SetPy(vMet    .Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
+      vMetUp  .SetPx(vMetUp  .Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
+      vMetUp  .SetPy(vMetUp  .Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
+      vMetDown.SetPx(vMetDown.Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
+      vMetDown.SetPy(vMetDown.Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
 
       if(abs(looseLepPdgId[0]) == abs(looseLepPdgId[1]) && looseLepPdgId[0] != looseLepPdgId[1]) {
         if((vLoose[0]+vLoose[1]).M() < mllmin) mllmin = (vLoose[0]+vLoose[1]).M();
@@ -452,9 +452,9 @@ int year, bool isDesk014 = false
       double dPhiDiLepMET = TMath::Abs(dilep.DeltaPhi(vMetZXLike)); double dPhiDiLepMETUp = TMath::Abs(dilep.DeltaPhi(vMetZXLikeUp)); double dPhiDiLepMETDown = TMath::Abs(dilep.DeltaPhi(vMetZXLikeDown));
       bool passDPhiZMET = dPhiDiLepMET > 2.5; bool passDPhiZMETUp = dPhiDiLepMETUp > 2.5; bool passDPhiZMETDown = dPhiDiLepMETDown > 2.5;
 
-      bool passNjets     = thePandaFlat.nJot <= 1;
-      bool passNjetsUp   = thePandaFlat.nJot_JESTotalUp <= 1;
-      bool passNjetsDown = thePandaFlat.nJot_JESTotalDown <= 1;
+      bool passNjets     = thePandaFlat.nJot <= 10;
+      bool passNjetsUp   = thePandaFlat.nJot_JESTotalUp <= 10;
+      bool passNjetsDown = thePandaFlat.nJot_JESTotalDown <= 10;
 
       double dphill = TMath::Abs(vZ1l1.DeltaPhi(vZ1l2));
       double detall = TMath::Abs(vZ1l1.Eta()-vZ1l2.Eta());

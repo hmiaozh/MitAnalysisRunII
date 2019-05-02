@@ -4,12 +4,12 @@
 const int nBinEtaCorr = 5; Float_t xbinsEtaCorr[nBinEtaCorr+1] = {0.0,0.5,1.0,1.5,2.0,2.5};
 TH1D* histoEtaCorr = new TH1D("histoEtaCorr", "histoEtaCorr", nBinEtaCorr, xbinsEtaCorr);
 
-double WSSF_2016[nBinEtaCorr]  = {1.449298,1.142292,0.937845,0.980456,0.977863};
-double WSSFE_2016[nBinEtaCorr] = {0.273376,0.109204,0.050029,0.021754,0.027159};
-double WSSF_2017[nBinEtaCorr]  = {1.956173,1.016128,1.560427,1.522321,1.460580};
-double WSSFE_2017[nBinEtaCorr] = {0.284352,0.129576,0.058159,0.031964,0.032588};
-double WSSF_2018[nBinEtaCorr]  = {1.641518,2.206357,1.390891,1.391142,1.274691};
-double WSSFE_2018[nBinEtaCorr] = {0.246842,0.130503,0.052605,0.024543,0.024221};
+double WSSF_2016[nBinEtaCorr]  = {1.449462,1.142217,0.937766,0.980463,0.977853};
+double WSSFE_2016[nBinEtaCorr] = {0.273395,0.109201,0.050027,0.021754,0.027159};
+double WSSF_2017[nBinEtaCorr]  = {1.955172,1.017924,1.560682,1.522460,1.459353};
+double WSSFE_2017[nBinEtaCorr] = {0.284191,0.129495,0.058164,0.031983,0.032598};
+double WSSF_2018[nBinEtaCorr]  = {1.665308,2.192745,1.390234,1.391202,1.275081};
+double WSSFE_2018[nBinEtaCorr] = {0.245861,0.130005,0.052591,0.024503,0.024187};
 
 double muScaleCorr_2016[nBinEtaCorr] = {1.000357,0.999957,1.000507,0.999696,1.000437};
 double elScaleCorr_2016[nBinEtaCorr] = {1.000266,0.998870,0.998902,0.998738,0.998196};
@@ -20,16 +20,16 @@ double elScaleCorr_2018[nBinEtaCorr] = {1.002245,1.003784,0.997714,0.990361,1.01
 
 const bool useZZWZEWKUnc = true;
 
-enum selYear {Y2016, Y2017, Y2018, nYears};
-const double lumiV[nYears] = {35.9, 41.5, 59.7};
-const double lumiE[nYears] = {1.025, 1.023, 1.025};
-const double totalLumiV = lumiV[Y2016] + lumiV[Y2017] + lumiV[Y2018];
-
 double ewkCorrWpWp(double mjj){
   double fitPar[2]={ -5.37274e+00, -7.33731e-03};
   double xs = TMath::Max(1.0+(fitPar[0] + mjj*fitPar[1])*0.01,0.0);
   return xs;
 }
+
+enum selYear {Y2016, Y2017, Y2018, nYears};
+const double lumiV[nYears] = {35.9, 41.5, 60.0};
+const double lumiE[nYears] = {1.025, 1.023, 1.025};
+const double totalLumiV = lumiV[Y2016] + lumiV[Y2017] + lumiV[Y2018];
 
 enum LepSelectionBit {
  kLoose   =(1<<0),
@@ -183,11 +183,11 @@ double mcCorrection(int type, int year, int jetNMBtags, int jetNBtags, int nJot,
     else if(year == 2018 && jetNBtags  > 0) totalWeight = totalWeight * 1.00;
   }
   else if(type == 1){ // ZH
-    if     (year == 2016 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 1.20;
-    else if(year == 2016 && infileCat == kPlotDY && nJot >= 1) totalWeight = totalWeight * 0.86;
+    if     (year == 2016 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 1.40;
+    else if(year == 2016 && infileCat == kPlotDY && nJot >= 1) totalWeight = totalWeight * 0.88;
 
-    else if(year == 2017 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 1.50;
-    else if(year == 2017 && infileCat == kPlotDY && nJot >= 1) totalWeight = totalWeight * 1.05;
+    else if(year == 2017 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 1.45;
+    else if(year == 2017 && infileCat == kPlotDY && nJot >= 1) totalWeight = totalWeight * 1.10;
 
     else if(year == 2018 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 3.00;
     else if(year == 2018 && infileCat == kPlotDY && nJot >= 1) totalWeight = totalWeight * 1.60;
@@ -202,183 +202,4 @@ double mcCorrection(int type, int year, int jetNMBtags, int jetNBtags, int nJot,
   }
 
   return totalWeight;
-}
-
-double fakeRateFactor(double pt, double eta, int pdgId, bool applyTight, TH2D *histoFakeEffSelMediumEtaPt_m, TH2D *histoFakeEffSelMediumEtaPt_e, TH2D *histoFakeEffSelTightEtaPt_m, TH2D *histoFakeEffSelTightEtaPt_e){
-  if(eta >= 2.4) eta = 2.3999; else if(eta <= -2.4) eta = -2.3999;
-  if(pt >= 45) pt = 44.999;
-  int binXT = histoFakeEffSelMediumEtaPt_m->GetXaxis()->FindFixBin(eta);
-  int binYT = histoFakeEffSelMediumEtaPt_m->GetYaxis()->FindFixBin(pt);
-  
-  double rate = 1.0;
-  if     (TMath::Abs(pdgId) == 13 && applyTight == false) rate = TMath::Min(histoFakeEffSelMediumEtaPt_m->GetBinContent(binXT,binYT),0.999999);
-  else if(TMath::Abs(pdgId) == 13 && applyTight == true)  rate = TMath::Min(histoFakeEffSelTightEtaPt_m ->GetBinContent(binXT,binYT),0.999999);
-  else if(TMath::Abs(pdgId) == 11 && applyTight == false) rate = TMath::Min(histoFakeEffSelMediumEtaPt_e->GetBinContent(binXT,binYT),0.999999);
-  else if(TMath::Abs(pdgId) == 11 && applyTight == true)  rate = TMath::Min(histoFakeEffSelTightEtaPt_e ->GetBinContent(binXT,binYT),0.999999);
-  else printf("IMPOSSIBLE COMPUTING FAKE RATES\n");
-
-  //if(pt<20 && applyTight == true) rate = 2*rate/(1+rate);
-
-  return rate/(1-rate);
-}
-
-double lepScaleFactor(double pt, double eta, int pdgId, bool applyTight, TH2D *histoLepEffSelMediumEtaPt_m, TH2D *histoLepEffSelMediumEtaPt_e, TH2D *histoLepEffSelTightEtaPt_m, TH2D *histoLepEffSelTightEtaPt_e){
-  if(eta >= 2.4) eta = 2.3999; else if(eta <= -2.4) eta = -2.3999;
-  if(pt >= 100) pt = 99.999; else if(pt <= 20) pt = 20.001;
-  int binXT = histoLepEffSelMediumEtaPt_m->GetXaxis()->FindFixBin(eta);
-  int binYT = histoLepEffSelMediumEtaPt_m->GetYaxis()->FindFixBin(pt);
-
-  double sf = 1.0;
-  if     (TMath::Abs(pdgId) == 13 && applyTight == false) sf = histoLepEffSelMediumEtaPt_m->GetBinContent(binXT,binYT);
-  else if(TMath::Abs(pdgId) == 13 && applyTight == true)  sf = histoLepEffSelTightEtaPt_m ->GetBinContent(binXT,binYT);
-  else if(TMath::Abs(pdgId) == 11 && applyTight == false) sf = histoLepEffSelMediumEtaPt_e->GetBinContent(binXT,binYT);
-  else if(TMath::Abs(pdgId) == 11 && applyTight == true)  sf = histoLepEffSelTightEtaPt_e ->GetBinContent(binXT,binYT);
-  else printf("IMPOSSIBLE COMPUTING Lep SF\n");
-  
-  if(sf == 0){printf("SF == 0!: %f %f %d %d %d\n",pt,eta,pdgId,binXT,binYT);}
-
-  return sf;
-}
-
-double nPUScaleFactor(TH1D *fhDPU, float npu){
-  double mynpu = TMath::Min(npu,(float)79.999);
-  Int_t npuxbin = fhDPU->GetXaxis()->FindBin(mynpu);
-  return fhDPU->GetBinContent(npuxbin);
-}
-
-double electronToPhotonSF(double pt, int year){
-  double effDA = 1.0;
-  double effMC = 1.0;
-  if	 (year == 2016) {
-     effDA = (0.0052 + 1.114 * TMath::Power(pt + 122.84, -0.75));
-     effMC = (0.0050 + 2.922 * TMath::Power(pt +  87.23, -1.18));
-  }
-  else if(year == 2017 || year == 2018) {
-     effDA = (0.0256 + 3.000 * TMath::Power(pt + 10.78, -1.43));
-     effMC = (0.0068 + 0.029 * TMath::Power(pt - 22.10, -0.45));
-  }
-  //printf("electronToPhotonSF (pt=%.1f): %f/%f=%f\n",pt,effDA,effMC,effDA/effMC);
-
-  return effDA/effMC;
-}
-
-double effhDPhotonScaleFactor(double pt, double eta, TString type, TH2D *fhDIdSF, TH2D *fhDVetoSF){
-
-  if(pt>=200) pt = +199.999;
-
-  if     (eta>=+2.4) eta = +2.399;
-  else if(eta<=-2.4) eta = -2.399;
-
-  Int_t binXA = 0;
-  Int_t binYA = 0;
-  Int_t binXB = 0;
-  Int_t binYB = 0;
-
-  binXA = fhDIdSF  ->GetXaxis()->FindFixBin(eta);binYA = fhDIdSF  ->GetYaxis()->FindFixBin(pt);
-  
-  eta = abs(eta); if(eta < 1.5) eta = 1.0; else eta = 2.0;
-  binXB = fhDVetoSF->GetXaxis()->FindFixBin(eta);binYB = fhDVetoSF->GetYaxis()->FindFixBin(pt);
-
-  double idSF   = fhDIdSF  ->GetBinContent(binXA, binYA);
-  double vetoSF = fhDVetoSF->GetBinContent(binXB, binYB);
-  
-  if(idSF <= 0 || vetoSF <= 0) printf("photonSF <= 0! %f %f %d %d %d %d - %f %f\n",idSF,vetoSF,binXA,binYA,binXB,binYB,pt,eta);
-
-  return idSF*vetoSF;
-}
-
-void trigger_sf(double trgRes[2], int nlep,
-	TH2D* trgSFMMBB, TH2D* trgSFMMEB, TH2D* trgSFMMBE, TH2D* trgSFMMEE, TH2D* trgSFEEBB, TH2D* trgSFEEEB, TH2D* trgSFEEBE, TH2D* trgSFEEEE,
-        TH2D* trgSFMEBB, TH2D* trgSFMEEB, TH2D* trgSFMEBE, TH2D* trgSFMEEE, TH2D* trgSFEMBB, TH2D* trgSFEMEB, TH2D* trgSFEMBE, TH2D* trgSFEMEE,
-        double pt1, double eta1, int pdgid1, 
-	double pt2, double eta2, int pdgid2){
-
-  trgRes[0] = 1.0;
-  trgRes[1] = 0.0;
-  if(nlep == 2){
-    if     (pt1 <= 20) pt1 = 20.001;
-    else if(pt1 >= 70) pt1 = 69.999;
-    if     (pt2 <= 20) pt2 = 20.001;
-    else if(pt2 >= 70) pt2 = 69.999;
-    double ptaux = pt1;
-    double etaaux = eta1;
-    double pdgidaux = pdgid1;
-    if(pt1 < pt2) {
-      pt1 = pt2; pt2 = ptaux; 
-      pdgid1 = pdgid2; pdgid2 = pdgidaux;
-      eta1 = eta2; eta2 = etaaux;
-    }
-    int binPt1 = trgSFMMBB->GetXaxis()->FindFixBin(pt1);
-    int binPt2 = trgSFMMBB->GetXaxis()->FindFixBin(pt2);
-    int lepType = -1;
-    if     (abs(pdgid1)==13 && abs(pdgid2)==13) lepType = 0;
-    else if(abs(pdgid1)==11 && abs(pdgid2)==11) lepType = 1;
-    else if(abs(pdgid1)==13 && abs(pdgid2)==11) lepType = 2;
-    else if(abs(pdgid1)==11 && abs(pdgid2)==13) lepType = 3;
-    int neta1 = 0; if(TMath::Abs(eta1) > 1.5) neta1 = 1;
-    int neta2 = 0; if(TMath::Abs(eta2) > 1.5) neta2 = 1;
-
-    if     (lepType == 0 && neta1 == 0 && neta2 == 0) {trgRes[0] = trgSFMMBB->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFMMBB->GetBinError(binPt1,binPt2);}
-    else if(lepType == 0 && neta1 == 1 && neta2 == 0) {trgRes[0] = trgSFMMEB->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFMMEB->GetBinError(binPt1,binPt2);}
-    else if(lepType == 0 && neta1 == 0 && neta2 == 1) {trgRes[0] = trgSFMMBE->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFMMBE->GetBinError(binPt1,binPt2);}
-    else if(lepType == 0 && neta1 == 1 && neta2 == 1) {trgRes[0] = trgSFMMEE->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFMMEE->GetBinError(binPt1,binPt2);}
-    else if(lepType == 1 && neta1 == 0 && neta2 == 0) {trgRes[0] = trgSFEEBB->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFEEBB->GetBinError(binPt1,binPt2);}
-    else if(lepType == 1 && neta1 == 1 && neta2 == 0) {trgRes[0] = trgSFEEEB->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFEEEB->GetBinError(binPt1,binPt2);}
-    else if(lepType == 1 && neta1 == 0 && neta2 == 1) {trgRes[0] = trgSFEEBE->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFEEBE->GetBinError(binPt1,binPt2);}
-    else if(lepType == 1 && neta1 == 1 && neta2 == 1) {trgRes[0] = trgSFEEEE->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFEEEE->GetBinError(binPt1,binPt2);}
-    else if(lepType == 2 && neta1 == 0 && neta2 == 0) {trgRes[0] = trgSFMEBB->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFMEBB->GetBinError(binPt1,binPt2);}
-    else if(lepType == 2 && neta1 == 1 && neta2 == 0) {trgRes[0] = trgSFMEEB->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFMEEB->GetBinError(binPt1,binPt2);}
-    else if(lepType == 2 && neta1 == 0 && neta2 == 1) {trgRes[0] = trgSFMEBE->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFMEBE->GetBinError(binPt1,binPt2);}
-    else if(lepType == 2 && neta1 == 1 && neta2 == 1) {trgRes[0] = trgSFMEEE->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFMEEE->GetBinError(binPt1,binPt2);}
-    else if(lepType == 3 && neta1 == 0 && neta2 == 0) {trgRes[0] = trgSFEMBB->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFEMBB->GetBinError(binPt1,binPt2);}
-    else if(lepType == 3 && neta1 == 1 && neta2 == 0) {trgRes[0] = trgSFEMEB->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFEMEB->GetBinError(binPt1,binPt2);}
-    else if(lepType == 3 && neta1 == 0 && neta2 == 1) {trgRes[0] = trgSFEMBE->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFEMBE->GetBinError(binPt1,binPt2);}
-    else if(lepType == 3 && neta1 == 1 && neta2 == 1) {trgRes[0] = trgSFEMEE->GetBinContent(binPt1,binPt2); trgRes[1] = trgSFEMEE->GetBinError(binPt1,binPt2);}
-    else {printf("Problem trgSF\n"); return;}
-  }
-}
-
-double metPhiCorr(int year, int npv, bool isData, int metCoord){
-  double corr = 1.0;
-  if     (year == 2016 && isData == true && metCoord == 0){
-    corr = 1.01096e+00+1.42312e-01*npv;
-  }
-  else if(year == 2016 && isData == true && metCoord == 1){
-    corr = 2.89820e-01+4.64643e-02*npv;
-  }
-  else if(year == 2016 && isData == false && metCoord == 0){
-    corr = -1.11824e-01-2.19837e-01*npv;
-  }
-  else if(year == 2016 && isData == false && metCoord == 1){
-    corr = 8.03025e-01-3.89610e-02*npv;
-  }
-  else if(year == 2017 && isData == true && metCoord == 0){
-    corr = 3.15705e-01-1.77717e-01*npv;
-  }
-  else if(year == 2017 && isData == true && metCoord == 1){
-    corr = 4.48257e-01+2.36009e-01*npv;
-  }
-  else if(year == 2017 && isData == false && metCoord == 0){
-    corr = 3.61535e-01-2.30149e-01*npv;
-  }
-  else if(year == 2017 && isData == false && metCoord == 1){
-    corr = -1.96483e-01+1.81803e-01*npv;
-  }
-  else if(year == 2018 && isData == true && metCoord == 0){
-    corr = 1.09883e+00+4.23750e-01*npv;
-  }
-  else if(year == 2018 && isData == true && metCoord == 1){
-    corr = -1.14832e+00+1.14040e-01*npv;
-  }
-  else if(year == 2018 && isData == false && metCoord == 0){
-    corr = -1.60410e-01+3.41247e-01*npv;
-  }
-  else if(year == 2018 && isData == false && metCoord == 1){
-    corr = 2.05019e-01+1.37506e-01*npv;
-  }
-  else {
-    printf("WRONG CHOICE!\n");
-  }
-
-  return corr;
 }

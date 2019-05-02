@@ -29,10 +29,10 @@ elif [ $1 = "2017" ]; then
 elif [ $1 = "2018" ]; then 
 
   hadd -f /data/t3home000/ceballos/panda/zllhbb/v4/data_overlaps_2018.root \
-          /scratch5/bmaier/hbb/2018/v_013_full/DoubleMuon.root \
-          /scratch5/bmaier/hbb/2018/v_013_full/EGamma.root \
-          /scratch5/bmaier/hbb/2018/v_013_full/MuonEG.root \
-          /scratch5/bmaier/hbb/2018/v_013_full/SingleMuon.root
+          /scratch5/bmaier/hbb/2018/v_013_v8/DoubleMuon.root \
+          /scratch5/bmaier/hbb/2018/v_013_v8/EGamma.root \
+          /scratch5/bmaier/hbb/2018/v_013_v8/MuonEG.root \
+          /scratch5/bmaier/hbb/2018/v_013_v8/SingleMuon.root
 
   root -q -l -b MitAnalysisRunII/panda/macros/9x/makeGoodRunSample.C+'("/data/t3home000/ceballos/panda/zllhbb/v4/data_overlaps_2018.root","/data/t3home000/ceballos/panda/zllhbb/v4/data_2018.root","PandaAnalysis/data/certs/Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt")'
 

@@ -11,12 +11,16 @@ export MLFITZH2016="";
 export MLFITVZ2016="";
 export MLFITZH2017="";
 export MLFITVZ2017="";
+export MLFITZH2018="";
+export MLFITVZ2018="";
 if [ $# -eq 2 ]; then
   echo "USING MLFIT RESULTS"
-  export MLFITZH2016="/home/ceballos/releases/CMSSW_8_1_0/src/cards/cards_vh/default/inputs_zh_2016/fitDiagnosticsZH.root";
-  export MLFITVZ2016="/home/ceballos/releases/CMSSW_8_1_0/src/cards/cards_vh/default/inputs_vz_2016/fitDiagnosticsVZbb.root";
-  export MLFITZH2017="/home/ceballos/releases/CMSSW_8_1_0/src/cards/cards_vh/default/inputs_zh_2017/fitDiagnosticsZH.root";
-  export MLFITVZ2017="/home/ceballos/releases/CMSSW_8_1_0/src/cards/cards_vh/default/inputs_vz_2017/fitDiagnosticsVZbb.root";
+  export MLFITZH2016="/home/ceballos/releases/CMSSW_8_1_0/src/cards/cards_vh/default/inputs_zh_2016/fitDiagnosticsZH_fit.root";
+  export MLFITVZ2016="/home/ceballos/releases/CMSSW_8_1_0/src/cards/cards_vh/default/inputs_vz_2016/fitDiagnosticsVZbb_fit.root";
+  export MLFITZH2017="/home/ceballos/releases/CMSSW_8_1_0/src/cards/cards_vh/default/inputs_zh_2017/fitDiagnosticsZH_fit.root";
+  export MLFITVZ2017="/home/ceballos/releases/CMSSW_8_1_0/src/cards/cards_vh/default/inputs_vz_2017/fitDiagnosticsVZbb_fit.root";
+  export MLFITZH2018="/home/ceballos/releases/CMSSW_8_1_0/src/cards/cards_vh/default/inputs_zh_2018/fitDiagnosticsZH_fit.root";
+  export MLFITVZ2018="/home/ceballos/releases/CMSSW_8_1_0/src/cards/cards_vh/default/inputs_vz_2018/fitDiagnosticsVZbb_fit.root";
 fi
 
 ### 2016

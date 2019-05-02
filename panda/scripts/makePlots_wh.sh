@@ -13,8 +13,9 @@ export MLFITWH2017="";
 export MLFITVZ2017="";
 if [ $# -eq 2 ]; then
   echo "USING MLFIT RESULTS"
-  export MLFITWH2016="/home/ceballos/releases/CMSSW_8_1_0/src/cards/cards_vh/default/inputs_wh_2016/fitDiagnosticsWH.root";
-  export MLFITWH2017="/home/ceballos/releases/CMSSW_8_1_0/src/cards/cards_vh/default/inputs_wh_2017/fitDiagnosticsWH.root";
+  export MLFITWH2016="/home/ceballos/releases/CMSSW_8_1_0/src/cards/cards_vh/default/inputs_wh_2016/fitDiagnosticsWH_fit.root";
+  export MLFITWH2017="/home/ceballos/releases/CMSSW_8_1_0/src/cards/cards_vh/default/inputs_wh_2017/fitDiagnosticsWH_fit.root";
+  export MLFITWH2018="/home/ceballos/releases/CMSSW_8_1_0/src/cards/cards_vh/default/inputs_wh_2018/fitDiagnosticsWH_fit.root";
 fi
 
 ### 2016

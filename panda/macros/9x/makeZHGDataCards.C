@@ -30,10 +30,9 @@ void makeZHGDataCards(TString outputLimits = "zhg_comb_input.root"){
   }
 
   // Filling datacards txt file
-  char outputLimitsCard[200];  					  
-  sprintf(outputLimitsCard,"datacard_zhg_comb.txt");
+  TString outputLimitsCard = outputLimits; outputLimitsCard = "datacard_" + outputLimitsCard.ReplaceAll("_input.root",".txt");
   ofstream newcardShape;
-  newcardShape.open(outputLimitsCard);
+  newcardShape.open(outputLimitsCard.Data());
   newcardShape << Form("imax * number of channels\n");
   newcardShape << Form("jmax * number of background minus 1\n");
   newcardShape << Form("kmax * number of nuisance parameters\n");

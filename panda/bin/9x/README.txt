@@ -44,23 +44,32 @@ TTG TTZ TTW ST_tW TT WGstarTo WGToLNuG ZGTo2LG ZGToLLG JetsToLL  WJetsToLNu \
 ZZ_TuneCP5_13TeV-pythia8 WZ_TuneCP5_13TeV-pythia8 DoubleScattering WZTo3LNu_mllmin01 Jets_MLL DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8 \
 DY1JetsToLL DY2JetsToLL DY3JetsToLL DY4JetsToLL TTTo2L2Nu_TuneCP5_13TeV TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8 WW_TuneCP5_13TeV-pythia8 ZZJJ
 
+#grep -vE '(Run2018A-PromptReco|Run2018B-PromptReco|Run2018C-PromptReco)' ~/public_html/$USER/catalog/test.cfg > lll;wc lll;mv lll ~/public_html/$USER/catalog/test.cfg;
 # standard 2018
-PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$USER/catalog/test.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/013 \
---include SingleElectron SingleMuon DoubleEG DoubleMuon MuonEG EGamma ZZ WZ WW JetsToLL_M-50 DYJetsToLL_M-10to50_Tune tZq GluGluH VBFH VBF_H ttHToNonbb VHToNonbb \
-TTG TTZ TTW ST_tW TT WGstarTo WGToLNuG ZGTo2LG ZGToLLG JetsToLL DYJetsToTauTau NNPDF30_13TeV-powheg MET WJetsToLNu WpWpJJ WLLJJ JJ_EWK_M HToInvisible HToInv_ZToLL \
+PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$USER/catalog/testA.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/014 \
+--include SingleElectron SingleMuon DoubleEG DoubleMuon MuonEG EGamma MET
+
+PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$USER/catalog/testB.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/013 \
+--include ZZ WZ WW JetsToLL_M-50 DYJetsToLL_M-10to50_Tune tZq GluGluH VBFH VBF_H ttHToNonbb VHToNonbb \
+TTG TTZ TTW ST_tW TT WGstarTo WGToLNuG ZGTo2LG ZGToLLG JetsToLL DYJetsToTauTau NNPDF30_13TeV-powheg WJetsToLNu WpWpJJ WLLJJ JJ_EWK_M HToInvisible HToInv_ZToLL \
 --exclude ZpWW_med JetsToLL_M-50_HT NNPDF30_13TeV-powheg DYJetsToLL_Zpt-100to200 DYJetsToLL_Zpt-200toInf ZZ_TuneCP5_13TeV-pythia8 WZ_TuneCP5_13TeV-pythia8 TTToSemiLeptonic WW_TuneCP5_13TeV-pythia8
 
-grep -vE '(Run2018A-PromptReco|Run2018B-PromptReco|Run2018C-PromptReco)' ~/public_html/$USER/catalog/test.cfg > lll;wc lll;mv lll ~/public_html/$USER/catalog/test.cfg;
+cat ~/public_html/$USER/catalog/testA.cfg ~/public_html/$USER/catalog/testB.cfg > ~/public_html/$USER/catalog/test.cfg;
+wc ~/public_html/$USER/catalog/test.cfg;
 
 # fakes 2018
-PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$USER/catalog/test3.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/013 \
---include SingleElectron SingleMuon DoubleEG DoubleMuon MuonEG EGamma ZZ WZ WW DYJetsToLL_M-50_Tune DYJetsToLL_M-10to50_Tune tZq GluGluH VBFH VBF_H ttHToNonbb VHToNonbb \
+PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$USER/catalog/testA.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/014 \
+--include SingleElectron SingleMuon DoubleEG DoubleMuon MuonEG EGamma
+
+PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$USER/catalog/testB.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/013 \
+--include ZZ WZ WW DYJetsToLL_M-50_Tune DYJetsToLL_M-10to50_Tune tZq GluGluH VBFH VBF_H ttHToNonbb VHToNonbb \
 TTG TTZ TTW ST_tW TT WGstarTo WGToLNuG ZGTo2LG ZGToLLG JetsToLL  WJetsToLNu \
 --exclude ZpWW_med JetsToLL_M-50_HT NNPDF30_13TeV-powheg DYJetsToLL_Zpt-100to200 DYJetsToLL_Zpt-200toInf \
 ZZ_TuneCP5_13TeV-pythia8 WZ_TuneCP5_13TeV-pythia8 DoubleScattering WZTo3LNu_mllmin01 Jets_MLL DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8 \
 DY1JetsToLL DY2JetsToLL DY3JetsToLL DY4JetsToLL ZZJJ WW_TuneCP5_13TeV-pythia8
 
-grep -vE '(Run2018A-PromptReco|Run2018B-PromptReco|Run2018C-PromptReco)' ~/public_html/$USER/catalog/test3.cfg > lll;wc lll;mv lll ~/public_html/$USER/catalog/test3.cfg;
+cat ~/public_html/$USER/catalog/testA.cfg ~/public_html/$USER/catalog/testB.cfg > ~/public_html/$USER/catalog/test3.cfg;
+wc ~/public_html/$USER/catalog/test3.cfg;
 
 #        dtype = 'MC' if 'MINIAODSIM' in dirname else 'Data'
 #	 if 'Run2017' in dirname: continue
@@ -85,14 +94,14 @@ PandaAnalysis/T3/bin/task.py --submit
 PandaAnalysis/T3/merging/merge.py --cfg leptonic qqZZ                  
 
 -> Avoiding duplicate files
-ls -l /mnt/hadoop/cms/store/user/ceballos/panda/v_006_0/batch/*.root|awk '($5==0){print"rm "$9}' > lll
+ls -l /mnt/hadoop/cms/store/user/ceballos/panda/v_004_0/batch/*.root|awk '($5==0){print"rm "$9}' > lll
 wc lll
 source lll
 rm lll
 
-ls -l   /mnt/hadoop/cms/store/user/ceballos/panda/v_006_0/batch/*.root
-ls -lrt /mnt/hadoop/cms/store/user/ceballos/panda/v_006_0/batch/*.root|wc
-ls -lrt /mnt/hadoop/cms/store/user/ceballos/panda/v_006_0/batch/*.root| awk '{print$9}' > lll0
+ls -l   /mnt/hadoop/cms/store/user/ceballos/panda/v_004_0/batch/*.root
+ls -lrt /mnt/hadoop/cms/store/user/ceballos/panda/v_004_0/batch/*.root|wc
+ls -lrt /mnt/hadoop/cms/store/user/ceballos/panda/v_004_0/batch/*.root| awk '{print$9}' > lll0
 # edit, separate file_A.root to file _A  .root
 sed -i 's/_0.root/ _0 .root/' lll0
 sed -i 's/_1.root/ _1 .root/' lll0

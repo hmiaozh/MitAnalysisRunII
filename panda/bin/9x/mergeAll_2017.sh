@@ -46,12 +46,16 @@ PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 qqZH125inv
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 WpWp_EWK_QCD
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 WpWp_EWK
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 WpWp_QCD
-#PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ZH_ZToLL_HToGDarkG_M125
 #PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 SingleMuon           
 #PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 SingleElectron     
 #PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 MuonEG       
 #PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 DoubleEG     
 #PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 DoubleMuon
+
+elif [ $NSEL == 'specialmc' ]; then
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ZH_ZToLL_HToGDarkG_M125
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ZH_ZToLL_HToGDarkG_M200
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ZH_ZToLL_HToGDarkG_M300
 
 elif [ $NSEL == 'da' ]; then
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 data_overlaps

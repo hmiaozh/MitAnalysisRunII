@@ -28,14 +28,14 @@ float relPosY    = 0.035;
 float relExtraDY = 1.2;
 
 // ratio of "CMS" and extra text size
-float extraOverCmsTextSize  = 0.65;
+float extraOverCmsTextSize  = 0.50;
 
 TString lumi_13TeV_2016 = "35.9 fb^{-1}";
 TString lumi_13TeV_2017 = "41.5 fb^{-1}";
-TString lumi_13TeV_2018 = "59.7 fb^{-1}";
-TString lumi_13TeV_2019 = "137.1 fb^{-1}";
-TString lumi_8TeV  = "19.4 fb^{-1}";
-TString lumi_7TeV  = "4.9 fb^{-1}";
+TString lumi_13TeV_2018 = "60.0 fb^{-1}";
+TString lumi_13TeV_2019 = "137.4 fb^{-1}";
+TString lumi_8TeV       = "19.4 fb^{-1}";
+TString lumi_7TeV       = "4.9 fb^{-1}";
 
 bool drawLogo      = false;
 

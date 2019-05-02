@@ -49,3 +49,26 @@ datacardsFromHistograms("zhbb/testcondor2017", kZllHFJSR,           true, 3, 0, 
 datacardsFromHistograms("zhbb/testcondor2017", kZllHLightFlavorFJCR,true, 3, 0, 2017, isVZbbAna, applyBtagPtEta);
 datacardsFromHistograms("zhbb/testcondor2017", kZllHHeavyFlavorFJCR,true, 3, 0, 2017, isVZbbAna, applyBtagPtEta);
 datacardsFromHistograms("zhbb/testcondor2017", kZllHVZbbFJCR,       true, 3, 0, 2017, isVZbbAna, applyBtagPtEta);
+
+datacardsFromHistograms("zhbb/testcondor2018", kZllHSR,             true, 3, 0, 2018, isVZbbAna, applyBtagPtEta);
+datacardsFromHistograms("zhbb/testcondor2018", kZllHLightFlavorCR,  true, 3, 0, 2018, isVZbbAna, applyBtagPtEta);
+datacardsFromHistograms("zhbb/testcondor2018", kZllHHeavyFlavorCR , true, 3, 0, 2018, isVZbbAna, applyBtagPtEta);
+datacardsFromHistograms("zhbb/testcondor2018", kZllH2TopCR,         true, 3, 0, 2018, isVZbbAna, applyBtagPtEta);
+datacardsFromHistograms("zhbb/testcondor2018", kZllHVZbbCR,         true, 3, 0, 2018, isVZbbAna, applyBtagPtEta);
+
+datacardsFromHistograms("zhbb/testcondor2018", kZllHSR,             true, 3, 1, 2018, isVZbbAna, applyBtagPtEta);
+datacardsFromHistograms("zhbb/testcondor2018", kZllHLightFlavorCR,  true, 3, 1, 2018, isVZbbAna, applyBtagPtEta);
+datacardsFromHistograms("zhbb/testcondor2018", kZllHHeavyFlavorCR , true, 3, 1, 2018, isVZbbAna, applyBtagPtEta);
+datacardsFromHistograms("zhbb/testcondor2018", kZllH2TopCR,         true, 3, 1, 2018, isVZbbAna, applyBtagPtEta);
+datacardsFromHistograms("zhbb/testcondor2018", kZllHVZbbCR,         true, 3, 1, 2018, isVZbbAna, applyBtagPtEta);
+
+datacardsFromHistograms("zhbb/testcondor2018", kZllHSR,             true, 3, 2, 2018, isVZbbAna, applyBtagPtEta);
+datacardsFromHistograms("zhbb/testcondor2018", kZllHLightFlavorCR,  true, 3, 2, 2018, isVZbbAna, applyBtagPtEta);
+datacardsFromHistograms("zhbb/testcondor2018", kZllHHeavyFlavorCR , true, 3, 2, 2018, isVZbbAna, applyBtagPtEta);
+datacardsFromHistograms("zhbb/testcondor2018", kZllH2TopCR,         true, 3, 2, 2018, isVZbbAna, applyBtagPtEta);
+datacardsFromHistograms("zhbb/testcondor2018", kZllHVZbbCR,         true, 3, 2, 2018, isVZbbAna, applyBtagPtEta);
+
+datacardsFromHistograms("zhbb/testcondor2018", kZllHFJSR,           true, 3, 0, 2018, isVZbbAna, applyBtagPtEta);
+datacardsFromHistograms("zhbb/testcondor2018", kZllHLightFlavorFJCR,true, 3, 0, 2018, isVZbbAna, applyBtagPtEta);
+datacardsFromHistograms("zhbb/testcondor2018", kZllHHeavyFlavorFJCR,true, 3, 0, 2018, isVZbbAna, applyBtagPtEta);
+datacardsFromHistograms("zhbb/testcondor2018", kZllHVZbbFJCR,       true, 3, 0, 2018, isVZbbAna, applyBtagPtEta);

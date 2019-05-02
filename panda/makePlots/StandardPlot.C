@@ -20,7 +20,7 @@ Bool_t isBSMOverlaid = true;
 float xPos[nPlotCategories] = {0.19,0.19,0.19,0.19,0.19,0.19,0.40,0.40,0.40,0.40,0.40,0.40,0.40,0.40,0.40,}; 
 float yOff[nPlotCategories] = {   0,	1,   2,   3,   4,   5,   0,   1,   2,	3,   4,   5,   6,   7,   8};
 
-const Float_t _tsize   = 0.035;
+const Float_t _tsize   = 0.030;
 const Float_t _xoffset = 0.20;
 const Float_t _yoffset = 0.05;
 
@@ -152,7 +152,7 @@ void DrawLegendTG(Float_t x1,
 class StandardPlot {
 
     public: 
-        StandardPlot() { _hist.resize(nPlotCategories,0); _hist[kPlotData] = 0; _breakdown = false; _HiggsLabel = "";_labelEM = " Nonprompt";_labelVVV = " VVV";}
+        StandardPlot() { _hist.resize(nPlotCategories,0); _hist[kPlotData] = 0; _breakdown = false; _HiggsLabel = ""; _Higgs2Label = "";_labelEM = " Nonprompt";_labelVVV = " VVV";}
         void setMCHist   (int s, TH1F * h)  { _hist[s] = h;} 
         void setOverlaid  (bool b)   { isBSMOverlaid = b;   }
         void setLabelEM   (TString s){ _labelEM  = s.Data();}
@@ -160,7 +160,8 @@ class StandardPlot {
 
   TH1F* getDataHist() { return _hist[kPlotData]; }
 
-        void setHiggsLabel (TString s) {_HiggsLabel=s;}
+        void setHiggsLabel  (TString s) {_HiggsLabel =s;}
+        void setHiggs2Label (TString s) {_Higgs2Label=s;}
 
         TH1* DrawAndRebinTo(const int &rebinTo) {
 
@@ -194,6 +195,7 @@ class StandardPlot {
                 if( !_hist[ic] || ic == kPlotData) continue;
                 _hist[ic]->Rebin(rebin);
                 _hist[ic]->SetLineColor(plotColors[ic]);
+	       //for(int i=1; i<=_hist[ic]->GetNbinsX(); i++) if(_hist[ic]->GetBinContent(i)<0) _hist[ic]->SetBinContent(i,0);
 
                 if(doApplyBinWidth == true){
                   _hist[ic]->Scale(1,"width");
@@ -201,6 +203,7 @@ class StandardPlot {
 
                 // signal gets overlaid
                 if (ic == kPlotBSM && isBSMOverlaid == false) continue;
+                if (ic == kPlotSignal0 && isBSMOverlaid == false) continue;
 
                 _hist[ic]->SetFillColor(plotColors[ic]);
                 _hist[ic]->SetFillStyle(1001);
@@ -210,9 +213,11 @@ class StandardPlot {
             }
 
             if(_hist[kPlotBSM] ) _hist[kPlotBSM]->SetLineWidth(4);
+            if(_hist[kPlotSignal0] ) _hist[kPlotSignal0]->SetLineWidth(4);
             if(_hist[kPlotData]) _hist[kPlotData]->Rebin(rebin);
             if(_hist[kPlotData]) _hist[kPlotData]->SetLineColor  (kBlack);
             if(_hist[kPlotData]) _hist[kPlotData]->SetMarkerStyle(kFullCircle);
+
             //_hist[kPlotData]->SetBinContent(5,_hist[kPlotData]->GetBinContent(5)-1);
             //_hist[kPlotData]->SetBinContent(6,_hist[kPlotData]->GetBinContent(6)-1);
             //_hist[kPlotData]->SetBinContent(4,_hist[kPlotData]->GetBinContent(4)-5);
@@ -241,6 +246,7 @@ class StandardPlot {
 	    }
 
             if(_hist[kPlotBSM] && isBSMOverlaid == false) _hist[kPlotBSM]->Draw("hist,same");
+            if(_hist[kPlotSignal0] && isBSMOverlaid == false) _hist[kPlotSignal0]->Draw("hist,same");
 
             if(_hist[kPlotData]) {
 	      bool plotCorrectErrorBars = true;
@@ -253,7 +259,7 @@ class StandardPlot {
                   double U = ROOT::Math::gamma_quantile_c(alpha/2,N+1,1);
                   g->SetPointEYlow(i,double(N)-L);
                   g->SetPointEYhigh(i, U-double(N));
-                  
+
                   g->SetPointEXlow (i, 0);
                   g->SetPointEXhigh(i, 0);
   		}
@@ -310,7 +316,7 @@ class StandardPlot {
             	hstack->SetMaximum(10000 * theMax);
             	hstack->SetMinimum(TMath::Max(0.9 * theMin,0.010));
             } else {
-              hstack->SetMaximum(2.0 * theMax);
+              hstack->SetMaximum(2.6 * theMax);
             }
 
             if(_breakdown) {
@@ -338,6 +344,7 @@ class StandardPlot {
 
             size_t j=0;
             TString higgsLabel  = Form("%s",_HiggsLabel.Data());
+            TString higgs2Label = Form("%s",_Higgs2Label.Data());
 
             for (int ic=0; ic<nPlotCategories; ic++) {
 	      if     (ic==kPlotData){
@@ -346,6 +353,10 @@ class StandardPlot {
 	      else if(ic == kPlotBSM){
                 if     (_hist[ic] && isBSMOverlaid) { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], higgsLabel, "f" ); j++; }
                 else if(_hist[ic])		    { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], higgsLabel, "l" ); j++; }
+	      }
+	      else if(ic == kPlotSignal0){
+                if     (_hist[ic] && isBSMOverlaid) { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], higgs2Label, "f" ); j++; }
+                else if(_hist[ic])		    { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], higgs2Label, "l" ); j++; }
 	      }
 	      else {
 	        if(_hist[ic] && _hist[ic]->GetSumOfWeights() > 0) { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], plotNames[ic].Data(), "f"); j++;}
@@ -369,7 +380,7 @@ class StandardPlot {
         void setUnits(const TString &s) { _units = s; }
         void setBreakdown(const bool &b = true) { _breakdown = b; }
         void addLabel(const std::string &s) {
-            _extraLabel = new TLatex(0.8, 0.65, TString(s));
+            _extraLabel = new TLatex(0.8, 0.6, TString(s));
             _extraLabel->SetNDC();
             _extraLabel->SetTextAlign(32);
             _extraLabel->SetTextFont(42);
@@ -386,6 +397,7 @@ class StandardPlot {
         TLatex * _extraLabel;
         bool     _breakdown;
         TString  _HiggsLabel;
+        TString  _Higgs2Label;
         TString  _labelEM;
         TString  _labelVVV;
 

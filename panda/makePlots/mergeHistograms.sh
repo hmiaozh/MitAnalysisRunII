@@ -2,11 +2,31 @@
 
 for i in `seq 0 100`;
 do
-  ls done_ana/histoZHG_2016_${i}.root done_ana/histoZHG_2017_${i}.root done_ana/histoZHG_2018_${i}.root >& /dev/null
+  ls done_ana/histoZHG_mH125_2016_${i}.root done_ana/histoZHG_mH125_2017_${i}.root done_ana/histoZHG_mH125_2018_${i}.root >& /dev/null
   if [ $? -eq 0 ]; then
-    hadd -f done_ana/histoZHG_2019_${i}.root done_ana/histoZHG_2016_${i}.root done_ana/histoZHG_2017_${i}.root done_ana/histoZHG_2018_${i}.root
+    hadd -f done_ana/histoZHG_mH125_2019_${i}.root done_ana/histoZHG_mH125_2016_${i}.root done_ana/histoZHG_mH125_2017_${i}.root done_ana/histoZHG_mH125_2018_${i}.root
   fi
 done
+
+for i in `seq 0 100`;
+do
+  ls done_ana/histoZHG_mH200_2016_${i}.root done_ana/histoZHG_mH200_2017_${i}.root done_ana/histoZHG_mH200_2018_${i}.root >& /dev/null
+  if [ $? -eq 0 ]; then
+    hadd -f done_ana/histoZHG_mH200_2019_${i}.root done_ana/histoZHG_mH200_2016_${i}.root done_ana/histoZHG_mH200_2017_${i}.root done_ana/histoZHG_mH200_2018_${i}.root
+  fi
+done
+
+for i in `seq 0 100`;
+do
+  ls done_ana/histoZHG_mH300_2016_${i}.root done_ana/histoZHG_mH300_2017_${i}.root done_ana/histoZHG_mH300_2018_${i}.root >& /dev/null
+  if [ $? -eq 0 ]; then
+    hadd -f done_ana/histoZHG_mH300_2019_${i}.root done_ana/histoZHG_mH300_2016_${i}.root done_ana/histoZHG_mH300_2017_${i}.root done_ana/histoZHG_mH300_2018_${i}.root
+  fi
+done
+
+if [ $# == 1 ] && [ $1 == "zhgonly" ]; then
+  exit;
+fi
 
 for i in `seq 0 100`;
 do

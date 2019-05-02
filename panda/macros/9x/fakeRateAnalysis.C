@@ -13,6 +13,7 @@
 
 #include "MitAnalysisRunII/panda/macros/9x/pandaFlat.C"
 #include "MitAnalysisRunII/panda/macros/9x/common.h"
+#include "MitAnalysisRunII/panda/macros/9x/applyCorrections.h"
 
 void fakeRateAnalysis(
 int year, int nbjets = 0
@@ -42,15 +43,14 @@ int year, int nbjets = 0
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(0);
-    //infileName_.push_back(Form("%sWWinc.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	           infileCat_.push_back(1);
-    //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	           infileCat_.push_back(1);
+    infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	           infileCat_.push_back(1);
     infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		 infileCat_.push_back(1);
     infileName_.push_back(Form("%sTT1L.root" ,filesPath.Data()));		 infileCat_.push_back(1);
     infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                  infileCat_.push_back(1);
     infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
     infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
-    //infileName_.push_back(Form("%sWZno3l.root" ,filesPath.Data()));	           infileCat_.push_back(1);
+    infileName_.push_back(Form("%sWZno3l.root" ,filesPath.Data()));	         infileCat_.push_back(1);
     infileName_.push_back(Form("%sWZ3l_amcnlo.root" ,filesPath.Data()));         infileCat_.push_back(1);
     infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));  	         infileCat_.push_back(1);
     infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	         infileCat_.push_back(1);

@@ -63,7 +63,7 @@ CMS_lumi( TPad* pad, int iPeriod, int iPosX )
   else if ( iPeriod==2019 )
     {
       lumiText += lumi_13TeV_2019;
-      lumiText += " (13 TeV run-II)";
+      lumiText += " (13 TeV)";
     }
   else if ( iPeriod==7 )
     { 
@@ -144,13 +144,13 @@ CMS_lumi( TPad* pad, int iPeriod, int iPosX )
 	  latex.SetTextFont(cmsTextFont);
 	  latex.SetTextSize(cmsTextSize*t);
 	  latex.SetTextAlign(align_);
-	  latex.DrawLatex(posX_+0.1, posY_-0.01, cmsText);
+	  latex.DrawLatex(posX_+0.1, posY_-0.10, cmsText);
 	  if( writeExtraText ) 
 	    {
 	      latex.SetTextFont(extraTextFont);
 	      latex.SetTextAlign(align_);
 	      latex.SetTextSize(extraTextSize*t);
-	      latex.DrawLatex(posX_+0.1, posY_- relExtraDY*cmsTextSize*t, extraText);
+	      latex.DrawLatex(posX_+0.1, posY_- relExtraDY*cmsTextSize*t-0.08, extraText);
 	    }
 	}
     }
