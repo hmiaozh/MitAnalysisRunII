@@ -189,8 +189,8 @@ double mcCorrection(int type, int year, int jetNMBtags, int jetNBtags, int nJot,
     else if(year == 2017 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 1.45;
     else if(year == 2017 && infileCat == kPlotDY && nJot >= 1) totalWeight = totalWeight * 1.10;
 
-    else if(year == 2018 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 3.00;
-    else if(year == 2018 && infileCat == kPlotDY && nJot >= 1) totalWeight = totalWeight * 1.60;
+    else if(year == 2018 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 2.40;
+    else if(year == 2018 && infileCat == kPlotDY && nJot >= 1) totalWeight = totalWeight * 1.70;
   }
 
   if(type == 1 || type  == 2){ // ZH or Z

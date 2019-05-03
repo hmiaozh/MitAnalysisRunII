@@ -255,30 +255,22 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   TH1D *hWW_KF_CMSDown = (TH1D*)(fVVEWKCorr->Get("hWW_KF_CMSDown")); assert(hWW_KF_CMSDown); hWW_KF_CMSDown->SetDirectory(0);
   delete fVVEWKCorr;
 
-  const int nBinMJJ = 4; Float_t xbinsMJJ[nBinMJJ+1] = {500, 800, 1150, 1700, 2000};
+  const int nBinMJJ = 4; Float_t xbinsMJJ[nBinMJJ+1] = {500, 800, 1200, 1800, 2000};
   const int nBinMLL = 4; Float_t xbinsMLL[nBinMLL+1] = {20, 85, 135, 210, 500};
   const int nBinBDT = 4; Float_t xbinsBDT[nBinBDT+1]  = {-0.8, -0.05, 0.15, 0.39, 0.8};
-  const int nBinMVA = 80; Float_t xbins[nBinMVA+1] = {500, 800, 1150, 1700, 2000,
-                                                          2800, 3150, 3700, 4000,
-						          4800, 5150, 5700, 6000,
-						          6800, 7150, 7700, 8000,
-						          8800, 9150, 9700,10000,
-						         10800,11150,11700,12000,
-						         12800,13150,13700,14000,
-						         14800,15150,15700,16000,
-						         16800,17150,17700,18000,
-						         18800,19150,19700,20000,
-						         20800,21150,21700,22000,
-						         22800,23150,23700,24000,
-						         24800,25150,25700,26000,
-						         26800,27150,27700,28000,
-						         28800,29150,29700,30000,
-						         30800,31150,31700,32000,
-						         32800,33150,33700,34000,
-						         34800,35150,35700,36000,
-							 37150,38000,
-							 39140,40000,
-						         40950,41150,41390,42000
+  const int nBinMVA = 48; Float_t xbins[nBinMVA+1] = {500, 800, 1200, 1800, 2000,
+                                                          2800, 3200, 3800, 4000,
+						          4800, 5200, 5800, 6000,
+						          6800, 7200, 7800, 8000,
+						          8800, 9200, 9800,10000,
+						         10800,11200,11800,12000,
+						         12800,13200,13800,14000,
+						         14800,15200,15800,16000,
+						         16800,17200,17800,18000,
+						         18800,19200,19800,20000,
+							 21200,22000,
+							 23200,24000,
+						         24950,25150,25390,26000
 							 };
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
@@ -287,7 +279,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   TH1D* histo[allPlots][nPlotCategories];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     if     (thePlot >=   0 && thePlot <=   5) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
-    else if(thePlot >=   6 && thePlot <=   8) {nBinPlot =   5; xminPlot = -0.5; xmaxPlot = 4.5;}
+    else if(thePlot >=   6 && thePlot <=   8) {nBinPlot =   3; xminPlot =  1.5; xmaxPlot = 4.5;}
     else if(thePlot >=   9 && thePlot <=  11) {nBinPlot =  80; xminPlot =  0.0; xmaxPlot = 8.0;}
     else if(thePlot >=  12 && thePlot <=  14) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot =2000;}
     else if(thePlot >=  15 && thePlot <=  17) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 1.0;}
@@ -469,8 +461,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 
       bool passJetPtEtaCut = false;
       if(thePandaFlat.nJot >= 2){
-        passJetPtEtaCut = (TMath::Abs(thePandaFlat.jotPt[0]) > 50 || TMath::Abs(thePandaFlat.jotEta[0]) < 2.4) &&
-	                  (TMath::Abs(thePandaFlat.jotPt[1]) > 50 || TMath::Abs(thePandaFlat.jotEta[1]) < 2.4);
+        passJetPtEtaCut = TMath::Abs(thePandaFlat.jotPt[0]) > 50 && TMath::Abs(thePandaFlat.jotPt[1]) > 50;
       }
       if(passJetPtEtaCut == false) continue;
 
@@ -766,9 +757,9 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       wzZep	= TMath::Abs(trilep.Eta()-(vJot1.Eta()+vJot2.Eta())/2.)/deltaEtaJJ;
       wzZepUp	= TMath::Abs(trilep.Eta()-(vJot1Up.Eta()+vJot2Up.Eta())/2.)/deltaEtaJJUp;
       wzZepDown = TMath::Abs(trilep.Eta()-(vJot1Down.Eta()+vJot2Down.Eta())/2.)/deltaEtaJJDown;
-      bool passwzZep	 = thePandaFlat.nJot		  >= 2 && wzZep     < 0.75;
-      bool passwzZepUp   = thePandaFlat.nJot_JESTotalUp   >= 2 && wzZepUp   < 0.75;
-      bool passwzZepDown = thePandaFlat.nJot_JESTotalDown >= 2 && wzZepDown < 0.75;
+      bool passwzZep     = thePandaFlat.nJot              >= 2 && wzZep     < 1.00;
+      bool passwzZepUp   = thePandaFlat.nJot_JESTotalUp   >= 2 && wzZepUp   < 1.00;
+      bool passwzZepDown = thePandaFlat.nJot_JESTotalDown >= 2 && wzZepDown < 1.00;
 
       double zzZep = 0; double zzZepUp = 0; double zzZepDown = 0;
       zzZep	= TMath::Abs(fourlep.Eta()-(vJot1.Eta()+vJot2.Eta())/2.)/deltaEtaJJ;
@@ -779,7 +770,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       bool passzzZepDown = thePandaFlat.nJot_JESTotalDown >= 2 && zzZepDown < 0.75;
  
       bool passMLL   = mllZ > 20 && (fabs(mllZ-91.1876) > 15 || lepType != 1);
-      bool passWWMET = vMet.Pt() > 40; bool passWWMETUp = vMetUp.Pt() > 40;bool passWWMETDown = vMetDown.Pt() > 40;
+      bool passWWMET = vMet.Pt() > 30; bool passWWMETUp = vMetUp.Pt() > 30;bool passWWMETDown = vMetDown.Pt() > 30;
       bool passWZMET = vMet.Pt() > 30; bool passWZMETUp = vMetUp.Pt() > 30;bool passWZMETDown = vMetDown.Pt() > 30;
       bool passNjets = thePandaFlat.nJot >= 2; bool passNjetsUp = thePandaFlat.nJot_JESTotalUp >= 2; bool passNjetsDown = thePandaFlat.nJot_JESTotalDown >= 2;
       bool passBtagVeto = thePandaFlat.jetNMBtags == 0; bool passBtagVetoUp = thePandaFlat.jetNMBtags_JESTotalUp == 0; bool passBtagVetoDown = thePandaFlat.jetNMBtags_JESTotalDown == 0;
@@ -1052,33 +1043,31 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
         else if(mllZ < 210) typeSelAux0 = 2;
         else                typeSelAux0 = 3;
         double typeSelAux1 = 0;
-	if(qTot>0) typeSelAux1 = 1;
-        double typeSelAux2 = 0;
-        if     (deltaEtaJJ > 4.5) typeSelAux2 = 1;
+        if     (deltaEtaJJ > 4.5) typeSelAux1 = 1;
         double MVAVar     = TMath::Min(massJJ     ,xbinsMJJ[nBinMJJ]-0.0001);
         double MVAVarUp   = TMath::Min(massJJUp   ,xbinsMJJ[nBinMJJ]-0.0001);
         double MVAVarDown = TMath::Min(massJJDown ,xbinsMJJ[nBinMJJ]-0.0001);
 	if(dataCardSel     == 4) MVAVar	    = (1 + TMath::Max(-1., TMath::Min(bdtValue,     0.7999))) * 1000;
 	if(dataCardSelUp   == 4) MVAVarUp   = (1 + TMath::Max(-1., TMath::Min(bdtValueUp,   0.7999))) * 1000; 
         if(dataCardSelDown == 4) MVAVarDown = (1 + TMath::Max(-1., TMath::Min(bdtValueDown, 0.7999))) * 1000;
-        if     (dataCardSel     == 0) MVAVar     = MVAVar     + 2000 * typeSelAux0 + 8000 * typeSelAux1 + 16000 * typeSelAux2;
-        else if(dataCardSel     == 1) MVAVar     = MVAVar     + 32000 + 2000 * typeSelAux1;
-        else if(dataCardSel     == 2) MVAVar     = MVAVar     + 36000;
-        else if(dataCardSel     == 3) MVAVar     = MVAVar     + 38000;
-        //else if(dataCardSel     == 4) MVAVarUp   = MVAVarUp   + 40000 + 2000 * typeSelAux2;
-        else if(dataCardSel     == 4) MVAVar     = MVAVar     + 40000;
-        if     (dataCardSelUp   == 0) MVAVarUp   = MVAVarUp   + 2000 * typeSelAux0 + 8000 * typeSelAux1 + 16000 * typeSelAux2;
-        else if(dataCardSelUp   == 1) MVAVarUp   = MVAVarUp   + 32000 + 2000 * typeSelAux1;
-        else if(dataCardSelUp   == 2) MVAVarUp   = MVAVarUp   + 36000;
-        else if(dataCardSelUp   == 3) MVAVarUp   = MVAVarUp   + 38000;
-        //else if(dataCardSelUp   == 4) MVAVarUp   = MVAVarUp   + 40000 + 2000 * typeSelAux2;
-        else if(dataCardSelUp   == 4) MVAVarUp   = MVAVarUp   + 40000;
-        if     (dataCardSelDown == 0) MVAVarDown = MVAVarDown + 2000 * typeSelAux0 + 8000 * typeSelAux1 + 16000 * typeSelAux2;
-        else if(dataCardSelDown == 1) MVAVarDown = MVAVarDown + 32000 + 2000 * typeSelAux1;
-        else if(dataCardSelDown == 2) MVAVarDown = MVAVarDown + 36000;
-        else if(dataCardSelDown == 3) MVAVarDown = MVAVarDown + 38000;
-        //else if(dataCardSelDown == 4) MVAVarDown = MVAVarDown + 40000 + 2000 * typeSelAux2;
-        else if(dataCardSelDown == 4) MVAVarDown = MVAVarDown + 40000;
+
+        if     (dataCardSel     == 0) MVAVar     = MVAVar     + 2000 * typeSelAux0 + 8000 * typeSelAux1;
+        else if(dataCardSel     == 1) MVAVar     = MVAVar     + 16000 + 2000 * typeSelAux1;
+        else if(dataCardSel     == 2) MVAVar     = MVAVar     + 20000;
+        else if(dataCardSel     == 3) MVAVar     = MVAVar     + 22000;
+        else if(dataCardSel     == 4) MVAVar     = MVAVar     + 24000;
+
+        if     (dataCardSelUp   == 0) MVAVarUp   = MVAVarUp   + 2000 * typeSelAux0 + 8000 * typeSelAux1;
+        else if(dataCardSelUp   == 1) MVAVarUp   = MVAVarUp   + 16000 + 2000 * typeSelAux1;
+        else if(dataCardSelUp   == 2) MVAVarUp   = MVAVarUp   + 20000;
+        else if(dataCardSelUp   == 3) MVAVarUp   = MVAVarUp   + 22000;
+        else if(dataCardSelUp   == 4) MVAVarUp   = MVAVarUp   + 24000;
+
+        if     (dataCardSelDown == 0) MVAVarDown = MVAVarDown + 2000 * typeSelAux0 + 8000 * typeSelAux1;
+        else if(dataCardSelDown == 1) MVAVarDown = MVAVarDown + 16000 + 2000 * typeSelAux1;
+        else if(dataCardSelDown == 2) MVAVarDown = MVAVarDown + 20000;
+        else if(dataCardSelDown == 3) MVAVarDown = MVAVarDown + 22000;
+        else if(dataCardSelDown == 4) MVAVarDown = MVAVarDown + 24000;
 
         // Avoid QCD scale weights that are anomalous high
         double maxQCDscale = (TMath::Abs(thePandaFlat.scale[0])+TMath::Abs(thePandaFlat.scale[1])+TMath::Abs(thePandaFlat.scale[2])+
