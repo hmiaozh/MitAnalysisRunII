@@ -86,11 +86,19 @@ void makeSSWWDataCards(TString outputLimits = "ssww_comb_input.root", int fidAna
   newcardShape << Form("\n");
 
   for(int ny=2016; ny<2016+nYears; ny++){
-    newcardShape << Form("CMS_fake_%d    lnN     ",ny);
+    newcardShape << Form("CMS_fake_m_%d    lnN     ",ny);
     for (int ic=0; ic<nPlotCategories; ic++){
       if(!histo_Baseline[ic]) continue;
       if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-      if(ic == kPlotNonPrompt) newcardShape << Form("%.3f ",TMath::Sqrt(lumiV[ny-2016]/totalLumiV) * (1.2-1.0)+1.0);
+      if(ic == kPlotNonPrompt) newcardShape << Form("%.3f ",TMath::Sqrt(lumiV[ny-2016]/totalLumiV) * (1.15-1.0)+1.0);
+      else                     newcardShape << Form("- ");
+    }
+    newcardShape << Form("\n");
+    newcardShape << Form("CMS_fake_e_%d    lnN     ",ny);
+    for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotNonPrompt) newcardShape << Form("%.3f ",TMath::Sqrt(lumiV[ny-2016]/totalLumiV) * (1.15-1.0)+1.0);
       else                     newcardShape << Form("- ");
     }
     newcardShape << Form("\n");
@@ -286,6 +294,8 @@ void makeSSWWDataCards(TString outputLimits = "ssww_comb_input.root", int fidAna
 
   newcardShape << Form("CMS_ssww_wznorm  rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotWZ].Data());
   newcardShape << Form("CMS_ssww_wznorm  rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotEWKWZ].Data());
+  newcardShape << Form("CMS_ssww_vvvnorm rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotVVV].Data());
+  newcardShape << Form("CMS_ssww_zznorm  rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotZZ].Data());
 
   newcardShape << Form("ch1 autoMCStats 0\n");
 
