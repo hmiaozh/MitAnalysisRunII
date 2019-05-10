@@ -295,7 +295,7 @@ bool useZRap = true
       int nEvtRap = eff_HLT_Rap->GetXaxis()->FindFixBin(ZRecRap)-1;
       if(nEvtRap < 0 || nEvtRap >= nBinRap) {printf("PROBLEM WITH RAP!\n"); return;};
 
-      if(abs(thePandaFlat.looseLep1PdgId)==13 && (thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger){
+      if(abs(thePandaFlat.looseLep1PdgId)==13 && (thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep1Pt > 40){
         den_HLT_Muon[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
 	if(thePandaFlat.looseLep2PdgId > 0)
         den_HLT_MuonM[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
@@ -308,8 +308,8 @@ bool useZRap = true
           else
 	  num_HLT_MuonP[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
         }
-      }       
-      if(abs(thePandaFlat.looseLep1PdgId)==11 && (thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger){
+      }
+      if(abs(thePandaFlat.looseLep1PdgId)==11 && (thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep1Pt > 40){
         den_HLT_Electron[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
 	if(thePandaFlat.looseLep2PdgId > 0)
         den_HLT_ElectronM[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
@@ -324,7 +324,7 @@ bool useZRap = true
         }
       }
 
-      if(abs(thePandaFlat.looseLep2PdgId)==13 && (thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger){
+      if(abs(thePandaFlat.looseLep2PdgId)==13 && (thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep2Pt > 40){
         den_HLT_Muon[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
 	if(thePandaFlat.looseLep1PdgId > 0)
         den_HLT_MuonM[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
@@ -337,8 +337,8 @@ bool useZRap = true
           else
 	  num_HLT_MuonP[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
         }
-      }       
-      if(abs(thePandaFlat.looseLep2PdgId)==11 && (thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger){
+      }
+      if(abs(thePandaFlat.looseLep2PdgId)==11 && (thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep2Pt > 40){
         den_HLT_Electron[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
 	if(thePandaFlat.looseLep1PdgId > 0)
         den_HLT_ElectronM[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);

@@ -21,8 +21,8 @@ const bool showSyst = true;
 const unsigned int period = 0;
 const double mcPrescale = 1;
 const bool usePureMC = true; // if true, passLooseLepId not applied
-enum selType                     { ZHGSEL,   BTAGSEL,   ZLGSEL,   WZSEL,   WZGSEL,   ZZSEL,   WWSEL, nSelTypes};
-TString selTypeName[nSelTypes]=  {"ZHGSEL", "BTAGSEL", "ZLGSEL", "WZSEL", "WZGSEL", "ZZSEL", "WWSEL"};
+enum selType                     { ZHGSEL,   BTAGSEL,   ZLGSEL,   WZSEL,   WZGSEL,   ZZSEL,   WWSEL,  ZHGFAKESEL, nSelTypes};
+TString selTypeName[nSelTypes]=  {"ZHGSEL", "BTAGSEL", "ZLGSEL", "WZSEL", "WZGSEL", "ZZSEL", "WWSEL","ZHGFAKESEL"};
 enum systType                     {JESUP=0, JESDOWN,  SCALEMUP,  SCALEMDOWN,  SCALEEUP,  SCALEEDOWN,  SCALEGUP,  SCALEGDOWN, nSystTypes};
 TString systTypeName[nSystTypes]= {"JESUP","JESDOWN","SCALEMUP","SCALEMDOWN","SCALEEUP","SCALEEDOWN","SCALEGUP","SCALEGDOWN"};
 
@@ -227,7 +227,7 @@ int year, bool isDesk014 = false, int mH = 125
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 56;
+  const int allPlots = 57;
   TH1D* histo[allPlots][nPlotCategories];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     bool is1DMT = false;
@@ -256,7 +256,7 @@ int year, bool isDesk014 = false, int mH = 125
     else if(thePlot >=  49 && thePlot <=  49) {is1DMT = true;}
     else if(thePlot >=  50 && thePlot <=  50) {nBinPlot =  50; xminPlot = 25.0; xmaxPlot = 425.0;}
     else if(thePlot >=  51 && thePlot <=  51) {nBinPlot =  50; xminPlot = 20.0; xmaxPlot = 220.0;}
-    else if(thePlot >=  52 && thePlot <=  54) {is1DMT = true;}
+    else if(thePlot >=  52 && thePlot <=  55) {is1DMT = true;}
     if     (thePlot == allPlots-1) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMVA, xbins);
     else if(is1DMT == true)        for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMVA1D, xbins1D);
     else                           for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinPlot, xminPlot, xmaxPlot);
@@ -539,18 +539,18 @@ int year, bool isDesk014 = false, int mH = 125
       if(dPhiLepTrackMETMin < TMath::Pi()/2) {PTrackMET[0] = PTrackMET[0] * sin(dPhiLepTrackMETMin);}
       double minPMET[1] = {TMath::Min(PMET[0],PTrackMET[0])};
 
-      TLorentzVector vPhoton,vPhotonUp,vPhotonDown;
+      TLorentzVector vFakePhoton,vPhoton,vPhotonUp,vPhotonDown;
       bool passPhoSel = TMath::Abs(thePandaFlat.loosePho1Eta) < 2.5
-             && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium 
-	     && (thePandaFlat.loosePho1SelBit & pCsafeVeto) == pCsafeVeto 
+             && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium
+	     && (thePandaFlat.loosePho1SelBit & pCsafeVeto) == pCsafeVeto
 	     && (thePandaFlat.loosePho1SelBit & pPixelVeto) == pPixelVeto;
       if(passPhoSel == true) {
         vPhoton.SetPtEtaPhiM(thePandaFlat.loosePho1Pt, thePandaFlat.loosePho1Eta, thePandaFlat.loosePho1Phi, 0);
 	if(vPhoton.Pt() <= 25) passPhoSel = false;
       }
       bool passPhoSelUp = TMath::Abs(thePandaFlat.loosePho1Eta) < 2.5
-             && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium 
-	     && (thePandaFlat.loosePho1SelBit & pCsafeVeto) == pCsafeVeto 
+             && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium
+	     && (thePandaFlat.loosePho1SelBit & pCsafeVeto) == pCsafeVeto
 	     && (thePandaFlat.loosePho1SelBit & pPixelVeto) == pPixelVeto;
       if(passPhoSelUp == true) {
         if(abs(thePandaFlat.loosePho1Eta) < 1.50) vPhotonUp.SetPtEtaPhiM(thePandaFlat.loosePho1Pt*phScaleB, thePandaFlat.loosePho1Eta, thePandaFlat.loosePho1Phi, 0);
@@ -558,8 +558,8 @@ int year, bool isDesk014 = false, int mH = 125
 	if(vPhotonUp.Pt() <= 25) passPhoSelUp = false;
       }
       bool passPhoSelDown = TMath::Abs(thePandaFlat.loosePho1Eta) < 2.5
-             && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium 
-	     && (thePandaFlat.loosePho1SelBit & pCsafeVeto) == pCsafeVeto 
+             && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium
+	     && (thePandaFlat.loosePho1SelBit & pCsafeVeto) == pCsafeVeto
 	     && (thePandaFlat.loosePho1SelBit & pPixelVeto) == pPixelVeto;
       if(passPhoSelDown == true) {
         if(abs(thePandaFlat.loosePho1Eta) < 1.50) vPhotonDown.SetPtEtaPhiM(thePandaFlat.loosePho1Pt/phScaleB, thePandaFlat.loosePho1Eta, thePandaFlat.loosePho1Phi, 0);
@@ -567,6 +567,14 @@ int year, bool isDesk014 = false, int mH = 125
 	if(vPhotonDown.Pt() <= 25) passPhoSelDown = false;
       }
 
+      bool passFakePhoSel = thePandaFlat.loosePho1Pt > 25 && TMath::Abs(thePandaFlat.loosePho1Eta) < 2.5
+             && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium
+	     && ((thePandaFlat.loosePho1SelBit & pCsafeVeto) != pCsafeVeto
+	     ||  (thePandaFlat.loosePho1SelBit & pPixelVeto) != pPixelVeto);
+      if(passFakePhoSel == true) {
+        vFakePhoton.SetPtEtaPhiM(thePandaFlat.loosePho1Pt, thePandaFlat.loosePho1Eta, thePandaFlat.loosePho1Phi, 0);
+      }
+ 
       double mllZ = 10000; double mllmin = 10000;
       TLorentzVector vZ1l1,vZ1l2,vZ2l1,vZ2l2,vWln;
       bool tightWlnId = false; int whichWln = -1;
@@ -700,6 +708,10 @@ int year, bool isDesk014 = false, int mH = 125
       else if(passPhoSel == false && vLoose.size() == 4 && vZ2l1.Pt() > 0 && vZ2l2.Pt() > 0 && TMath::Abs((vZ2l1 + vZ2l2).M()-91.1876) < 15.0 && TMath::Abs(qTot) == 0){     
         theMinSelType = 3;
         theG = vZ2l1 + vZ2l2;
+      }
+      else if(passFakePhoSel == true  && vLoose.size() == 2 && TMath::Abs(qTot) == 0){
+        theMinSelType = 4;
+        theG = vFakePhoton;
       }
 
       TLorentzVector dilepG = vZ1l1+vZ1l2+theG;
@@ -880,7 +892,8 @@ int year, bool isDesk014 = false, int mH = 125
      theMinSelType == 1 && pass3lMass && passZMass   && passNjets && passMET	&& passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET &&		 passMT,   // WZSEL
      theMinSelType == 2 && pass3lMass && passZMass   && passNjets && passMET	&& passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET &&		 passMT,   // WZGSEL
      theMinSelType == 3 && pass3lMass && passZMass   && passNjets && passMETMin && passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET &&		 passMT,   // ZZSEL
-     theMinSelType == 0 && pass3lMass && passZMassSB && passNjets && passMET	&& passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT && passMassEGZDiff // WWSEL
+     theMinSelType == 0 && pass3lMass && passZMassSB && passNjets && passMET	&& passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT && passMassEGZDiff, // WWSEL
+     theMinSelType == 4 && pass3lMass && passZMass   && passNjets && passMET	&& passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET &&                passMT    // ZHGFAKESEL
                                     };
 
       bool passNMinusOne[11] = {
@@ -1063,6 +1076,10 @@ int year, bool isDesk014 = false, int mH = 125
         }
         totalWeight = totalWeight * effSF;
       }
+      else if(passZHGSel && mTGMET > 100){
+        printf("DATA: %d %d %llu %f %f %f %f %f\n",thePandaFlat.runNumber,thePandaFlat.lumiNumber,thePandaFlat.eventNumber,
+	       mTGMET,vLoose[0].Pt(),vLoose[1].Pt(),theG.Pt(),theG.Eta());
+      }
 
       if(usePureMC == false && countLeptonTight != idLep.size()){
         double fakeSF = 1.0;
@@ -1145,9 +1162,10 @@ int year, bool isDesk014 = false, int mH = 125
       if(passAllCuts[ZHGSEL] && lepType != 2) histo[50][theCategory]->Fill(TMath::Min(TMath::Max(vLoose[0].Pt(),vLoose[1].Pt()),424.999),totalWeight);
       if(passAllCuts[ZHGSEL] && lepType != 2) histo[51][theCategory]->Fill(TMath::Min(TMath::Min(vLoose[0].Pt(),vLoose[1].Pt()),219.999),totalWeight);
       if(passAllCuts[WZSEL]) histo[52][theCategory]->Fill(TMath::Min(mTGMET,349.999),totalWeight*elePhoEffda);
+      if(passAllCuts[ZHGFAKESEL]) histo[53][theCategory]->Fill(TMath::Min(mTGMET,349.999),totalWeight);
       if(passAllCuts[ZHGSEL] && lepType != 2){
-        if(TMath::Abs(theG.Eta()) <= 1.0) histo[53][theCategory]->Fill(TMath::Min(mTGMET,349.999),totalWeight);
-        else                              histo[54][theCategory]->Fill(TMath::Min(mTGMET,349.999),totalWeight);
+        if(TMath::Abs(theG.Eta()) <= 1.0) histo[54][theCategory]->Fill(TMath::Min(mTGMET,349.999),totalWeight);
+        else                              histo[55][theCategory]->Fill(TMath::Min(mTGMET,349.999),totalWeight);
       }
 
       if(1){ // Begin datacard making

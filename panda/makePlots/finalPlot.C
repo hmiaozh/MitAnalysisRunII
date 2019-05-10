@@ -75,6 +75,11 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
 
   if(isBlind) show2D = false;
 
+  bool isSignalStack = false;
+  if(units.Contains("Stack")) {isSignalStack = true; units = units.ReplaceAll("Stack","");}
+  bool isRemoveBSM = false;
+  if(units.Contains("NoBSM")) {isRemoveBSM = true; units = units.ReplaceAll("NoBSM","");}
+
   //gInterpreter->ExecuteMacro("GoodStyle.C");
   //gROOT->LoadMacro("StandardPlot.C");
   gStyle->SetOptStat(0);
@@ -89,12 +94,6 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   myPlot.setUnits(units);
 
   TFile* file = new TFile(plotName, "read");  if(!file) {printf("File %s does not exist\n",plotName.Data()); return;}
-  TFile* fileExtra;
-  if(plotExtraName != ""){
-     fileExtra = new TFile(plotExtraName, "read");
-      _hist[kPlotSignal0] = (TH1F*)fileExtra->Get(Form("histo%d",kPlotBSM));
-     myPlot.setMCHist(kPlotSignal0, _hist[kPlotSignal0]);
-  }
 
   double totalSystUnc = 0.0;
   double totalStatUnc = 0.0;
@@ -108,6 +107,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   TH1F* hBck = 0;
   for(int ic=0; ic<nPlotCategories; ic++){
     _hist[ic] = (TH1F*)file->Get(Form("histo%d",ic));
+    if(isRemoveBSM && ic == kPlotBSM) _hist[ic]->Scale(0);
     //for(int i=1; i<=_hist[ic]->GetNbinsX(); i++) if(_hist[ic]->GetSumOfWeights() > 0) printf("%10s(%2d): %.1f\n",plotBaseNames[ic].Data(),i,_hist[ic]->GetBinContent(i));
     for(int i=1; i<=_hist[ic]->GetNbinsX(); i++) if(_hist[ic]->GetBinContent(i)<0) _hist[ic]->SetBinContent(i,0);
     if(ic == kPlotData) {
@@ -174,6 +174,23 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
 
     if(_hist[ic]->GetSumOfWeights() > 0) myPlot.setMCHist(ic, _hist[ic]);
   }
+  
+  TFile* fileExtra;
+  if(plotExtraName != ""){
+     fileExtra = new TFile(plotExtraName, "read");
+      _hist[kPlotSignal0] = (TH1F*)fileExtra->Get(Form("histo%d",kPlotBSM));
+     myPlot.setMCHist(kPlotSignal0, _hist[kPlotSignal0]);
+  }
+
+  myPlot.setOverlaid(false);
+  if(isSignalStack == true){
+    //if(_hist[kPlotSignal0]->GetSumOfWeights() > 0 &&
+    //   _hist[kPlotBSM]    ->GetSumOfWeights() > 0) { _hist[kPlotSignal0]->Add(_hist[kPlotBSM],-1); myPlot.setMCHist(kPlotSignal0, _hist[kPlotSignal0]);}
+    if(_hist[kPlotSignal0]->GetSumOfWeights() > 0) { _hist[kPlotSignal0]->Add(hBck); myPlot.setMCHist(kPlotSignal0, _hist[kPlotSignal0]);}
+    if(_hist[kPlotBSM]    ->GetSumOfWeights() > 0) { _hist[kPlotBSM    ]->Add(hBck); myPlot.setMCHist(kPlotBSM,     _hist[kPlotBSM    ]);}
+    //myPlot.setOverlaid(true);
+  }
+
   if(hBck->GetSumOfWeights() == 0) return;
   double scale = hData->GetSumOfWeights()/hBck->GetSumOfWeights();
   double daUnc = 1.0; if(hData->GetSumOfWeights() > 0) daUnc = 1/hData->GetSumOfWeights();
@@ -186,8 +203,6 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
     if(applyScaling == true && ic != kPlotData && ic != kPlotBSM) _hist[ic]->Scale(scale);
     if(_hist[ic]->GetSumOfWeights() > 0) myPlot.setMCHist(ic, _hist[ic]);
   }
-
-  myPlot.setOverlaid(false);
 
   TCanvas* c1 = new TCanvas("c1", "c1",5,5,500,500);
 

@@ -214,6 +214,10 @@ class StandardPlot {
 
             if(_hist[kPlotBSM] ) _hist[kPlotBSM]->SetLineWidth(4);
             if(_hist[kPlotSignal0] ) _hist[kPlotSignal0]->SetLineWidth(4);
+            if(_hist[kPlotBSM] ) _hist[kPlotBSM]->SetFillColor(0);
+            if(_hist[kPlotSignal0] ) _hist[kPlotSignal0]->SetFillColor(0);
+            if(_hist[kPlotBSM] ) _hist[kPlotBSM]->SetFillStyle(3001);
+            if(_hist[kPlotSignal0] ) _hist[kPlotSignal0]->SetFillStyle(3002);
             if(_hist[kPlotData]) _hist[kPlotData]->Rebin(rebin);
             if(_hist[kPlotData]) _hist[kPlotData]->SetLineColor  (kBlack);
             if(_hist[kPlotData]) _hist[kPlotData]->SetMarkerStyle(kFullCircle);

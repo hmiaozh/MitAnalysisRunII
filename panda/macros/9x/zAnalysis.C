@@ -210,7 +210,7 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 128;
+  const int allPlots = 144;
   TH1D* histo[allPlots][nPlotCategories];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     if     (thePlot >=  0 && thePlot <=  1) {nBinPlot = 120; xminPlot = 91.1876-15; xmaxPlot = 91.1876+15;}
@@ -244,11 +244,15 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
     else if(thePlot >=125 && thePlot <=125) {nBinPlot = 50; xminPlot =  0.0; xmaxPlot = TMath::Pi();}
     else if(thePlot >=126 && thePlot <=126) {nBinPlot = 50; xminPlot = -5.0; xmaxPlot = 5.0;}
     else if(thePlot >=127 && thePlot <=127) {nBinPlot = 50; xminPlot = 30.0; xmaxPlot = 430;}
+    else if(thePlot >=128 && thePlot <=143) {nBinPlot =100; xminPlot = 25.0; xmaxPlot = 125;}
 
     if(isTopSel == true && (thePlot >= 0 && thePlot <= 5)) {nBinPlot = 200; xminPlot = 15.0; xmaxPlot = 55;}
 
     for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinPlot, xminPlot, xmaxPlot);
   }
+
+  TH2D* histoZRapPtStudy0 = new TH2D("histoZRapPtStudy0", "histoZRapPtStudy0", 10, 0.0, 2.5, 20, 0., 200.);
+  TH2D* histoZRapPtStudy1 = new TH2D("histoZRapPtStudy1", "histoZRapPtStudy1", 10, 0.0, 2.5, 20, 0., 200.);
 
   TH1D* histoEGStudy[12][nPlotCategories];
   const int nBinLGPt  =  7; Float_t xbinsLGPt [nBinLGPt+1]  = {25,30,35,40,45,50,60,125};
@@ -525,8 +529,8 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
                  && (thePandaFlat.loosePho1SelBit & pPixelVeto) == pPixelVeto;
         vPhoton.SetPtEtaPhiM(thePandaFlat.loosePho1Pt, thePandaFlat.loosePho1Eta, thePandaFlat.loosePho1Phi, 0);
       }
-      bool passLGSel[2] = {thePandaFlat.nLooseLep == 2 && countLeptonTight == 2 && vLoose[0].Pt() > 25 && vLoose[1].Pt() > 25 && lepType != 0 && TMath::Abs(dilep.M()-91.1876) < 15 && qTot == 0,
-                           thePandaFlat.nLooseLep == 1 && countLeptonTight == 1 && vLoose[0].Pt() > 25 && passPhoSel && TMath::Abs((vLoose[0]+vPhoton).M()-91.1876) < 15};
+      bool passLGSel[2] = {thePandaFlat.nLooseLep == 2 && countLeptonTight == 2 && vLoose[0].Pt() > 35 && vLoose[1].Pt() > 25 && lepType != 0 && TMath::Abs(dilep.M()-91.1876) < 15 && qTot == 0,
+                           thePandaFlat.nLooseLep == 1 && countLeptonTight == 1 && vLoose[0].Pt() > 35 && passPhoSel && TMath::Abs((vLoose[0]+vPhoton).M()-91.1876) < 15};
       //if((passLGSel[0] || passLGSel[1]) && (infileCat_[ifile] == kPlotData || lepType != 2) && (thePandaFlat.trigger & (1<<kSingleEleTrig)) != 0){
       if((passLGSel[0] || passLGSel[1]) && (infileCat_[ifile] == kPlotData || lepType != 2) && passTrigger){
         int theCategoryLG = infileCat_[ifile];
@@ -864,6 +868,25 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
           histo[127][theCategory]->Fill(thePandaFlat.jotPt[0],totalWeight);histo[127][theCategory]->Fill(thePandaFlat.jotPt[1],totalWeight);
 	}
       }
+      // Trigger leg study
+      if(vLoose[0].Pt() > 25 && vLoose[1].Pt() > 25 && lepType != 2){
+        histo[lepType+128][theCategory]->Fill(TMath::Min((double)vLoose[0].Pt(), 124.999),totalWeight);
+        histo[lepType+130][theCategory]->Fill(TMath::Min((double)vLoose[1].Pt(), 124.999),totalWeight);
+	if(dilep.Pt() < 10) {
+          histo[lepType+132][theCategory]->Fill(TMath::Min((double)vLoose[0].Pt(), 124.999),totalWeight);
+          histo[lepType+134][theCategory]->Fill(TMath::Min((double)vLoose[1].Pt(), 124.999),totalWeight);
+	}
+        if(TMath::Abs(dilep.Rapidity()) > 2.0){
+          histo[lepType+136][theCategory]->Fill(TMath::Min((double)vLoose[0].Pt(), 124.999),totalWeight);
+          histo[lepType+138][theCategory]->Fill(TMath::Min((double)vLoose[1].Pt(), 124.999),totalWeight);
+	}
+        if(dilep.Pt() < 10 && TMath::Abs(dilep.Rapidity()) > 2.0){
+          histo[lepType+140][theCategory]->Fill(TMath::Min((double)vLoose[0].Pt(), 124.999),totalWeight);
+          histo[lepType+142][theCategory]->Fill(TMath::Min((double)vLoose[1].Pt(), 124.999),totalWeight);
+	}
+	if(theCategory == kPlotDY) histoZRapPtStudy0->Fill(TMath::Abs(dilep.Rapidity()), dilep.Pt(),totalWeight);
+	if(vLoose[0].Pt() < 30 && theCategory == kPlotDY) histoZRapPtStudy1->Fill(TMath::Abs(dilep.Rapidity()), dilep.Pt(),totalWeight);
+      }
 
       // HEM study
       if(year == 2018){
@@ -1010,6 +1033,13 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
     for(int np=0; np<nPlotCategories; np++) {histo[thePlot][np]->SetNameTitle(Form("histo%d",np),Form("histo%d",np));histo[thePlot][np]->Write();}
     outFilePlotsNote->Close();
   }
+  sprintf(output,"histoZRapPtStudy%d_%d%s.root",whichDY,year,addSuffix.Data());
+  TFile* outFilePlotsNote = new TFile(output,"recreate");
+  outFilePlotsNote->cd();
+  histoZRapPtStudy0->Write();
+  histoZRapPtStudy1->Write();
+  outFilePlotsNote->Close();
+
   printf("--------------ZMass---------------\n");
   {
   printf("muScale:%f,%f,%f,%f,%f\n",histo[88][kPlotData]->GetMean()/histo[88][kPlotDY]->GetMean(),histo[89][kPlotData]->GetMean()/histo[89][kPlotDY]->GetMean(),
@@ -1111,12 +1141,12 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
           totBck[0] = totBck[0] + histoEGStudy[valLL[netab]][ic]->GetBinContent(i);
           totBck[1] = totBck[1] + histoEGStudy[valLG[netab]][ic]->GetBinContent(i);
         }
-        effda = (histoEGStudy[valLG[netab]][kPlotData]->GetBinContent(i)-totBck[1]) /
-                (histoEGStudy[valLL[netab]][kPlotData]->GetBinContent(i)-totBck[0]);
-        effmc = histoEGStudy[valLG[netab]][kPlotDY]->GetBinContent(i) /
-                histoEGStudy[valLL[netab]][kPlotDY]->GetBinContent(i);
-        effdaE = sqrt((1-effda)*effda/(histoEGStudy[valLL[netab]][kPlotData]->GetBinContent(i)-totBck[0]));
-        effmcE = sqrt((1-effmc)*effmc/histoEGStudy[valLL[netab]][kPlotDY]->GetBinContent(i));
+	double total[2] = {(histoEGStudy[valLL[netab]][kPlotData]->GetBinContent(i)-totBck[0])+(histoEGStudy[valLG[netab]][kPlotData]->GetBinContent(i)-totBck[1]),
+                           histoEGStudy[valLL[netab]][kPlotDY]->GetBinContent(i)+histoEGStudy[valLG[netab]][kPlotDY]->GetBinContent(i)};
+        effda = (histoEGStudy[valLG[netab]][kPlotData]->GetBinContent(i)-totBck[1]) / total[0];
+        effmc = histoEGStudy[valLG[netab]][kPlotDY]->GetBinContent(i) / total[1];
+        effdaE = sqrt((1-effda)*effda/total[0]);
+        effmcE = sqrt((1-effmc)*effmc/total[1]);
         sf = effda/effmc;
         sfE = effda/effmc*sqrt(effdaE/effda*effdaE/effda+effmcE/effmc*effmcE/effmc);
         printf("(%d,%2d): %.3f +/- %.3f / %.3f +/- %.3f = %.3f +/- %.3f\n",netab,i,effda,effdaE,effmc,effmcE,sf,sfE);
