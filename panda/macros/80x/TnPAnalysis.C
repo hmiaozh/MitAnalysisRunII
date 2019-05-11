@@ -14,6 +14,9 @@
 #include "MitAnalysisRunII/panda/macros/80x/pandaFlat.C"
 #include "MitAnalysisRunII/panda/macros/80x/common.h"
 
+const double tagMuonPt = 40;
+const double tagElectronPt = 40;
+
 void TnPAnalysis(
 int whichDY, 
 int whichAnaFlow = 0,
@@ -406,7 +409,7 @@ bool useZRap = true
       int nEvtRap = eff_HLT_Rap->GetXaxis()->FindFixBin(ZRecRap)-1;
       if(nEvtRap < 0 || nEvtRap >= nBinRap) {printf("PROBLEM WITH RAP!\n"); return;};
 
-      if(abs(thePandaFlat.looseLep1PdgId)==13 && (thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep1Pt > 40){
+      if(abs(thePandaFlat.looseLep1PdgId)==13 && (thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep1Pt > tagMuonPt){
 	if(theChan == 0) histoNPV[0]->Fill(TMath::Min((double)thePandaFlat.npv,79.499),totalWeight);
         den_HLT_Muon     [nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
         den_HLT_Alt0_Muon[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
@@ -433,7 +436,7 @@ bool useZRap = true
         }
       }
 
-      if(abs(thePandaFlat.looseLep1PdgId)==11 && (thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep1Pt > 40){
+      if(abs(thePandaFlat.looseLep1PdgId)==11 && (thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep1Pt > tagElectronPt){
 	if(theChan == 0) histoNPV[2]->Fill(TMath::Min((double)thePandaFlat.npv,79.499),totalWeight);
         den_HLT_Electron     [nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
         den_HLT_Alt0_Electron[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
@@ -460,7 +463,7 @@ bool useZRap = true
         }
       }
 
-      if(abs(thePandaFlat.looseLep2PdgId)==13 && (thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep2Pt > 40){
+      if(abs(thePandaFlat.looseLep2PdgId)==13 && (thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep2Pt > tagMuonPt){
 	if(theChan == 0) histoNPV[0]->Fill(TMath::Min((double)thePandaFlat.npv,79.499),totalWeight);
         den_HLT_Muon     [nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
         den_HLT_Alt0_Muon[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
@@ -487,7 +490,7 @@ bool useZRap = true
         }
       }
 
-      if(abs(thePandaFlat.looseLep2PdgId)==11 && (thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep2Pt > 40){
+      if(abs(thePandaFlat.looseLep2PdgId)==11 && (thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep2Pt > tagElectronPt){
 	if(theChan == 0) histoNPV[2]->Fill(TMath::Min((double)thePandaFlat.npv,79.499),totalWeight);
         den_HLT_Electron     [nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
         den_HLT_Alt0_Electron[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
