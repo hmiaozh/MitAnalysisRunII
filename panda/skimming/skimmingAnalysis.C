@@ -13,8 +13,9 @@
 
 #include "MitAnalysisRunII/panda/macros/9x/pandaFlat.C"
 #include "MitAnalysisRunII/panda/macros/9x/common.h"
+#include "MitAnalysisRunII/panda/macros/9x/applyCorrections.h"
 
-void skimmingAnalysis(int year)
+void skimmingAnalysis(int year, bool specialMC = false)
 {
 
   vector<TString> infileName_;
@@ -36,60 +37,64 @@ void skimmingAnalysis(int year)
     return;
   }
 
-  infileName_.push_back(Form("DYJetsToLL_M-10to50.root"));
-  infileName_.push_back(Form("DYJetsToLL_M-50_LO.root"));
-  infileName_.push_back(Form("DYJetsToLL_M-50_NLO.root"));
-  infileName_.push_back(Form("DYJetsToLL_Pt0To50.root"));
-  infileName_.push_back(Form("DYJetsToLL_Pt100To250.root"));
-  infileName_.push_back(Form("DYJetsToLL_Pt250To400.root"));
-  infileName_.push_back(Form("DYJetsToLL_Pt400To650.root"));
-  infileName_.push_back(Form("DYJetsToLL_Pt50To100.root"));
-  infileName_.push_back(Form("DYJetsToLL_Pt650ToInf.root"));
-  infileName_.push_back(Form("DYJetsToTauTau.root"));
-  infileName_.push_back(Form("DYNJetsToLL.root"));
-  infileName_.push_back(Form("DYNJetsToLL_NLO.root"));
-  infileName_.push_back(Form("H125.root"));
-  infileName_.push_back(Form("TT.root"));
-  infileName_.push_back(Form("TT2L.root"));
-  infileName_.push_back(Form("TTV.root"));
-  infileName_.push_back(Form("TTVV.root"));
-  infileName_.push_back(Form("TW.root"));
-  infileName_.push_back(Form("TWlx.root"));
-  infileName_.push_back(Form("VG.root"));
-  infileName_.push_back(Form("VG_M120.root"));
-  infileName_.push_back(Form("VVV.root"));
-  infileName_.push_back(Form("WGstar.root"));
-  infileName_.push_back(Form("WJets.root"));
-  infileName_.push_back(Form("WWdps.root"));
-  infileName_.push_back(Form("WWinc.root"));
-  infileName_.push_back(Form("WZ.root"));
-  infileName_.push_back(Form("WZ3l_MG_EWK.root"));
-  infileName_.push_back(Form("WZ3l_MG_QCD.root"));
-  infileName_.push_back(Form("WZ3l_amcnlo.root"));
-  infileName_.push_back(Form("WZ3l_powheg.root"));
-  infileName_.push_back(Form("WZ3l_powheg_mll1.root"));
-  infileName_.push_back(Form("WZno3l.root"));
-  infileName_.push_back(Form("WpWp_EWK.root"));
-  infileName_.push_back(Form("WpWp_EWK_QCD.root"));
-  infileName_.push_back(Form("WpWp_QCD.root"));
-  infileName_.push_back(Form("ZZJJ.root"));
-  infileName_.push_back(Form("data.root"));
-  infileName_.push_back(Form("ggWW.root"));
-  infileName_.push_back(Form("ggZZ.root"));
-  infileName_.push_back(Form("qqWW.root"));
-  infileName_.push_back(Form("qqZZ.root"));
-  infileName_.push_back(Form("ZH_ZToLL_HToGDarkG_M125.root"));
-  infileName_.push_back(Form("ggZH125inv.root"));
-  infileName_.push_back(Form("qqZH110inv.root"));
-  infileName_.push_back(Form("qqZH125inv.root"));
-  infileName_.push_back(Form("qqZH150inv.root"));
-  infileName_.push_back(Form("qqZH200inv.root"));
-  infileName_.push_back(Form("qqZH300inv.root"));
-  infileName_.push_back(Form("qqZH400inv.root"));
-  infileName_.push_back(Form("qqZH500inv.root"));
-  infileName_.push_back(Form("qqZH600inv.root"));
-  infileName_.push_back(Form("qqZH800inv.root"));
-  infileName_.push_back(Form("qqZH1000inv.root"));
+  if(specialMC == false){
+    infileName_.push_back(Form("DYJetsToLL_M-10to50.root"));
+    infileName_.push_back(Form("DYJetsToLL_M-50_LO.root"));
+    infileName_.push_back(Form("DYJetsToLL_M-50_NLO.root"));
+    infileName_.push_back(Form("DYJetsToLL_Pt0To50.root"));
+    infileName_.push_back(Form("DYJetsToLL_Pt100To250.root"));
+    infileName_.push_back(Form("DYJetsToLL_Pt250To400.root"));
+    infileName_.push_back(Form("DYJetsToLL_Pt400To650.root"));
+    infileName_.push_back(Form("DYJetsToLL_Pt50To100.root"));
+    infileName_.push_back(Form("DYJetsToLL_Pt650ToInf.root"));
+    infileName_.push_back(Form("DYJetsToTauTau.root"));
+    infileName_.push_back(Form("DYNJetsToLL.root"));
+    infileName_.push_back(Form("DYNJetsToLL_NLO.root"));
+    infileName_.push_back(Form("H125.root"));
+    infileName_.push_back(Form("TT.root"));
+    infileName_.push_back(Form("TT2L.root"));
+    infileName_.push_back(Form("TTV.root"));
+    infileName_.push_back(Form("TTVV.root"));
+    infileName_.push_back(Form("TW.root"));
+    infileName_.push_back(Form("TWlx.root"));
+    infileName_.push_back(Form("VG.root"));
+    infileName_.push_back(Form("VG_M120.root"));
+    infileName_.push_back(Form("VVV.root"));
+    infileName_.push_back(Form("WGstar.root"));
+    infileName_.push_back(Form("WJets.root"));
+    infileName_.push_back(Form("WWdps.root"));
+    infileName_.push_back(Form("WZ.root"));
+    infileName_.push_back(Form("WZ3l_MG_EWK.root"));
+    infileName_.push_back(Form("WZ3l_MG_QCD.root"));
+    infileName_.push_back(Form("WZ3l_amcnlo.root"));
+    infileName_.push_back(Form("WZ3l_powheg.root"));
+    infileName_.push_back(Form("WZ3l_powheg_mll1.root"));
+    infileName_.push_back(Form("WZno3l.root"));
+    infileName_.push_back(Form("WpWp_EWK.root"));
+    infileName_.push_back(Form("WpWp_EWK_QCD.root"));
+    infileName_.push_back(Form("WpWp_QCD.root"));
+    infileName_.push_back(Form("ZZJJ.root"));
+    infileName_.push_back(Form("data.root"));
+    infileName_.push_back(Form("ggWW.root"));
+    infileName_.push_back(Form("ggZZ.root"));
+    infileName_.push_back(Form("qqWW.root"));
+    infileName_.push_back(Form("qqZZ.root"));
+    infileName_.push_back(Form("ggZH125inv.root"));
+    infileName_.push_back(Form("qqZH110inv.root"));
+    infileName_.push_back(Form("qqZH125inv.root"));
+    infileName_.push_back(Form("qqZH150inv.root"));
+    infileName_.push_back(Form("qqZH200inv.root"));
+    infileName_.push_back(Form("qqZH300inv.root"));
+    infileName_.push_back(Form("qqZH400inv.root"));
+    infileName_.push_back(Form("qqZH500inv.root"));
+    infileName_.push_back(Form("qqZH600inv.root"));
+    infileName_.push_back(Form("qqZH800inv.root"));
+    infileName_.push_back(Form("qqZH1000inv.root"));
+  } else {
+    infileName_.push_back(Form("ZH_ZToLL_HToGDarkG_M125.root"));
+    infileName_.push_back(Form("ZH_ZToLL_HToGDarkG_M200.root"));
+    infileName_.push_back(Form("ZH_ZToLL_HToGDarkG_M300.root"));
+  }
 
   for(UInt_t ifile=0; ifile<infileName_.size(); ifile++) {
     printf("sampleNames(%d): %s\n",ifile,infileName_[ifile].Data());

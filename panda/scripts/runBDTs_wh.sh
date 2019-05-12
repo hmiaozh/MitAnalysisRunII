@@ -11,3 +11,8 @@ nohup root -b -l -q MitVHBBAnalysis/macros/whbbMVA.C+'("MitVHBBAnalysis/mva_froz
 nohup root -b -l -q MitVHBBAnalysis/macros/whbbMVA.C+'("MitVHBBAnalysis/mva_frozen/test2017/WHFJSR.root",    "WH_boosted_2017",      true ,false,false,false)' >& train_WH_boosted_2017.txt &
 #nohup root -b -l -q MitVHBBAnalysis/macros/whbbMVA.C+'("MitVHBBAnalysis/mva_frozen/test2017/WHVZbbCR.root",  "WHVZbb_resolved_2017", false,false,false,true)'  >& train_WHVZbb_resolved_2017.txt &
 #nohup root -b -l -q MitVHBBAnalysis/macros/whbbMVA.C+'("MitVHBBAnalysis/mva_frozen/test2017/WHVZbbFJCR.root","WHVZbb_boosted_2017",  true ,false,false,true)'  >& train_WHVZbb_boosted__2017.txt &
+
+nohup root -b -l -q MitVHBBAnalysis/macros/whbbMVA.C+'("MitVHBBAnalysis/mva_frozen/test2018/WHSR.root",      "WH_resolved_2018",     false,false,false,false)' >& train_WH_resolved_2018.txt &
+nohup root -b -l -q MitVHBBAnalysis/macros/whbbMVA.C+'("MitVHBBAnalysis/mva_frozen/test2018/WHFJSR.root",    "WH_boosted_2018",      true ,false,false,false)' >& train_WH_boosted_2018.txt &
+#nohup root -b -l -q MitVHBBAnalysis/macros/whbbMVA.C+'("MitVHBBAnalysis/mva_frozen/test2018/WHVZbbCR.root",  "WHVZbb_resolved_2018", false,false,false,true)'  >& train_WHVZbb_resolved_2018.txt &
+#nohup root -b -l -q MitVHBBAnalysis/macros/whbbMVA.C+'("MitVHBBAnalysis/mva_frozen/test2018/WHVZbbFJCR.root","WHVZbb_boosted_2018",  true ,false,false,true)'  >& train_WHVZbb_boosted__2018.txt &

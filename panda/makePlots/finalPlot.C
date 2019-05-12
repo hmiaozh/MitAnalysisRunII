@@ -22,7 +22,7 @@ double scaling[8] = {1,1,1,1,1,1,1,1};
 
 bool isLogSpecial = false;
 bool isLogX = false;
-bool printRatios = true;
+bool printRatios = false;
 
 void eraselabel(TPad *p,Double_t h){
   p->cd();
@@ -41,6 +41,7 @@ void atributes(TH1D *histo, TString xtitle = "", TString ytitle = "Fraction", TS
   if(strcmp(units.Data(),"")==0){
     histo->GetXaxis()->SetTitle(xtitle.Data());
   } else {
+    units = units.ReplaceAll("BIN","");
     histo->GetXaxis()->SetTitle(Form("%s [%s]",xtitle.Data(),units.Data()));
   }
   histo->GetXaxis()->SetLabelFont  (   42);
@@ -68,34 +69,47 @@ void atributes(TH1D *histo, TString xtitle = "", TString ytitle = "Fraction", TS
 
 void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString units = "", TString plotName = "histoWW_56.root", TString outputName = "njets",
                 bool isLogY = false, int year = 2017, TString higgsLabel = "", double lumi = 1.0, bool isBlind = false, TString extraLabel = "",
-		bool show2D = true, bool applyScaling = false, TString mlfitResult = "", TString channelName = "") {
+		bool show2D = true, bool applyScaling = false,
+		TString mlfitResult = "", TString channelName = "", bool applyBBBBSF = false,
+		TString plotExtraName = "", TString higgs2Label = "", bool applySmoothing = false) {
 
   if(isBlind) show2D = false;
+
+  bool isSignalStack = false;
+  if(units.Contains("Stack")) {isSignalStack = true; units = units.ReplaceAll("Stack","");}
+  bool isRemoveBSM = false;
+  if(units.Contains("NoBSM")) {isRemoveBSM = true; units = units.ReplaceAll("NoBSM","");}
 
   //gInterpreter->ExecuteMacro("GoodStyle.C");
   //gROOT->LoadMacro("StandardPlot.C");
   gStyle->SetOptStat(0);
 
-  TFile* file = new TFile(plotName, "read");  if(!file) {printf("File %s does not exist\n",plotName.Data()); return;}
-
+  TH1F* _hist[nPlotCategories];
   StandardPlot myPlot;
   myPlot.setLumi(lumi);
   myPlot.setLabel(XTitle);
   myPlot.addLabel(extraLabel.Data());
   myPlot.setHiggsLabel(higgsLabel.Data());
+  myPlot.setHiggs2Label(higgs2Label.Data());
   myPlot.setUnits(units);
 
+  TFile* file = new TFile(plotName, "read");  if(!file) {printf("File %s does not exist\n",plotName.Data()); return;}
+
+  double totalSystUnc = 0.0;
+  double totalStatUnc = 0.0;
   double SF_yield[nPlotCategories]; 
   double SF_yield_unc[nPlotCategories];
   TFile *mlfit=0;
   if(mlfitResult!="") {
     mlfit=TFile::Open(mlfitResult); assert(mlfit);
   }
-  TH1F* _hist[nPlotCategories];
   TH1F* hData = 0;
   TH1F* hBck = 0;
   for(int ic=0; ic<nPlotCategories; ic++){
     _hist[ic] = (TH1F*)file->Get(Form("histo%d",ic));
+    if(isRemoveBSM && ic == kPlotBSM) _hist[ic]->Scale(0);
+    //for(int i=1; i<=_hist[ic]->GetNbinsX(); i++) if(_hist[ic]->GetSumOfWeights() > 0) printf("%10s(%2d): %.1f\n",plotBaseNames[ic].Data(),i,_hist[ic]->GetBinContent(i));
+    for(int i=1; i<=_hist[ic]->GetNbinsX(); i++) if(_hist[ic]->GetBinContent(i)<0) _hist[ic]->SetBinContent(i,0);
     if(ic == kPlotData) {
       //for(int i=1; i<=_hist[ic]->GetNbinsX(); i++){
       //  if(i>20)_hist[ic]->SetBinContent(i,0);
@@ -103,39 +117,85 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
       hData = (TH1F*)_hist[ic]->Clone();
       hBck  = (TH1F*)_hist[ic]->Clone(); hBck->Scale(0);
     }
+    else if(applySmoothing && _hist[ic]->GetSumOfWeights() > 0 && ic != kPlotBSM && ic != kPlotVG &&
+      ic != kPlotSignal0 && ic != kPlotSignal1 &&
+      ic != kPlotSignal2 && ic != kPlotSignal3) {double scale = _hist[ic]->GetSumOfWeights(); _hist[ic]->Smooth(); if(_hist[ic]->GetSumOfWeights() > 0) _hist[ic]->Scale(scale/_hist[ic]->GetSumOfWeights());}
+
     if(isBlind == true && ic == kPlotData) continue;
 
     if(mlfitResult!="" && ic != kPlotData && ic != kPlotBSM) {
+      SF_yield[ic]     = 1.0;
+      SF_yield_unc[ic] = 0.0;
       if     ((TH1F*)mlfit->Get(Form("shapes_prefit/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) {
         double sum[3] = {0, 0, 0};
         for(int i=1; i<=((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetNbinsX(); i++){
           //sum[0] = sum[0] + ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetBinContent(i);
 	  //sum[1] = sum[1] + ((TH1F*)mlfit->Get(Form("shapes_prefit/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetBinContent(i);
 	  sum[2] = sum[2] + ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetBinError(i);
+	  if(((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetNbinsX() ==_hist[ic]->GetNbinsX() && 
+	     applyBBBBSF == true){
+	     _hist[ic]->SetBinContent(i,((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetBinContent(i));
+             _hist[ic]->SetBinError(i,((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetBinError(i));
+	  }
         }
         sum[0] = ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetSumOfWeights();
 	sum[1] = ((TH1F*)mlfit->Get(Form("shapes_prefit/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetSumOfWeights();
-        SF_yield[ic]     = sum[0] / sum[1];
-        SF_yield_unc[ic] = sum[2] / sum[0];
-        printf("POST FIT SFs: SF[%s] = %.3f +/- %.3f | %.3f\n",plotBaseNames[ic].Data(),SF_yield[ic],SF_yield_unc[ic],
+	if(((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetNbinsX() ==_hist[ic]->GetNbinsX() && 
+	   applyBBBBSF == true){
+          // do nothing
+	}
+	else {   
+          SF_yield[ic]     = sum[0] / sum[1];
+          SF_yield_unc[ic] = sum[2] / sum[0];
+        }
+	printf("POST FIT SFs: SF[%s] = %.3f +/- %.3f | %.3f\n",plotBaseNames[ic].Data(),SF_yield[ic],SF_yield_unc[ic],
 	       ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetSumOfWeights()/
 	       ((TH1F*)mlfit->Get(Form("shapes_prefit/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetSumOfWeights());
       }
       _hist[ic]->Scale(SF_yield[ic]);
+      totalSystUnc = totalSystUnc + TMath::Power(_hist[ic]->GetSumOfWeights()*SF_yield_unc[ic],2);
       for(int i=1; i<=_hist[ic]->GetNbinsX(); i++){
+        totalStatUnc = totalStatUnc + TMath::Power(_hist[ic]->GetBinError(i)*SF_yield[ic],2);
         //_hist[ic]->SetBinContent(i,_hist[ic]->GetBinContent(i)*SF_yield[ic]);
         _hist[ic]->SetBinError(i,TMath::Sqrt(TMath::Power(_hist[ic]->GetBinError(i)*SF_yield[ic],2)+TMath::Power(_hist[ic]->GetBinContent(i)*SF_yield_unc[ic],2)));
       }
     } // mltFit result
 
     if(ic == kPlotDY) _hist[ic]->Scale(lumi);
-    if(ic != kPlotData && ic != kPlotBSM) hBck->Add(_hist[ic]);
+
+    if(ic != kPlotData && ic != kPlotBSM) {
+      hBck->Add(_hist[ic]);
+      if(mlfitResult==""){
+        for(int i=1; i<=_hist[ic]->GetNbinsX(); i++){
+          totalStatUnc = totalStatUnc + TMath::Power(_hist[ic]->GetBinError(i),2);
+        }
+      }
+    }
 
     if(_hist[ic]->GetSumOfWeights() > 0) myPlot.setMCHist(ic, _hist[ic]);
   }
+  
+  TFile* fileExtra;
+  if(plotExtraName != ""){
+     fileExtra = new TFile(plotExtraName, "read");
+      _hist[kPlotSignal0] = (TH1F*)fileExtra->Get(Form("histo%d",kPlotBSM));
+     myPlot.setMCHist(kPlotSignal0, _hist[kPlotSignal0]);
+  }
+
+  myPlot.setOverlaid(false);
+  if(isSignalStack == true){
+    //if(_hist[kPlotSignal0]->GetSumOfWeights() > 0 &&
+    //   _hist[kPlotBSM]    ->GetSumOfWeights() > 0) { _hist[kPlotSignal0]->Add(_hist[kPlotBSM],-1); myPlot.setMCHist(kPlotSignal0, _hist[kPlotSignal0]);}
+    if(_hist[kPlotSignal0]->GetSumOfWeights() > 0) { _hist[kPlotSignal0]->Add(hBck); myPlot.setMCHist(kPlotSignal0, _hist[kPlotSignal0]);}
+    if(_hist[kPlotBSM]    ->GetSumOfWeights() > 0) { _hist[kPlotBSM    ]->Add(hBck); myPlot.setMCHist(kPlotBSM,     _hist[kPlotBSM    ]);}
+    //myPlot.setOverlaid(true);
+  }
+
   if(hBck->GetSumOfWeights() == 0) return;
   double scale = hData->GetSumOfWeights()/hBck->GetSumOfWeights();
-  printf("data/bck: %f / %f = %f\n",hData->GetSumOfWeights(),hBck->GetSumOfWeights(),scale);
+  double daUnc = 1.0; if(hData->GetSumOfWeights() > 0) daUnc = 1/hData->GetSumOfWeights();
+  double mcUnc = (totalStatUnc+totalSystUnc)/hBck->GetSumOfWeights()/hBck->GetSumOfWeights();
+  printf("data/bck: %f / %f +/- %f/%f/%f = %f +/- %f\n",hData->GetSumOfWeights(),hBck->GetSumOfWeights(),TMath::Sqrt(totalStatUnc),TMath::Sqrt(totalSystUnc),TMath::Sqrt(totalStatUnc+totalSystUnc),scale,TMath::Sqrt(daUnc+mcUnc)*scale);
   if(applyScaling == true) hBck->Scale(scale);
 
   for(int ic=0; ic<nPlotCategories; ic++){
@@ -144,9 +204,10 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
     if(_hist[ic]->GetSumOfWeights() > 0) myPlot.setMCHist(ic, _hist[ic]);
   }
 
-  myPlot.setOverlaid(false);
-
   TCanvas* c1 = new TCanvas("c1", "c1",5,5,500,500);
+
+  double maxRatio = 0.0;
+  double minRatio = 0.0;
 
   if(show2D==false){
   if(isLogY == true) c1->SetLogy();
@@ -165,6 +226,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   pad2->Draw();
 
   pad1->cd();
+  pad1->RedrawAxis();
   if(isLogY == true) c1->SetLogy();
   if(isLogY == true) pad1->SetLogy();
   if(isLogX == true) c1->SetLogx();
@@ -176,6 +238,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   CMS_lumi( pad1, year, 12 );
 
   pad2->cd();
+  pad2->RedrawAxis();
   //pad2->SetGridy();
   hBck ->Rebin(ReBin);
   hData->Rebin(ReBin);
@@ -190,10 +253,19 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
 
   hDataDivision ->Add(hData );
   hTotalDivision->Add(hBck  );
-  //hTotalDivision->Scale(hDataDivision->GetSumOfWeights()/hTotalDivision->GetSumOfWeights());
-  TGraphAsymmErrors *g = new TGraphAsymmErrors(hDataDivision);
+
+  hRatio->Add(hDataDivision);
+  hRatio->Divide(hTotalDivision);
+
   bool showPulls = false;
   bool useGarwood = false;
+  if(showPulls) atributes(hRatio,XTitle.Data(),"Pull",units.Data());
+  else          atributes(hRatio,XTitle.Data(),"Data/Bkg.",units.Data());
+  if(showPulls) atributes(hBand,XTitle.Data(),"Pull",units.Data());
+  else          atributes(hBand,XTitle.Data(),"Data/Bkg.",units.Data());
+
+  TGraphAsymmErrors *gStatic = new TGraphAsymmErrors(hDataDivision);
+  TGraphAsymmErrors *g = new TGraphAsymmErrors(hRatio);
   for(int i=1; i<=hDataDivision->GetNbinsX(); i++){
     if(showPulls){
       double pull = 0.0;
@@ -210,36 +282,58 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
       if(printRatios) printf("pull(%3d): da: %f pred: %f --> %f\n",i,hDataDivision ->GetBinContent(i),hTotalDivision->GetBinContent(i),pull);
     }
     else {
-      double N = g->GetY()[i-1];
+      hBand->SetBinContent(i,1);
+      hBand->SetBinError(i,hTotalDivision->GetBinError(i)/hTotalDivision->GetBinContent(i));
+      hTotalDivision->SetBinError(i,0);
+      double N = gStatic->GetY()[i-1];
       double alpha=(1-0.6827);
       double L = (N==0) ? 0 : (ROOT::Math::gamma_quantile(alpha/2,N,1.));
       double U = ROOT::Math::gamma_quantile_c(alpha/2,N+1,1);
-      //double diff = hDataDivision->GetBinError(i);
-      double diff = (U-L)/2;
       if( N != hDataDivision ->GetBinContent(i)) cout << "PROBLEM" << endl;
+      //double diff = hDataDivision->GetBinError(i);
+      double diffUp   = U-double(N);
+      double diffDown = double(N)-L;
       double pull = 1.0; double pullerr = 0.0;
-      if(hDataDivision->GetBinContent(i) > 0 && hTotalDivision->GetBinContent(i) > 0){
+      if(hDataDivision->GetBinContent(i) && hTotalDivision->GetBinContent(i) > 0){
         pull = (hDataDivision->GetBinContent(i)/hTotalDivision->GetBinContent(i));
-	pullerr = pull*diff/hDataDivision->GetBinContent(i);
+	pullerr = pull*(diffUp+diffDown)/2/hDataDivision->GetBinContent(i);
+        g->SetPointEYlow (i-1, pull*diffDown/hDataDivision->GetBinContent(i));
+        g->SetPointEYhigh(i-1, pull*diffUp  /hDataDivision->GetBinContent(i));
       }
+      else if(hTotalDivision->GetBinContent(i) > 0){
+        pull = (hDataDivision->GetBinContent(i)/hTotalDivision->GetBinContent(i));
+	pullerr = diffUp/hTotalDivision->GetBinContent(i);
+        g->SetPointEYlow (i-1, 0);
+        g->SetPointEYhigh(i-1, diffUp/hTotalDivision->GetBinContent(i));
+      }
+      else {
+        g->SetPointEYlow (i-1, 0);
+        g->SetPointEYhigh(i-1, 0);
+      }
+      
+      g->SetPointEXlow (i-1, 0);
+      g->SetPointEXhigh(i-1, 0);
       //if(pull<0.97) pull = 0.98+gRandom->Uniform()*0.01;
       //if(pull>1.05) pull = 1.05+gRandom->Uniform()*0.02;
-      hRatio->SetBinContent(i,pull);
-      hRatio->SetBinError(i,pullerr);
-      hBand->SetBinContent(i,1);
-      hBand->SetBinError(i,hTotalDivision->GetBinError(i)/hTotalDivision->GetBinContent(i));
+      //hRatio->SetBinContent(i,pull);
+      //hRatio->SetBinError(i,pullerr);
       //if(pull<0.97||pull>1.03)
-      if(printRatios) printf("ratio(%3d): %f +/- %f --> da: %f +/- %f (%f) pred: %f +/- %f\n",i,pull,pullerr,hDataDivision ->GetBinContent(i),hDataDivision ->GetBinError(i),diff,hTotalDivision->GetBinContent(i),hTotalDivision->GetBinError(i));
+      if(pull > maxRatio) maxRatio = pull;
+      if(pull < minRatio) minRatio = pull;
+      if(printRatios) printf("ratio(%3d): %f +/- %f --> da: %f +/- %f (%f) pred: %f +/- %f\n",i,pull,pullerr,hDataDivision ->GetBinContent(i),hDataDivision ->GetBinError(i),(diffUp+diffDown)/2,hTotalDivision->GetBinContent(i),hTotalDivision->GetBinError(i));
     }
   }
-  if(showPulls) atributes(hRatio,XTitle.Data(),"Pull",units.Data());
-  else          atributes(hRatio,XTitle.Data(),"Data/Bkg.",units.Data());
-  hRatio->Draw("e");
+  //TGraphAsymmErrors gd(5);
+  //gd.Divide(hDataDivision,hTotalDivision,"pois");
+//printf("%d %d %d\n",hDataDivision->GetNbinsX(),hTotalDivision->GetNbinsX(),gd.GetN () );
+
+  //hRatio->Draw("e");
   hBand->SetFillColor(12);
   hBand->SetFillStyle(3002);
   hBand->SetMarkerSize(0);
   hBand->SetLineWidth(0);
-  hBand->Draw("E2same");
+  hBand->Draw("E2");
+  g->Draw("P,same");
 
   // Draw a line throgh y=0
   double theLines[2] = {1.0, 0.5};
@@ -251,8 +345,8 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   // Set the y-axis range symmetric around y=0
   Double_t dy = TMath::Max(TMath::Abs(hRatio->GetMaximum()),
                            TMath::Abs(hRatio->GetMinimum())) + theLines[1];
-  if(showPulls) hRatio->GetYaxis()->SetRangeUser(-dy, +dy);
-  else          hRatio->GetYaxis()->SetRangeUser(0.301, +1.699);
+  if(showPulls) hBand->GetYaxis()->SetRangeUser(-dy, +dy);
+  else          hBand->GetYaxis()->SetRangeUser(TMath::Min(minRatio,0.301),TMath::Min( TMath::Max(maxRatio+0.1,1.699),4.999));
   hRatio->GetYaxis()->CenterTitle();
   eraselabel(pad1,hData->GetXaxis()->GetLabelSize());
   }
@@ -281,8 +375,8 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
     npvWeights->Sumw2();
     npvWeights->Divide(hBck);
     for(int i=1; i<=npvWeights->GetNbinsX(); i++){
-      if(npvWeights->GetBinContent(i) > 2) {
-        printf("Big number in (%d): %f, set to 2\n",i,npvWeights->GetBinContent(i));npvWeights->SetBinContent(i,2);
+      if(npvWeights->GetBinContent(i) > 3) {
+        printf("Big number in (%d): %f, set to 3\n",i,npvWeights->GetBinContent(i));npvWeights->SetBinContent(i,3);
       }
     }
     TFile output(Form("npvWeights_%d.root",year),"RECREATE");

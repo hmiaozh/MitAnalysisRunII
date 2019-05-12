@@ -14,6 +14,9 @@
 #include "MitAnalysisRunII/panda/macros/80x/pandaFlat.C"
 #include "MitAnalysisRunII/panda/macros/80x/common.h"
 
+const double tagMuonPt = 40;
+const double tagElectronPt = 40;
+
 void TnPAnalysis(
 int whichDY, 
 int whichAnaFlow = 0,
@@ -30,9 +33,17 @@ bool useZRap = true
   TString filesPath = "/data/t3home000/ceballos/panda/v_001_0/";
   vector<TString> infileName_;
   vector<int> infileCat_;
+  vector<int> infileDataCat_;
 
   if(whichAnaFlow == 0 || whichAnaFlow == 1){
-    infileName_.push_back(Form("%sdata.root",filesPath.Data()));		 infileCat_.push_back(0);
+    infileName_.push_back(Form("%sdata_IsoEG22_EG30_14p40ifb.root",filesPath.Data())); infileCat_.push_back(0); infileDataCat_.push_back(0);
+    infileName_.push_back(Form("%sdata_IsoEG22_EG40_05p86ifb.root",filesPath.Data())); infileCat_.push_back(0); infileDataCat_.push_back(1);
+    infileName_.push_back(Form("%sdata_IsoEG24_EG30_05p88ifb.root",filesPath.Data())); infileCat_.push_back(0); infileDataCat_.push_back(2);
+    infileName_.push_back(Form("%sdata_IsoEG26_EG30_05p22ifb.root",filesPath.Data())); infileCat_.push_back(0); infileDataCat_.push_back(3);
+    infileName_.push_back(Form("%sdata_IsoEG28_EG32_02p48ifb.root",filesPath.Data())); infileCat_.push_back(0); infileDataCat_.push_back(4);
+    infileName_.push_back(Form("%sdata_IsoEG30_EG34_01p89ifb.root",filesPath.Data())); infileCat_.push_back(0); infileDataCat_.push_back(5);
+    infileName_.push_back(Form("%sdata_IsoEG32_EG36_00p19ifb.root",filesPath.Data())); infileCat_.push_back(0); infileDataCat_.push_back(5);
+    infileName_.push_back(Form("%sdata_IsoEG34_EG38_00p00ifb.root",filesPath.Data())); infileCat_.push_back(0); infileDataCat_.push_back(5);
 
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));		 infileCat_.push_back(2);
     infileName_.push_back(Form("%sggWW.root" ,filesPath.Data()));		 infileCat_.push_back(2);
@@ -68,6 +79,10 @@ bool useZRap = true
     }
     else {return;}
   }
+  const int nDataFiles = 6;
+  const double dataFractions[nDataFiles] = {14.4/35.92,5.86/35.92,5.88/35.92,5.22/35.92,2.48/35.92,(1.89+0.19+0.00)/35.92};
+  double checkSum = 0; for(int i=0; i<nDataFiles; i++) checkSum = checkSum + dataFractions[i];
+  if(TMath::Abs(checkSum-1) > 0.00001) {printf("CheckSum != 1 (%f)\n",checkSum); return;}
 
   TString puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
   if     (period == 1) puPath = "MitAnalysisRunII/data/80x/puWeights_2016_bf.root";
@@ -89,6 +104,15 @@ bool useZRap = true
   TH2D* scalefactors_Medium_Electron = (TH2D*)fLepton_SF_el_central->Get("scalefactors_Medium_Electron"); scalefactors_Medium_Electron->SetDirectory(0);
   fLepton_SF_el_central->Close();
 
+  int nBinPlot      = 80;
+  double xminPlot   = -0.5;
+  double xmaxPlot   = 79.5;
+  const int allPlots = 4;
+  TH1D* histoNPV[allPlots];
+  for(int i=0; i<allPlots; i++){
+    histoNPV[i] = new TH1D(Form("histoNPV_%d",i), Form("histoNPV_%d",i), nBinPlot, xminPlot, xmaxPlot);
+  }
+
   double getMaxPtForSFs[2] = {scalefactors_Medium_Muon                  ->GetYaxis()->GetBinCenter(scalefactors_Medium_Muon		     ->GetNbinsY()),
                               scalefactors_Medium_Electron              ->GetYaxis()->GetBinCenter(scalefactors_Medium_Electron		     ->GetNbinsY())
 		              };
@@ -97,14 +121,34 @@ bool useZRap = true
                                                           0.2, 0.3, 0.5, 0.8, 1.2, 1.4, 1.5, 1.6, 1.7, 2.0, 2.1, 2.2, 2.3, 2.4};
 
   const int nBinPt = 21; Float_t xbinsPt[nBinPt+1] = {20,21,22,23,24,25,26,27,28,29,30,32,35,40,45,50,60,80,105,150,200,1000};
+  Float_t xbinsPt_Alt[nBinPt+1] = {20,21.5,22.5,23.5,24.5,25.5,26.5,27.5,28.5,29.5,30.5,32.5,35.5,40.5,45.5,50.5,60.5,80.5,105.5,150.5,200.5,1000};
 
   const int nBinRap = 7; Float_t xbinsRap[nBinRap+1] = {-2.4, -2.1, -1.7, -0.8, 0.8, 1.7, 2.1, 2.4};
   TH1D *eff_HLT_Rap = new TH1D(Form("eff_HLT_Rap"), Form("eff_HLT_Rap"), nBinRap, xbinsRap);
+
+  TH2D *den_HLT_AltData_Muon[nBinRap][nDataFiles];
+  TH2D *num_HLT_AltData_Muon[nBinRap][nDataFiles];
+  TH2D *eff_HLT_AltData_Muon[nBinRap][nDataFiles];
 
   TH2D *den_HLT_Muon[nBinRap][2];
   TH2D *num_HLT_Muon[nBinRap][2];
   TH2D *eff_HLT_Muon[nBinRap][2];
   TH2D *ratio_HLT_Muon[nBinRap];
+
+  TH2D *den_HLT_Alt0_Muon[nBinRap][2];
+  TH2D *num_HLT_Alt0_Muon[nBinRap][2];
+  TH2D *eff_HLT_Alt0_Muon[nBinRap][2];
+  TH2D *ratio_HLT_Alt0_Muon[nBinRap];
+
+  TH2D *den_HLT_Alt1_Muon[nBinRap][2];
+  TH2D *num_HLT_Alt1_Muon[nBinRap][2];
+  TH2D *eff_HLT_Alt1_Muon[nBinRap][2];
+  TH2D *ratio_HLT_Alt1_Muon[nBinRap];
+
+  TH2D *den_HLT_Alt2_Muon[nBinRap][2];
+  TH2D *num_HLT_Alt2_Muon[nBinRap][2];
+  TH2D *eff_HLT_Alt2_Muon[nBinRap][2];
+  TH2D *ratio_HLT_Alt2_Muon[nBinRap];
 
   TH2D *den_HLT_MuonP[nBinRap][2];
   TH2D *num_HLT_MuonP[nBinRap][2];
@@ -116,10 +160,29 @@ bool useZRap = true
   TH2D *eff_HLT_MuonM[nBinRap][2];
   TH2D *ratio_HLT_MuonM[nBinRap];
 
+  TH2D *den_HLT_AltData_Electron[nBinRap][nDataFiles];
+  TH2D *num_HLT_AltData_Electron[nBinRap][nDataFiles];
+  TH2D *eff_HLT_AltData_Electron[nBinRap][nDataFiles];
+
   TH2D *den_HLT_Electron[nBinRap][2];
   TH2D *num_HLT_Electron[nBinRap][2];
   TH2D *eff_HLT_Electron[nBinRap][2];
   TH2D *ratio_HLT_Electron[nBinRap];
+
+  TH2D *den_HLT_Alt0_Electron[nBinRap][2];
+  TH2D *num_HLT_Alt0_Electron[nBinRap][2];
+  TH2D *eff_HLT_Alt0_Electron[nBinRap][2];
+  TH2D *ratio_HLT_Alt0_Electron[nBinRap];
+
+  TH2D *den_HLT_Alt1_Electron[nBinRap][2];
+  TH2D *num_HLT_Alt1_Electron[nBinRap][2];
+  TH2D *eff_HLT_Alt1_Electron[nBinRap][2];
+  TH2D *ratio_HLT_Alt1_Electron[nBinRap];
+
+  TH2D *den_HLT_Alt2_Electron[nBinRap][2];
+  TH2D *num_HLT_Alt2_Electron[nBinRap][2];
+  TH2D *eff_HLT_Alt2_Electron[nBinRap][2];
+  TH2D *ratio_HLT_Alt2_Electron[nBinRap];
 
   TH2D *den_HLT_ElectronP[nBinRap][2];
   TH2D *num_HLT_ElectronP[nBinRap][2];
@@ -132,6 +195,17 @@ bool useZRap = true
   TH2D *ratio_HLT_ElectronM[nBinRap];
 
   for(int j=0; j<nBinRap; j++){
+    for(int i=0; i<nDataFiles; i++){
+      den_HLT_AltData_Muon[j][i] = new TH2D(Form("den_HLT_AltData_Muon_%d_%d",j,i), Form("den_HLT_AltData_Muon_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+      num_HLT_AltData_Muon[j][i] = new TH2D(Form("num_HLT_AltData_Muon_%d_%d",j,i), Form("num_HLT_AltData_Muon_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+      eff_HLT_AltData_Muon[j][i] = new TH2D(Form("eff_HLT_AltData_Muon_%d_%d",j,i), Form("eff_HLT_AltData_Muon_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+      den_HLT_AltData_Electron[j][i] = new TH2D(Form("den_HLT_AltData_Electron_%d_%d",j,i), Form("den_HLT_AltData_Electron_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+      num_HLT_AltData_Electron[j][i] = new TH2D(Form("num_HLT_AltData_Electron_%d_%d",j,i), Form("num_HLT_AltData_Electron_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+      eff_HLT_AltData_Electron[j][i] = new TH2D(Form("eff_HLT_AltData_Electron_%d_%d",j,i), Form("eff_HLT_AltData_Electron_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+    }
+  }
+
+  for(int j=0; j<nBinRap; j++){
     ratio_HLT_Muon[j]     = new TH2D(Form("ratio_HLT_Muon_%d",j),     Form("ratio_HLT_Muon_%d",j),     nBinEta, xbinsEta, nBinPt, xbinsPt);
     ratio_HLT_Electron[j] = new TH2D(Form("ratio_HLT_Electron_%d",j), Form("ratio_HLT_Electron_%d",j), nBinEta, xbinsEta, nBinPt, xbinsPt);
     for(int i=0; i<2; i++){
@@ -141,6 +215,45 @@ bool useZRap = true
       den_HLT_Electron[j][i] = new TH2D(Form("den_HLT_Electron_%d_%d",j,i), Form("den_HLT_Electron_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
       num_HLT_Electron[j][i] = new TH2D(Form("num_HLT_Electron_%d_%d",j,i), Form("num_HLT_Electron_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
       eff_HLT_Electron[j][i] = new TH2D(Form("eff_HLT_Electron_%d_%d",j,i), Form("eff_HLT_Electron_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+    }
+  }
+
+  for(int j=0; j<nBinRap; j++){
+    ratio_HLT_Alt0_Muon[j]     = new TH2D(Form("ratio_HLT_Alt0_Muon_%d",j),     Form("ratio_HLT_Alt0_Muon_%d",j),     nBinEta, xbinsEta, nBinPt, xbinsPt_Alt);
+    ratio_HLT_Alt0_Electron[j] = new TH2D(Form("ratio_HLT_Alt0_Electron_%d",j), Form("ratio_HLT_Alt0_Electron_%d",j), nBinEta, xbinsEta, nBinPt, xbinsPt_Alt);
+    for(int i=0; i<2; i++){
+      den_HLT_Alt0_Muon[j][i] = new TH2D(Form("den_HLT_Alt0_Muon_%d_%d",j,i), Form("den_HLT_Alt0_Muon_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt_Alt);
+      num_HLT_Alt0_Muon[j][i] = new TH2D(Form("num_HLT_Alt0_Muon_%d_%d",j,i), Form("num_HLT_Alt0_Muon_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt_Alt);
+      eff_HLT_Alt0_Muon[j][i] = new TH2D(Form("eff_HLT_Alt0_Muon_%d_%d",j,i), Form("eff_HLT_Alt0_Muon_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt_Alt);
+      den_HLT_Alt0_Electron[j][i] = new TH2D(Form("den_HLT_Alt0_Electron_%d_%d",j,i), Form("den_HLT_Alt0_Electron_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt_Alt);
+      num_HLT_Alt0_Electron[j][i] = new TH2D(Form("num_HLT_Alt0_Electron_%d_%d",j,i), Form("num_HLT_Alt0_Electron_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt_Alt);
+      eff_HLT_Alt0_Electron[j][i] = new TH2D(Form("eff_HLT_Alt0_Electron_%d_%d",j,i), Form("eff_HLT_Alt0_Electron_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt_Alt);
+    }
+  }
+
+  for(int j=0; j<nBinRap; j++){
+    ratio_HLT_Alt1_Muon[j]     = new TH2D(Form("ratio_HLT_Alt1_Muon_%d",j),     Form("ratio_HLT_Alt1_Muon_%d",j),     nBinEta, xbinsEta, nBinPt, xbinsPt);
+    ratio_HLT_Alt1_Electron[j] = new TH2D(Form("ratio_HLT_Alt1_Electron_%d",j), Form("ratio_HLT_Alt1_Electron_%d",j), nBinEta, xbinsEta, nBinPt, xbinsPt);
+    for(int i=0; i<2; i++){
+      den_HLT_Alt1_Muon[j][i] = new TH2D(Form("den_HLT_Alt1_Muon_%d_%d",j,i), Form("den_HLT_Alt1_Muon_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+      num_HLT_Alt1_Muon[j][i] = new TH2D(Form("num_HLT_Alt1_Muon_%d_%d",j,i), Form("num_HLT_Alt1_Muon_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+      eff_HLT_Alt1_Muon[j][i] = new TH2D(Form("eff_HLT_Alt1_Muon_%d_%d",j,i), Form("eff_HLT_Alt1_Muon_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+      den_HLT_Alt1_Electron[j][i] = new TH2D(Form("den_HLT_Alt1_Electron_%d_%d",j,i), Form("den_HLT_Alt1_Electron_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+      num_HLT_Alt1_Electron[j][i] = new TH2D(Form("num_HLT_Alt1_Electron_%d_%d",j,i), Form("num_HLT_Alt1_Electron_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+      eff_HLT_Alt1_Electron[j][i] = new TH2D(Form("eff_HLT_Alt1_Electron_%d_%d",j,i), Form("eff_HLT_Alt1_Electron_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+    }
+  }
+
+  for(int j=0; j<nBinRap; j++){
+    ratio_HLT_Alt2_Muon[j]     = new TH2D(Form("ratio_HLT_Alt2_Muon_%d",j),     Form("ratio_HLT_Alt2_Muon_%d",j),     nBinEta, xbinsEta, nBinPt, xbinsPt);
+    ratio_HLT_Alt2_Electron[j] = new TH2D(Form("ratio_HLT_Alt2_Electron_%d",j), Form("ratio_HLT_Alt2_Electron_%d",j), nBinEta, xbinsEta, nBinPt, xbinsPt);
+    for(int i=0; i<2; i++){
+      den_HLT_Alt2_Muon[j][i] = new TH2D(Form("den_HLT_Alt2_Muon_%d_%d",j,i), Form("den_HLT_Alt2_Muon_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+      num_HLT_Alt2_Muon[j][i] = new TH2D(Form("num_HLT_Alt2_Muon_%d_%d",j,i), Form("num_HLT_Alt2_Muon_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+      eff_HLT_Alt2_Muon[j][i] = new TH2D(Form("eff_HLT_Alt2_Muon_%d_%d",j,i), Form("eff_HLT_Alt2_Muon_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+      den_HLT_Alt2_Electron[j][i] = new TH2D(Form("den_HLT_Alt2_Electron_%d_%d",j,i), Form("den_HLT_Alt2_Electron_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+      num_HLT_Alt2_Electron[j][i] = new TH2D(Form("num_HLT_Alt2_Electron_%d_%d",j,i), Form("num_HLT_Alt2_Electron_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
+      eff_HLT_Alt2_Electron[j][i] = new TH2D(Form("eff_HLT_Alt2_Electron_%d_%d",j,i), Form("eff_HLT_Alt2_Electron_%d_%d",j,i), nBinEta, xbinsEta, nBinPt, xbinsPt);
     }
   }
 
@@ -285,71 +398,122 @@ bool useZRap = true
 		      the_eta_sf[0] * sfWeightLepEff[0] *
 		      the_eta_sf[1] * sfWeightLepEff[1] * thePandaFlat.sf_l1Prefire;
 
-        if(theCategory == 2) totalWeight = -1.0 * totalWeight;
+        //if(theCategory == 2) totalWeight = -1.0 * totalWeight;
       }
       int theChan = 1;
-      if(theCategory == 0 || theCategory == 2) theChan = 0;
+      //if(theCategory == 0 || theCategory == 2) theChan = 0;
+      if(theCategory == 0) theChan = 0;
 
       double xprobeLep1 = thePandaFlat.looseLep1Eta;
       double xprobeLep2 = thePandaFlat.looseLep2Eta;
       int nEvtRap = eff_HLT_Rap->GetXaxis()->FindFixBin(ZRecRap)-1;
       if(nEvtRap < 0 || nEvtRap >= nBinRap) {printf("PROBLEM WITH RAP!\n"); return;};
 
-      if(abs(thePandaFlat.looseLep1PdgId)==13 && (thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger){
-        den_HLT_Muon[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
+      if(abs(thePandaFlat.looseLep1PdgId)==13 && (thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep1Pt > tagMuonPt){
+	if(theChan == 0) histoNPV[0]->Fill(TMath::Min((double)thePandaFlat.npv,79.499),totalWeight);
+        den_HLT_Muon     [nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
+        den_HLT_Alt0_Muon[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
+	if(theChan == 0) den_HLT_AltData_Muon[nEvtRap][infileDataCat_[ifile]]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
 	if(thePandaFlat.looseLep2PdgId > 0)
         den_HLT_MuonM[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
         else	
         den_HLT_MuonP[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
         if((thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger) {
-          num_HLT_Muon[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
+          num_HLT_Muon     [nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
+          num_HLT_Alt0_Muon[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
+	  if(theChan == 0) num_HLT_AltData_Muon[nEvtRap][infileDataCat_[ifile]]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
 	  if(thePandaFlat.looseLep2PdgId > 0)
           num_HLT_MuonM[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
           else
 	  num_HLT_MuonP[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
         }
-      }       
-      if(abs(thePandaFlat.looseLep1PdgId)==11 && (thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger){
-        den_HLT_Electron[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
+      }
+      if(abs(thePandaFlat.looseLep1PdgId)==13 && (thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep1Pt > 20){
+	if(theChan == 0) histoNPV[1]->Fill(TMath::Min((double)thePandaFlat.npv,79.499),totalWeight);
+        den_HLT_Alt1_Muon[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
+        if((thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger) {
+          num_HLT_Alt1_Muon[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
+        }
+      }
+
+      if(abs(thePandaFlat.looseLep1PdgId)==11 && (thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep1Pt > tagElectronPt){
+	if(theChan == 0) histoNPV[2]->Fill(TMath::Min((double)thePandaFlat.npv,79.499),totalWeight);
+        den_HLT_Electron     [nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
+        den_HLT_Alt0_Electron[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
+	if(theChan == 0) den_HLT_AltData_Electron[nEvtRap][infileDataCat_[ifile]]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
 	if(thePandaFlat.looseLep2PdgId > 0)
         den_HLT_ElectronM[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
         else	
         den_HLT_ElectronP[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
         if((thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger) {
-          num_HLT_Electron[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
+          num_HLT_Electron     [nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
+          num_HLT_Alt0_Electron[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
+	  if(theChan == 0) num_HLT_AltData_Electron[nEvtRap][infileDataCat_[ifile]]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
 	  if(thePandaFlat.looseLep2PdgId > 0)
           num_HLT_ElectronM[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
           else
 	  num_HLT_ElectronP[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
         }
       }
+      if(abs(thePandaFlat.looseLep1PdgId)==11 && (thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep1Pt > 20){
+	if(theChan == 0) histoNPV[3]->Fill(TMath::Min((double)thePandaFlat.npv,79.499),totalWeight);
+        den_HLT_Alt1_Electron[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
+        if((thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger) {
+          num_HLT_Alt1_Electron[nEvtRap][theChan]->Fill(xprobeLep2,thePandaFlat.looseLep2Pt,totalWeight);
+        }
+      }
 
-      if(abs(thePandaFlat.looseLep2PdgId)==13 && (thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger){
-        den_HLT_Muon[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
+      if(abs(thePandaFlat.looseLep2PdgId)==13 && (thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep2Pt > tagMuonPt){
+	if(theChan == 0) histoNPV[0]->Fill(TMath::Min((double)thePandaFlat.npv,79.499),totalWeight);
+        den_HLT_Muon     [nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
+        den_HLT_Alt0_Muon[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
+	if(theChan == 0) den_HLT_AltData_Muon[nEvtRap][infileDataCat_[ifile]]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
 	if(thePandaFlat.looseLep1PdgId > 0)
         den_HLT_MuonM[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
         else	
         den_HLT_MuonP[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
         if((thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger) {
-          num_HLT_Muon[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
+          num_HLT_Muon     [nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
+          num_HLT_Alt0_Muon[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
+	  if(theChan == 0) num_HLT_AltData_Muon[nEvtRap][infileDataCat_[ifile]]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
 	  if(thePandaFlat.looseLep1PdgId > 0)
           num_HLT_MuonM[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
           else
 	  num_HLT_MuonP[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
         }
-      }       
-      if(abs(thePandaFlat.looseLep2PdgId)==11 && (thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger){
-        den_HLT_Electron[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
+      }
+      if(abs(thePandaFlat.looseLep2PdgId)==13 && (thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep2Pt > 20){
+	if(theChan == 0) histoNPV[1]->Fill(TMath::Min((double)thePandaFlat.npv,79.499),totalWeight);
+        den_HLT_Alt1_Muon[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
+        if((thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger) {
+          num_HLT_Alt1_Muon[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
+        }
+      }
+
+      if(abs(thePandaFlat.looseLep2PdgId)==11 && (thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep2Pt > tagElectronPt){
+	if(theChan == 0) histoNPV[2]->Fill(TMath::Min((double)thePandaFlat.npv,79.499),totalWeight);
+        den_HLT_Electron     [nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
+        den_HLT_Alt0_Electron[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
+	if(theChan == 0) den_HLT_AltData_Electron[nEvtRap][infileDataCat_[ifile]]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
 	if(thePandaFlat.looseLep1PdgId > 0)
         den_HLT_ElectronM[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
         else	
         den_HLT_ElectronP[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
         if((thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger) {
-          num_HLT_Electron[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
+          num_HLT_Electron     [nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
+          num_HLT_Alt0_Electron[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
+	  if(theChan == 0) num_HLT_AltData_Electron[nEvtRap][infileDataCat_[ifile]]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
 	  if(thePandaFlat.looseLep1PdgId > 0)
           num_HLT_ElectronM[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
           else
 	  num_HLT_ElectronP[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
+        }
+      }
+      if(abs(thePandaFlat.looseLep2PdgId)==11 && (thePandaFlat.looseLep2SelBit & kTrigger) == kTrigger && thePandaFlat.looseLep2Pt > 20){
+	if(theChan == 0) histoNPV[3]->Fill(TMath::Min((double)thePandaFlat.npv,79.499),totalWeight);
+        den_HLT_Alt1_Electron[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
+        if((thePandaFlat.looseLep1SelBit & kTrigger) == kTrigger) {
+          num_HLT_Alt1_Electron[nEvtRap][theChan]->Fill(xprobeLep1,thePandaFlat.looseLep1Pt,totalWeight);
         }
       }
 
@@ -361,7 +525,7 @@ bool useZRap = true
   for(int k=0; k<nBinRap; k++){
     for(int i=1; i<=eff_HLT_Muon[k][0]->GetNbinsX(); i++){
       for(int j=1; j<=eff_HLT_Muon[k][0]->GetNbinsY(); j++){
-	printf("mu(%1d,%2d,%2d): ",k,i,j);
+	printf("muDef(%1d,%2d,%2d): ",k,i,j);
 	for(int ncha=0; ncha<2; ncha++){
           eff = 1.0; unc = 0.0;
 	  if     (den_HLT_Muon[k][ncha]->GetBinContent(i,j) > 0 && num_HLT_Muon[k][ncha]->GetBinContent(i,j) > 0){
@@ -372,14 +536,82 @@ bool useZRap = true
             eff = 0.0;
             unc = TMath::Min(sqrt(1.0/den_HLT_Muon[k][ncha]->GetBinContent(i,j)),0.999);
 	  }
-          /*
-	  if(ncha == 0 && (abs(eff_HLT_Muon[k][ncha]->GetXaxis()->GetBinLowEdge(i)+2.4)<0.001 ||
-	                   abs(eff_HLT_Muon[k][ncha]->GetXaxis()->GetBinLowEdge(i)-2.3)<0.001)) eff = eff * 0.98;
-          */
           eff_HLT_Muon[k][ncha]->SetBinContent(i,j,eff);
           eff_HLT_Muon[k][ncha]->SetBinError  (i,j,unc);
 	  if(ncha == 0) printf("data = "); else printf("mc = ");
           printf("%.3f(%7.1f/%7.1f) %.3f ",eff,num_HLT_Muon[k][ncha]->GetBinContent(i,j),den_HLT_Muon[k][ncha]->GetBinContent(i,j),unc);
+	}
+	printf("\n");
+      }
+    }
+  }
+
+  for(int k=0; k<nBinRap; k++){
+    for(int i=1; i<=eff_HLT_Alt0_Muon[k][0]->GetNbinsX(); i++){
+      for(int j=1; j<=eff_HLT_Alt0_Muon[k][0]->GetNbinsY(); j++){
+	printf("muAlt0(%1d,%2d,%2d): ",k,i,j);
+	for(int ncha=0; ncha<2; ncha++){
+          eff = 1.0; unc = 0.0;
+	  if     (den_HLT_Alt0_Muon[k][ncha]->GetBinContent(i,j) > 0 && num_HLT_Alt0_Muon[k][ncha]->GetBinContent(i,j) > 0){
+            eff = TMath::Min(num_HLT_Alt0_Muon[k][ncha]->GetBinContent(i,j)/den_HLT_Alt0_Muon[k][ncha]->GetBinContent(i,j),1.0);
+            unc = sqrt(eff*(1-eff)/den_HLT_Alt0_Muon[k][ncha]->GetBinContent(i,j));
+	  }
+	  else if(den_HLT_Alt0_Muon[k][ncha]->GetBinContent(i,j) > 0){
+            eff = 0.0;
+            unc = TMath::Min(sqrt(1.0/den_HLT_Alt0_Muon[k][ncha]->GetBinContent(i,j)),0.999);
+	  }
+          eff_HLT_Alt0_Muon[k][ncha]->SetBinContent(i,j,eff);
+          eff_HLT_Alt0_Muon[k][ncha]->SetBinError  (i,j,unc);
+	  if(ncha == 0) printf("data = "); else printf("mc = ");
+          printf("%.3f(%7.1f/%7.1f) %.3f ",eff,num_HLT_Alt0_Muon[k][ncha]->GetBinContent(i,j),den_HLT_Alt0_Muon[k][ncha]->GetBinContent(i,j),unc);
+	}
+	printf("\n");
+      }
+    }
+  }
+
+  for(int k=0; k<nBinRap; k++){
+    for(int i=1; i<=eff_HLT_Alt1_Muon[k][0]->GetNbinsX(); i++){
+      for(int j=1; j<=eff_HLT_Alt1_Muon[k][0]->GetNbinsY(); j++){
+	printf("muAlt1(%1d,%2d,%2d): ",k,i,j);
+	for(int ncha=0; ncha<2; ncha++){
+          eff = 1.0; unc = 0.0;
+	  if     (den_HLT_Alt1_Muon[k][ncha]->GetBinContent(i,j) > 0 && num_HLT_Alt1_Muon[k][ncha]->GetBinContent(i,j) > 0){
+            eff = TMath::Min(num_HLT_Alt1_Muon[k][ncha]->GetBinContent(i,j)/den_HLT_Alt1_Muon[k][ncha]->GetBinContent(i,j),1.0);
+            unc = sqrt(eff*(1-eff)/den_HLT_Alt1_Muon[k][ncha]->GetBinContent(i,j));
+	  }
+	  else if(den_HLT_Alt1_Muon[k][ncha]->GetBinContent(i,j) > 0){
+            eff = 0.0;
+            unc = TMath::Min(sqrt(1.0/den_HLT_Alt1_Muon[k][ncha]->GetBinContent(i,j)),0.999);
+	  }
+          eff_HLT_Alt1_Muon[k][ncha]->SetBinContent(i,j,eff);
+          eff_HLT_Alt1_Muon[k][ncha]->SetBinError  (i,j,unc);
+	  if(ncha == 0) printf("data = "); else printf("mc = ");
+          printf("%.3f(%7.1f/%7.1f) %.3f ",eff,num_HLT_Alt1_Muon[k][ncha]->GetBinContent(i,j),den_HLT_Alt1_Muon[k][ncha]->GetBinContent(i,j),unc);
+	}
+	printf("\n");
+      }
+    }
+  }
+
+  for(int k=0; k<nBinRap; k++){
+    for(int i=1; i<=eff_HLT_AltData_Muon[k][0]->GetNbinsX(); i++){
+      for(int j=1; j<=eff_HLT_AltData_Muon[k][0]->GetNbinsY(); j++){
+	printf("muAllData(%1d,%2d,%2d): ",k,i,j);
+	for(int ncha=0; ncha<nDataFiles; ncha++){ // Loop over nDataFiles files!
+          eff = 1.0; unc = 0.0;
+	  if     (den_HLT_AltData_Muon[k][ncha]->GetBinContent(i,j) > 0 && num_HLT_AltData_Muon[k][ncha]->GetBinContent(i,j) > 0){
+            eff = TMath::Min(num_HLT_AltData_Muon[k][ncha]->GetBinContent(i,j)/den_HLT_AltData_Muon[k][ncha]->GetBinContent(i,j),1.0);
+            unc = sqrt(eff*(1-eff)/den_HLT_AltData_Muon[k][ncha]->GetBinContent(i,j));
+	  }
+	  else if(den_HLT_AltData_Muon[k][ncha]->GetBinContent(i,j) > 0){
+            eff = 0.0;
+            unc = TMath::Min(sqrt(1.0/den_HLT_AltData_Muon[k][ncha]->GetBinContent(i,j)),0.999);
+	  }
+          eff_HLT_AltData_Muon[k][ncha]->SetBinContent(i,j,eff);
+          eff_HLT_AltData_Muon[k][ncha]->SetBinError  (i,j,unc);
+	  if(ncha == 0) printf("data = "); else printf("mc = ");
+          printf("%.3f(%7.1f/%7.1f) %.3f ",eff,num_HLT_AltData_Muon[k][ncha]->GetBinContent(i,j),den_HLT_AltData_Muon[k][ncha]->GetBinContent(i,j),unc);
 	}
 	printf("\n");
       }
@@ -437,7 +669,7 @@ bool useZRap = true
   for(int k=0; k<nBinRap; k++){
     for(int i=1; i<=eff_HLT_Electron[k][0]->GetNbinsX(); i++){
       for(int j=1; j<=eff_HLT_Electron[k][0]->GetNbinsY(); j++){
-	printf("el(%1d,%2d,%2d): ",k,i,j);
+	printf("elDef(%1d,%2d,%2d): ",k,i,j);
 	for(int ncha=0; ncha<2; ncha++){
           eff = 1.0; unc = 0.0;
 	  if     (den_HLT_Electron[k][ncha]->GetBinContent(i,j) > 0 && num_HLT_Electron[k][ncha]->GetBinContent(i,j) > 0){
@@ -448,13 +680,6 @@ bool useZRap = true
             eff = 0.0;
             unc = TMath::Min(sqrt(1.0/den_HLT_Electron[k][ncha]->GetBinContent(i,j)),0.999);
 	  }
-          /*
-	  if     (ncha == 0 && abs(eff_HLT_Electron[k][ncha]->GetXaxis()->GetBinLowEdge(i)+2.4)<0.001) eff = eff * 0.92;
-	  else if(ncha == 0 && abs(eff_HLT_Electron[k][ncha]->GetXaxis()->GetBinLowEdge(i)+2.3)<0.001) eff = eff * 0.96;
-	  else if(ncha == 0 && abs(eff_HLT_Electron[k][ncha]->GetXaxis()->GetBinLowEdge(i)+2.2)<0.001) eff = eff * 0.98;
-	  else if(ncha == 0 && abs(eff_HLT_Electron[k][ncha]->GetXaxis()->GetBinLowEdge(i)-2.1)<0.001) eff = eff * 0.97;
-	  else if(ncha == 0 && abs(eff_HLT_Electron[k][ncha]->GetXaxis()->GetBinLowEdge(i)-2.2)<0.001) eff = eff * 0.98;
-          */
           eff_HLT_Electron[k][ncha]->SetBinContent(i,j,eff);
           eff_HLT_Electron[k][ncha]->SetBinError  (i,j,unc);
 	  if(ncha == 0) printf("data = "); else printf("mc = ");
@@ -466,9 +691,81 @@ bool useZRap = true
   }
 
   for(int k=0; k<nBinRap; k++){
+    for(int i=1; i<=eff_HLT_Alt0_Electron[k][0]->GetNbinsX(); i++){
+      for(int j=1; j<=eff_HLT_Alt0_Electron[k][0]->GetNbinsY(); j++){
+	printf("elAlt0(%1d,%2d,%2d): ",k,i,j);
+	for(int ncha=0; ncha<2; ncha++){
+          eff = 1.0; unc = 0.0;
+	  if     (den_HLT_Alt0_Electron[k][ncha]->GetBinContent(i,j) > 0 && num_HLT_Alt0_Electron[k][ncha]->GetBinContent(i,j) > 0){
+            eff = TMath::Min(num_HLT_Alt0_Electron[k][ncha]->GetBinContent(i,j)/den_HLT_Alt0_Electron[k][ncha]->GetBinContent(i,j),1.0);
+            unc = sqrt(eff*(1-eff)/den_HLT_Alt0_Electron[k][ncha]->GetBinContent(i,j));
+	  }
+	  else if(den_HLT_Alt0_Electron[k][ncha]->GetBinContent(i,j) > 0){
+            eff = 0.0;
+            unc = TMath::Min(sqrt(1.0/den_HLT_Alt0_Electron[k][ncha]->GetBinContent(i,j)),0.999);
+	  }
+          eff_HLT_Alt0_Electron[k][ncha]->SetBinContent(i,j,eff);
+          eff_HLT_Alt0_Electron[k][ncha]->SetBinError  (i,j,unc);
+	  if(ncha == 0) printf("data = "); else printf("mc = ");
+          printf("%.3f(%7.1f/%7.1f) %.3f ",eff,num_HLT_Alt0_Electron[k][ncha]->GetBinContent(i,j),den_HLT_Alt0_Electron[k][ncha]->GetBinContent(i,j),unc);
+	}
+	printf("\n");
+      }
+    }
+  }
+
+  for(int k=0; k<nBinRap; k++){
+    for(int i=1; i<=eff_HLT_Alt1_Electron[k][0]->GetNbinsX(); i++){
+      for(int j=1; j<=eff_HLT_Alt1_Electron[k][0]->GetNbinsY(); j++){
+	printf("elAlt1(%1d,%2d,%2d): ",k,i,j);
+	for(int ncha=0; ncha<2; ncha++){
+          eff = 1.0; unc = 0.0;
+	  if     (den_HLT_Alt1_Electron[k][ncha]->GetBinContent(i,j) > 0 && num_HLT_Alt1_Electron[k][ncha]->GetBinContent(i,j) > 0){
+            eff = TMath::Min(num_HLT_Alt1_Electron[k][ncha]->GetBinContent(i,j)/den_HLT_Alt1_Electron[k][ncha]->GetBinContent(i,j),1.0);
+            unc = sqrt(eff*(1-eff)/den_HLT_Alt1_Electron[k][ncha]->GetBinContent(i,j));
+	  }
+	  else if(den_HLT_Alt1_Electron[k][ncha]->GetBinContent(i,j) > 0){
+            eff = 0.0;
+            unc = TMath::Min(sqrt(1.0/den_HLT_Alt1_Electron[k][ncha]->GetBinContent(i,j)),0.999);
+	  }
+          eff_HLT_Alt1_Electron[k][ncha]->SetBinContent(i,j,eff);
+          eff_HLT_Alt1_Electron[k][ncha]->SetBinError  (i,j,unc);
+	  if(ncha == 0) printf("data = "); else printf("mc = ");
+          printf("%.3f(%7.1f/%7.1f) %.3f ",eff,num_HLT_Alt1_Electron[k][ncha]->GetBinContent(i,j),den_HLT_Alt1_Electron[k][ncha]->GetBinContent(i,j),unc);
+	}
+	printf("\n");
+      }
+    }
+  }
+
+  for(int k=0; k<nBinRap; k++){
+    for(int i=1; i<=eff_HLT_AltData_Electron[k][0]->GetNbinsX(); i++){
+      for(int j=1; j<=eff_HLT_AltData_Electron[k][0]->GetNbinsY(); j++){
+	printf("elAltData(%1d,%2d,%2d): ",k,i,j);
+	for(int ncha=0; ncha<nDataFiles; ncha++){ // Loop over nDataFiles files!
+          eff = 1.0; unc = 0.0;
+	  if     (den_HLT_AltData_Electron[k][ncha]->GetBinContent(i,j) > 0 && num_HLT_AltData_Electron[k][ncha]->GetBinContent(i,j) > 0){
+            eff = TMath::Min(num_HLT_AltData_Electron[k][ncha]->GetBinContent(i,j)/den_HLT_AltData_Electron[k][ncha]->GetBinContent(i,j),1.0);
+            unc = sqrt(eff*(1-eff)/den_HLT_AltData_Electron[k][ncha]->GetBinContent(i,j));
+	  }
+	  else if(den_HLT_AltData_Electron[k][ncha]->GetBinContent(i,j) > 0){
+            eff = 0.0;
+            unc = TMath::Min(sqrt(1.0/den_HLT_AltData_Electron[k][ncha]->GetBinContent(i,j)),0.999);
+	  }
+          eff_HLT_AltData_Electron[k][ncha]->SetBinContent(i,j,eff);
+          eff_HLT_AltData_Electron[k][ncha]->SetBinError  (i,j,unc);
+	  if(ncha == 0) printf("data = "); else printf("mc = ");
+          printf("%.3f(%7.1f/%7.1f) %.3f ",eff,num_HLT_AltData_Electron[k][ncha]->GetBinContent(i,j),den_HLT_AltData_Electron[k][ncha]->GetBinContent(i,j),unc);
+	}
+	printf("\n");
+      }
+    }
+  }
+
+  for(int k=0; k<nBinRap; k++){
     for(int i=1; i<=eff_HLT_ElectronP[k][0]->GetNbinsX(); i++){
       for(int j=1; j<=eff_HLT_ElectronP[k][0]->GetNbinsY(); j++){
-	printf("el(%1d,%2d,%2d): ",k,i,j);
+	printf("elP(%1d,%2d,%2d): ",k,i,j);
 	for(int ncha=0; ncha<2; ncha++){
           eff = 1.0; unc = 0.0;
 	  if     (den_HLT_ElectronP[k][ncha]->GetBinContent(i,j) > 0 && num_HLT_ElectronP[k][ncha]->GetBinContent(i,j) > 0){
@@ -492,7 +789,7 @@ bool useZRap = true
   for(int k=0; k<nBinRap; k++){
     for(int i=1; i<=eff_HLT_ElectronM[k][0]->GetNbinsX(); i++){
       for(int j=1; j<=eff_HLT_ElectronM[k][0]->GetNbinsY(); j++){
-	printf("el(%1d,%2d,%2d): ",k,i,j);
+	printf("elM(%1d,%2d,%2d): ",k,i,j);
 	for(int ncha=0; ncha<2; ncha++){
           eff = 1.0; unc = 0.0;
 	  if     (den_HLT_ElectronM[k][ncha]->GetBinContent(i,j) > 0 && num_HLT_ElectronM[k][ncha]->GetBinContent(i,j) > 0){
@@ -513,19 +810,37 @@ bool useZRap = true
     }
   }
 
+
   for(int k=0; k<nBinRap; k++){
-    ratio_HLT_Muon[k]     ->Add   (eff_HLT_Muon[k][0]);
-    ratio_HLT_Muon[k]     ->Divide(eff_HLT_Muon[k][1]);
-    ratio_HLT_MuonP[k]    ->Add   (eff_HLT_MuonP[k][0]);
-    ratio_HLT_MuonP[k]    ->Divide(eff_HLT_MuonP[k][1]);
-    ratio_HLT_MuonM[k]    ->Add   (eff_HLT_MuonM[k][0]);
-    ratio_HLT_MuonM[k]    ->Divide(eff_HLT_MuonM[k][1]);
-    ratio_HLT_Electron[k] ->Add   (eff_HLT_Electron[k][0]);
-    ratio_HLT_Electron[k] ->Divide(eff_HLT_Electron[k][1]);
-    ratio_HLT_ElectronP[k]->Add   (eff_HLT_ElectronP[k][0]);
-    ratio_HLT_ElectronP[k]->Divide(eff_HLT_ElectronP[k][1]);
-    ratio_HLT_ElectronM[k]->Add   (eff_HLT_ElectronM[k][0]);
-    ratio_HLT_ElectronM[k]->Divide(eff_HLT_ElectronM[k][1]);
+    for(int i=0; i<nDataFiles; i++) eff_HLT_Alt2_Muon[k][0]    ->Add(eff_HLT_AltData_Muon    [k][i],dataFractions[i]);
+    for(int i=0; i<nDataFiles; i++) eff_HLT_Alt2_Electron[k][0]->Add(eff_HLT_AltData_Electron[k][i],dataFractions[i]);
+  }
+
+  for(int k=0; k<nBinRap; k++){
+    ratio_HLT_Muon[k]         ->Add   (eff_HLT_Muon[k][0]);
+    ratio_HLT_Muon[k]         ->Divide(eff_HLT_Muon[k][1]);
+    ratio_HLT_Alt0_Muon[k]    ->Add   (eff_HLT_Alt0_Muon[k][0]);
+    ratio_HLT_Alt0_Muon[k]    ->Divide(eff_HLT_Alt0_Muon[k][1]);
+    ratio_HLT_Alt1_Muon[k]    ->Add   (eff_HLT_Alt1_Muon[k][0]);
+    ratio_HLT_Alt1_Muon[k]    ->Divide(eff_HLT_Alt1_Muon[k][1]);
+    ratio_HLT_Alt2_Muon[k]    ->Add   (eff_HLT_Alt2_Muon[k][0]);
+    ratio_HLT_Alt2_Muon[k]    ->Divide(eff_HLT_Alt2_Muon[k][1]);
+    ratio_HLT_MuonP[k]        ->Add   (eff_HLT_MuonP[k][0]);
+    ratio_HLT_MuonP[k]        ->Divide(eff_HLT_MuonP[k][1]);
+    ratio_HLT_MuonM[k]        ->Add   (eff_HLT_MuonM[k][0]);
+    ratio_HLT_MuonM[k]        ->Divide(eff_HLT_MuonM[k][1]);
+    ratio_HLT_Electron[k]     ->Add   (eff_HLT_Electron[k][0]);
+    ratio_HLT_Electron[k]     ->Divide(eff_HLT_Electron[k][1]);
+    ratio_HLT_Alt0_Electron[k]->Add   (eff_HLT_Alt0_Electron[k][0]);
+    ratio_HLT_Alt0_Electron[k]->Divide(eff_HLT_Alt0_Electron[k][1]);
+    ratio_HLT_Alt1_Electron[k]->Add   (eff_HLT_Alt1_Electron[k][0]);
+    ratio_HLT_Alt1_Electron[k]->Divide(eff_HLT_Alt1_Electron[k][1]);
+    ratio_HLT_Alt2_Electron[k]->Add   (eff_HLT_Alt2_Electron[k][0]);
+    ratio_HLT_Alt2_Electron[k]->Divide(eff_HLT_Alt2_Electron[k][1]);
+    ratio_HLT_ElectronP[k]    ->Add   (eff_HLT_ElectronP[k][0]);
+    ratio_HLT_ElectronP[k]    ->Divide(eff_HLT_ElectronP[k][1]);
+    ratio_HLT_ElectronM[k]    ->Add   (eff_HLT_ElectronM[k][0]);
+    ratio_HLT_ElectronM[k]    ->Divide(eff_HLT_ElectronM[k][1]);
   }
 
   char output[200];
@@ -535,10 +850,21 @@ bool useZRap = true
   outFilePlotsHistos->cd();
   eff_HLT_Rap->Write();
   for(int k=0; k<nBinRap; k++){
+    for(int i=0; i<nDataFiles; i++) eff_HLT_AltData_Muon    [k][i]->Write();
+    for(int i=0; i<nDataFiles; i++) eff_HLT_AltData_Electron[k][i]->Write();
     for(int ncha=0; ncha<2; ncha++){
       den_HLT_Muon[k][ncha] ->Write();
       num_HLT_Muon[k][ncha] ->Write();
       eff_HLT_Muon[k][ncha] ->Write();
+      den_HLT_Alt0_Muon[k][ncha] ->Write();
+      num_HLT_Alt0_Muon[k][ncha] ->Write();
+      eff_HLT_Alt0_Muon[k][ncha] ->Write();
+      den_HLT_Alt1_Muon[k][ncha] ->Write();
+      num_HLT_Alt1_Muon[k][ncha] ->Write();
+      eff_HLT_Alt1_Muon[k][ncha] ->Write();
+      den_HLT_Alt2_Muon[k][ncha] ->Write();
+      num_HLT_Alt2_Muon[k][ncha] ->Write();
+      eff_HLT_Alt2_Muon[k][ncha] ->Write();
       den_HLT_MuonP[k][ncha]->Write();
       num_HLT_MuonP[k][ncha]->Write();
       eff_HLT_MuonP[k][ncha]->Write();
@@ -548,6 +874,15 @@ bool useZRap = true
       den_HLT_Electron[k][ncha] ->Write();
       num_HLT_Electron[k][ncha] ->Write();
       eff_HLT_Electron[k][ncha] ->Write();
+      den_HLT_Alt0_Electron[k][ncha] ->Write();
+      num_HLT_Alt0_Electron[k][ncha] ->Write();
+      eff_HLT_Alt0_Electron[k][ncha] ->Write();
+      den_HLT_Alt1_Electron[k][ncha] ->Write();
+      num_HLT_Alt1_Electron[k][ncha] ->Write();
+      eff_HLT_Alt1_Electron[k][ncha] ->Write();
+      den_HLT_Alt2_Electron[k][ncha] ->Write();
+      num_HLT_Alt2_Electron[k][ncha] ->Write();
+      eff_HLT_Alt2_Electron[k][ncha] ->Write();
       den_HLT_ElectronP[k][ncha]->Write();
       num_HLT_ElectronP[k][ncha]->Write();
       eff_HLT_ElectronP[k][ncha]->Write();
@@ -556,12 +891,19 @@ bool useZRap = true
       eff_HLT_ElectronM[k][ncha]->Write();
     }
     ratio_HLT_Muon[k] ->Write();
+    ratio_HLT_Alt0_Muon[k] ->Write();
+    ratio_HLT_Alt1_Muon[k] ->Write();
+    ratio_HLT_Alt2_Muon[k] ->Write();
     ratio_HLT_MuonP[k]->Write();
     ratio_HLT_MuonM[k]->Write();
     ratio_HLT_Electron[k] ->Write();
+    ratio_HLT_Alt0_Electron[k] ->Write();
+    ratio_HLT_Alt1_Electron[k] ->Write();
+    ratio_HLT_Alt2_Electron[k] ->Write();
     ratio_HLT_ElectronM[k]->Write();
     ratio_HLT_ElectronP[k]->Write();
   }
+  for(int i=0; i<allPlots; i++) histoNPV[i]->Write();
   outFilePlotsHistos->Close();
 
 }

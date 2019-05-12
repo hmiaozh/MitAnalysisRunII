@@ -12,6 +12,7 @@
 
 #include "MitAnalysisRunII/panda/macros/9x/pandaFlat.C"
 #include "MitAnalysisRunII/panda/macros/9x/common.h"
+#include "MitAnalysisRunII/panda/macros/9x/applyCorrections.h"
 
 void triggerAnalysis(
 int year,
@@ -30,9 +31,8 @@ int whichLepSel = 0
     filesPath = "/data/t3home000/ceballos/panda/v_006_0/";
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
     infileName_.push_back(Form("%sMET.root",filesPath.Data()));                   infileCat_.push_back(0);
-    infileName_.push_back(Form("%sWWinc.root" ,filesPath.Data()));                infileCat_.push_back(1);
-    //infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));                 infileCat_.push_back(1);
-    //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data()));                 infileCat_.push_back(1);
+    infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));                 infileCat_.push_back(1);
+    infileName_.push_back(Form("%sggWW.root" ,filesPath.Data()));                 infileCat_.push_back(1);
     infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		  infileCat_.push_back(1);
     infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                   infileCat_.push_back(1);
     infileName_.push_back(Form("%sDYJetsToLL_M-50_LO.root",filesPath.Data()));    infileCat_.push_back(1);
@@ -40,6 +40,11 @@ int whichLepSel = 0
     infileName_.push_back(Form("%sDYNJetsToLL.root",filesPath.Data()));           infileCat_.push_back(1);
     infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	          infileCat_.push_back(1);
     infileName_.push_back(Form("%sDYNJetsToLL_NLO.root",filesPath.Data()));       infileCat_.push_back(1);
+    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M125.root",filesPath.Data()));infileCat_.push_back(1);
+    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M200.root",filesPath.Data()));infileCat_.push_back(1);
+    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M300.root",filesPath.Data()));infileCat_.push_back(1);
+    infileName_.push_back(Form("%sqqZH125inv.root" ,filesPath.Data()));           infileCat_.push_back(1);
+    infileName_.push_back(Form("%sggZH125inv.root" ,filesPath.Data()));           infileCat_.push_back(1);
   }
   else if(year == 2017){
     filesPath = "/data/t3home000/ceballos/panda/v_004_0/";
@@ -53,6 +58,11 @@ int whichLepSel = 0
     infileName_.push_back(Form("%sDYJetsToLL_M-50_NLO.root",filesPath.Data()));   infileCat_.push_back(1);
     infileName_.push_back(Form("%sDYNJetsToLL_NLO.root",filesPath.Data()));       infileCat_.push_back(1);
     infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	          infileCat_.push_back(1);
+    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M125.root",filesPath.Data()));infileCat_.push_back(1);
+    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M200.root",filesPath.Data()));infileCat_.push_back(1);
+    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M300.root",filesPath.Data()));infileCat_.push_back(1);
+    infileName_.push_back(Form("%sqqZH125inv.root" ,filesPath.Data()));           infileCat_.push_back(1);
+    infileName_.push_back(Form("%sggZH125inv.root" ,filesPath.Data()));           infileCat_.push_back(1);
   }
   else if(year == 2016){
     filesPath = "/data/t3home000/ceballos/panda/v_002_0/";
@@ -71,7 +81,15 @@ int whichLepSel = 0
     infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));                 infileCat_.push_back(1);
     infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                   infileCat_.push_back(1);
     infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	          infileCat_.push_back(1);
+    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M125.root",filesPath.Data()));infileCat_.push_back(1);
+    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M200.root",filesPath.Data()));infileCat_.push_back(1);
+    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M300.root",filesPath.Data()));infileCat_.push_back(1);
+    infileName_.push_back(Form("%sqqZH125inv.root" ,filesPath.Data()));           infileCat_.push_back(1);
+    infileName_.push_back(Form("%sggZH125inv.root" ,filesPath.Data()));           infileCat_.push_back(1);
   }
+
+  //infileName_.clear();infileCat_.clear();
+  //infileName_.push_back(Form("%sqqZH125inv.root" ,filesPath.Data()));	       infileCat_.push_back(1);
 
   TFile *fPUFile = TFile::Open(puPath.Data());
   TH1D *fhDPU = (TH1D*)(fPUFile->Get("puWeights")); assert(fhDPU); fhDPU->SetDirectory(0);
@@ -170,6 +188,18 @@ int whichLepSel = 0
     }
     histos->Clear();
   }
+  TH1D* histoEff[histBins][6][7];
+  for(int thePlot=0; thePlot<7; thePlot++){
+    nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 400.0;
+    TH1D* histos = new TH1D("histos", "histos", nBinPlot, xminPlot, xmaxPlot);
+    histos->Sumw2();
+    for(int i=0; i<histBins; i++) {
+      for(int j=0; j<6; j++) {
+        histoEff[i][j][thePlot] = (TH1D*) histos->Clone(Form("histoEff_%d_%d_%d",i,j,thePlot));
+      }
+    }
+    histos->Clear();
+  }
 
   //*******************************************************
   // Chain Loop
@@ -253,7 +283,7 @@ int whichLepSel = 0
       if(theCategory != 0){
         double sfPileUp = nPUScaleFactor(fhDPU,thePandaFlat.pu);
 
-        totalWeight = sfPileUp * looseLepSF[0] * looseLepSF[1];
+        totalWeight = sfPileUp * thePandaFlat.sf_l1Prefire * looseLepSF[0] * looseLepSF[1];
       }
 
       if     (lepType == 0 && neta1 == 0 && neta2 == 0) hDTrgDenMMBB[theCategory]->Fill(TMath::Min(vLoose1.Pt(),69.999),TMath::Min(vLoose2.Pt(),69.999),totalWeight);
@@ -280,11 +310,37 @@ int whichLepSel = 0
       histo[theCategory][lepType][ 8]->Fill(vLoose1.Eta(),totalWeight);
       histo[theCategory][lepType][10]->Fill(vLoose2.Eta(),totalWeight);
 
-      bool passTrigger = (thePandaFlat.trigger & (1<<kEMuTrig)) != 0       || (thePandaFlat.trigger & (1<<kDoubleMuTrig)) != 0  ||
-                         (thePandaFlat.trigger & (1<<kSingleMuTrig)) != 0  || (thePandaFlat.trigger & (1<<kDoubleEleTrig)) != 0 ||
-                         (thePandaFlat.trigger & (1<<kSingleEleTrig)) != 0;
+      bool passLEPTrigger = (thePandaFlat.trigger & (1<<kEMuTrig)) != 0       || (thePandaFlat.trigger & (1<<kDoubleMuTrig)) != 0  ||
+                            (thePandaFlat.trigger & (1<<kSingleMuTrig)) != 0  || (thePandaFlat.trigger & (1<<kDoubleEleTrig)) != 0 ||
+                            (thePandaFlat.trigger & (1<<kSingleEleTrig)) != 0;
 
-      if(passTrigger){
+      bool passMETTrigger = (thePandaFlat.trigger & (1<<kMETTrig)) != 0;
+      
+      if(theCategory == 1){
+        double passTrigger[6];
+        passTrigger[0] = passLEPTrigger;
+        passTrigger[1] = (thePandaFlat.trigger & (1<<kEMuTrig)) != 0;
+        passTrigger[2] = (thePandaFlat.trigger & (1<<kDoubleMuTrig)) != 0;
+        passTrigger[3] = (thePandaFlat.trigger & (1<<kSingleMuTrig)) != 0;
+        passTrigger[4] = (thePandaFlat.trigger & (1<<kDoubleEleTrig)) != 0;
+        passTrigger[5] = (thePandaFlat.trigger & (1<<kSingleEleTrig)) != 0;
+
+        for(int ntrg=0; ntrg<6; ntrg++){
+          histoEff[lepType][ntrg][0]->Fill(TMath::Min(dilep.Pt(),399.999),totalWeight);
+          if(passTrigger[ntrg]) histoEff[lepType][ntrg][1]->Fill(TMath::Min(dilep.Pt(),399.999),totalWeight);
+          if(passMETTrigger)    histoEff[lepType][ntrg][2]->Fill(TMath::Min(dilep.Pt(),399.999),totalWeight);
+          if( passTrigger[ntrg] &&
+             passMETTrigger)    histoEff[lepType][ntrg][3]->Fill(TMath::Min(dilep.Pt(),399.999),totalWeight);
+          if(!passTrigger[ntrg] &&
+              passMETTrigger)   histoEff[lepType][ntrg][4]->Fill(TMath::Min(dilep.Pt(),399.999),totalWeight);
+          if( passTrigger[ntrg] &&
+             !passMETTrigger)   histoEff[lepType][ntrg][5]->Fill(TMath::Min(dilep.Pt(),399.999),totalWeight);
+          if(!passTrigger[ntrg] &&
+             !passMETTrigger)   histoEff[lepType][ntrg][6]->Fill(TMath::Min(dilep.Pt(),399.999),totalWeight);
+        }
+      }
+
+      if(passLEPTrigger){
         if     (lepType == 0 && neta1 == 0 && neta2 == 0) hDTrgNumMMBB[theCategory]->Fill(TMath::Min(vLoose1.Pt(),69.999),TMath::Min(vLoose2.Pt(),69.999),totalWeight);
         else if(lepType == 0 && neta1 == 1 && neta2 == 0) hDTrgNumMMEB[theCategory]->Fill(TMath::Min(vLoose1.Pt(),69.999),TMath::Min(vLoose2.Pt(),69.999),totalWeight);
         else if(lepType == 0 && neta1 == 0 && neta2 == 1) hDTrgNumMMBE[theCategory]->Fill(TMath::Min(vLoose1.Pt(),69.999),TMath::Min(vLoose2.Pt(),69.999),totalWeight);
@@ -524,7 +580,34 @@ int whichLepSel = 0
   }
   outFilePlotsHistos->Close();
 
-  for(int thePlot=0; thePlot<allPlots/2; thePlot++){
+  sprintf(output,"histo_triggerEffBias_sel%d_%d.root",whichLepSel,year);	
+  TFile* outFileEffBiasHistos = new TFile(output,"recreate");
+  outFileEffBiasHistos->cd();
+  for(int ntrg=0; ntrg<6; ntrg++){
+    for(int nt=0; nt<4; nt++){
+      double total = histoEff[nt][ntrg][0]->GetSumOfWeights();
+      if(total <= 0) continue;
+      printf("eff(LL)eff(MET)/eff(LL+MET) (%d,%d) = %.3f X %.3f / %.3f = %.3f | %.3f X %.3f / %.3f = %.3f\n",ntrg,nt,
+      histoEff[nt][ntrg][1]->GetSumOfWeights()/total,histoEff[nt][ntrg][2]->GetSumOfWeights()/total,histoEff[nt][ntrg][3]->GetSumOfWeights()/total,
+      histoEff[nt][ntrg][1]->GetSumOfWeights()*histoEff[nt][ntrg][2]->GetSumOfWeights()/histoEff[nt][ntrg][3]->GetSumOfWeights()/total,
+      histoEff[nt][ntrg][4]->GetSumOfWeights()/total,histoEff[nt][ntrg][5]->GetSumOfWeights()/total,histoEff[nt][ntrg][6]->GetSumOfWeights()/total,
+      histoEff[nt][ntrg][4]->GetSumOfWeights()*histoEff[nt][ntrg][5]->GetSumOfWeights()/histoEff[nt][ntrg][6]->GetSumOfWeights()/total);
+      histoEff[nt][ntrg][1]->Divide(histoEff[nt][ntrg][0]);
+      histoEff[nt][ntrg][2]->Divide(histoEff[nt][ntrg][0]);
+      histoEff[nt][ntrg][3]->Divide(histoEff[nt][ntrg][0]);
+      histoEff[nt][ntrg][4]->Divide(histoEff[nt][ntrg][0]);
+      histoEff[nt][ntrg][5]->Divide(histoEff[nt][ntrg][0]);
+      histoEff[nt][ntrg][6]->Divide(histoEff[nt][ntrg][0]);
+      histoEff[nt][ntrg][0]->Reset();
+      histoEff[nt][ntrg][0]->Add(histoEff[nt][ntrg][1]);
+      histoEff[nt][ntrg][0]->Multiply(histoEff[nt][ntrg][2]);
+      histoEff[nt][ntrg][0]->Divide(histoEff[nt][ntrg][3]);
+      for(int i=0; i<7; i++) histoEff[nt][ntrg][i]->Write();
+    }
+  }
+  outFileEffBiasHistos->Close();
+
+  for(int thePlot=0; thePlot<6; thePlot++){
     for(int theCat=0; theCat<allCategories; theCat++){
       for(int theType=0; theType<histBins; theType++){
         for(int i=1; i<=histo[theCat][theType][2*thePlot+1]->GetNbinsX(); i++){

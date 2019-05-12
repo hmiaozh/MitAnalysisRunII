@@ -30,10 +30,9 @@ void makeZHGDataCards(TString outputLimits = "zhg_comb_input.root"){
   }
 
   // Filling datacards txt file
-  char outputLimitsCard[200];  					  
-  sprintf(outputLimitsCard,"datacard_zhg_comb.txt");
+  TString outputLimitsCard = outputLimits; outputLimitsCard = "datacard_" + outputLimitsCard.ReplaceAll("_input.root",".txt");
   ofstream newcardShape;
-  newcardShape.open(outputLimitsCard);
+  newcardShape.open(outputLimitsCard.Data());
   newcardShape << Form("imax * number of channels\n");
   newcardShape << Form("jmax * number of background minus 1\n");
   newcardShape << Form("kmax * number of nuisance parameters\n");
@@ -95,14 +94,6 @@ void makeZHGDataCards(TString outputLimits = "zhg_comb_input.root"){
   newcardShape << Form("\n");
 
   newcardShape << Form("CMS_momres_e    lnN     ");
-  for (int ic=0; ic<nPlotCategories; ic++){
-    if(!histo_Baseline[ic]) continue;
-    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    newcardShape << Form("%6.3f ",1.005);
-  }
-  newcardShape << Form("\n");
-
-  newcardShape << Form("CMS_trigger    lnN     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(!histo_Baseline[ic]) continue;
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
@@ -250,9 +241,26 @@ void makeZHGDataCards(TString outputLimits = "zhg_comb_input.root"){
       newcardShape << Form("1.0 ");
     }
     newcardShape << Form("\n");
+
+     newcardShape << Form("CMS_trigger_%d    shape     ",ny);
+     for (int ic=0; ic<nPlotCategories; ic++){
+       if(!histo_Baseline[ic]) continue;
+       if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+       if(ic == kPlotNonPrompt) newcardShape << Form("- ");
+       else                     newcardShape << Form("1.0 ");
+     }
+     newcardShape << Form("\n");
   }
 
   newcardShape << Form("CMS_eff_photon    shape     ");
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(!histo_Baseline[ic]) continue;
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    newcardShape << Form("1.0 ");
+  }
+  newcardShape << Form("\n");
+
+  newcardShape << Form("CMS_fake_photon    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(!histo_Baseline[ic]) continue;
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
@@ -270,9 +278,9 @@ void makeZHGDataCards(TString outputLimits = "zhg_comb_input.root"){
 
   newcardShape << Form("ch1 autoMCStats 0\n");
 
-  newcardShape << Form("CMS_hzg_emnorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotEM].Data());
-  newcardShape << Form("CMS_hzg_wznorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotWZ].Data());
-  newcardShape << Form("CMS_hzg_zznorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotZZ].Data());
+  //newcardShape << Form("CMS_hzg_emnorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotEM].Data());
+  //newcardShape << Form("CMS_hzg_wznorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotWZ].Data());
+  //newcardShape << Form("CMS_hzg_zznorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotZZ].Data());
 
   newcardShape.close();
 

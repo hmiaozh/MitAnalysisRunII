@@ -13,19 +13,29 @@
 
 #include "MitAnalysisRunII/panda/macros/9x/pandaFlat.C"
 #include "MitAnalysisRunII/panda/macros/9x/common.h"
+#include "MitAnalysisRunII/panda/macros/9x/applyCorrections.h"
 
+const bool isSingleLeptonAna = false;
 const bool isDEBUG = false;
 const bool showSyst = true;
 const unsigned int period = 0;
 const double mcPrescale = 1;
 const bool usePureMC = true; // if true, passLooseLepId not applied
-enum selType                     { ZHGSEL,   BTAGSEL,   ZLGSEL,   WZSEL,   WZGSEL,   ZZSEL,   WWSEL, nSelTypes};
-TString selTypeName[nSelTypes]=  {"ZHGSEL", "BTAGSEL", "ZLGSEL", "WZSEL", "WZGSEL", "ZZSEL", "WWSEL"};
-enum systType                     {JESUP=0, JESDOWN,  METUP,  METDOWN, nSystTypes};
-TString systTypeName[nSystTypes]= {"JESUP","JESDOWN","METUP","METDOWN"};
+enum selType                     { ZHGSEL,   BTAGSEL,   ZLGSEL,   WZSEL,   WZGSEL,   ZZSEL,   WWSEL,  ZHGFAKESEL, nSelTypes};
+TString selTypeName[nSelTypes]=  {"ZHGSEL", "BTAGSEL", "ZLGSEL", "WZSEL", "WZGSEL", "ZZSEL", "WWSEL","ZHGFAKESEL"};
+enum systType                     {JESUP=0, JESDOWN,  SCALEMUP,  SCALEMDOWN,  SCALEEUP,  SCALEEDOWN,  SCALEGUP,  SCALEGDOWN, nSystTypes};
+TString systTypeName[nSystTypes]= {"JESUP","JESDOWN","SCALEMUP","SCALEMDOWN","SCALEEUP","SCALEEDOWN","SCALEGUP","SCALEGDOWN"};
+
+const double pdfUncs[2] = {1.010, 1.016};
+
+const double muScale  = 1.01;
+const double elScaleB = 1.01;
+const double elScaleE = 1.02;
+const double phScaleB = 1.01;
+const double phScaleE = 1.02;
 
 void zhgAnalysis(
-int year
+int year, bool isDesk014 = false, int mH = 125
 ){
   int whichYear = -1;
   if     (year == 2016) whichYear = Y2016;
@@ -33,9 +43,27 @@ int year
   else if(year == 2018) whichYear = Y2018;
   else {printf("Wrong year (%d)!\n",year); return;}
 
+  TString inputFolder = "/data/t3home000";
+  if(isDesk014 == true) inputFolder = "/local";
+
   //*******************************************************
   //Inputs
   //*******************************************************
+  double WSSF[nBinEtaCorr],WSSFE[nBinEtaCorr];
+  double muScaleCorr[nBinEtaCorr],elScaleCorr[nBinEtaCorr];
+  if     (year == 2016){
+    for(int i=0; i<nBinEtaCorr; i++) {WSSF[i] = WSSF_2016[i]; WSSFE[i] = WSSFE_2016[i]; muScaleCorr[i] = muScaleCorr_2016[i]; elScaleCorr[i] = elScaleCorr_2016[i];}
+  }
+  else if(year == 2017){
+    for(int i=0; i<nBinEtaCorr; i++) {WSSF[i] = WSSF_2017[i]; WSSFE[i] = WSSFE_2017[i]; muScaleCorr[i] = muScaleCorr_2017[i]; elScaleCorr[i] = elScaleCorr_2017[i];}
+  }
+  else if(year == 2018){
+    for(int i=0; i<nBinEtaCorr; i++) {WSSF[i] = WSSF_2018[i]; WSSFE[i] = WSSFE_2018[i]; muScaleCorr[i] = muScaleCorr_2018[i]; elScaleCorr[i] = elScaleCorr_2018[i];}
+  }
+
+  printf("muScale:\n");for(int i=0; i<nBinEtaCorr; i++) printf("%f,",muScaleCorr[i]); printf("\n");
+  printf("elScale:\n");for(int i=0; i<nBinEtaCorr; i++) printf("%f,",elScaleCorr[i]); printf("\n");
+
   vector<TString> infileName_;
   vector<int> infileCat_;
 
@@ -46,15 +74,15 @@ int year
   TString elephoSFPath = Form("MitAnalysisRunII/data/90x/histoDY0LGSF_%d.root",year);
   TString trgSFPath = Form("MitAnalysisRunII/data/90x/histo_triggerEff_sel0_%d.root",year);
   TString effSFPath = Form("MitAnalysisRunII/data/90x/histoDY0EffSFStudy_%d.root",year);
+  //TString npvPath = Form("MitAnalysisRunII/data/90x/npvWeights_%d.root",year);
   if(year == 2018) {
-    filesPath = "/data/t3home000/ceballos/panda/v_006_1/";
+    filesPath = Form("%s/ceballos/panda/v_006_3/",inputFolder.Data());
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
     photonSFPath = "MitAnalysisRunII/data/90x/2018_PhotonsMedium.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(kPlotData);
-    infileName_.push_back(Form("%sWWinc.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotEM);
-    //infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotEM);
-    //infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotEM);
+    infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotEM);
+    infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotEM);
     infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));		 infileCat_.push_back(kPlotEM);
     infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));		         infileCat_.push_back(kPlotEM);
     infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotEM);
@@ -67,10 +95,10 @@ int year
     infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));  	         infileCat_.push_back(kPlotVVV);
     infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	         infileCat_.push_back(kPlotVVV);
     infileName_.push_back(Form("%sTTVV.root" ,filesPath.Data()));  	         infileCat_.push_back(kPlotVVV);
-    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M125.root" ,filesPath.Data())); infileCat_.push_back(kPlotBSM);
+    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M%d.root" ,filesPath.Data(),mH)); infileCat_.push_back(kPlotBSM);
   }
   else if(year == 2017) {
-    filesPath = "/data/t3home000/ceballos/panda/v_004_1/";
+    filesPath = Form("%s/ceballos/panda/v_004_3/",inputFolder.Data());
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
     photonSFPath = "MitAnalysisRunII/data/90x/egammaEffi.txt_EGM2D_runBCDEF_passingMedium94X.root";
 
@@ -89,10 +117,10 @@ int year
     infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));  	         infileCat_.push_back(kPlotVVV);
     infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	         infileCat_.push_back(kPlotVVV);
     infileName_.push_back(Form("%sTTVV.root" ,filesPath.Data()));  	         infileCat_.push_back(kPlotVVV);
-    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M125.root" ,filesPath.Data())); infileCat_.push_back(kPlotBSM);
+    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M%d.root" ,filesPath.Data(),mH)); infileCat_.push_back(kPlotBSM);
   }
   else if(year == 2016) {
-    filesPath = "/data/t3home000/ceballos/panda/v_002_1/";
+    filesPath = Form("%s/ceballos/panda/v_002_3/",inputFolder.Data());
     puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
     photonSFPath = "MitAnalysisRunII/data/80x/photon_scalefactors_37ifb.root";
 
@@ -116,11 +144,15 @@ int year
     infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotZZ);
     infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));  	          infileCat_.push_back(kPlotVVV);
     infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	          infileCat_.push_back(kPlotVVV);
-    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M125.root" ,filesPath.Data())); infileCat_.push_back(kPlotBSM);
+    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M%d.root" ,filesPath.Data(),mH)); infileCat_.push_back(kPlotBSM);
   }
   else {
     return;
   }
+
+  //infileName_.clear();infileCat_.clear();
+  //infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M%d.root" ,filesPath.Data(),mH)); infileCat_.push_back(kPlotBSM);
+  //infileName_.push_back(Form("%sVG.root" ,filesPath.Data())); infileCat_.push_back(kPlotVG);
 
   TFile *fLepton_Fakes = TFile::Open(fLepton_FakesName.Data());
   TH2D* histoFakeEffSelMediumEtaPt_m = (TH2D*)fLepton_Fakes->Get("histoFakeEffSelEtaPt_2_0"); histoFakeEffSelMediumEtaPt_m->SetDirectory(0);
@@ -147,7 +179,8 @@ int year
   delete fPhotonSF;
 
   TFile *fElePhoSF = TFile::Open(elephoSFPath.Data());
-  TH2D *fhDElePhoSF = (TH2D*)(fElePhoSF->Get("histoLGSF")); assert(fhDElePhoSF); fhDElePhoSF->SetDirectory(0);
+  TH2D *fhDElePhoSF    = (TH2D*)(fElePhoSF->Get("histoLGSF"));    assert(fhDElePhoSF);    fhDElePhoSF  ->SetDirectory(0);
+  TH2D *fhDElePhoEffda = (TH2D*)(fElePhoSF->Get("histoLGEffda")); assert(fhDElePhoEffda); fhDElePhoEffda->SetDirectory(0);
   delete fElePhoSF;
 
   TFile *ftrgSF = TFile::Open(trgSFPath.Data());
@@ -169,43 +202,64 @@ int year
   TH2D *trgSFEMEE = (TH2D*)(ftrgSF->Get("trgSFEMEE")); assert(trgSFEMEE); trgSFEMEE->SetDirectory(0);
   delete ftrgSF;
 
+  TFile *fSingleTrgSF = TFile::Open(Form("MitAnalysisRunII/data/90x/histoDY0TriggerSFStudy_%d.root",year));
+  TH2D *histoMuTrgEffSF = (TH2D*)(fSingleTrgSF->Get("histoTrgEffStudy_1_0")); assert(histoMuTrgEffSF); histoMuTrgEffSF->SetDirectory(0);
+  TH2D *histoElTrgEffSF = (TH2D*)(fSingleTrgSF->Get("histoTrgEffStudy_3_0")); assert(histoElTrgEffSF); histoElTrgEffSF->SetDirectory(0);
+  delete fSingleTrgSF;
+
+  //TFile *fNPVFile = TFile::Open(Form("%s",npvPath.Data()));
+  //TH1D *fhDNPV    = (TH1D*)(fNPVFile->Get("npvWeights"));   assert(fhDNPV);    fhDNPV	->SetDirectory(0);
+  //delete fNPVFile;
+
   printf("running ZHG %d analysis\n",year);
 
-  const int nBinMVA = 13; Double_t xbins[nBinMVA+1] = {-50,   0,  75, 115, 150, 200,
-  							         275, 315, 350, 400,
-							         600,
-								 800,
-								 1000,
-								 1200};
-  const int nBinMVA1D = 7; Double_t xbins1D[nBinMVA1D+1] = {0,  50, 75, 100, 125, 150, 175, 200};
+  double normForABCD[4] = {0,0,0,0};
+
+  const int nBinMVA = 15; Double_t xbins[nBinMVA+1] = {-50,   0,  75, 115, 150, 200, 400,
+  							         475, 515, 550, 600, 800,
+							        1200,
+								1600,
+								2000,
+								2400};
+  //const int nBinMVA1D = 7; Double_t xbins1D[nBinMVA1D+1] = {0,  50, 75, 100, 125, 150, 175, 200};
+  const int nBinMVA1D = 5; Double_t xbins1D[nBinMVA1D+1] = {0, 75, 115, 150, 200, 350};
 
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 52;
+  const int allPlots = 57;
   TH1D* histo[allPlots][nPlotCategories];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
-    if     (thePlot >=   0 && thePlot <=  23) {}
+    bool is1DMT = false;
+    if     (thePlot >=   0 && thePlot <=  23) {is1DMT = true;}
     else if(thePlot >=  24 && thePlot <=  24) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 100;}
     else if(thePlot >=  25 && thePlot <=  25) {nBinPlot = 5;   xminPlot = -0.5; xmaxPlot = 4.5;}
-    else if(thePlot >=  26 && thePlot <=  26) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
+    else if(thePlot >=  26 && thePlot <=  26) {nBinPlot = 160; xminPlot = 70.0; xmaxPlot = 230;}
     else if(thePlot >=  27 && thePlot <=  27) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 1;}
     else if(thePlot >=  28 && thePlot <=  28) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = TMath::Pi();}
     else if(thePlot >=  29 && thePlot <=  29) {nBinPlot = 4;   xminPlot = -0.5; xmaxPlot = 3.5;}
     else if(thePlot >=  30 && thePlot <=  30) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
-    else if(thePlot >=  31 && thePlot <=  31) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = TMath::Pi();}
+    else if(thePlot >=  31 && thePlot <=  31) {nBinPlot = 12;  xminPlot =  0.0; xmaxPlot = 3.0;}
     else if(thePlot >=  32 && thePlot <=  32) {nBinPlot = 4;   xminPlot = -0.5; xmaxPlot = 3.5;}
     else if(thePlot >=  33 && thePlot <=  33) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 400;}
-    else if(thePlot >=  34 && thePlot <=  34) {nBinPlot = 50;  xminPlot =  0.0; xmaxPlot = 2.5;}
-    else if(thePlot >=  35 && thePlot <=  35) {nBinPlot = 2;   xminPlot = -0.5; xmaxPlot = 1.5;}
-    else if(thePlot >=  36 && thePlot <=  38) {nBinPlot = 10;  xminPlot = -0.5; xmaxPlot = 9.5;}
-    else if(thePlot >=  39 && thePlot <=  41) {nBinPlot = 100; xminPlot = -5.0; xmaxPlot = 5.0;}
-    else if(thePlot >=  42 && thePlot <=  44) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
-    else if(thePlot >=  45 && thePlot <=  47) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 1;}
-    else if(thePlot >=  48 && thePlot <=  50) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = TMath::Pi();}
-    if     (thePlot == allPlots-1)          for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMVA, xbins);
-    else if(thePlot >= 0 && thePlot <=  23) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMVA1D, xbins1D);
-    else                                    for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinPlot, xminPlot, xmaxPlot);
+    else if(thePlot >=  34 && thePlot <=  34) {nBinPlot = 30;  xminPlot = 70.0; xmaxPlot = 370;}
+    else if(thePlot >=  35 && thePlot <=  35) {nBinPlot = 50;  xminPlot =  0.0; xmaxPlot = 2.5;}
+    else if(thePlot >=  36 && thePlot <=  36) {nBinPlot = 2;   xminPlot = -0.5; xmaxPlot = 1.5;}
+    else if(thePlot >=  37 && thePlot <=  39) {nBinPlot = 11;  xminPlot = -0.5; xmaxPlot =10.5;}
+    else if(thePlot >=  40 && thePlot <=  40) {nBinPlot = 100; xminPlot = -5.0; xmaxPlot = 5.0;}
+    else if(thePlot >=  41 && thePlot <=  41) {nBinPlot = 160; xminPlot = 70.0; xmaxPlot = 230;}
+    else if(thePlot >=  42 && thePlot <=  43) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 1;}
+    else if(thePlot >=  44 && thePlot <=  45) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = TMath::Pi();}
+    else if(thePlot >=  46 && thePlot <=  46) {is1DMT = true;}
+    else if(thePlot >=  47 && thePlot <=  47) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = TMath::Pi();}
+    else if(thePlot >=  48 && thePlot <=  48) {nBinPlot = 12;  xminPlot =  0.0; xmaxPlot = 3.0;}
+    else if(thePlot >=  49 && thePlot <=  49) {is1DMT = true;}
+    else if(thePlot >=  50 && thePlot <=  50) {nBinPlot =  50; xminPlot = 25.0; xmaxPlot = 425.0;}
+    else if(thePlot >=  51 && thePlot <=  51) {nBinPlot =  50; xminPlot = 20.0; xmaxPlot = 220.0;}
+    else if(thePlot >=  52 && thePlot <=  55) {is1DMT = true;}
+    if     (thePlot == allPlots-1) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMVA, xbins);
+    else if(is1DMT == true)        for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMVA1D, xbins1D);
+    else                           for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinPlot, xminPlot, xmaxPlot);
   }
 
   TH1D* histo_MVA = new TH1D("histo_MVA", "histo_MVA", nBinMVA, xbins); histo_MVA->Sumw2();
@@ -220,6 +274,12 @@ int year
   TH1D *histo_LepEffMBoundingDown[nPlotCategories];
   TH1D *histo_LepEffEBoundingUp[nPlotCategories];
   TH1D *histo_LepEffEBoundingDown[nPlotCategories];
+  TH1D *histo_ScaleMBoundingUp[nPlotCategories];
+  TH1D *histo_ScaleMBoundingDown[nPlotCategories];
+  TH1D *histo_ScaleEBoundingUp[nPlotCategories];
+  TH1D *histo_ScaleEBoundingDown[nPlotCategories];
+  TH1D *histo_ScaleGBoundingUp[nPlotCategories];
+  TH1D *histo_ScaleGBoundingDown[nPlotCategories];
   TH1D *histo_PUBoundingUp[nPlotCategories];
   TH1D *histo_PUBoundingDown[nPlotCategories];
   TH1D *histo_BTAGBBoundingUp[nYears][nPlotCategories];
@@ -230,8 +290,12 @@ int year
   TH1D *histo_JESBoundingDown[nYears][nPlotCategories];
   TH1D *histo_PreFireBoundingUp[nYears][nPlotCategories];
   TH1D *histo_PreFireBoundingDown[nYears][nPlotCategories];
+  TH1D *histo_TriggerBoundingUp[nYears][nPlotCategories];
+  TH1D *histo_TriggerBoundingDown[nYears][nPlotCategories];
   TH1D *histo_PhoEffBoundingUp[nPlotCategories];
   TH1D *histo_PhoEffBoundingDown[nPlotCategories];
+  TH1D *histo_PhoFakeBoundingUp[nPlotCategories];
+  TH1D *histo_PhoFakeBoundingDown[nPlotCategories];
   TH1D *histo_ElToPhRateBoundingUp[nPlotCategories];
   TH1D *histo_ElToPhRateBoundingDown[nPlotCategories];
   TH1D *histo_EWKCorrWZUp[nPlotCategories];
@@ -252,6 +316,12 @@ int year
     histo_LepEffMBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_eff_mDown"      , plotBaseNames[ic].Data()));
     histo_LepEffEBoundingUp	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_eff_eUp"        , plotBaseNames[ic].Data()));
     histo_LepEffEBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_eff_eDown"      , plotBaseNames[ic].Data()));
+    histo_ScaleMBoundingUp	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_scale_mUp"      , plotBaseNames[ic].Data()));
+    histo_ScaleMBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_scale_mDown"    , plotBaseNames[ic].Data()));
+    histo_ScaleEBoundingUp	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_scale_eUp"      , plotBaseNames[ic].Data()));
+    histo_ScaleEBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_scale_eDown"    , plotBaseNames[ic].Data()));
+    histo_ScaleGBoundingUp	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_scale_pUp"      , plotBaseNames[ic].Data()));
+    histo_ScaleGBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_scale_pDown"    , plotBaseNames[ic].Data()));
     histo_PUBoundingUp		[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_puUp"           , plotBaseNames[ic].Data()));
     histo_PUBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_puDown"         , plotBaseNames[ic].Data()));
     for(int ny=0; ny<nYears; ny++){
@@ -263,9 +333,13 @@ int year
     histo_JESBoundingDown    [ny][ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_jes_%dDown"	   , plotBaseNames[ic].Data(),2016+ny));
     histo_PreFireBoundingUp  [ny][ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_prefire_%dUp"   , plotBaseNames[ic].Data(),2016+ny));
     histo_PreFireBoundingDown[ny][ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_prefire_%dDown" , plotBaseNames[ic].Data(),2016+ny));
+    histo_TriggerBoundingUp  [ny][ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_trigger_%dUp"   , plotBaseNames[ic].Data(),2016+ny));
+    histo_TriggerBoundingDown[ny][ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_trigger_%dDown" , plotBaseNames[ic].Data(),2016+ny));
     }
     histo_PhoEffBoundingUp	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_eff_photonUp"   , plotBaseNames[ic].Data()));
     histo_PhoEffBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_eff_photonDown" , plotBaseNames[ic].Data()));
+    histo_PhoFakeBoundingUp	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_fake_photonUp"  , plotBaseNames[ic].Data()));
+    histo_PhoFakeBoundingDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_fake_photonDown", plotBaseNames[ic].Data()));
     histo_ElToPhRateBoundingUp	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_fake_elUp"      , plotBaseNames[ic].Data()));
     histo_ElToPhRateBoundingDown[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_fake_elDown"    , plotBaseNames[ic].Data()));
     histo_EWKCorrWZUp		[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_EWKWZCorrUp"        , plotBaseNames[ic].Data()));
@@ -283,7 +357,9 @@ int year
     printf("sampleNames(%d): %s\n",ifile,infileName_[ifile].Data());
     TFile *the_input_file = TFile::Open(infileName_[ifile].Data());
     TTree *the_input_tree = (TTree*)the_input_file->FindObjectAny("events");
-    
+
+    double srYields[4]  = {0., 0., 0., 0.};
+    double srYieldsE[4] = {0., 0., 0., 0.};
     pandaFlat thePandaFlat(the_input_tree);
     double theMCPrescale = 1.0; if(infileCat_[ifile] != kPlotData) theMCPrescale = mcPrescale;
     Long64_t nentries = thePandaFlat.fChain->GetEntriesFast();
@@ -298,7 +374,10 @@ int year
       bool passTrigger = (thePandaFlat.trigger & (1<<kEMuTrig)) != 0       || (thePandaFlat.trigger & (1<<kDoubleMuTrig)) != 0  ||
                          (thePandaFlat.trigger & (1<<kSingleMuTrig)) != 0  || (thePandaFlat.trigger & (1<<kDoubleEleTrig)) != 0 ||
                          (thePandaFlat.trigger & (1<<kSingleEleTrig)) != 0;
-      if(passTrigger == false) continue;
+      if(isSingleLeptonAna == true) passTrigger = (thePandaFlat.trigger & (1<<kSingleMuTrig))  != 0 || 
+                                                  (thePandaFlat.trigger & (1<<kSingleEleTrig)) != 0;
+      if((isSingleLeptonAna == false && passTrigger == false) || 
+         (isSingleLeptonAna == true  && passTrigger == false && infileCat_[ifile] == kPlotData)) continue;
       if(thePandaFlat.metFilter == 0) continue;
 
       // Remove bad quality 2017 events right away
@@ -310,30 +389,44 @@ int year
 
       if(thePandaFlat.nLooseLep < 2 || thePandaFlat.nLooseLep > 4) continue;
 
-      vector<float>  looseLepPt,looseLepEta,looseLepPhi,looseLepSF;
-      vector<int> looseLepSelBit,looseLepPdgId;
+      vector<float>  looseLepPt,looseLepEta,looseLepPhi,looseLepSF,looseLepIso;
+      vector<int> looseLepSelBit,looseLepPdgId,looseLepTripleCharge,looseLepMissingHits;
       int ptSelCuts[3] = {0,0,0};
       for(int i=0; i<thePandaFlat.nLooseMuon; i++){
+        int nBinEtaCorr = histoEtaCorr->GetXaxis()->FindBin(TMath::Min((double)TMath::Abs(thePandaFlat.muonEta[i]),2.4999))-1;
+        if(infileCat_[ifile]==kPlotData)
         looseLepPt.push_back(thePandaFlat.muonPt[i]);
+        else
+        looseLepPt.push_back(thePandaFlat.muonPt[i] * muScaleCorr[nBinEtaCorr]);
         looseLepEta.push_back(thePandaFlat.muonEta[i]);
         looseLepPhi.push_back(thePandaFlat.muonPhi[i]);
         looseLepSF.push_back(thePandaFlat.muonSfReco[i] * thePandaFlat.muonSfTight[i]);
         looseLepSelBit.push_back(thePandaFlat.muonSelBit[i]);
         looseLepPdgId.push_back(thePandaFlat.muonPdgId[i]);
-	if(thePandaFlat.muonPt[i] > 25) ptSelCuts[0]++;
-	if(thePandaFlat.muonPt[i] > 20) ptSelCuts[1]++;
-	if(thePandaFlat.muonPt[i] > 10) ptSelCuts[2]++;
+        looseLepTripleCharge.push_back(1);
+        looseLepMissingHits.push_back(0);
+        looseLepIso.push_back(thePandaFlat.muonCombIso[i]);
+	if(looseLepPt[looseLepPt.size()-1] > 25) ptSelCuts[0]++;
+	if(looseLepPt[looseLepPt.size()-1] > 20) ptSelCuts[1]++;
+	if(looseLepPt[looseLepPt.size()-1] > 10) ptSelCuts[2]++;
       }
       for(int i=0; i<thePandaFlat.nLooseElectron; i++){
+        int nBinEtaCorr = histoEtaCorr->GetXaxis()->FindBin(TMath::Min((double)TMath::Abs(thePandaFlat.electronEta[i]),2.4999))-1;
+        if(infileCat_[ifile]==kPlotData)
         looseLepPt.push_back(thePandaFlat.electronPt[i]);
+        else
+        looseLepPt.push_back(thePandaFlat.electronPt[i] * elScaleCorr[nBinEtaCorr]);
         looseLepEta.push_back(thePandaFlat.electronEta[i]);
         looseLepPhi.push_back(thePandaFlat.electronPhi[i]);
-        looseLepSF.push_back(thePandaFlat.electronSfReco[i] * thePandaFlat.electronSfMedium[i]);
         looseLepSelBit.push_back(thePandaFlat.electronSelBit[i]);
+        looseLepSF.push_back(thePandaFlat.electronSfReco[i] * thePandaFlat.electronSfMedium[i]);
         looseLepPdgId.push_back(thePandaFlat.electronPdgId[i]);
-	if(thePandaFlat.electronPt[i] > 25) ptSelCuts[0]++;
-	if(thePandaFlat.electronPt[i] > 20) ptSelCuts[1]++;
-	if(thePandaFlat.electronPt[i] > 10) ptSelCuts[2]++;
+        looseLepTripleCharge.push_back(thePandaFlat.electronTripleCharge[i]);
+        looseLepMissingHits.push_back(thePandaFlat.electronNMissingHits[i]);
+        looseLepIso.push_back(thePandaFlat.electronCombIso[i]);
+	if(looseLepPt[looseLepPt.size()-1] > 25) ptSelCuts[0]++;
+	if(looseLepPt[looseLepPt.size()-1] > 20) ptSelCuts[1]++;
+	if(looseLepPt[looseLepPt.size()-1] > 10) ptSelCuts[2]++;
       }
 
       if((int)looseLepPt.size() != thePandaFlat.nLooseLep) printf("IMPOSSIBLE\n");
@@ -346,7 +439,7 @@ int year
       if(thePandaFlat.nLooseLep >= 4) isNotMCFake = isNotMCFake && thePandaFlat.looseGenLep4PdgId != 0;
       if(theCategory != kPlotData && theCategory != kPlotVG && isNotMCFake == false && usePureMC == false) continue;
 
-      vector<TLorentzVector> vLoose;
+      vector<TLorentzVector> vLoose,vLooseMUp,vLooseMDown,vLooseEUp,vLooseEDown;
       vector<int> idLep;
       bool passLooseLepId = true;
       int qTot = 0;
@@ -361,6 +454,24 @@ int year
         if(abs(looseLepPdgId[i])==11) thePDGMass = mass_el;
 	TLorentzVector vLepTemp; vLepTemp.SetPtEtaPhiM(looseLepPt[i],looseLepEta[i],looseLepPhi[i],thePDGMass);
         vLoose.push_back(vLepTemp);
+
+	if(abs(looseLepPdgId[i])==13) vLepTemp.SetPtEtaPhiM(vLoose[i].Pt()*muScale,vLoose[i].Eta(),looseLepPhi[i],thePDGMass);
+        else                          vLepTemp.SetPtEtaPhiM(vLoose[i].Pt()*1.00000,vLoose[i].Eta(),looseLepPhi[i],thePDGMass);
+        vLooseMUp.push_back(vLepTemp);
+
+	if(abs(looseLepPdgId[i])==13) vLepTemp.SetPtEtaPhiM(vLoose[i].Pt()/muScale,vLoose[i].Eta(),looseLepPhi[i],thePDGMass);
+        else                          vLepTemp.SetPtEtaPhiM(vLoose[i].Pt()/1.00000,vLoose[i].Eta(),looseLepPhi[i],thePDGMass);
+        vLooseMDown.push_back(vLepTemp);
+
+	if     (abs(looseLepPdgId[i])==13)  vLepTemp.SetPtEtaPhiM(vLoose[i].Pt()*1.000000,vLoose[i].Eta(),looseLepPhi[i],thePDGMass);
+	else if(abs(vLoose[i].Eta()) < 1.5) vLepTemp.SetPtEtaPhiM(vLoose[i].Pt()*elScaleB,vLoose[i].Eta(),looseLepPhi[i],thePDGMass);
+        else                                vLepTemp.SetPtEtaPhiM(vLoose[i].Pt()*elScaleE,vLoose[i].Eta(),looseLepPhi[i],thePDGMass);
+        vLooseEUp.push_back(vLepTemp);
+
+	if     (abs(looseLepPdgId[i])==13)  vLepTemp.SetPtEtaPhiM(vLoose[i].Pt()*1.000000,vLoose[i].Eta(),looseLepPhi[i],thePDGMass);
+	else if(abs(vLoose[i].Eta()) < 1.5) vLepTemp.SetPtEtaPhiM(vLoose[i].Pt()/elScaleB,vLoose[i].Eta(),looseLepPhi[i],thePDGMass);
+        else                                vLepTemp.SetPtEtaPhiM(vLoose[i].Pt()/elScaleE,vLoose[i].Eta(),looseLepPhi[i],thePDGMass);
+        vLooseEDown.push_back(vLepTemp);
 
 	qTot = qTot + abs(looseLepPdgId[i])/looseLepPdgId[i];
 
@@ -409,6 +520,12 @@ int year
         vMetUp  .SetPtEtaPhiM(thePandaFlat.puppimet_JESTotalUp  ,0.0,thePandaFlat.puppimetphi_JESTotalUp  ,0.0);
         vMetDown.SetPtEtaPhiM(thePandaFlat.puppimet_JESTotalDown,0.0,thePandaFlat.puppimetphi_JESTotalDown,0.0);
       }
+      //vMet    .SetPx(vMet    .Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
+      //vMet    .SetPy(vMet    .Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
+      //vMetUp  .SetPx(vMetUp  .Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
+      //vMetUp  .SetPy(vMetUp  .Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
+      //vMetDown.SetPx(vMetDown.Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
+      //vMetDown.SetPy(vMetDown.Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
 
       double dPhiLepMETMin = 999; double dPhiLepTrackMETMin = 999;
       for(unsigned int i=0; i<vLoose.size(); i++){
@@ -422,13 +539,42 @@ int year
       if(dPhiLepTrackMETMin < TMath::Pi()/2) {PTrackMET[0] = PTrackMET[0] * sin(dPhiLepTrackMETMin);}
       double minPMET[1] = {TMath::Min(PMET[0],PTrackMET[0])};
 
-      bool passPhoSel = thePandaFlat.loosePho1Pt > 25 && TMath::Abs(thePandaFlat.loosePho1Eta) < 2.5
-             && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium 
-	     && (thePandaFlat.loosePho1SelBit & pCsafeVeto) == pCsafeVeto 
+      TLorentzVector vFakePhoton,vPhoton,vPhotonUp,vPhotonDown;
+      bool passPhoSel = TMath::Abs(thePandaFlat.loosePho1Eta) < 2.5
+             && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium
+	     && (thePandaFlat.loosePho1SelBit & pCsafeVeto) == pCsafeVeto
 	     && (thePandaFlat.loosePho1SelBit & pPixelVeto) == pPixelVeto;
-      TLorentzVector vPhoton;
-      vPhoton.SetPtEtaPhiM(thePandaFlat.loosePho1Pt, thePandaFlat.loosePho1Eta, thePandaFlat.loosePho1Phi, 0);
+      if(passPhoSel == true) {
+        vPhoton.SetPtEtaPhiM(thePandaFlat.loosePho1Pt, thePandaFlat.loosePho1Eta, thePandaFlat.loosePho1Phi, 0);
+	if(vPhoton.Pt() <= 25) passPhoSel = false;
+      }
+      bool passPhoSelUp = TMath::Abs(thePandaFlat.loosePho1Eta) < 2.5
+             && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium
+	     && (thePandaFlat.loosePho1SelBit & pCsafeVeto) == pCsafeVeto
+	     && (thePandaFlat.loosePho1SelBit & pPixelVeto) == pPixelVeto;
+      if(passPhoSelUp == true) {
+        if(abs(thePandaFlat.loosePho1Eta) < 1.50) vPhotonUp.SetPtEtaPhiM(thePandaFlat.loosePho1Pt*phScaleB, thePandaFlat.loosePho1Eta, thePandaFlat.loosePho1Phi, 0);
+        else                                      vPhotonUp.SetPtEtaPhiM(thePandaFlat.loosePho1Pt*phScaleE, thePandaFlat.loosePho1Eta, thePandaFlat.loosePho1Phi, 0);
+	if(vPhotonUp.Pt() <= 25) passPhoSelUp = false;
+      }
+      bool passPhoSelDown = TMath::Abs(thePandaFlat.loosePho1Eta) < 2.5
+             && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium
+	     && (thePandaFlat.loosePho1SelBit & pCsafeVeto) == pCsafeVeto
+	     && (thePandaFlat.loosePho1SelBit & pPixelVeto) == pPixelVeto;
+      if(passPhoSelDown == true) {
+        if(abs(thePandaFlat.loosePho1Eta) < 1.50) vPhotonDown.SetPtEtaPhiM(thePandaFlat.loosePho1Pt/phScaleB, thePandaFlat.loosePho1Eta, thePandaFlat.loosePho1Phi, 0);
+        else                                      vPhotonDown.SetPtEtaPhiM(thePandaFlat.loosePho1Pt/phScaleE, thePandaFlat.loosePho1Eta, thePandaFlat.loosePho1Phi, 0);
+	if(vPhotonDown.Pt() <= 25) passPhoSelDown = false;
+      }
 
+      bool passFakePhoSel = thePandaFlat.loosePho1Pt > 25 && TMath::Abs(thePandaFlat.loosePho1Eta) < 2.5
+             && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium
+	     && ((thePandaFlat.loosePho1SelBit & pCsafeVeto) != pCsafeVeto
+	     ||  (thePandaFlat.loosePho1SelBit & pPixelVeto) != pPixelVeto);
+      if(passFakePhoSel == true) {
+        vFakePhoton.SetPtEtaPhiM(thePandaFlat.loosePho1Pt, thePandaFlat.loosePho1Eta, thePandaFlat.loosePho1Phi, 0);
+      }
+ 
       double mllZ = 10000; double mllmin = 10000;
       TLorentzVector vZ1l1,vZ1l2,vZ2l1,vZ2l2,vWln;
       bool tightWlnId = false; int whichWln = -1;
@@ -446,7 +592,8 @@ int year
 	    vZ1l1 = vLoose[0];
 	    vZ1l2 = vLoose[1];
 	    vWln  = vLoose[2];
-	    tightWlnId = (looseLepSelBit[2] & kTight) == kTight && (looseLepSelBit[2] & kDxyz) == kDxyz;
+            if     (abs(looseLepPdgId[2])==13) tightWlnId = (looseLepSelBit[2] & kTight)  == kTight  && (looseLepSelBit[2] & kDxyz)  == kDxyz;
+            else if(abs(looseLepPdgId[2])==11) tightWlnId = (looseLepSelBit[2] & kMedium) == kMedium;
 	    whichWln = 2;
 	  }
 	}
@@ -457,7 +604,8 @@ int year
 	    vZ1l1 = vLoose[0];
 	    vZ1l2 = vLoose[2];
 	    vWln  = vLoose[1];
-	    tightWlnId = (looseLepSelBit[1] & kTight) == kTight && (looseLepSelBit[1] & kDxyz) == kDxyz;
+            if     (abs(looseLepPdgId[1])==13) tightWlnId = (looseLepSelBit[1] & kTight)  == kTight  && (looseLepSelBit[1] & kDxyz)  == kDxyz;
+            else if(abs(looseLepPdgId[1])==11) tightWlnId = (looseLepSelBit[1] & kMedium) == kMedium;
 	    whichWln = 1;
 	  }
 	}
@@ -468,7 +616,8 @@ int year
 	    vZ1l1 = vLoose[1];
 	    vZ1l2 = vLoose[2];
 	    vWln  = vLoose[0];
-	    tightWlnId = (looseLepSelBit[0] & kTight) == kTight && (looseLepSelBit[0] & kDxyz) == kDxyz;
+            if     (abs(looseLepPdgId[0])==13) tightWlnId = (looseLepSelBit[0] & kTight)  == kTight  && (looseLepSelBit[0] & kDxyz)  == kDxyz;
+            else if(abs(looseLepPdgId[0])==11) tightWlnId = (looseLepSelBit[0] & kMedium) == kMedium;
 	    whichWln = 0;
 	  }
 	}
@@ -545,9 +694,10 @@ int year
         theMinSelType = 0;
         theG = vPhoton;
       }
-      else if(passPhoSel == false && vLoose.size() == 3 && whichWln >= 0 && tightWlnId == true && TMath::Abs(qTot) == 1){       
+      else if(passPhoSel == false && vLoose.size() == 3 && whichWln >= 0 && tightWlnId == true && TMath::Abs(qTot) == 1){
         theMinSelType = 1;
         theG = vLoose[whichWln]; 
+	if(vWln.Pt() != vLoose[whichWln].Pt()) printf("PROBLEM WZ %f %f\n",vWln.Pt(),vLoose[whichWln].Pt());
       }
       else if(passPhoSel == true  && vLoose.size() == 3 && whichWln >= 0 && tightWlnId == true && TMath::Abs(qTot) == 1){       
         theMinSelType = 2;
@@ -559,8 +709,55 @@ int year
         theMinSelType = 3;
         theG = vZ2l1 + vZ2l2;
       }
+      else if(passFakePhoSel == true  && vLoose.size() == 2 && TMath::Abs(qTot) == 0){
+        theMinSelType = 4;
+        theG = vFakePhoton;
+      }
 
-      if(theMinSelType == -1) continue;
+      TLorentzVector dilepG = vZ1l1+vZ1l2+theG;
+      TLorentzVector dilepGMUp,dilepGMDown,dilepGEUp,dilepGEDown,dilepGGUp,dilepGGDown;
+
+      int theMinSelTypeMUp = -1;TLorentzVector theGMUp;
+      if(passPhoSel == true  && vLooseMUp.size() == 2 && TMath::Abs(qTot) == 0 &&
+        ((vLooseMUp[0].Pt() > 25 && vLooseMUp[1].Pt() > 20) || (vLooseMUp[1].Pt() > 25 && vLooseMUp[0].Pt() > 20))){
+        theMinSelTypeMUp = 0;
+        theGMUp = vPhoton;
+	dilepGMUp = vLooseMUp[0] + vLooseMUp[1] + theGMUp;
+      }
+      int theMinSelTypeMDown = -1;TLorentzVector theGMDown;
+      if(passPhoSel == true  && vLooseMDown.size() == 2 && TMath::Abs(qTot) == 0 &&
+        ((vLooseMDown[0].Pt() > 25 && vLooseMDown[1].Pt() > 20) || (vLooseMDown[1].Pt() > 25 && vLooseMDown[0].Pt() > 20))){
+        theMinSelTypeMDown = 0;
+        theGMDown = vPhoton;
+	dilepGMDown = vLooseMDown[0] + vLooseMDown[1] + theGMDown;
+      }
+      int theMinSelTypeEUp = -1;TLorentzVector theGEUp;
+      if(passPhoSel == true  && vLooseEUp.size() == 2 && TMath::Abs(qTot) == 0 &&
+        ((vLooseEUp[0].Pt() > 25 && vLooseEUp[1].Pt() > 20) || (vLooseEUp[1].Pt() > 25 && vLooseEUp[0].Pt() > 20))){
+        theMinSelTypeEUp = 0;
+        theGEUp = vPhoton;
+	dilepGEUp = vLooseEUp[0] + vLooseEUp[1] + theGEUp;
+      }
+      int theMinSelTypeEDown = -1;TLorentzVector theGEDown;
+      if(passPhoSel == true  && vLooseEDown.size() == 2 && TMath::Abs(qTot) == 0 &&
+        ((vLooseEDown[0].Pt() > 25 && vLooseEDown[1].Pt() > 20) || (vLooseEDown[1].Pt() > 25 && vLooseEDown[0].Pt() > 20))){
+        theMinSelTypeEDown = 0;
+        theGEDown = vPhoton;
+	dilepGEDown = vLooseEDown[0] + vLooseEDown[1] + theGEDown;
+      }
+      int theMinSelTypeGUp = -1;TLorentzVector theGGUp;
+      if(passPhoSelUp == true  && vLoose.size() == 2 && TMath::Abs(qTot) == 0){
+        theMinSelTypeGUp = 0;
+        theGGUp = vPhotonUp;
+	dilepGGUp = vLoose[0] + vLoose[1] + theGGUp;
+      }
+      int theMinSelTypeGDown = -1;TLorentzVector theGGDown;
+      if(passPhoSelDown == true  && vLooseEDown.size() == 2 && TMath::Abs(qTot) == 0){
+        theMinSelTypeGDown = 0;
+        theGGDown = vPhotonDown;
+	dilepGGDown = vLoose[0] + vLoose[1] + theGGDown;
+      }
+      //if(theMinSelType == -1) continue;
 
       double dPhiJetMET = -1.0; double dPhiJetMETUp = -1.0; double dPhiJetMETDown = -1.0;
       if(thePandaFlat.nJot > 0 && thePandaFlat.jotPt[0] > 30) {
@@ -579,12 +776,23 @@ int year
         dPhiJetMETDown = TMath::Abs(vJetTemp.DeltaPhi(vMetDown));
       }
 
+      double massEGZDiff = 100;
+      if(passPhoSel == true){
+        for(unsigned int i=0; i<vLoose.size(); i++){
+	  if(TMath::Abs(looseLepPdgId[i]) == 11 &&
+	     TMath::Abs((vLoose[i]+theG).M()-91.1876) < massEGZDiff) massEGZDiff = TMath::Abs((vLoose[i]+theG).M()-91.1876);
+        }
+      }
+      bool passMassEGZDiff = massEGZDiff > 15;
+
       double dPhiGMET = 0; double dPhiGMETUp = 0;double dPhiGMETDown = 0;
       double mTGMET = 0;   double mTGMETUp = 0;  double mTGMETDown = 0;
       TLorentzVector dilep = vZ1l1+vZ1l2;
-      //TLorentzVector dilepG = vZ1l1+vZ1l2;
+      TLorentzVector dilepMUp   = vLooseMUp  [0] +  vLooseMUp  [1];
+      TLorentzVector dilepMDown = vLooseMDown[0] +  vLooseMDown[1];
+      TLorentzVector dilepEUp   = vLooseEUp  [0] +  vLooseEUp  [1];
+      TLorentzVector dilepEDown = vLooseEDown[0] +  vLooseEDown[1];
       if(theMinSelType >= 0){
-        //dilepG = dilepG + theG;
 	dPhiGMET = TMath::Abs(theG.DeltaPhi(vMet));
 	dPhiGMETUp = TMath::Abs(theG.DeltaPhi(vMetUp));
 	dPhiGMETDown = TMath::Abs(theG.DeltaPhi(vMetDown));
@@ -594,7 +802,14 @@ int year
 	dPhiGMETDown = TMath::Abs(theG.DeltaPhi(vMetDown));
         mTGMETDown = TMath::Sqrt(2.0*theG.Pt()*vMetDown.Pt()*(1.0 - cos(dPhiGMETDown)));
       }
+      double mTGMETMUp   = mTGMET;
+      double mTGMETMDown = mTGMET;
+      double mTGMETEUp   = mTGMET;
+      double mTGMETEDown = mTGMET;
+      double mTGMETGUp   = 0; if(theMinSelTypeGUp   == 0){mTGMETGUp   = TMath::Sqrt(2.0*theGGUp  .Pt()*vMet.Pt()*(1.0 - cos(TMath::Abs(theGGUp  .DeltaPhi(vMet)))));}
+      double mTGMETGDown = 0; if(theMinSelTypeGDown == 0){mTGMETGDown = TMath::Sqrt(2.0*theGGDown.Pt()*vMet.Pt()*(1.0 - cos(TMath::Abs(theGGDown.DeltaPhi(vMet)))));}
 
+      double dPhiTriLepMET = TMath::Abs(dilepG.DeltaPhi(vMet));
       double dPhiDiLepGMET     = TMath::Abs(dilep.DeltaPhi(vMet    +theG));
       double dPhiDiLepGMETUp   = TMath::Abs(dilep.DeltaPhi(vMetUp  +theG));
       double dPhiDiLepGMETDown = TMath::Abs(dilep.DeltaPhi(vMetDown+theG));
@@ -604,12 +819,43 @@ int year
       bool passMETMin = vMet.Pt() > 70;  bool passMETMinUp = vMetUp.Pt() > 70;  bool passMETMinDown = vMetDown.Pt() > 70;
       bool passPTLL   = dilep.Pt() > 60;
 
+      bool passZMassMUp   = theMinSelTypeMUp   == 0 && TMath::Abs(dilepMUp  .M()-91.1876) < 15.0;
+      bool passZMassMDown = theMinSelTypeMDown == 0 && TMath::Abs(dilepMDown.M()-91.1876) < 15.0;
+      bool passZMassEUp   = theMinSelTypeEUp   == 0 && TMath::Abs(dilepEUp  .M()-91.1876) < 15.0;
+      bool passZMassEDown = theMinSelTypeEDown == 0 && TMath::Abs(dilepEDown.M()-91.1876) < 15.0;
+      bool passZMassGUp   = passZMass;
+      bool passZMassGDown = passZMass;
+
+      bool pass3lMass      = dilepG.M() > 100;
+      bool pass3lMassMUp   = theMinSelTypeMUp   == 0 && dilepGMUp.M()   > 100;
+      bool pass3lMassMDown = theMinSelTypeMDown == 0 && dilepGMDown.M() > 100;
+      bool pass3lMassEUp   = theMinSelTypeEUp   == 0 && dilepGEUp.M()   > 100;
+      bool pass3lMassEDown = theMinSelTypeEDown == 0 && dilepGEDown.M() > 100;
+      bool pass3lMassGUp   = theMinSelTypeGUp   == 0 && dilepGGUp.M()   > 100;
+      bool pass3lMassGDown = theMinSelTypeGDown == 0 && dilepGGDown.M() > 100;
+
+      bool passPTLLMUp   = theMinSelTypeMUp   == 0 && dilepMUp  .Pt() > 60;
+      bool passPTLLMDown = theMinSelTypeMDown == 0 && dilepMDown.Pt() > 60;
+      bool passPTLLEUp   = theMinSelTypeEUp   == 0 && dilepEUp  .Pt() > 60;
+      bool passPTLLEDown = theMinSelTypeEDown == 0 && dilepEDown.Pt() > 60;
+      bool passPTLLGUp   = passPTLL;
+      bool passPTLLGDown = passPTLL;
+
       if(!(dilep.Pt() > 60 && (vMet.Pt() > 70 || vMetUp.Pt() > 70 ||vMetDown.Pt() > 70) && (thePandaFlat.nLooseLep != 2 || TMath::Abs(dilep.M()-125) < 75))) continue;
 
+      double ptFrac = TMath::Abs(dilepG.Pt()-(vMet).Pt())/dilepG.Pt();
       double ptFracG     = TMath::Abs(dilep.Pt()-(vMet    +theG).Pt())/dilep.Pt();
       double ptFracGUp   = TMath::Abs(dilep.Pt()-(vMetUp  +theG).Pt())/dilep.Pt();
       double ptFracGDown = TMath::Abs(dilep.Pt()-(vMetDown+theG).Pt())/dilep.Pt();
       bool passPTFracG = ptFracG < 0.4; bool passPTFracGUp = ptFracGUp < 0.4; bool passPTFracGDown = ptFracGDown < 0.4;
+
+      bool passPTFracGMUp   = theMinSelTypeMUp   == 0 &&  TMath::Abs(dilepMUp  .Pt()-(vMet+theGMUp  ).Pt())/dilepMUp  .Pt() < 0.4;
+      bool passPTFracGMDown = theMinSelTypeMDown == 0 &&  TMath::Abs(dilepMDown.Pt()-(vMet+theGMDown).Pt())/dilepMDown.Pt() < 0.4;
+      bool passPTFracGEUp   = theMinSelTypeEUp   == 0 &&  TMath::Abs(dilepEUp  .Pt()-(vMet+theGEUp  ).Pt())/dilepEUp  .Pt() < 0.4;
+      bool passPTFracGEDown = theMinSelTypeEDown == 0 &&  TMath::Abs(dilepEDown.Pt()-(vMet+theGEDown).Pt())/dilepEDown.Pt() < 0.4;
+      bool passPTFracGGUp   = theMinSelTypeGUp   == 0 &&  TMath::Abs(dilep     .Pt()-(vMet+theGGUp  ).Pt())/dilep     .Pt() < 0.4;
+      bool passPTFracGGDown = theMinSelTypeGDown == 0 &&  TMath::Abs(dilep     .Pt()-(vMet+theGGDown).Pt())/dilep     .Pt() < 0.4;
+
       bool passDPhiZGMET = dPhiDiLepGMET > 2.5; bool passDPhiZGMETUp = dPhiDiLepGMETUp > 2.5; bool passDPhiZGMETDown = dPhiDiLepGMETDown > 2.5;
       bool passNjets     = thePandaFlat.nJot              <= 2;
       bool passNjetsUp   = thePandaFlat.nJot_JESTotalUp   <= 2;
@@ -624,49 +870,89 @@ int year
       bool passDPhiJetMETUp   = dPhiJetMETUp   == -1 || dPhiJetMETUp   >= 0.5;
       bool passDPhiJetMETDown = dPhiJetMETDown == -1 || dPhiJetMETDown >= 0.5;
       bool passTauVeto      = thePandaFlat.nTau == 0;
-      bool passMT = mTGMET < 200.0; bool passMTUp = mTGMETUp < 200.0; bool passMTDown = mTGMETDown < 200.0;
+      const int mtMax = 340;
+      bool passMT = mTGMET < mtMax; bool passMTUp = mTGMETUp < mtMax; bool passMTDown = mTGMETDown < mtMax;
+      bool passMTMUp   = mTGMETMUp   < mtMax; 
+      bool passMTMDown = mTGMETMDown < mtMax; 
+      bool passMTEUp   = mTGMETEUp   < mtMax; 
+      bool passMTEDown = mTGMETEDown < mtMax; 
+      bool passMTGUp   = mTGMETGUp   < mtMax; 
+      bool passMTGDown = mTGMETGDown < mtMax; 
 
-      //                                                   0       1         2            3           4           5             6         7              8      9
-      bool passCutEvol[10] = {theMinSelType == 0 && passPTLL,passMET,passZMass,passBtagVeto,passTauVeto,passPTFracG,passDPhiZGMET,passNjets,passDPhiJetMET,passMT};
+      //                                                   0       1         2            3           4      5          6           7             8         9             10
+      bool passCutEvol[11] = {theMinSelType == 0 && passPTLL,passMET,passZMass,passBtagVeto,passTauVeto,passMT,pass3lMass,passPTFracG,passDPhiZGMET,passNjets,passDPhiJetMET};
       bool passCutEvolAll = true;
 
       if(isDEBUG && vLoose.size() == 4) printf("DEBUG %d %d %d %d %d %d %d %d %d %d %d | %f %f\n",theMinSelType,passZMass,passNjets,passMET,passPTFracG,passDPhiZGMET,passBtagVeto,passPTLL,passDPhiJetMET,passTauVeto,passMT,mllmin,TMath::Abs(mllZ-91.1876));
 
       bool passAllCuts[nSelTypes] = {                   
-     theMinSelType == 0 && passZMass   && passNjets && passMET    && passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT,   // ZHGSEL
-     theMinSelType == 0 && passZMass   && passNjets && passMET    && passPTFracG && passDPhiZGMET && !passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT,   // BTAGSEL
-     theMinSelType == 0 && passZMass   &&              passMET    &&                                                  passPTLL &&                   passTauVeto && passMT,   // ZLGSEL
-     theMinSelType == 1 && passZMass   && passNjets && passMET    && passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET &&                passMT,   // WZSEL
-     theMinSelType == 2 && passZMass   && passNjets && passMET    && passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET &&	           passMT,   // WZGSEL
-     theMinSelType == 3 && passZMass   && passNjets && passMETMin && passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET &&  	           passMT,   // ZZSEL
-     theMinSelType == 0 && passZMassSB && passNjets && passMET    && passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT    // WWSEL
+     theMinSelType == 0 && pass3lMass && passZMass   && passNjets && passMET	&& passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT,   // ZHGSEL
+     theMinSelType == 0 && pass3lMass && passZMass   && passNjets && passMET	&& passPTFracG && passDPhiZGMET && !passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT,   // BTAGSEL
+     theMinSelType == 0 && pass3lMass && passZMass   && passNjets &&!passMET	&& passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT,   // ZLGSEL
+     theMinSelType == 1 && pass3lMass && passZMass   && passNjets && passMET	&& passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET &&		 passMT,   // WZSEL
+     theMinSelType == 2 && pass3lMass && passZMass   && passNjets && passMET	&& passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET &&		 passMT,   // WZGSEL
+     theMinSelType == 3 && pass3lMass && passZMass   && passNjets && passMETMin && passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET &&		 passMT,   // ZZSEL
+     theMinSelType == 0 && pass3lMass && passZMassSB && passNjets && passMET	&& passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT && passMassEGZDiff, // WWSEL
+     theMinSelType == 4 && pass3lMass && passZMass   && passNjets && passMET	&& passPTFracG && passDPhiZGMET &&  passBtagVeto && passPTLL && passDPhiJetMET &&                passMT    // ZHGFAKESEL
                                     };
 
-      bool passNMinusOne[10] = {
-     		  passNjets && passMET && passPTFracG && passDPhiZGMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT,
-     passZMass &&	       passMET && passPTFracG && passDPhiZGMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT,
-     passZMass && passNjets &&  	  passPTFracG && passDPhiZGMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT,
-     passZMass && passNjets && passMET &&		 passDPhiZGMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT,
-     passZMass && passNjets && passMET && passPTFracG &&		  passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT,
-     passZMass && passNjets && passMET && passPTFracG && passDPhiZGMET &&		  passPTLL && passDPhiJetMET && passTauVeto && passMT,
-     passZMass && passNjets && passMET && passPTFracG && passDPhiZGMET && passBtagVeto &&	      passDPhiJetMET && passTauVeto && passMT,
-     passZMass && passNjets && passMET && passPTFracG && passDPhiZGMET && passBtagVeto && passPTLL &&			passTauVeto && passMT,
-     passZMass && passNjets && passMET && passPTFracG && passDPhiZGMET && passBtagVeto && passPTLL && passDPhiJetMET && 	       passMT,
-     passZMass && passNjets && passMET && passPTFracG && passDPhiZGMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto
+      bool passNMinusOne[11] = {
+     theMinSelType >= 0 && 		passNjets && passMET && passPTFracG && passDPhiZGMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT && pass3lMass,
+     theMinSelType >= 0 && passZMass &&	             passMET && passPTFracG && passDPhiZGMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT && pass3lMass,
+     theMinSelType >= 0 && passZMass && passNjets &&  	        passPTFracG && passDPhiZGMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT && pass3lMass,
+     theMinSelType >= 0 && passZMass && passNjets && passMET &&		       passDPhiZGMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT && pass3lMass,
+     theMinSelType >= 0 && passZMass && passNjets && passMET && passPTFracG &&		        passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT && pass3lMass,
+     theMinSelType >= 0 && passZMass && passNjets && passMET && passPTFracG && passDPhiZGMET &&		        passPTLL && passDPhiJetMET && passTauVeto && passMT && pass3lMass,
+     theMinSelType >= 0 && passZMass && passNjets && passMET && passPTFracG && passDPhiZGMET && passBtagVeto &&	            passDPhiJetMET && passTauVeto && passMT && pass3lMass,
+     theMinSelType >= 0 && passZMass && passNjets && passMET && passPTFracG && passDPhiZGMET && passBtagVeto && passPTLL &&	              passTauVeto && passMT && pass3lMass,
+     theMinSelType >= 0 && passZMass && passNjets && passMET && passPTFracG && passDPhiZGMET && passBtagVeto && passPTLL && passDPhiJetMET && 	             passMT && pass3lMass,
+     theMinSelType >= 0 && passZMass && passNjets && passMET && passPTFracG && passDPhiZGMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto           && pass3lMass,
+     theMinSelType >= 0 && passZMass && passNjets && passMET && passPTFracG && passDPhiZGMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT
                                     };
-      for(int i=0; i<10; i++) passNMinusOne[i] = mllmin > 4.0 && theMinSelType == 0 && passNMinusOne[i];
 
-      bool passNMinusThree = theMinSelType == 0 && passZMass && passNjets && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT;
+      for(int i=0; i<11; i++) passNMinusOne[i] = mllmin > 4.0 && theMinSelType == 0 && passNMinusOne[i];
 
-      bool passZHGSel     = theMinSelType == 0 && passZMass && passNjets     && passMET        && passPTFracG     && passDPhiZGMET     && passBtagVeto     && passPTLL && passDPhiJetMET     && passTauVeto && passMT;
-      bool passZHGSelUp   = theMinSelType == 0 && passZMass && passNjetsUp   && passMETUp      && passPTFracGUp   && passDPhiZGMETUp   && passBtagVetoUp   && passPTLL && passDPhiJetMETUp   && passTauVeto && passMTUp;
-      bool passZHGSelDown = theMinSelType == 0 && passZMass && passNjetsDown && passMETDown    && passPTFracGDown && passDPhiZGMETDown && passBtagVetoDown && passPTLL && passDPhiJetMETDown && passTauVeto && passMTDown;
-      bool passWZSel      = theMinSelType == 1 && passZMass && passNjets     && passMET        && passPTFracG     && passDPhiZGMET     && passBtagVeto     && passPTLL && passDPhiJetMET     &&                passMT;
-      bool passWZSelUp    = theMinSelType == 1 && passZMass && passNjetsUp   && passMETUp      && passPTFracGUp   && passDPhiZGMETUp   && passBtagVetoUp   && passPTLL && passDPhiJetMETUp   && 	       passMTUp;
-      bool passWZSelDown  = theMinSelType == 1 && passZMass && passNjetsDown && passMETDown    && passPTFracGDown && passDPhiZGMETDown && passBtagVetoDown && passPTLL && passDPhiJetMETDown && 	       passMTDown;
-      bool passZZSel      = theMinSelType == 3 && passZMass && passNjets     && passMETMin     && passPTFracG     && passDPhiZGMET     && passBtagVeto     && passPTLL && passDPhiJetMET     &&                passMT;
-      bool passZZSelUp    = theMinSelType == 3 && passZMass && passNjetsUp   && passMETMinUp   && passPTFracGUp   && passDPhiZGMETUp   && passBtagVetoUp   && passPTLL && passDPhiJetMETUp   &&                passMTUp;
-      bool passZZSelDown  = theMinSelType == 3 && passZMass && passNjetsDown && passMETMinDown && passPTFracGDown && passDPhiZGMETDown && passBtagVetoDown && passPTLL && passDPhiJetMETDown &&                passMTDown; 
+      bool passNMinusFour  = theMinSelType == 0 && pass3lMass && passZMass && passNjets && passBtagVeto && passPTLL && passTauVeto && passMT && ptFracG < 1.0;
+      bool passNMinusThree = theMinSelType == 0 && pass3lMass && passZMass && passNjets && passBtagVeto && passPTLL && passTauVeto && passMT && passPTFracG && !passMET;
+
+      bool passNMinusA = theMinSelType == 0 && pass3lMass && passZMass && passNjets && passMET &&  passPTFracG &&  passDPhiZGMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT;
+      bool passNMinusB = theMinSelType == 0 && pass3lMass && passZMass && passNjets && passMET && !passPTFracG &&  passDPhiZGMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT;
+      bool passNMinusC = theMinSelType == 0 && pass3lMass && passZMass && passNjets && passMET &&  passPTFracG && !passDPhiZGMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT;
+      bool passNMinusD = theMinSelType == 0 && pass3lMass && passZMass && passNjets && passMET && !passPTFracG && !passDPhiZGMET && passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passMT;
+
+      passAllCuts[ZLGSEL] = passAllCuts[ZLGSEL] && passMETMin;
+      passNMinusOne[2] = passNMinusOne[2] && passMETMin;
+      passNMinusFour = passNMinusFour && passMETMin;
+      passNMinusThree = passNMinusThree && passMETMin;
+
+      bool passZHGSel     = theMinSelType == 0 && pass3lMass && passZMass && passNjets     && passMET	     && passPTFracG	&& passDPhiZGMET     && passBtagVeto	 && passPTLL && passDPhiJetMET     && passTauVeto && passMT;
+      bool passZHGSelUp   = theMinSelType == 0 && pass3lMass && passZMass && passNjetsUp   && passMETUp      && passPTFracGUp	&& passDPhiZGMETUp   && passBtagVetoUp   && passPTLL && passDPhiJetMETUp   && passTauVeto && passMTUp;
+      bool passZHGSelDown = theMinSelType == 0 && pass3lMass && passZMass && passNjetsDown && passMETDown    && passPTFracGDown && passDPhiZGMETDown && passBtagVetoDown && passPTLL && passDPhiJetMETDown && passTauVeto && passMTDown;
+      bool passWZSel      = theMinSelType == 1 && pass3lMass && passZMass && passNjets     && passMET	     && passPTFracG	&& passDPhiZGMET     && passBtagVeto	 && passPTLL && passDPhiJetMET     &&		     passMT;
+      bool passWZSelUp    = theMinSelType == 1 && pass3lMass && passZMass && passNjetsUp   && passMETUp      && passPTFracGUp	&& passDPhiZGMETUp   && passBtagVetoUp   && passPTLL && passDPhiJetMETUp   &&	  	     passMTUp;
+      bool passWZSelDown  = theMinSelType == 1 && pass3lMass && passZMass && passNjetsDown && passMETDown    && passPTFracGDown && passDPhiZGMETDown && passBtagVetoDown && passPTLL && passDPhiJetMETDown &&	    	     passMTDown;
+      bool passZZSel      = theMinSelType == 3 && pass3lMass && passZMass && passNjets     && passMETMin     && passPTFracG	&& passDPhiZGMET     && passBtagVeto	 && passPTLL && passDPhiJetMET     && lepType!=3  && passMT;
+      bool passZZSelUp    = theMinSelType == 3 && pass3lMass && passZMass && passNjetsUp   && passMETMinUp   && passPTFracGUp	&& passDPhiZGMETUp   && passBtagVetoUp   && passPTLL && passDPhiJetMETUp   && lepType!=3  && passMTUp;
+      bool passZZSelDown  = theMinSelType == 3 && pass3lMass && passZMass && passNjetsDown && passMETMinDown && passPTFracGDown && passDPhiZGMETDown && passBtagVetoDown && passPTLL && passDPhiJetMETDown && lepType!=3  && passMTDown; 
+
+      bool passZHGSelMUp     = theMinSelTypeMUp   == 0 && pass3lMassMUp   && passZMassMUp   && passNjets && passMET && passPTFracGMUp	&& passDPhiZGMET && passBtagVeto  && passPTLLMUp   && passDPhiJetMET && passTauVeto && passMTMUp  ;
+      bool passZHGSelMDown   = theMinSelTypeMDown == 0 && pass3lMassMDown && passZMassMDown && passNjets && passMET && passPTFracGMDown && passDPhiZGMET && passBtagVeto  && passPTLLMDown && passDPhiJetMET && passTauVeto && passMTMDown;
+      bool passZHGSelEUp     = theMinSelTypeEUp   == 0 && pass3lMassEUp   && passZMassEUp   && passNjets && passMET && passPTFracGEUp	&& passDPhiZGMET && passBtagVeto  && passPTLLEUp   && passDPhiJetMET && passTauVeto && passMTEUp  ;
+      bool passZHGSelEDown   = theMinSelTypeEDown == 0 && pass3lMassEDown && passZMassEDown && passNjets && passMET && passPTFracGEDown && passDPhiZGMET && passBtagVeto  && passPTLLEDown && passDPhiJetMET && passTauVeto && passMTEDown;
+      bool passZHGSelGUp     = theMinSelTypeGUp   == 0 && pass3lMassGUp   && passZMassGUp   && passNjets && passMET && passPTFracGGUp	&& passDPhiZGMET && passBtagVeto  && passPTLLGUp   && passDPhiJetMET && passTauVeto && passMTGUp  ;
+      bool passZHGSelGDown   = theMinSelTypeGDown == 0 && pass3lMassGDown && passZMassGDown && passNjets && passMET && passPTFracGGDown && passDPhiZGMET && passBtagVeto  && passPTLLGDown && passDPhiJetMET && passTauVeto && passMTGDown;
+
+      if(!(passWZSel     &&
+           (vZ1l1.Pt() > 25 || vZ1l2.Pt() > 25) && abs(looseLepPdgId[whichWln]) == 11 &&
+	    vZ1l1.Pt() > 20 && vZ1l2.Pt() > 20  && vWln.Pt() > 25)) {passWZSel     = false; passAllCuts[WZSEL] = false;}
+
+      if(!(passWZSelUp   &&
+           (vZ1l1.Pt() > 25 || vZ1l2.Pt() > 25) && abs(looseLepPdgId[whichWln]) == 11 &&
+	    vZ1l1.Pt() > 20 && vZ1l2.Pt() > 20  && vWln.Pt() > 25)) passWZSelUp   = false;
+
+      if(!(passWZSelDown &&
+           (vZ1l1.Pt() > 25 || vZ1l2.Pt() > 25) && abs(looseLepPdgId[whichWln]) == 11 &&
+	    vZ1l1.Pt() > 20 && vZ1l2.Pt() > 20  && vWln.Pt() > 25)) passWZSelDown = false;
 
       int dataCardSel = -1; int dataCardSelUp = -1;int dataCardSelDown = -1;
       if     (passZHGSel)     dataCardSel     = 0;
@@ -678,25 +964,81 @@ int year
       if     (passZHGSelDown) dataCardSelDown = 0;
       else if(passWZSelDown)  dataCardSelDown = 1;
       else if(passZZSelDown)  dataCardSelDown = 2;
+      int dataCardSelMUp = -1;
+      if     (passZHGSelMUp)  dataCardSelMUp  = 0;
+      else if(passWZSel)      dataCardSelMUp  = 1;
+      else if(passZZSel)      dataCardSelMUp  = 2;
+      int dataCardSelMDown = -1;
+      if     (passZHGSelMDown)dataCardSelMDown= 0;
+      else if(passWZSel)      dataCardSelMDown= 1;
+      else if(passZZSel)      dataCardSelMDown= 2;
+      int dataCardSelEUp = -1;
+      if     (passZHGSelEUp)  dataCardSelEUp  = 0;
+      else if(passWZSel)      dataCardSelEUp  = 1;
+      else if(passZZSel)      dataCardSelEUp  = 2;
+      int dataCardSelEDown = -1;
+      if     (passZHGSelEDown)dataCardSelEDown= 0;
+      else if(passWZSel)      dataCardSelEDown= 1;
+      else if(passZZSel)      dataCardSelEDown= 2;
+      int dataCardSelGUp = -1;
+      if     (passZHGSelGUp)  dataCardSelGUp  = 0;
+      else if(passWZSel)      dataCardSelGUp  = 1;
+      else if(passZZSel)      dataCardSelGUp  = 2;
+      int dataCardSelGDown = -1;
+      if     (passZHGSelGDown)dataCardSelGDown= 0;
+      else if(passWZSel)      dataCardSelGDown= 1;
+      else if(passZZSel)      dataCardSelGDown= 2;
 
-      bool passSystCuts[nSystTypes] = {dataCardSelUp >= 0, dataCardSelDown >= 0, dataCardSel >= 0, dataCardSel >= 0};
+      bool passSystCuts[nSystTypes] = {dataCardSelUp  >= 0, dataCardSelDown  >= 0, 
+                                       dataCardSelMUp >= 0, dataCardSelMDown >= 0, 
+                                       dataCardSelEUp >= 0, dataCardSelEDown >= 0, 
+                                       dataCardSelGUp >= 0, dataCardSelGDown >= 0 
+                                       };
  
-      double photonSFUnc[2] = {1.0, 1.0};
+      double photonSFUnc[3] = {1.0, 1.0, 1.0};
       double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0; double sf_l1PrefireE = 1.0;
+      double triggerWeights[2] = {1.0, 0.0};
       if(theCategory != kPlotData){
-        double triggerWeights[2] = {1.0, 0.0};
-	trigger_sf(triggerWeights,thePandaFlat.nLooseLep,
-	trgSFMMBB,trgSFMMEB,trgSFMMBE,trgSFMMEE,trgSFEEBB,trgSFEEEB,trgSFEEBE,trgSFEEEE,
-	trgSFMEBB,trgSFMEEB,trgSFMEBE,trgSFMEEE,trgSFEMBB,trgSFEMEB,trgSFEMBE,trgSFEMEE,
-	looseLepPt[0], TMath::Abs(looseLepEta[0]), abs(looseLepPdgId[0]),
-	looseLepPt[1], TMath::Abs(looseLepEta[1]), abs(looseLepPdgId[1]));
+        if(isSingleLeptonAna == false){
+	  trigger_sf(triggerWeights,thePandaFlat.nLooseLep,
+	  trgSFMMBB,trgSFMMEB,trgSFMMBE,trgSFMMEE,trgSFEEBB,trgSFEEEB,trgSFEEBE,trgSFEEEE,
+	  trgSFMEBB,trgSFMEEB,trgSFMEBE,trgSFMEEE,trgSFEMBB,trgSFEMEB,trgSFEMBE,trgSFEMEE,
+	  vLoose[0].Pt(), TMath::Abs(vLoose[0].Eta()), abs(looseLepPdgId[0]),
+	  vLoose[1].Pt(), TMath::Abs(vLoose[1].Eta()), abs(looseLepPdgId[1]));
+        }
+	else  {
+	  double totalInEff = 1.0; double totalInEffE = 1.0;
+	  for(unsigned int nl=0; nl<vLoose.size(); nl++) {
+	    double eff,effE;
+	    if(abs(looseLepPdgId[nl])==13){
+              eff  = histoMuTrgEffSF->GetBinContent(
+	             histoMuTrgEffSF->GetXaxis()->FindFixBin(vLoose[nl].Eta()),
+	             histoMuTrgEffSF->GetYaxis()->FindFixBin(TMath::Min(vLoose[nl].Pt(),119.99)));
+              effE = histoMuTrgEffSF->GetBinError(
+	             histoMuTrgEffSF->GetXaxis()->FindFixBin(vLoose[nl].Eta()),
+	             histoMuTrgEffSF->GetYaxis()->FindFixBin(TMath::Min(vLoose[nl].Pt(),119.99)));
+            }
+	    else {
+              eff  = histoElTrgEffSF->GetBinContent(
+	             histoElTrgEffSF->GetXaxis()->FindFixBin(vLoose[nl].Eta()),
+	             histoElTrgEffSF->GetYaxis()->FindFixBin(TMath::Min(vLoose[nl].Pt(),119.99)));
+              effE = histoElTrgEffSF->GetBinError(
+	             histoElTrgEffSF->GetXaxis()->FindFixBin(vLoose[nl].Eta()),
+	             histoElTrgEffSF->GetYaxis()->FindFixBin(TMath::Min(vLoose[nl].Pt(),119.99)));
+	    }
+	    totalInEff  = totalInEff  * (1.0 - TMath::Min(eff, 1.0));
+	    totalInEffE = totalInEffE * (1.0 - TMath::Min(eff, 1.0) + effE);
+          }
+	  triggerWeights[0] = 1 - TMath::Max(totalInEff,0.0);
+	  triggerWeights[1] = TMath::Abs(totalInEffE - totalInEff);
+        }
 	puWeight     = nPUScaleFactor(fhDPU,    thePandaFlat.pu);
         puWeightUp   = nPUScaleFactor(fhDPUUp,  thePandaFlat.pu);
         puWeightDown = nPUScaleFactor(fhDPUDown,thePandaFlat.pu);
 
         sf_l1PrefireE = 1.0 + TMath::Abs(1.0 - thePandaFlat.sf_l1Prefire) * 0.2;
 
-        if(infileCat_[ifile] == kPlotBSM) {puWeight = 1.0; puWeightUp = 1.0; puWeightDown = 1.0;} // TEMPORAL UNTIL WE GET OFFICIAL PRODUCTION
+	//double npvWeight = nPUScaleFactor(fhDNPV, thePandaFlat.npv);
 
         if(passBtagVeto) totalWeight = thePandaFlat.normalizedWeight * lumiV[whichYear] * puWeight * thePandaFlat.sf_l1Prefire * looseLepSF[0] * looseLepSF[1] * triggerWeights[0] * thePandaFlat.sf_btag0   * theMCPrescale;
         else             totalWeight = thePandaFlat.normalizedWeight * lumiV[whichYear] * puWeight * thePandaFlat.sf_l1Prefire * looseLepSF[0] * looseLepSF[1] * triggerWeights[0] * thePandaFlat.sf_btagGT0 * theMCPrescale;
@@ -704,18 +1046,23 @@ int year
         if     (infileCat_[ifile] == kPlotWZ)                                                totalWeight = totalWeight * thePandaFlat.sf_wz;
 	else if(infileCat_[ifile] == kPlotZZ && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;
 
-        if(infileCat_[ifile] == kPlotVG) totalWeight = totalWeight * 0.80;
+        if     (infileCat_[ifile] == kPlotVG && year == 2016) totalWeight = totalWeight * 1.55;
+        else if(infileCat_[ifile] == kPlotVG && year == 2017) totalWeight = totalWeight * 1.00;
+        else if(infileCat_[ifile] == kPlotVG && year == 2018) totalWeight = totalWeight * 1.45;
 
-	if(passPhoSel == true) {
+	if(passPhoSel == true || passPhoSelUp == true || passPhoSelDown == true) {
           double photonSF = 1.0;
           if     (thePandaFlat.looseGenPho1PdgId == 1) {
 	    int nxbin = fhDElePhoSF->GetXaxis()->FindBin(TMath::Abs(vPhoton.Eta()));
-	    int nybin = fhDElePhoSF->GetXaxis()->FindBin(TMath::Min((double)vPhoton.Pt(), 124.999));
+	    int nybin = fhDElePhoSF->GetYaxis()->FindBin(TMath::Min((double)vPhoton.Pt(), 124.999));
             photonSF = fhDElePhoSF->GetBinContent(nxbin, nybin);
-	    photonSFUnc[1] = (photonSF+fhDElePhoSF->GetBinError(nxbin, nybin))/photonSF;
+	    photonSFUnc[2] = (photonSF+fhDElePhoSF->GetBinError(nxbin, nybin))/photonSF;
 	  }
           else if(thePandaFlat.looseGenPho1PdgId == 3) {
             photonSF = effhDPhotonScaleFactor(vPhoton.Pt(), vPhoton.Eta(), "medium", fhDPhotonSF, fhDElectronVetoSF); photonSFUnc[0] = 1.02;
+	  }
+          else {
+            photonSF = 1.0; photonSFUnc[1] = 1.10;
 	  }
 	  totalWeight = totalWeight * photonSF;
 	}
@@ -724,10 +1071,14 @@ int year
         for(unsigned int nl=0; nl<idLep.size(); nl++){
           if(idLep[nl] == 0) continue;
           bool applyTight = false;
-          effSF = effSF * lepScaleFactor(looseLepPt[nl],looseLepEta[nl],TMath::Abs(looseLepPdgId[nl]),applyTight,histoLepEffSelMediumEtaPt_m,histoLepEffSelMediumEtaPt_e,histoLepEffSelTightEtaPt_m,histoLepEffSelTightEtaPt_e);
-          if(effSF == 0){printf("effSF == 0!: %f %f %d \n",looseLepPt[nl],looseLepEta[nl],TMath::Abs(looseLepPdgId[nl])); return;}
+          effSF = effSF * lepScaleFactor(vLoose[nl].Pt(),vLoose[nl].Eta(),TMath::Abs(looseLepPdgId[nl]),applyTight,histoLepEffSelMediumEtaPt_m,histoLepEffSelMediumEtaPt_e,histoLepEffSelTightEtaPt_m,histoLepEffSelTightEtaPt_e);
+          if(effSF == 0){printf("effSF == 0!: %f %f %d \n",vLoose[nl].Pt(),vLoose[nl].Eta(),TMath::Abs(looseLepPdgId[nl])); return;}
         }
         totalWeight = totalWeight * effSF;
+      }
+      else if(passZHGSel && mTGMET > 100){
+        printf("DATA: %d %d %llu %f %f %f %f %f\n",thePandaFlat.runNumber,thePandaFlat.lumiNumber,thePandaFlat.eventNumber,
+	       mTGMET,vLoose[0].Pt(),vLoose[1].Pt(),theG.Pt(),theG.Eta());
       }
 
       if(usePureMC == false && countLeptonTight != idLep.size()){
@@ -736,7 +1087,7 @@ int year
           if(idLep[nl] == 1) continue;
           bool applyTight = false;
           if(whichWln == (int)nl) applyTight = true;
-          fakeSF = fakeSF * fakeRateFactor(TMath::Min((double)looseLepPt[nl],44.999),TMath::Abs(looseLepEta[nl]),TMath::Abs(looseLepPdgId[nl]),applyTight,histoFakeEffSelMediumEtaPt_m,histoFakeEffSelMediumEtaPt_e,histoFakeEffSelTightEtaPt_m,histoFakeEffSelTightEtaPt_e);
+          fakeSF = fakeSF * fakeRateFactor(TMath::Min((double)vLoose[nl].Pt(),44.999),TMath::Abs(vLoose[nl].Eta()),TMath::Abs(looseLepPdgId[nl]),applyTight,histoFakeEffSelMediumEtaPt_m,histoFakeEffSelMediumEtaPt_e,histoFakeEffSelTightEtaPt_m,histoFakeEffSelTightEtaPt_e);
           theCategory = kPlotNonPrompt;
         }
         if     (infileCat_[ifile] != kPlotData && countLeptonTight == idLep.size()-4) fakeSF = +1.0 * fakeSF; // fourth fake, MC
@@ -751,51 +1102,134 @@ int year
         totalWeight = totalWeight * fakeSF;
       }
 
-      if(passAllCuts[ZHGSEL])histo[lepType+  0][theCategory]->Fill(TMath::Min(mTGMET,199.999),totalWeight);
-      if(passAllCuts[BTAGSEL])histo[lepType+ 3][theCategory]->Fill(TMath::Min(mTGMET,199.999),totalWeight);
-      if(passAllCuts[ZLGSEL])histo[lepType+  6][theCategory]->Fill(TMath::Min(mTGMET,199.999),totalWeight);
-      if(passAllCuts[WZSEL])histo[lepType+   9][theCategory]->Fill(TMath::Min(mTGMET,199.999),totalWeight);
-      if(passAllCuts[WZGSEL])histo[lepType+ 13][theCategory]->Fill(TMath::Min(mTGMET,199.999),totalWeight);
-      if(passAllCuts[ZZSEL])histo[lepType+  17][theCategory]->Fill(TMath::Min(mTGMET,199.999),totalWeight);
-      if(passAllCuts[WWSEL])histo[lepType+  21][theCategory]->Fill(TMath::Min(mTGMET,199.999),totalWeight);
+      double elePhoEffda = 0.0;
+      if(passAllCuts[WZSEL] && abs(looseLepPdgId[whichWln]) == 11){
+        if((vZ1l1.Pt() > 25 || vZ1l2.Pt() > 25) &&
+	    vZ1l1.Pt() > 20 && vZ1l2.Pt() > 20  && vWln.Pt() > 25){ // Requirements to emulate signal selection
+          int nxbin = fhDElePhoEffda->GetXaxis()->FindBin(TMath::Abs(theG.Eta()));
+          int nybin = fhDElePhoEffda->GetYaxis()->FindBin(TMath::Min((double)theG.Pt(), 124.999));
+          elePhoEffda = fhDElePhoEffda->GetBinContent(nxbin, nybin);
+        }
+      }
+
+      if(passAllCuts[ZHGSEL]) {
+        srYields [thePandaFlat.looseGenPho1PdgId] = srYields [thePandaFlat.looseGenPho1PdgId] + totalWeight;
+        srYieldsE[thePandaFlat.looseGenPho1PdgId] = srYieldsE[thePandaFlat.looseGenPho1PdgId] + totalWeight * totalWeight;
+      }
+
+      if(infileCat_[ifile] == kPlotVG && lepType != 2){
+        if(passNMinusA) normForABCD[0] = normForABCD[0] + totalWeight;
+        if(passNMinusB) normForABCD[1] = normForABCD[1] + totalWeight;
+        if(passNMinusC) normForABCD[2] = normForABCD[2] + totalWeight;
+        if(passNMinusD) normForABCD[3] = normForABCD[3] + totalWeight;
+      }
+
+      if(passAllCuts[ZHGSEL])histo[lepType+  0][theCategory]->Fill(TMath::Min(mTGMET,349.999),totalWeight);
+      if(passAllCuts[BTAGSEL])histo[lepType+ 3][theCategory]->Fill(TMath::Min(mTGMET,349.999),totalWeight);
+      if(passAllCuts[ZLGSEL])histo[lepType+  6][theCategory]->Fill(TMath::Min(mTGMET,349.999),totalWeight);
+      if(passAllCuts[WZSEL])histo[lepType+   9][theCategory]->Fill(TMath::Min(mTGMET,349.999),totalWeight);
+      if(passAllCuts[WZGSEL])histo[lepType+ 13][theCategory]->Fill(TMath::Min(mTGMET,349.999),totalWeight);
+      if(passAllCuts[ZZSEL])histo[lepType+  17][theCategory]->Fill(TMath::Min(mTGMET,349.999),totalWeight);
+      if(passAllCuts[WWSEL])histo[lepType+  21][theCategory]->Fill(TMath::Min(mTGMET,349.999),totalWeight);
       if(passNMinusOne[ 0] && lepType != 2)  histo[24][theCategory]->Fill(TMath::Min(TMath::Abs(mllZ-91.1876),99.999),totalWeight);
       if(passNMinusOne[ 1] && lepType != 2)  histo[25][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,4.4999),totalWeight);
-      if(passNMinusOne[ 2] && lepType != 2)  histo[26][theCategory]->Fill(TMath::Min(vMet.Pt(),199.999),totalWeight);
+      if(passNMinusOne[ 2] && lepType != 2)  histo[26][theCategory]->Fill(TMath::Min(vMet.Pt(),229.999),totalWeight);
       if(passNMinusOne[ 3] && lepType != 2)  histo[27][theCategory]->Fill(TMath::Min(ptFracG,0.999),totalWeight);
       if(passNMinusOne[ 4] && lepType != 2)  histo[28][theCategory]->Fill(dPhiDiLepGMET,totalWeight);
       if(passNMinusOne[ 5] && lepType != 2)  histo[29][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,3.499),totalWeight);
       if(passNMinusOne[ 6] && lepType != 2)  histo[30][theCategory]->Fill(TMath::Min(dilep.Pt(),199.999),totalWeight);
-      if(passNMinusOne[ 7] && lepType != 2)  histo[31][theCategory]->Fill(dPhiJetMET,totalWeight);
+      if(passNMinusOne[ 7] && lepType != 2)  histo[31][theCategory]->Fill(TMath::Min(dPhiJetMET,2.999),totalWeight);
       if(passNMinusOne[ 8] && lepType != 2)  histo[32][theCategory]->Fill(TMath::Min((double)thePandaFlat.nTau,3.499),totalWeight);
       if(passNMinusOne[ 9] && lepType != 2)  histo[33][theCategory]->Fill(TMath::Min(mTGMET,399.999),totalWeight);
-      if(passAllCuts[ZHGSEL] && lepType != 2) histo[34][theCategory]->Fill(TMath::Abs(theG.Eta()),totalWeight);
-      if(passAllCuts[ZHGSEL] && lepType != 2) histo[35][theCategory]->Fill((double)((thePandaFlat.loosePho1SelBit & pTrkVeto) == pTrkVeto),totalWeight);
-      for(int i=0; i<10; i++) {passCutEvolAll = passCutEvolAll && passCutEvol[i]; if(passCutEvolAll) histo[lepType+36][theCategory]->Fill((double)i,totalWeight);}
-      if(passAllCuts[ZHGSEL])histo[lepType+39][theCategory]->Fill(thePandaFlat.jotEta[0],totalWeight);
-      if(passNMinusThree) {
-        histo[lepType+42][theCategory]->Fill(TMath::Min(vMet.Pt(),199.999),totalWeight);
-        histo[lepType+45][theCategory]->Fill(TMath::Min(ptFracG,0.999),totalWeight);
-        histo[lepType+48][theCategory]->Fill(dPhiDiLepGMET,totalWeight);
+      if(passNMinusOne[10] && lepType != 2)  histo[34][theCategory]->Fill(TMath::Min(TMath::Max(dilepG.M(),70.001),369.999),totalWeight);
+      if(passAllCuts[ZHGSEL] && lepType != 2)histo[35][theCategory]->Fill(TMath::Abs(theG.Eta()),totalWeight);
+      if(passAllCuts[ZHGSEL] && lepType != 2)histo[36][theCategory]->Fill((double)((thePandaFlat.loosePho1SelBit & pTrkVeto) == pTrkVeto),totalWeight);
+      for(int i=0; i<11; i++) {passCutEvolAll = passCutEvolAll && passCutEvol[i]; if(passCutEvolAll) histo[lepType+37][theCategory]->Fill((double)i,totalWeight);}
+      if(passAllCuts[ZHGSEL] && lepType != 2)histo[40][theCategory]->Fill(thePandaFlat.jotEta[0],totalWeight);
+      if(passNMinusFour && lepType != 2) {
+        histo[41][theCategory]->Fill(TMath::Min(vMet.Pt(),229.999),totalWeight);
+        histo[42][theCategory]->Fill(TMath::Min(ptFracG,0.999),totalWeight);
+        histo[43][theCategory]->Fill(TMath::Min(ptFrac,0.999),totalWeight);
+        histo[44][theCategory]->Fill(dPhiDiLepGMET,totalWeight);
+        histo[45][theCategory]->Fill(dPhiTriLepMET,totalWeight);
+	histo[46][theCategory]->Fill(TMath::Min(mTGMET,399.999),totalWeight);
+      }
+      if(passNMinusThree && lepType != 2) {
+        histo[47][theCategory]->Fill(dPhiDiLepGMET,totalWeight);
+	histo[48][theCategory]->Fill(TMath::Min(dPhiJetMET,2.999),totalWeight);
+	histo[49][theCategory]->Fill(TMath::Min(mTGMET,399.999),totalWeight);
+      }
+      if(passAllCuts[ZHGSEL] && lepType != 2) histo[50][theCategory]->Fill(TMath::Min(TMath::Max(vLoose[0].Pt(),vLoose[1].Pt()),424.999),totalWeight);
+      if(passAllCuts[ZHGSEL] && lepType != 2) histo[51][theCategory]->Fill(TMath::Min(TMath::Min(vLoose[0].Pt(),vLoose[1].Pt()),219.999),totalWeight);
+      if(passAllCuts[WZSEL]) histo[52][theCategory]->Fill(TMath::Min(mTGMET,349.999),totalWeight*elePhoEffda);
+      if(passAllCuts[ZHGFAKESEL]) histo[53][theCategory]->Fill(TMath::Min(mTGMET,349.999),totalWeight);
+      if(passAllCuts[ZHGSEL] && lepType != 2){
+        if(TMath::Abs(theG.Eta()) <= 1.0) histo[54][theCategory]->Fill(TMath::Min(mTGMET,349.999),totalWeight);
+        else                              histo[55][theCategory]->Fill(TMath::Min(mTGMET,349.999),totalWeight);
       }
 
-      if(1){
+      if(1){ // Begin datacard making
         double MVAVar     = mTGMET;
         double MVAVarUp   = mTGMETUp;
         double MVAVarDown = mTGMETDown;
-        if     (lepType == 2 && theMinSelType == 0) {MVAVar = -0.5; MVAVarUp = -0.5; MVAVarDown = -0.5;}
+        double MVAVarMUp  = mTGMETMUp;  
+        double MVAVarMDown= mTGMETMDown;
+        double MVAVarEUp  = mTGMETEUp;  
+        double MVAVarEDown= mTGMETEDown;
+        double MVAVarGUp  = mTGMETGUp;
+        double MVAVarGDown= mTGMETGDown;
+        if     (lepType == 2 && theMinSelType == 0) {MVAVar = -0.5; MVAVarUp = -0.5; MVAVarDown = -0.5;
+	}
         else {
           if(TMath::Abs(theG.Eta()) > 1.0){
-            MVAVar     = MVAVar     + 200.0;
-            MVAVarUp   = MVAVarUp   + 200.0;
-            MVAVarDown = MVAVarDown + 200.0;
+            MVAVar     = MVAVar     + 400.0;
+            MVAVarUp   = MVAVarUp   + 400.0;
+            MVAVarDown = MVAVarDown + 400.0;
 	  }
-          if(dataCardSel     == 1) {MVAVar     = MVAVar	    + 400.0;}
-          if(dataCardSelUp   == 1) {MVAVarUp   = MVAVarUp   + 400.0;}
-          if(dataCardSelDown == 1) {MVAVarDown = MVAVarDown + 400.0;}
-          if(dataCardSel     == 2) {MVAVar     = MVAVar	    + 800.0;}
-          if(dataCardSelUp   == 2) {MVAVarUp   = MVAVarUp   + 800.0;}
-          if(dataCardSelDown == 2) {MVAVarDown = MVAVarDown + 800.0;}
+          if(dataCardSel     == 1) {MVAVar     = MVAVar	    +  800.0;}
+          if(dataCardSelUp   == 1) {MVAVarUp   = MVAVarUp   +  800.0;}
+          if(dataCardSelDown == 1) {MVAVarDown = MVAVarDown +  800.0;}
+          if(dataCardSel     == 2) {MVAVar     = MVAVar	    + 1600.0;}
+          if(dataCardSelUp   == 2) {MVAVarUp   = MVAVarUp   + 1600.0;}
+          if(dataCardSelDown == 2) {MVAVarDown = MVAVarDown + 1600.0;}
         }
+
+        if      (lepType == 2 && theMinSelTypeMUp == 0)                   MVAVarMUp = -0.5;
+        else if(theMinSelTypeMUp == 0 && TMath::Abs(theGMUp.Eta()) > 1.0) MVAVarMUp = MVAVarMUp + 400.0;
+
+        if      (lepType == 2 && theMinSelTypeMDown == 0)                     MVAVarMDown = -0.5;
+        else if(theMinSelTypeMDown == 0 && TMath::Abs(theGMDown.Eta()) > 1.0) MVAVarMDown = MVAVarMDown + 400.0;
+
+        if      (lepType == 2 && theMinSelTypeEUp == 0)                   MVAVarEUp = -0.5;
+        else if(theMinSelTypeEUp == 0 && TMath::Abs(theGEUp.Eta()) > 1.0) MVAVarEUp = MVAVarEUp + 400.0;
+
+        if      (lepType == 2 && theMinSelTypeEDown == 0)                     MVAVarEDown = -0.5;
+        else if(theMinSelTypeEDown == 0 && TMath::Abs(theGEDown.Eta()) > 1.0) MVAVarEDown = MVAVarEDown + 400.0;
+
+        if      (lepType == 2 && theMinSelTypeGUp == 0)                   MVAVarGUp = -0.5;
+        else if(theMinSelTypeGUp == 0 && TMath::Abs(theGGUp.Eta()) > 1.0) MVAVarGUp = MVAVarGUp + 400.0;
+
+        if      (lepType == 2 && theMinSelTypeGDown == 0)                     MVAVarGDown = -0.5;
+        else if(theMinSelTypeGDown == 0 && TMath::Abs(theGGDown.Eta()) > 1.0) MVAVarGDown = MVAVarGDown + 400.0;
+
+        if     (dataCardSelMUp     == 1) MVAVarMUp   = MVAVar;
+        else if(dataCardSelMUp     == 2) MVAVarMUp   = MVAVar;
+        if     (dataCardSelMDown   == 1) MVAVarMDown = MVAVar;
+        else if(dataCardSelMDown   == 2) MVAVarMDown = MVAVar;
+        if     (dataCardSelEUp     == 1) MVAVarEUp   = MVAVar;
+        else if(dataCardSelEUp     == 2) MVAVarEUp   = MVAVar;
+        if     (dataCardSelEDown   == 1) MVAVarEDown = MVAVar;
+        else if(dataCardSelEDown   == 2) MVAVarEDown = MVAVar;
+        if     (dataCardSelGUp     == 1) MVAVarGUp   = MVAVar;
+        else if(dataCardSelGUp     == 2) MVAVarGUp   = MVAVar;
+        if     (dataCardSelGDown   == 1) MVAVarGDown = MVAVar;
+        else if(dataCardSelGDown   == 2) MVAVarGDown = MVAVar;
+
+        double rndWeights[4] = {1,1,1,1};
+	if(dataCardSelMUp   >= 1) rndWeights[0] = 1+gRandom->Uniform()*0.01;
+	if(dataCardSelMDown >= 1) rndWeights[1] = 1-gRandom->Uniform()*0.01;
+	if(dataCardSelEUp   >= 1) rndWeights[2] = 1+gRandom->Uniform()*0.01;
+	if(dataCardSelEDown >= 1) rndWeights[3] = 1-gRandom->Uniform()*0.01;
 
         // Avoid QCD scale weights that are anomalous high
         double maxQCDscale = (TMath::Abs(thePandaFlat.scale[0])+TMath::Abs(thePandaFlat.scale[1])+TMath::Abs(thePandaFlat.scale[2])+
@@ -812,6 +1246,7 @@ int year
         }
         else if(theCategory != kPlotData){
 	  if(dataCardSel >= 0) {
+	    double pdf_error = pdfUncs[0]; if(theCategory == kPlotBSM) pdf_error = pdfUncs[1];
 	    histo_Baseline[theCategory]->Fill(MVAVar,totalWeight);
 	    histo_QCDScaleBounding[theCategory][0]->Fill(MVAVar,totalWeight*TMath::Abs(thePandaFlat.scale[0])/maxQCDscale);
 	    histo_QCDScaleBounding[theCategory][1]->Fill(MVAVar,totalWeight*TMath::Abs(thePandaFlat.scale[1])/maxQCDscale);
@@ -819,8 +1254,8 @@ int year
 	    histo_QCDScaleBounding[theCategory][3]->Fill(MVAVar,totalWeight*TMath::Abs(thePandaFlat.scale[3])/maxQCDscale);
 	    histo_QCDScaleBounding[theCategory][4]->Fill(MVAVar,totalWeight*TMath::Abs(thePandaFlat.scale[4])/maxQCDscale);
 	    histo_QCDScaleBounding[theCategory][5]->Fill(MVAVar,totalWeight*TMath::Abs(thePandaFlat.scale[5])/maxQCDscale);
-	    histo_PDFBoundingUp[theCategory]  ->Fill(MVAVar,totalWeight*TMath::Max((double)thePandaFlat.pdfUp,1.01));
-	    histo_PDFBoundingDown[theCategory]->Fill(MVAVar,totalWeight*TMath::Min((double)thePandaFlat.pdfDown,0.99));
+	    histo_PDFBoundingUp[theCategory]  ->Fill(MVAVar,totalWeight*TMath::Max((double)thePandaFlat.pdfUp,pdf_error));
+	    histo_PDFBoundingDown[theCategory]->Fill(MVAVar,totalWeight*TMath::Min((double)thePandaFlat.pdfDown,1.0/pdf_error));
             histo_LepEffMBoundingUp  [theCategory]->Fill(MVAVar,totalWeight*muSFUnc); histo_LepEffEBoundingUp  [theCategory]->Fill(MVAVar,totalWeight*elSFUnc);
             histo_LepEffMBoundingDown[theCategory]->Fill(MVAVar,totalWeight/muSFUnc); histo_LepEffEBoundingDown[theCategory]->Fill(MVAVar,totalWeight/elSFUnc);
             histo_PUBoundingUp  [theCategory]->Fill(MVAVar,totalWeight*puWeightUp  /puWeight);
@@ -833,6 +1268,8 @@ int year
                 histo_BTAGLBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MDown/thePandaFlat.sf_btag0);
                 histo_PreFireBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight*sf_l1PrefireE);
                 histo_PreFireBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight/sf_l1PrefireE);
+                histo_TriggerBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight*(1+triggerWeights[1]));
+                histo_TriggerBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight/(1+triggerWeights[1]));
               } else {
                 histo_BTAGBBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight);
                 histo_BTAGBBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight);
@@ -840,12 +1277,16 @@ int year
                 histo_BTAGLBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight);
                 histo_PreFireBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight);
                 histo_PreFireBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight);		
+                histo_TriggerBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight);
+                histo_TriggerBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight);
 	      }
 	    }
 	    histo_PhoEffBoundingUp  [theCategory]->Fill(MVAVar,totalWeight*photonSFUnc[0]);
 	    histo_PhoEffBoundingDown[theCategory]->Fill(MVAVar,totalWeight/photonSFUnc[0]);
-	    histo_ElToPhRateBoundingUp  [theCategory]->Fill(MVAVar,totalWeight*photonSFUnc[1]);
-	    histo_ElToPhRateBoundingDown[theCategory]->Fill(MVAVar,totalWeight/photonSFUnc[1]);
+	    histo_PhoFakeBoundingUp  [theCategory]->Fill(MVAVar,totalWeight*photonSFUnc[1]);
+	    histo_PhoFakeBoundingDown[theCategory]->Fill(MVAVar,totalWeight/photonSFUnc[1]);
+	    histo_ElToPhRateBoundingUp  [theCategory]->Fill(MVAVar,totalWeight*photonSFUnc[2]);
+	    histo_ElToPhRateBoundingDown[theCategory]->Fill(MVAVar,totalWeight/photonSFUnc[2]);
 	    histo_EWKCorrWZUp  [theCategory]->Fill(MVAVar,totalWeight*sf_ewkcorrwz_unc);
 	    histo_EWKCorrWZDown[theCategory]->Fill(MVAVar,totalWeight/sf_ewkcorrwz_unc);
 	    histo_EWKqqZZCorrUp  [theCategory]->Fill(MVAVar,totalWeight*sf_ewkcorrzz_unc);
@@ -862,16 +1303,25 @@ int year
               if(dataCardSel >= 0) histo_JESBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight);
 	    }
 	  }
+          if(passSystCuts[SCALEMUP])   histo_ScaleMBoundingUp  [theCategory]->Fill(MVAVarMUp  ,totalWeight*rndWeights[0]);
+          if(passSystCuts[SCALEMDOWN]) histo_ScaleMBoundingDown[theCategory]->Fill(MVAVarMDown,totalWeight*rndWeights[1]);
+          if(passSystCuts[SCALEEUP])   histo_ScaleEBoundingUp  [theCategory]->Fill(MVAVarEUp  ,totalWeight*rndWeights[2]);
+          if(passSystCuts[SCALEEDOWN]) histo_ScaleEBoundingDown[theCategory]->Fill(MVAVarEDown,totalWeight*rndWeights[3]);
+          if(passSystCuts[SCALEGUP])   histo_ScaleGBoundingUp  [theCategory]->Fill(MVAVarGUp  ,totalWeight);
+          if(passSystCuts[SCALEGDOWN]) histo_ScaleGBoundingDown[theCategory]->Fill(MVAVarGDown,totalWeight);
         }
-      }
-
+      } // End datacard making
     } // end events loop
+    printf("srYields: %.2f +/- %.2f / %.2f +/- %.2f / %.2f +/- %.2f / %.2f +/- %.2f\n",
+            srYields[0],sqrt(srYieldsE[0]),srYields[1],sqrt(srYieldsE[1]),
+            srYields[2],sqrt(srYieldsE[2]),srYields[3],sqrt(srYieldsE[3]));
     the_input_file->Close();
   } // end chain loop
 
+  for(int ic=1; ic<nPlotCategories; ic++) if(histo_Baseline[ic]->GetSumOfWeights() < 0) histo_Baseline[ic]->Scale(0.0);
   for(int ic=0; ic<nPlotCategories; ic++) histo[allPlots-1][ic]->Add(histo_Baseline[ic]);
 
-  double qcdScaleTotal[2] = {0.035, 0.231};
+  double qcdScaleTotal[2] = {0.0345, 0.2200}; // use sigma(ZH) (0.0345) instead of sigma(qq->ZZ) (0.0055) and sigma(gg->ZH) (0.2200)
   double pdfTotal[2] = {0.016, 0.051};
   double syst_WZl[2] = {1.010, 1.012};
 
@@ -908,6 +1358,12 @@ int year
       histo_LepEffMBoundingDown   [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffMBoundingDown	[ic]->GetBinContent(nb),1e-7f));
       histo_LepEffEBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffEBoundingUp	[ic]->GetBinContent(nb),1e-7f));
       histo_LepEffEBoundingDown   [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffEBoundingDown	[ic]->GetBinContent(nb),1e-7f));
+      histo_ScaleMBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_ScaleMBoundingUp      [ic]->GetBinContent(nb),1e-7f));
+      histo_ScaleMBoundingDown    [ic]->SetBinContent(nb, TMath::Max((float)histo_ScaleMBoundingDown    [ic]->GetBinContent(nb),1e-7f));
+      histo_ScaleEBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_ScaleEBoundingUp      [ic]->GetBinContent(nb),1e-7f));
+      histo_ScaleEBoundingDown    [ic]->SetBinContent(nb, TMath::Max((float)histo_ScaleEBoundingDown    [ic]->GetBinContent(nb),1e-7f));
+      histo_ScaleGBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_ScaleGBoundingUp      [ic]->GetBinContent(nb),1e-7f));
+      histo_ScaleGBoundingDown    [ic]->SetBinContent(nb, TMath::Max((float)histo_ScaleGBoundingDown    [ic]->GetBinContent(nb),1e-7f));
       histo_PUBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PUBoundingUp  	[ic]->GetBinContent(nb),1e-7f));
       histo_PUBoundingDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PUBoundingDown	[ic]->GetBinContent(nb),1e-7f));
       for(int ny=0; ny<nYears; ny++){
@@ -919,9 +1375,13 @@ int year
       histo_JESBoundingDown    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingDown    [ny][ic]->GetBinContent(nb),1e-7f));
       histo_PreFireBoundingUp  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingUp  [ny][ic]->GetBinContent(nb),1e-7f));
       histo_PreFireBoundingDown[ny][ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingDown[ny][ic]->GetBinContent(nb),1e-7f));
+      histo_TriggerBoundingUp  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_TriggerBoundingUp  [ny][ic]->GetBinContent(nb),1e-7f));
+      histo_TriggerBoundingDown[ny][ic]->SetBinContent(nb, TMath::Max((float)histo_TriggerBoundingDown[ny][ic]->GetBinContent(nb),1e-7f));
       }
       histo_PhoEffBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PhoEffBoundingUp	[ic]->GetBinContent(nb),1e-7f));
       histo_PhoEffBoundingDown    [ic]->SetBinContent(nb, TMath::Max((float)histo_PhoEffBoundingDown	[ic]->GetBinContent(nb),1e-7f));
+      histo_PhoFakeBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PhoFakeBoundingUp	[ic]->GetBinContent(nb),1e-7f));
+      histo_PhoFakeBoundingDown   [ic]->SetBinContent(nb, TMath::Max((float)histo_PhoFakeBoundingDown	[ic]->GetBinContent(nb),1e-7f));
       histo_ElToPhRateBoundingUp  [ic]->SetBinContent(nb, TMath::Max((float)histo_ElToPhRateBoundingUp  [ic]->GetBinContent(nb),1e-7f));
       histo_ElToPhRateBoundingDown[ic]->SetBinContent(nb, TMath::Max((float)histo_ElToPhRateBoundingDown[ic]->GetBinContent(nb),1e-7f));
       histo_EWKCorrWZUp 	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKCorrWZUp		[ic]->GetBinContent(nb),1e-7f));
@@ -933,7 +1393,7 @@ int year
     }
     histo_PUBoundingUp	[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_PUBoundingUp  [ic]->GetSumOfWeights());
     histo_PUBoundingDown[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_PUBoundingDown[ic]->GetSumOfWeights());
-    if(ic == kPlotWZ || ic == kPlotZZ || ic == kPlotBSM) {
+    if(ic == kPlotBSM || ic == kPlotZZ) {
       histo_QCDScaleUp  [ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_QCDScaleUp  [ic]->GetSumOfWeights());
       histo_QCDScaleDown[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_QCDScaleDown[ic]->GetSumOfWeights());
     }
@@ -945,6 +1405,12 @@ int year
       if(histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) printf("%6.2f ",histo_Baseline[ic]->GetBinContent(i)); printf("\n");
+    }
+    printf("uncertainties Statistical\n");
+    for(unsigned ic=0; ic<nPlotCategories; ic++) {
+      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+         printf("%10s: ",plotBaseNames[ic].Data());
+        for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_Baseline[ic]->GetBinError(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
     printf("uncertainties QCDSCALEUp\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
@@ -996,6 +1462,45 @@ int year
       if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_LepEffEBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    }
+
+    printf("uncertainties ScaleMUp\n");
+    for(unsigned ic=0; ic<nPlotCategories; ic++) {
+      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+         printf("%10s: ",plotBaseNames[ic].Data());
+        for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_ScaleMBoundingUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    }
+    printf("uncertainties ScaleMDown\n");
+    for(unsigned ic=0; ic<nPlotCategories; ic++) {
+      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+         printf("%10s: ",plotBaseNames[ic].Data());
+        for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_ScaleMBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    }
+
+    printf("uncertainties ScaleEUp\n");
+    for(unsigned ic=0; ic<nPlotCategories; ic++) {
+      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+         printf("%10s: ",plotBaseNames[ic].Data());
+        for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_ScaleEBoundingUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    }
+    printf("uncertainties ScaleEDown\n");
+    for(unsigned ic=0; ic<nPlotCategories; ic++) {
+      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+         printf("%10s: ",plotBaseNames[ic].Data());
+        for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_ScaleEBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    }
+
+    printf("uncertainties ScaleGUp\n");
+    for(unsigned ic=0; ic<nPlotCategories; ic++) {
+      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+         printf("%10s: ",plotBaseNames[ic].Data());
+        for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_ScaleGBoundingUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    }
+    printf("uncertainties ScaleGDown\n");
+    for(unsigned ic=0; ic<nPlotCategories; ic++) {
+      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+         printf("%10s: ",plotBaseNames[ic].Data());
+        for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_ScaleGBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
 
     printf("uncertainties PUUp\n");
@@ -1064,6 +1569,19 @@ int year
            printf("%10s: ",plotBaseNames[ic].Data());
           for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_PreFireBoundingDown[ny][ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
       }
+
+      printf("uncertainties TriggerUp\n");
+      for(unsigned ic=0; ic<nPlotCategories; ic++) {
+	if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+           printf("%10s: ",plotBaseNames[ic].Data());
+          for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_TriggerBoundingUp[ny][ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+      }
+      printf("uncertainties TriggerDown\n");
+      for(unsigned ic=0; ic<nPlotCategories; ic++) {
+	if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+           printf("%10s: ",plotBaseNames[ic].Data());
+          for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_TriggerBoundingDown[ny][ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+      }
       printf("---------\n");
     }
 
@@ -1078,6 +1596,19 @@ int year
       if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_PhoEffBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    }
+
+    printf("uncertainties PHOFakeUp\n");
+    for(unsigned ic=0; ic<nPlotCategories; ic++) {
+      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+         printf("%10s: ",plotBaseNames[ic].Data());
+        for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_PhoFakeBoundingUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
+    }
+    printf("uncertainties PHOFakeDown\n");
+    for(unsigned ic=0; ic<nPlotCategories; ic++) {
+      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+         printf("%10s: ",plotBaseNames[ic].Data());
+        for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_PhoFakeBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
 
     printf("uncertainties ElToPhRateUp\n");
@@ -1135,7 +1666,7 @@ int year
 
   // Filling datacards input root file
   char outputLimits[200];
-  sprintf(outputLimits,"zhg_%d_input.root",year);
+  sprintf(outputLimits,"zhg_%d_mH%d_input.root",year,mH);
   TFile* outFileLimits = new TFile(outputLimits,"recreate");
   outFileLimits->cd();
 
@@ -1152,6 +1683,12 @@ int year
     histo_LepEffMBoundingDown	[ic]->Write();
     histo_LepEffEBoundingUp	[ic]->Write();
     histo_LepEffEBoundingDown	[ic]->Write();
+    histo_ScaleMBoundingUp      [ic]->Write();
+    histo_ScaleMBoundingDown    [ic]->Write();
+    histo_ScaleEBoundingUp      [ic]->Write();
+    histo_ScaleEBoundingDown    [ic]->Write();
+    histo_ScaleGBoundingUp      [ic]->Write();
+    histo_ScaleGBoundingDown    [ic]->Write();
     histo_PUBoundingUp  	[ic]->Write();
     histo_PUBoundingDown	[ic]->Write();
     for(int ny=0; ny<nYears; ny++){
@@ -1163,9 +1700,13 @@ int year
     histo_JESBoundingDown	[ny][ic]->Write();
     histo_PreFireBoundingUp 	[ny][ic]->Write();
     histo_PreFireBoundingDown	[ny][ic]->Write();
+    histo_TriggerBoundingUp 	[ny][ic]->Write();
+    histo_TriggerBoundingDown	[ny][ic]->Write();
     }
     histo_PhoEffBoundingUp	[ic]->Write();
     histo_PhoEffBoundingDown	[ic]->Write();
+    histo_PhoFakeBoundingUp	[ic]->Write();
+    histo_PhoFakeBoundingDown	[ic]->Write();
     histo_ElToPhRateBoundingUp  [ic]->Write();
     histo_ElToPhRateBoundingDown[ic]->Write();
     histo_EWKCorrWZUp		[ic]->Write();
@@ -1180,7 +1721,7 @@ int year
 
   // Filling datacards txt file
   char outputLimitsCard[200];  					  
-  sprintf(outputLimitsCard,"datacard_zhg_%d.txt",year);
+  sprintf(outputLimitsCard,"datacard_zhg_mH%d_%d.txt",mH,year);
   ofstream newcardShape;
   newcardShape.open(outputLimitsCard);
   newcardShape << Form("imax * number of channels\n");
@@ -1226,27 +1767,6 @@ int year
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
     newcardShape << Form("%6.3f ",lumiE[whichYear]);
-  }
-  newcardShape << Form("\n");
-
-  newcardShape << Form("CMS_momres_m    lnN     ");
-  for (int ic=0; ic<nPlotCategories; ic++){
-    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    newcardShape << Form("%6.3f ",1.005);
-  }
-  newcardShape << Form("\n");
-
-  newcardShape << Form("CMS_momres_e    lnN     ");
-  for (int ic=0; ic<nPlotCategories; ic++){
-    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    newcardShape << Form("%6.3f ",1.005);
-  }
-  newcardShape << Form("\n");
-
-  newcardShape << Form("CMS_trigger    lnN     ");
-  for (int ic=0; ic<nPlotCategories; ic++){
-    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    newcardShape << Form("%6.3f ",1.005);
   }
   newcardShape << Form("\n");
 
@@ -1338,6 +1858,27 @@ int year
   }
   newcardShape << Form("\n");
 
+  newcardShape << Form("CMS_scale_m    shape     ");
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    newcardShape << Form("1.0 ");
+  }
+  newcardShape << Form("\n");
+
+  newcardShape << Form("CMS_scale_e    shape     ");
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    newcardShape << Form("1.0 ");
+  }
+  newcardShape << Form("\n");
+
+  newcardShape << Form("CMS_scale_p    shape     ");
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    newcardShape << Form("1.0 ");
+  }
+  newcardShape << Form("\n");
+
   newcardShape << Form("CMS_pu    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
@@ -1373,7 +1914,22 @@ int year
   }
   newcardShape << Form("\n");
 
+  newcardShape << Form("CMS_trigger_%d    shape     ",year);
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
+    else                     newcardShape << Form("1.0 ");
+  }
+  newcardShape << Form("\n");
+
   newcardShape << Form("CMS_eff_photon    shape     ");
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    newcardShape << Form("1.0 ");
+  }
+  newcardShape << Form("\n");
+
+  newcardShape << Form("CMS_fake_photon    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
     newcardShape << Form("1.0 ");
@@ -1389,19 +1945,24 @@ int year
 
   newcardShape << Form("ch1 autoMCStats 0\n");
 
-  newcardShape << Form("CMS_hzg_emnorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotEM].Data());
-  newcardShape << Form("CMS_hzg_wznorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotWZ].Data());
-  newcardShape << Form("CMS_hzg_zznorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotZZ].Data());
+  //newcardShape << Form("CMS_hzg_emnorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotEM].Data());
+  //newcardShape << Form("CMS_hzg_wznorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotWZ].Data());
+  //newcardShape << Form("CMS_hzg_zznorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotZZ].Data());
 
   newcardShape.close();
 
   // Writing standard histograms
+  const int ZLLGHisto1 = 6; const int ZLLGHisto2 = 7;
+  double normZLLG[3] = {histo[ZLLGHisto1][kPlotData]->GetSumOfWeights()+histo[ZLLGHisto2][kPlotData]->GetSumOfWeights(),
+                        histo[ZLLGHisto1][kPlotVG  ]->GetSumOfWeights()+histo[ZLLGHisto2][kPlotVG  ]->GetSumOfWeights(),
+			0};
   char output[200];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
-    sprintf(output,"histoZHG_%d_%d.root",year,thePlot);	
+    sprintf(output,"histoZHG_mH%d_%d_%d.root",mH,year,thePlot);	
     TFile* outFilePlotsNote = new TFile(output,"recreate");
     outFilePlotsNote->cd();
     double totBck = 0;
+    for(int i=1; i<nPlotCategories; i++) if(histo[thePlot][i]->GetSumOfWeights() < 0) histo[thePlot][i]->Scale(0.0);
     for(int i=1; i<nPlotCategories; i++) if(i != kPlotBSM) totBck = totBck + histo[thePlot][i]->GetSumOfWeights();
     printf("(%2d) %7.1f vs. %7.1f ",thePlot,histo[thePlot][0]->GetSumOfWeights(),totBck);
     printf("(");
@@ -1409,13 +1970,18 @@ int year
     printf(")\n");
     for(int np=0; np<nPlotCategories; np++) {histo[thePlot][np]->SetNameTitle(Form("histo%d",np),Form("histo%d",np));histo[thePlot][np]->Write();}
     outFilePlotsNote->Close();
+    if(thePlot == ZLLGHisto1 || thePlot == ZLLGHisto2){
+      for(int i=1; i<nPlotCategories; i++) if(i != kPlotBSM && i != kPlotVG) normZLLG[2] = normZLLG[2] + histo[thePlot][i]->GetSumOfWeights();
+    }
   }
+  printf("ZLLGSF (%f-%f)/%f = %f\n",normZLLG[0],normZLLG[2],normZLLG[1],(normZLLG[0]-normZLLG[2])/normZLLG[1]);
+  printf("normVG: %f X %f / %f = %f vs. %f\n",normForABCD[1],normForABCD[2],normForABCD[3],normForABCD[1]*normForABCD[2]/normForABCD[3],normForABCD[0]);
 
   {
-    for(int i=1; i<=histo[36][kPlotBSM]->GetNbinsX(); i++){
+    for(int i=1; i<=histo[37][kPlotBSM]->GetNbinsX(); i++){
       printf("(%2d): (%6.2f+%6.2f=%6.2f) / (%6.2f+%6.2f=%6.2f)\n",i-1,
-        histo[36][kPlotWZ ]->GetBinContent(i),histo[37][kPlotWZ ]->GetBinContent(i),histo[36][kPlotWZ ]->GetBinContent(i)+histo[37][kPlotWZ ]->GetBinContent(i),
-	histo[36][kPlotBSM]->GetBinContent(i),histo[37][kPlotBSM]->GetBinContent(i),histo[36][kPlotBSM]->GetBinContent(i)+histo[37][kPlotBSM]->GetBinContent(i));
+        histo[37][kPlotWZ ]->GetBinContent(i),histo[38][kPlotWZ ]->GetBinContent(i),histo[37][kPlotWZ ]->GetBinContent(i)+histo[38][kPlotWZ ]->GetBinContent(i),
+	histo[37][kPlotBSM]->GetBinContent(i),histo[38][kPlotBSM]->GetBinContent(i),histo[37][kPlotBSM]->GetBinContent(i)+histo[38][kPlotBSM]->GetBinContent(i));
     }
   }
 

@@ -32,3 +32,32 @@ PandaCore/bin/submit --exec MitVHBBAnalysis/bash/runWhAnalysis.sh --njobs 1000 -
 
 #PandaCore/bin/check --cache /data/t3serv014/ceballos/submit/whbb/testcondor2018
 #MitVHBBAnalysis/bash/mergeOutputWh.sh whbb/testcondor2018
+
+exit;
+MitVHBBAnalysis/bash/runWhAnalysis.sh whbb/testcondor2018 kWHLightFlavorFJCR true 3 2018 false SingleTop_tbarW_noHad vhbbPlot::kTop
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2016/split/|grep HSR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2016/split/|grep H2TopCR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2016/split/|grep HHeavyFlavorCR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2016/split/|grep HLightFlavorCR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2016/split/|grep HFJSR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2016/split/|grep TT2bFJCR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2016/split/|grep HHeavyFlavorFJCR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2016/split/|grep HLightFlavorFJCR|wc
+
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2017/split/|grep HSR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2017/split/|grep H2TopCR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2017/split/|grep HHeavyFlavorCR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2017/split/|grep HLightFlavorCR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2017/split/|grep HFJSR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2017/split/|grep TT2bFJCR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2017/split/|grep HHeavyFlavorFJCR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2017/split/|grep HLightFlavorFJCR|wc
+
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2018/split/|grep HSR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2018/split/|grep H2TopCR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2018/split/|grep HHeavyFlavorCR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2018/split/|grep HLightFlavorCR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2018/split/|grep HFJSR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2018/split/|grep TT2bFJCR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2018/split/|grep HHeavyFlavorFJCR|wc
+ls -l MitVHBBAnalysis/datacards/whbb/testcondor2018/split/|grep HLightFlavorFJCR|wc
