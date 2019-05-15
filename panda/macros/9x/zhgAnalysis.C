@@ -1077,7 +1077,7 @@ int year, bool isDesk014 = false, int mH = 125
         totalWeight = totalWeight * effSF;
       }
       else if(passZHGSel && mTGMET > 100){
-        printf("DATA: %d %d %llu %f %f %f %f %f\n",thePandaFlat.runNumber,thePandaFlat.lumiNumber,thePandaFlat.eventNumber,
+        printf("DATA: %d %d %llu %d %f %f %f %f %f\n",thePandaFlat.runNumber,thePandaFlat.lumiNumber,thePandaFlat.eventNumber,lepType,
 	       mTGMET,vLoose[0].Pt(),vLoose[1].Pt(),theG.Pt(),theG.Eta());
       }
 

@@ -19,7 +19,7 @@ PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$US
 # standard 2016
 PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$USER/catalog/test.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/009 \
 --include SingleElectron SingleMuon DoubleEG DoubleMuon MuonEG ZZ WZ WW WLLJJ DYJetsToLL_M-50_Tune DYJetsToLL_M-10to50_Tune tZq GluGluH VBFH VBF_H ttHToNonbb VHToNonbb \
-TTG TTZ TTW ST_tW TTTo2L2Nu WGstarTo WGToLNuG ZGTo2LG JetsToLL DYJetsToTauTau MET WJetsToLNu TT_TuneCUETP8M2T4 WpWpJJ HToInvisible HToInv_ZToLL \
+TTG TTZ TTW ST_tW TTTo2L2Nu WGstarTo WGToLNuG ZGTo2LG JetsToLL DYJetsToTauTau MET WJetsToLNu TT_TuneCUETP8M2T4 WpWpJJ HToInvisible HToInv_ZToLL MJJ-120 \
 --exclude ZpWW_med JetsToLL_M-50_HT DYJetsToLL_Zpt-100to200_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8 DYJetsToLL_Zpt-200toInf_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8
 
 # fakes 2016

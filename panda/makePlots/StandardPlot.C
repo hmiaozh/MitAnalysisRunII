@@ -22,7 +22,7 @@ float yOff[nPlotCategories] = {   0,	1,   2,   3,   4,   5,   0,   1,   2,	3,   
 
 const Float_t _tsize   = 0.030;
 const Float_t _xoffset = 0.20;
-const Float_t _yoffset = 0.05;
+const Float_t _yoffset = 0.055;
 
 const bool doApplyBinWidth = false;
 const double SFBinWidth = 1;

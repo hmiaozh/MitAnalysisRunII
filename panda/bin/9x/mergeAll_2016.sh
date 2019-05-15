@@ -19,6 +19,7 @@ PandaAnalysis/T3/merging/merge.py --cfg leptonic TT
 PandaAnalysis/T3/merging/merge.py --cfg leptonic TW
 PandaAnalysis/T3/merging/merge.py --cfg leptonic WGstar
 PandaAnalysis/T3/merging/merge.py --cfg leptonic VG
+PandaAnalysis/T3/merging/merge.py --cfg leptonic VG_M120
 PandaAnalysis/T3/merging/merge.py --cfg leptonic H125
 PandaAnalysis/T3/merging/merge.py --cfg leptonic DYNJetsToLL
 PandaAnalysis/T3/merging/merge.py --cfg leptonic DYJetsToLL_Pt0To50
