@@ -20,7 +20,7 @@ const double mcPrescale = 1;
 const bool usePureMC = false;
 const int debug = 0;
 const bool showSyst = true;
-const bool produceMVAInputs = false;
+const bool produceMVAInputs = true;
 
 enum systType                     {JESUP=0, JESDOWN,  METUP,  METDOWN, nSystTypes};
 TString systTypeName[nSystTypes]= {"JESUP","JESDOWN","METUP","METDOWN"};
@@ -258,7 +258,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   const int nBinMJJ = 4; Float_t xbinsMJJ[nBinMJJ+1] = {500, 800, 1200, 1800, 2000};
   const int nBinMLL = 4; Float_t xbinsMLL[nBinMLL+1] = {20, 85, 135, 210, 500};
   const int nBinBDT = 4; Float_t xbinsBDT[nBinBDT+1]  = {-0.8, -0.05, 0.15, 0.39, 0.8};
-  const int nBinMVA = 48; Float_t xbins[nBinMVA+1] = {500, 800, 1200, 1800, 2000,
+  const int nBinMVA = 52; Float_t xbins[nBinMVA+1] = {500, 800, 1200, 1800, 2000,
                                                           2800, 3200, 3800, 4000,
 						          4800, 5200, 5800, 6000,
 						          6800, 7200, 7800, 8000,
@@ -268,10 +268,14 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 						         14800,15200,15800,16000,
 						         16800,17200,17800,18000,
 						         18800,19200,19800,20000,
-							 21200,22000,
-							 23200,24000,
+							 20800,21200,21800,22000,
+							 22800,23200,23800,24000,
 						         24950,25150,25390,26000
 							 };
+
+
+
+
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
@@ -804,8 +808,6 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
                           fabs(mllZ-91.1876) < 15 && mllmin > 4 && vWln.Pt() > 20;
       //bool passWZPresel = whichWln >= 0 && thePandaFlat.nLooseLep == 3 && trilep.M() > 100 &&
       //                    fabs(mllZ-91.1876) < 15 && mllmin > 4;
-      bool passZZPresel = whichWln == 0 && thePandaFlat.nLooseLep == 4 &&
-                          fabs(mllZ-91.1876) < 15 && fabs(mllZ2-91.1876) < 15 && mllmin > 4;
       bool passWWSel     = passSel[0]     && passSel[1]     && passSel[2]     && passSel[3]     && passSel[4]     && passSel[5]     && passSel[6]     && passSel[7]     && passSel[8];
       bool passWWSelUp   = passSelUp[0]   && passSelUp[1]   && passSelUp[2]   && passSelUp[3]   && passSelUp[4]   && passSelUp[5]   && passSelUp[6]   && passSelUp[7]   && passSelUp[8];
       bool passWWSelDown = passSelDown[0] && passSelDown[1] && passSelDown[2] && passSelDown[3] && passSelDown[4] && passSelDown[5] && passSelDown[6] && passSelDown[7] && passSelDown[8];
@@ -1007,78 +1009,6 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 	mvaInputs[9] = (float)wzZepDown;
         bdtValueDown = reader->EvaluateMVA("BDT") ;
       }
-
-
-      double bdtValue, bdtValueUp, bdtValueDown;
-      if(passWZSel){
-
-        mvaInputs[0] = (float)massJJ;
-        mvaInputs[1] = (float)deltaEtaJJ;
-        mvaInputs[2] = (float)deltaPhiJJ;
-        mvaInputs[3] = (float)wzZepSS[0];
-	mvaInputs[4] = (float)wzZepSS[1];
-	mvaInputs[5] = (float)wzZepSS[2];
-	mvaInputs[6] = (float)vJot1.Pt();
-        mvaInputs[7] = (float)vJot2.Pt();
-        mvaInputs[8] = (float)vJot1.Eta();
-	mvaInputs[9] = (float)wzZep;
-	//mvaInputs[7] = (float)maxLeptonZep;
-        bdtValue = reader->EvaluateMVA("BDT") ;
-
-        category = theCategory;
-        eventNum = thePandaFlat.eventNumber;
-        weight   = totalWeight;
-        mvamjj   = (float)massJJ;
-        mvadeta  = (float)deltaEtaJJ;
-        mvadphi  = (float)deltaPhiJJ;
-        mvazstar = (float)wzZep;
-
-        mvavWlnpt  = (float)vWln.Pt();
-        mvamet     = (float)vMet.Pt();
-
-        mvajetpt1  = (float)vJot1.Pt();
-        mvajetpt2  = (float)vJot2.Pt();
-        mvajeteta1 = (float)vJot1.Eta();
-        mvajeteta2 = (float)vJot2.Eta();
-        mvazep1    = (float)wzZepSS[0];
-        mvazep2    = (float)wzZepSS[1];
-        mvazep3    = (float)wzZepSS[2];
-	mvamaxzep  = (float)maxLeptonZep;
-
-        mvatree->Fill();
-      }
-
-      if(passWZSelUp){
-	mvaInputs[0] = (float)massJJUp;
-        mvaInputs[1] = (float)deltaEtaJJUp;
-        mvaInputs[2] = (float)deltaPhiJJUp;
-        mvaInputs[3] = (float)wzZepSSUp[0];
-        mvaInputs[4] = (float)wzZepSSUp[1];
-        mvaInputs[5] = (float)wzZepSSUp[2];
-	mvaInputs[6] = (float)vJot1Up.Pt();
-        mvaInputs[7] = (float)vJot2Up.Pt();
-        mvaInputs[8] = (float)vJot1Up.Eta();
-	mvaInputs[9] = (float)wzZepUp;
-	//mvaInputs[7] = (float)maxLeptonZepUp;
-        bdtValueUp = reader->EvaluateMVA("BDT") ;
-      }
-
-
-      if(passWZSelDown){
-	mvaInputs[0] = (float)massJJDown;
-        mvaInputs[1] = (float)deltaEtaJJDown;
-        mvaInputs[2] = (float)deltaPhiJJDown;
-        mvaInputs[3] = (float)wzZepSSDown[0];
-        mvaInputs[4] = (float)wzZepSSDown[1];
-        mvaInputs[5] = (float)wzZepSSDown[2];
-        mvaInputs[6] = (float)vJot1Down.Pt();
-        mvaInputs[7] = (float)vJot2Down.Pt();
-        mvaInputs[8] = (float)vJot1Down.Eta();
-	mvaInputs[9] = (float)wzZepDown;
-	//mvaInputs[7] = (float)maxLeptonZepDown;
-        bdtValueDown = reader->EvaluateMVA("BDT") ;
-      }
-
 
 
 
