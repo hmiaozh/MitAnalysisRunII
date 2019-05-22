@@ -1086,25 +1086,38 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
         else if(mllZ < 135) typeSelAux0 = 1;
         else if(mllZ < 210) typeSelAux0 = 2;
         else                typeSelAux0 = 3;
-        double typeSelAux1 = 0;
-        if     (deltaEtaJJ > 4.5) typeSelAux1 = 1;
 
         double MVAVar     = TMath::Min(massJJ     ,xbinsMJJ[nBinMJJ]-0.0001);
         double MVAVarUp   = TMath::Min(massJJUp   ,xbinsMJJ[nBinMJJ]-0.0001);
         double MVAVarDown = TMath::Min(massJJDown ,xbinsMJJ[nBinMJJ]-0.0001);
         if(fidAna != 3){
+          double typeSelAux1[3] = {0,0,0};
+          if(deltaEtaJJ     > 4.5) typeSelAux1[0] = 1;
+          if(deltaEtaJJUp   > 4.5) typeSelAux1[1] = 1;
+          if(deltaEtaJJDown > 4.5) typeSelAux1[2] = 1;
           if(dataCardSel     == 4) MVAVar     = (1 + TMath::Max(-1., TMath::Min(bdtValue,     0.7999))) * 1000;
           if(dataCardSelUp   == 4) MVAVarUp   = (1 + TMath::Max(-1., TMath::Min(bdtValueUp,   0.7999))) * 1000; 
           if(dataCardSelDown == 4) MVAVarDown = (1 + TMath::Max(-1., TMath::Min(bdtValueDown, 0.7999))) * 1000;
+
+          if     (dataCardSel     == 0) MVAVar     = MVAVar     + 2000 * typeSelAux0 + 8000 * typeSelAux1[0];
+          else if(dataCardSel     == 1) MVAVar     = MVAVar     + 16000 + 2000 * typeSelAux1[0];
+          else if(dataCardSel     == 2) MVAVar     = MVAVar     + 20000;
+          else if(dataCardSel     == 3) MVAVar     = MVAVar     + 22000;
+          else if(dataCardSel     == 4) MVAVar     = MVAVar     + 24000;
+
+          if     (dataCardSelUp   == 0) MVAVarUp   = MVAVarUp   + 2000 * typeSelAux0 + 8000 * typeSelAux1[1];
+          else if(dataCardSelUp   == 1) MVAVarUp   = MVAVarUp   + 16000 + 2000 * typeSelAux1[1];
+          else if(dataCardSelUp   == 2) MVAVarUp   = MVAVarUp   + 20000;
+          else if(dataCardSelUp   == 3) MVAVarUp   = MVAVarUp   + 22000;
+          else if(dataCardSelUp   == 4) MVAVarUp   = MVAVarUp   + 24000;
+
+          if     (dataCardSelDown == 0) MVAVarDown = MVAVarDown + 2000 * typeSelAux0 + 8000 * typeSelAux1[2];
+          else if(dataCardSelDown == 1) MVAVarDown = MVAVarDown + 16000 + 2000 * typeSelAux1[2];
+          else if(dataCardSelDown == 2) MVAVarDown = MVAVarDown + 20000;
+          else if(dataCardSelDown == 3) MVAVarDown = MVAVarDown + 22000;
+          else if(dataCardSelDown == 4) MVAVarDown = MVAVarDown + 24000;
         }
         else {
-	  typeSelAux1 = 0; // Remove detajj depedence for aQGC analysis
-          if(dataCardSel     >= 1) MVAVar     = MVAVar     - 8000;
-          if(dataCardSelUp   >= 1) MVAVarUp   = MVAVarUp   - 8000;
-          if(dataCardSelDown >= 1) MVAVarDown = MVAVarDown - 8000;
-          if(dataCardSel     >= 2) MVAVar     = MVAVar     - 2000;
-          if(dataCardSelUp   >= 2) MVAVarUp   = MVAVarUp   - 2000;
-          if(dataCardSelDown >= 2) MVAVarDown = MVAVarDown - 2000;
           double typeSelAux2[3] = {0,0,0};
           if     (mtWZ <  400) typeSelAux2[0] = 0;
 	  else if(mtWZ <  800) typeSelAux2[0] = 1;
@@ -1115,28 +1128,24 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
           if     (mtWZDown <  400) typeSelAux2[2] = 0;
 	  else if(mtWZDown <  800) typeSelAux2[2] = 1;
 	  else                     typeSelAux2[2] = 2; 
-          if(dataCardSel     == 4) MVAVar     = MVAVar     + 2000 * typeSelAux2[0];
-          if(dataCardSelUp   == 4) MVAVarUp   = MVAVarUp   + 2000 * typeSelAux2[1];
-          if(dataCardSelDown == 4) MVAVarDown = MVAVarDown + 2000 * typeSelAux2[2];
+          if     (dataCardSel     == 0) MVAVar     = MVAVar     + 2000 * typeSelAux0;
+          else if(dataCardSel     == 1) MVAVar     = MVAVar     + 8000;
+          else if(dataCardSel     == 2) MVAVar     = MVAVar     + 10000;
+          else if(dataCardSel     == 3) MVAVar     = MVAVar     + 12000;
+          else if(dataCardSel     == 4) MVAVar     = MVAVar     + 14000 + 2000 * typeSelAux2[0];
+
+          if     (dataCardSelUp   == 0) MVAVarUp   = MVAVarUp   + 2000;
+          else if(dataCardSelUp   == 1) MVAVarUp   = MVAVarUp   + 8000;
+          else if(dataCardSelUp   == 2) MVAVarUp   = MVAVarUp   + 10000;
+          else if(dataCardSelUp   == 3) MVAVarUp   = MVAVarUp   + 12000;
+          else if(dataCardSelUp   == 4) MVAVarUp   = MVAVarUp   + 14000 + 2000 * typeSelAux2[1];
+
+          if     (dataCardSelDown == 0) MVAVarDown = MVAVarDown + 2000 * typeSelAux0;
+          else if(dataCardSelDown == 1) MVAVarDown = MVAVarDown + 8000;
+          else if(dataCardSelDown == 2) MVAVarDown = MVAVarDown + 10000;
+          else if(dataCardSelDown == 3) MVAVarDown = MVAVarDown + 12000;
+          else if(dataCardSelDown == 4) MVAVarDown = MVAVarDown + 14000 + 2000 * typeSelAux2[2];
 	}
-
-        if     (dataCardSel     == 0) MVAVar     = MVAVar     + 2000 * typeSelAux0 + 8000 * typeSelAux1;
-        else if(dataCardSel     == 1) MVAVar     = MVAVar     + 16000 + 2000 * typeSelAux1;
-        else if(dataCardSel     == 2) MVAVar     = MVAVar     + 20000;
-        else if(dataCardSel     == 3) MVAVar     = MVAVar     + 22000;
-        else if(dataCardSel     == 4) MVAVar     = MVAVar     + 24000;
-
-        if     (dataCardSelUp   == 0) MVAVarUp   = MVAVarUp   + 2000 * typeSelAux0 + 8000 * typeSelAux1;
-        else if(dataCardSelUp   == 1) MVAVarUp   = MVAVarUp   + 16000 + 2000 * typeSelAux1;
-        else if(dataCardSelUp   == 2) MVAVarUp   = MVAVarUp   + 20000;
-        else if(dataCardSelUp   == 3) MVAVarUp   = MVAVarUp   + 22000;
-        else if(dataCardSelUp   == 4) MVAVarUp   = MVAVarUp   + 24000;
-
-        if     (dataCardSelDown == 0) MVAVarDown = MVAVarDown + 2000 * typeSelAux0 + 8000 * typeSelAux1;
-        else if(dataCardSelDown == 1) MVAVarDown = MVAVarDown + 16000 + 2000 * typeSelAux1;
-        else if(dataCardSelDown == 2) MVAVarDown = MVAVarDown + 20000;
-        else if(dataCardSelDown == 3) MVAVarDown = MVAVarDown + 22000;
-        else if(dataCardSelDown == 4) MVAVarDown = MVAVarDown + 24000;
 
         // Avoid QCD scale weights that are anomalous high
         double maxQCDscale = (TMath::Abs(thePandaFlat.scale[0])+TMath::Abs(thePandaFlat.scale[1])+TMath::Abs(thePandaFlat.scale[2])+
