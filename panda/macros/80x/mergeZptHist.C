@@ -627,19 +627,19 @@ double xs[nFiles] = {(118.7-3.974)*0.1086*0.1086*9*1.035,3.974*0.1086*0.1086*9*1
 
 TH1D *hDITotalMCWeight[nFiles];
 
-TH1D *hDIWWMLL[nFiles];       TH1D *hDIWWMLL_PDF[nFiles];        TH1D *hDIWWMLL_QCD[nFiles];	 
-TH1D *hDIWWDPHILL[nFiles];    TH1D *hDIWWDPHILL_PDF[nFiles];     TH1D *hDIWWDPHILL_QCD[nFiles];   
-TH1D *hDIWWPTL1[nFiles];      TH1D *hDIWWPTL1_PDF[nFiles];       TH1D *hDIWWPTL1_QCD[nFiles];	 
-TH1D *hDIWWPTL2[nFiles];      TH1D *hDIWWPTL2_PDF[nFiles];       TH1D *hDIWWPTL2_QCD[nFiles];   
-TH1D *hDIWWPTLL[nFiles];      TH1D *hDIWWPTLL_PDF[nFiles];       TH1D *hDIWWPTLL_QCD[nFiles];   
+TH1D *hDIWWMLL[nFiles];       TH1D *hDIWWMLL_PDF[nFiles];        TH1D *hDIWWMLL_QCD[nFiles];	    TH1D *hDIWWMLL_NNLO[nFiles];     
+TH1D *hDIWWDPHILL[nFiles];    TH1D *hDIWWDPHILL_PDF[nFiles];     TH1D *hDIWWDPHILL_QCD[nFiles];     TH1D *hDIWWDPHILL_NNLO[nFiles];   
+TH1D *hDIWWPTL1[nFiles];      TH1D *hDIWWPTL1_PDF[nFiles];       TH1D *hDIWWPTL1_QCD[nFiles];	    TH1D *hDIWWPTL1_NNLO[nFiles];    
+TH1D *hDIWWPTL2[nFiles];      TH1D *hDIWWPTL2_PDF[nFiles];       TH1D *hDIWWPTL2_QCD[nFiles];       TH1D *hDIWWPTL2_NNLO[nFiles];   
+TH1D *hDIWWPTLL[nFiles];      TH1D *hDIWWPTLL_PDF[nFiles];       TH1D *hDIWWPTLL_QCD[nFiles];       TH1D *hDIWWPTLL_NNLO[nFiles];   
 TH1D *hDIWWPTWW[nFiles]; 
-TH1D *hDIWWMLL0JET[nFiles];   TH1D *hDIWWMLL0JET_PDF[nFiles];	 TH1D *hDIWWMLL0JET_QCD[nFiles];       
-TH1D *hDIWWDPHILL0JET[nFiles];TH1D *hDIWWDPHILL0JET_PDF[nFiles]; TH1D *hDIWWDPHILL0JET_QCD[nFiles];   
-TH1D *hDIWWPTL10JET[nFiles];  TH1D *hDIWWPTL10JET_PDF[nFiles];   TH1D *hDIWWPTL10JET_QCD[nFiles];      
-TH1D *hDIWWPTL20JET[nFiles];  TH1D *hDIWWPTL20JET_PDF[nFiles];   TH1D *hDIWWPTL20JET_QCD[nFiles];   
-TH1D *hDIWWPTLL0JET[nFiles];  TH1D *hDIWWPTLL0JET_PDF[nFiles];   TH1D *hDIWWPTLL0JET_QCD[nFiles];   
-TH1D *hDIWWN0JET[nFiles];     TH1D *hDIWWN0JET_PDF[nFiles];      TH1D *hDIWWN0JET_QCD[nFiles];   
-TH1D *hDIWWNJET[nFiles];      TH1D *hDIWWNJET_PDF[nFiles];       TH1D *hDIWWNJET_QCD[nFiles];   
+TH1D *hDIWWMLL0JET[nFiles];   TH1D *hDIWWMLL0JET_PDF[nFiles];	 TH1D *hDIWWMLL0JET_QCD[nFiles];    TH1D *hDIWWMLL0JET_NNLO[nFiles];       
+TH1D *hDIWWDPHILL0JET[nFiles];TH1D *hDIWWDPHILL0JET_PDF[nFiles]; TH1D *hDIWWDPHILL0JET_QCD[nFiles]; TH1D *hDIWWDPHILL0JET_NNLO[nFiles];   
+TH1D *hDIWWPTL10JET[nFiles];  TH1D *hDIWWPTL10JET_PDF[nFiles];   TH1D *hDIWWPTL10JET_QCD[nFiles];   TH1D *hDIWWPTL10JET_NNLO[nFiles];      
+TH1D *hDIWWPTL20JET[nFiles];  TH1D *hDIWWPTL20JET_PDF[nFiles];   TH1D *hDIWWPTL20JET_QCD[nFiles];   TH1D *hDIWWPTL20JET_NNLO[nFiles];   
+TH1D *hDIWWPTLL0JET[nFiles];  TH1D *hDIWWPTLL0JET_PDF[nFiles];   TH1D *hDIWWPTLL0JET_QCD[nFiles];   TH1D *hDIWWPTLL0JET_NNLO[nFiles];   
+TH1D *hDIWWN0JET[nFiles];     TH1D *hDIWWN0JET_PDF[nFiles];      TH1D *hDIWWN0JET_QCD[nFiles];      TH1D *hDIWWN0JET_NNLO[nFiles];   
+TH1D *hDIWWNJET[nFiles];      TH1D *hDIWWNJET_PDF[nFiles];       TH1D *hDIWWNJET_QCD[nFiles];       TH1D *hDIWWNJET_NNLO[nFiles];   
 
 for(int i=0; i<nFiles; i++){
   hDITotalMCWeight[i] = (TH1D*)_file[i]->Get("hDTotalMCWeight");	 
@@ -683,6 +683,19 @@ for(int i=0; i<nFiles; i++){
   hDIWWPTLL0JET_QCD[i]  = (TH1D*)_file[i]->Get("hDWWPTLL0JET_QCD");   hDIWWPTLL0JET_QCD[i]  ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
   hDIWWN0JET_QCD[i]     = (TH1D*)_file[i]->Get("hDWWN0JET_QCD");      hDIWWN0JET_QCD[i]     ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
   hDIWWNJET_QCD[i]      = (TH1D*)_file[i]->Get("hDWWNJET_QCD");       hDIWWNJET_QCD[i]      ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
+
+  hDIWWMLL_NNLO[i]       = (TH1D*)_file[i]->Get("hDWWMLL_NNLO");        hDIWWMLL_NNLO[i]       ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
+  hDIWWDPHILL_NNLO[i]    = (TH1D*)_file[i]->Get("hDWWDPHILL_NNLO");     hDIWWDPHILL_NNLO[i]    ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
+  hDIWWPTL1_NNLO[i]      = (TH1D*)_file[i]->Get("hDWWPTL1_NNLO");       hDIWWPTL1_NNLO[i]      ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
+  hDIWWPTL2_NNLO[i]      = (TH1D*)_file[i]->Get("hDWWPTL2_NNLO");       hDIWWPTL2_NNLO[i]      ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
+  hDIWWPTLL_NNLO[i]      = (TH1D*)_file[i]->Get("hDWWPTLL_NNLO");       hDIWWPTLL_NNLO[i]      ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
+  hDIWWMLL0JET_NNLO[i]   = (TH1D*)_file[i]->Get("hDWWMLL0JET_NNLO");    hDIWWMLL0JET_NNLO[i]   ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
+  hDIWWDPHILL0JET_NNLO[i]= (TH1D*)_file[i]->Get("hDWWDPHILL0JET_NNLO"); hDIWWDPHILL0JET_NNLO[i]->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
+  hDIWWPTL10JET_NNLO[i]  = (TH1D*)_file[i]->Get("hDWWPTL10JET_NNLO");   hDIWWPTL10JET_NNLO[i]  ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights());  
+  hDIWWPTL20JET_NNLO[i]  = (TH1D*)_file[i]->Get("hDWWPTL20JET_NNLO");   hDIWWPTL20JET_NNLO[i]  ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
+  hDIWWPTLL0JET_NNLO[i]  = (TH1D*)_file[i]->Get("hDWWPTLL0JET_NNLO");   hDIWWPTLL0JET_NNLO[i]  ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
+  hDIWWN0JET_NNLO[i]     = (TH1D*)_file[i]->Get("hDWWN0JET_NNLO");      hDIWWN0JET_NNLO[i]     ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
+  hDIWWNJET_NNLO[i]      = (TH1D*)_file[i]->Get("hDWWNJET_NNLO");       hDIWWNJET_NNLO[i]      ->Scale(xs[i]/hDITotalMCWeight[i]->GetSumOfWeights()); 
 }
 
 TH1D *hDWWMLL          = (TH1D*)hDIWWMLL       [0]->Clone();
@@ -725,6 +738,19 @@ TH1D *hDWWPTLL0JET_QCD     = (TH1D*)hDIWWPTLL0JET_QCD  [0]->Clone();
 TH1D *hDWWN0JET_QCD        = (TH1D*)hDIWWN0JET_QCD     [0]->Clone();
 TH1D *hDWWNJET_QCD         = (TH1D*)hDIWWNJET_QCD      [0]->Clone();
 
+TH1D *hDWWMLL_NNLO          = (TH1D*)hDIWWMLL_NNLO       [0]->Clone();
+TH1D *hDWWDPHILL_NNLO       = (TH1D*)hDIWWDPHILL_NNLO    [0]->Clone();
+TH1D *hDWWPTL1_NNLO         = (TH1D*)hDIWWPTL1_NNLO      [0]->Clone();
+TH1D *hDWWPTL2_NNLO         = (TH1D*)hDIWWPTL2_NNLO      [0]->Clone();
+TH1D *hDWWPTLL_NNLO         = (TH1D*)hDIWWPTLL_NNLO      [0]->Clone();
+TH1D *hDWWMLL0JET_NNLO      = (TH1D*)hDIWWMLL0JET_NNLO   [0]->Clone();
+TH1D *hDWWDPHILL0JET_NNLO   = (TH1D*)hDIWWDPHILL0JET_NNLO[0]->Clone();
+TH1D *hDWWPTL10JET_NNLO     = (TH1D*)hDIWWPTL10JET_NNLO  [0]->Clone();
+TH1D *hDWWPTL20JET_NNLO     = (TH1D*)hDIWWPTL20JET_NNLO  [0]->Clone();
+TH1D *hDWWPTLL0JET_NNLO     = (TH1D*)hDIWWPTLL0JET_NNLO  [0]->Clone();
+TH1D *hDWWN0JET_NNLO        = (TH1D*)hDIWWN0JET_NNLO     [0]->Clone();
+TH1D *hDWWNJET_NNLO         = (TH1D*)hDIWWNJET_NNLO      [0]->Clone();
+
 for(int i=1; i<nFiles; i++){
   hDWWMLL   	->Add(hDIWWMLL	     [i]);   
   hDWWDPHILL	->Add(hDIWWDPHILL    [i]);  
@@ -765,6 +791,19 @@ for(int i=1; i<nFiles; i++){
   hDWWPTLL0JET_QCD  ->Add(hDIWWPTLL0JET_QCD  [i]);  
   hDWWN0JET_QCD	    ->Add(hDIWWN0JET_QCD     [i]);  
   hDWWNJET_QCD	    ->Add(hDIWWNJET_QCD      [i]);  
+
+  hDWWMLL_NNLO       ->Add(hDIWWMLL_NNLO       [i]);   
+  hDWWDPHILL_NNLO    ->Add(hDIWWDPHILL_NNLO    [i]);  
+  hDWWPTL1_NNLO      ->Add(hDIWWPTL1_NNLO      [i]);   
+  hDWWPTL2_NNLO      ->Add(hDIWWPTL2_NNLO      [i]);  
+  hDWWPTLL_NNLO      ->Add(hDIWWPTLL_NNLO      [i]);  
+  hDWWMLL0JET_NNLO   ->Add(hDIWWMLL0JET_NNLO   [i]);   
+  hDWWDPHILL0JET_NNLO->Add(hDIWWDPHILL0JET_NNLO[i]);  
+  hDWWPTL10JET_NNLO  ->Add(hDIWWPTL10JET_NNLO  [i]);   
+  hDWWPTL20JET_NNLO  ->Add(hDIWWPTL20JET_NNLO  [i]);  
+  hDWWPTLL0JET_NNLO  ->Add(hDIWWPTLL0JET_NNLO  [i]);  
+  hDWWN0JET_NNLO     ->Add(hDIWWN0JET_NNLO     [i]);  
+  hDWWNJET_NNLO	     ->Add(hDIWWNJET_NNLO      [i]);  
 }
 
 TFile myOutputFile("genWW.root","RECREATE");
@@ -807,6 +846,19 @@ TFile myOutputFile("genWW.root","RECREATE");
   hDWWPTLL0JET_QCD  ->Write();
   hDWWN0JET_QCD     ->Write();
   hDWWNJET_QCD      ->Write();
+
+  hDWWMLL_NNLO	     ->Write();
+  hDWWDPHILL_NNLO    ->Write();
+  hDWWPTL1_NNLO      ->Write(); 
+  hDWWPTL2_NNLO      ->Write(); 
+  hDWWPTLL_NNLO      ->Write();
+  hDWWMLL0JET_NNLO   ->Write();
+  hDWWDPHILL0JET_NNLO->Write();
+  hDWWPTL10JET_NNLO  ->Write(); 
+  hDWWPTL20JET_NNLO  ->Write(); 
+  hDWWPTLL0JET_NNLO  ->Write();
+  hDWWN0JET_NNLO     ->Write();
+  hDWWNJET_NNLO      ->Write();
 myOutputFile.Close();
 }
 else if(nsel == 3){ // Znunu
