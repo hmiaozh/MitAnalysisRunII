@@ -1618,7 +1618,7 @@ void wwAnalysis(
       else               printf("0.0 0.0 0.0 0.0 ");
       printf("\n");
       }
-      if(typeSel == 2 && totalSel && debug == 3){
+      if(typeSel == 2 && totalSel && debug == 3 && theCategory == 0){
       printf("WEIGHTS %d %d %lld %f %f %f %f %f %f %f %f %f\n",eventEvent.runNum,eventEvent.lumiNum,eventEvent.eventNum,totalWeight,mcWeight,theLumi,puWeight,effSF,fakeSF,thePtwwWeight[0],total_bjetb_probLOOSE[1]/total_bjetb_probLOOSE[0],total_bjetl_probLOOSE[1]/total_bjetl_probLOOSE[0]);
       }
       if(totalWeight == 0) continue;
