@@ -248,6 +248,18 @@ int year = 2017, int mH = 125
 
       if(thePandaFlat.nLooseLep > 2) continue;
 
+      TLorentzVector vFakePhoton,vPhoton,vPhotonUp,vPhotonDown;
+      bool passPhoSel = TMath::Abs(thePandaFlat.loosePho1Eta) < 2.5
+             && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium
+	     && (thePandaFlat.loosePho1SelBit & pCsafeVeto) == pCsafeVeto
+	     && (thePandaFlat.loosePho1SelBit & pPixelVeto) == pPixelVeto;
+      if(passPhoSel == true) {
+        vPhoton.SetPtEtaPhiM(thePandaFlat.loosePho1Pt, thePandaFlat.loosePho1Eta, thePandaFlat.loosePho1Phi, 0);
+	if(vPhoton.Pt() <= 80) passPhoSel = false;
+      }
+ 
+      if(!passPhoSel) continue;
+
       vector<float>  looseLepPt,looseLepEta,looseLepPhi,looseLepSF,looseLepIso;
       vector<int> looseLepSelBit,looseLepPdgId,looseLepTripleCharge,looseLepMissingHits;
       int ptSelCuts[3] = {0,0,0};
@@ -328,16 +340,6 @@ int year = 2017, int mH = 125
       double PMET[1] = {vMet.Pt()};
       if(dPhiLepMETMin < TMath::Pi()/2) {PMET[0] = PMET[0] * sin(dPhiLepMETMin);}
 
-      TLorentzVector vFakePhoton,vPhoton,vPhotonUp,vPhotonDown;
-      bool passPhoSel = TMath::Abs(thePandaFlat.loosePho1Eta) < 2.5
-             && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium
-	     && (thePandaFlat.loosePho1SelBit & pCsafeVeto) == pCsafeVeto
-	     && (thePandaFlat.loosePho1SelBit & pPixelVeto) == pPixelVeto;
-      if(passPhoSel == true) {
-        vPhoton.SetPtEtaPhiM(thePandaFlat.loosePho1Pt, thePandaFlat.loosePho1Eta, thePandaFlat.loosePho1Phi, 0);
-	if(vPhoton.Pt() <= 25) passPhoSel = false;
-      }
- 
       double mllZ = 10000;
       TLorentzVector vZ1l1,vZ1l2,vWln;
       if     (vLoose.size() == 2){
