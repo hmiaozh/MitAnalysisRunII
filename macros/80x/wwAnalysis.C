@@ -84,14 +84,17 @@ void wwAnalysis(
   const int nGenBins = 16;
   const int nRecBins = 29;
   double jetPtCut = 30.0; double jetEtaCut = 4.5; double ptLMinCut = 20.0;
+  double mllCut = 20; double ptLLCut = 30.0;
 
-  if	 (shapeAnaType == 7) jetPtCut = 30.0;
-  else if(shapeAnaType == 8) jetPtCut = 25.0;
-  else if(shapeAnaType == 9) jetPtCut = 35.0;
+  if	 (shapeAnaType ==  7) jetPtCut = 30.0;
+  else if(shapeAnaType ==  8) jetPtCut = 25.0;
+  else if(shapeAnaType ==  9) jetPtCut = 35.0;
+  else if(shapeAnaType == 10) jetPtCut = 45.0;
+  else if(shapeAnaType == 11) jetPtCut = 60.0;
 
-  if(shapeAnaType == 10) jetEtaCut =  2.4;
+  if(shapeAnaType == 12) jetEtaCut =  2.4;
 
-  if(shapeAnaType >= 1) ptLMinCut =  20.0;
+  if(shapeAnaType >= 1) {ptLMinCut =  25.0;}
 
   //*******************************************************
   //Input Files
@@ -179,6 +182,7 @@ void wwAnalysis(
   //infilenamev.push_back(Form("%sTTTo2L2Nu_13TeV-powheg.root",filesPathMC2.Data()));					      infilecatv.push_back(3);
   //infilenamev.push_back(Form("%sWWTo2L2Nu_13TeV-amcnlo.root",filesPathMC.Data())); infilecatv.push_back(1);
   //infilenamev.push_back(Form("%sWWTo2L2Nu_13TeV-powheg.root",filesPathMC.Data())); infilecatv.push_back(1);
+  //infilenamev.push_back(Form("%sGluGluWWTo2L2Nu_MCFM_13TeV.root",filesPathMC.Data())); infilecatv.push_back(2);
   //infilenamev.push_back(Form("%sWWTo2L2Nu_13TeV-powheg-herwigpp.root",filesPathMC.Data())); infilecatv.push_back(1);
   //infilenamev.push_back(Form("%sWWTo2L2Nu_13TeV-powheg-CUETP8M1Up.root",filesPathMC.Data())); infilecatv.push_back(1);
   //infilenamev.push_back(Form("%sWWTo2L2Nu_13TeV-powheg-CUETP8M1Down.root",filesPathMC.Data())); infilecatv.push_back(1);
@@ -319,14 +323,13 @@ void wwAnalysis(
        272007, 275377, 275656, 276284, 276314, 276812, 276830,
        277421, 277771, 278809, 278819, 280386, 281612, 284044};
 
-  const int nBinWWMLL = 25;
+  const int nBinWWMLL = 23;
   Float_t xbinsWWMLL[nBinWWMLL+1];
-    xbinsWWMLL[ 0] =  20;      xbinsWWMLL[ 1] =  37;      xbinsWWMLL[ 2] =  55;      xbinsWWMLL[ 3] =  65;      xbinsWWMLL[ 4] =  75;
-    xbinsWWMLL[ 5] =  80;      xbinsWWMLL[ 6] =  85;      xbinsWWMLL[ 7] =  90;      xbinsWWMLL[ 8] =  95;      xbinsWWMLL[ 9] = 102; 
-    xbinsWWMLL[10] = 110;      xbinsWWMLL[11] = 117;      xbinsWWMLL[12] = 125;      xbinsWWMLL[13] = 132;      xbinsWWMLL[14] = 140;
-    xbinsWWMLL[15] = 150;      xbinsWWMLL[16] = 160;      xbinsWWMLL[17] = 172;      xbinsWWMLL[18] = 185;      xbinsWWMLL[19] = 202; 
-    xbinsWWMLL[20] = 220;      xbinsWWMLL[21] = 250;      xbinsWWMLL[22] = 280;      xbinsWWMLL[23] = 380;      xbinsWWMLL[24] = 600;
-    xbinsWWMLL[25] =1500;
+    xbinsWWMLL[ 0] =  55;      xbinsWWMLL[ 1] =  65;      xbinsWWMLL[ 2] =  75;      xbinsWWMLL[ 3] =  80;      xbinsWWMLL[ 4] =  85;      
+    xbinsWWMLL[ 5] =  90;      xbinsWWMLL[ 6] =  95;      xbinsWWMLL[ 7] = 102;      xbinsWWMLL[ 8] = 110;      xbinsWWMLL[ 9] = 117;      
+    xbinsWWMLL[10] = 125;      xbinsWWMLL[11] = 132;      xbinsWWMLL[12] = 140;      xbinsWWMLL[13] = 150;      xbinsWWMLL[14] = 160;      
+    xbinsWWMLL[15] = 172;      xbinsWWMLL[16] = 185;      xbinsWWMLL[17] = 202;      xbinsWWMLL[18] = 220;      xbinsWWMLL[19] = 250;      
+    xbinsWWMLL[20] = 280;      xbinsWWMLL[21] = 380;      xbinsWWMLL[22] = 600;      xbinsWWMLL[23] =1500;
 
   const int nBinWWDPHILL = 18;
   Float_t xbinsWWDPHILL[nBinWWDPHILL+1];
@@ -337,18 +340,18 @@ void wwAnalysis(
 
   const int nBinWWPTL1 = 28;
   Float_t xbinsWWPTL1[nBinWWPTL1+1];
-    xbinsWWPTL1[ 0] =  25;      xbinsWWPTL1[ 1] =  32;      xbinsWWPTL1[ 2] =  40;      xbinsWWPTL1[ 3] =  45;      xbinsWWPTL1[ 4] =  50;
+    xbinsWWPTL1[ 0] =  27;      xbinsWWPTL1[ 1] =  34;      xbinsWWPTL1[ 2] =  40;      xbinsWWPTL1[ 3] =  45;      xbinsWWPTL1[ 4] =  50;
     xbinsWWPTL1[ 5] =  55;      xbinsWWPTL1[ 6] =  60;      xbinsWWPTL1[ 7] =  65;      xbinsWWPTL1[ 8] =  70;      xbinsWWPTL1[ 9] =  75; 
     xbinsWWPTL1[10] =  80;      xbinsWWPTL1[11] =  85;      xbinsWWPTL1[12] =  90;      xbinsWWPTL1[13] =  95;      xbinsWWPTL1[14] = 100;
     xbinsWWPTL1[15] = 105;      xbinsWWPTL1[16] = 110;      xbinsWWPTL1[17] = 120;      xbinsWWPTL1[18] = 130;      xbinsWWPTL1[19] = 140; 
     xbinsWWPTL1[20] = 150;      xbinsWWPTL1[21] = 162;      xbinsWWPTL1[22] = 175;      xbinsWWPTL1[23] = 197;      xbinsWWPTL1[24] = 220;
     xbinsWWPTL1[25] = 260;      xbinsWWPTL1[26] = 300;      xbinsWWPTL1[27] = 350;      xbinsWWPTL1[28] = 400;
 
-  const int nBinWWPTL2 = 12;
+  const int nBinWWPTL2 = 11;
   Float_t xbinsWWPTL2[nBinWWPTL2+1];
-    xbinsWWPTL2[ 0] =  20;      xbinsWWPTL2[ 1] =  25;      xbinsWWPTL2[ 2] =  30;      xbinsWWPTL2[ 3] =  35;      xbinsWWPTL2[ 4] =  40;    
-    xbinsWWPTL2[ 5] =  45;      xbinsWWPTL2[ 6] =  50;      xbinsWWPTL2[ 7] =  62;      xbinsWWPTL2[ 8] =  75;      xbinsWWPTL2[ 9] =  87;
-    xbinsWWPTL2[10] = 100;      xbinsWWPTL2[11] = 125;      xbinsWWPTL2[12] = 150;
+    xbinsWWPTL2[ 0] =  25;      xbinsWWPTL2[ 1] =  30;      xbinsWWPTL2[ 2] =  35;      xbinsWWPTL2[ 3] =  40;      xbinsWWPTL2[ 4] =  45;      
+    xbinsWWPTL2[ 5] =  50;      xbinsWWPTL2[ 6] =  62;      xbinsWWPTL2[ 7] =  75;      xbinsWWPTL2[ 8] =  87;      xbinsWWPTL2[ 9] = 100;      
+    xbinsWWPTL2[10] = 125;      xbinsWWPTL2[11] = 150;
 
   const int nBinWWPTLL = 20;
   Float_t xbinsWWPTLL[nBinWWPTLL+1];
@@ -363,17 +366,17 @@ void wwAnalysis(
   Float_t xRecbins[nRecBins+1] = { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 
                                   16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29};
   if     (shapeAnaType == 1){ // mll 55,75,85,95,110,125,140,160,185,220,280,380,600,1500
-    xGenbins[ 0] =  20;      xGenbins[ 1] =  55;      xGenbins[ 2] =  75;      xGenbins[ 3] =  85;      xGenbins[ 4] =   95;
-    xGenbins[ 5] = 110;      xGenbins[ 6] = 125;      xGenbins[ 7] = 140;      xGenbins[ 8] = 160;      xGenbins[ 9] =  185;
-    xGenbins[10] = 220;      xGenbins[11] = 280;      xGenbins[12] = 380;      xGenbins[13] = 600;      xGenbins[14] = 1500; 
-    xGenbins[15] = 1500.001; xGenbins[16] = 1500.002;
+    xGenbins[ 0] =  55;      xGenbins[ 1] =  75;      xGenbins[ 2] =  85;      xGenbins[ 3] =   95;     xGenbins[ 4] = 110;      
+    xGenbins[ 5] = 125;      xGenbins[ 6] = 140;      xGenbins[ 7] = 160;      xGenbins[ 8] =  185;     xGenbins[ 9] = 220;      
+    xGenbins[10] = 280;      xGenbins[11] = 380;      xGenbins[12] = 600;      xGenbins[13] = 1500;     xGenbins[14] = 1500.001; 
+    xGenbins[15] = 1500.002; xGenbins[16] = 1500.003;
     if(theControlRegion == 0){
-    xRecbins[ 0] =  20;      xRecbins[ 1] =  37;      xRecbins[ 2] =  55;      xRecbins[ 3] =  65;      xRecbins[ 4] =  75;
-    xRecbins[ 5] =  80;      xRecbins[ 6] =  85;      xRecbins[ 7] =  90;      xRecbins[ 8] =  95;      xRecbins[ 9] = 102; 
-    xRecbins[10] = 110;      xRecbins[11] = 117;      xRecbins[12] = 125;      xRecbins[13] = 132;      xRecbins[14] = 140;
-    xRecbins[15] = 150;      xRecbins[16] = 160;      xRecbins[17] = 172;      xRecbins[18] = 185;      xRecbins[19] = 202; 
-    xRecbins[20] = 220;      xRecbins[21] = 250;      xRecbins[22] = 280;      xRecbins[23] = 380;      xRecbins[24] = 600;
-    xRecbins[25] =1500;      xRecbins[26] =1500.001;  xRecbins[27] =1500.002;  xRecbins[28] =1500.003;  xRecbins[29] =1500.004;
+    xRecbins[ 0] =  55;      xRecbins[ 1] =  65;      xRecbins[ 2] =  75;      xRecbins[ 3] =  80;      xRecbins[ 4] =  85;	 
+    xRecbins[ 5] =  90;      xRecbins[ 6] =  95;      xRecbins[ 7] = 102;      xRecbins[ 8] = 110;      xRecbins[ 9] = 117;	 
+    xRecbins[10] = 125;      xRecbins[11] = 132;      xRecbins[12] = 140;      xRecbins[13] = 150;      xRecbins[14] = 160;	 
+    xRecbins[15] = 172;      xRecbins[16] = 185;      xRecbins[17] = 202;      xRecbins[18] = 220;      xRecbins[19] = 250;	 
+    xRecbins[20] = 280;      xRecbins[21] = 380;      xRecbins[22] = 600;      xRecbins[23] =1500;      xRecbins[24] =1500.001;  
+    xRecbins[25] =1500.002;  xRecbins[26] =1500.003;  xRecbins[27] =1500.004;  xRecbins[28] =1500.005;  xRecbins[29] =1500.006;
     }
   }
   else if(shapeAnaType == 2){ // dphill
@@ -390,14 +393,14 @@ void wwAnalysis(
     xRecbins[25] = 800.0007*TMath::Pi()/180.; xRecbins[26] = 800.0008*TMath::Pi()/180.; xRecbins[27] = 800.0009*TMath::Pi()/180.; xRecbins[28] = 800.0010*TMath::Pi()/180.; xRecbins[29] = 800.0011*TMath::Pi()/180.;
     }
   }
-  else if(shapeAnaType == 3){ // ptl1 25,40,50,60,70,80,90,100,110,130,150,175,220,300,400
+  else if(shapeAnaType == 3){ // ptl1 27,40,50,60,70,80,90,100,110,130,150,175,220,300,400
 
-    xGenbins[ 0] =  25;      xGenbins[ 1] =  40;      xGenbins[ 2] =  50;      xGenbins[ 3] =  60;      xGenbins[ 4] =  70;
+    xGenbins[ 0] =  27;      xGenbins[ 1] =  40;      xGenbins[ 2] =  50;      xGenbins[ 3] =  60;      xGenbins[ 4] =  70;
     xGenbins[ 5] =  80;      xGenbins[ 6] =  90;      xGenbins[ 7] = 100;      xGenbins[ 8] = 110;      xGenbins[ 9] = 130;      
     xGenbins[10] = 150;      xGenbins[11] = 175;      xGenbins[12] = 220;      xGenbins[13] = 300;      xGenbins[14] = 400;
     xGenbins[15] = 400.001;  xGenbins[16] = 400.002;
     if(theControlRegion == 0){
-    xRecbins[ 0] =  25;      xRecbins[ 1] =  32;      xRecbins[ 2] =  40;      xRecbins[ 3] =  45;      xRecbins[ 4] =  50;
+    xRecbins[ 0] =  27;      xRecbins[ 1] =  34;      xRecbins[ 2] =  40;      xRecbins[ 3] =  45;      xRecbins[ 4] =  50;
     xRecbins[ 5] =  55;      xRecbins[ 6] =  60;      xRecbins[ 7] =  65;      xRecbins[ 8] =  70;      xRecbins[ 9] =  75; 
     xRecbins[10] =  80;      xRecbins[11] =  85;      xRecbins[12] =  90;      xRecbins[13] =  95;      xRecbins[14] = 100;
     xRecbins[15] = 105;      xRecbins[16] = 110;      xRecbins[17] = 120;      xRecbins[18] = 130;      xRecbins[19] = 140; 
@@ -405,19 +408,19 @@ void wwAnalysis(
     xRecbins[25] = 260;      xRecbins[26] = 300;      xRecbins[27] = 350;      xRecbins[28] = 400;      xRecbins[29] = 400.001;
     }
   }
-  else if(shapeAnaType == 4){ // ptl2 20,25,30,40,45,50,75,100,150
-    xGenbins[ 0] =  20;      xGenbins[ 1] =  25;      xGenbins[ 2] =  30;      xGenbins[ 3] =  35;      xGenbins[ 4] =  40;
-    xGenbins[ 5] =  45;      xGenbins[ 6] =  50;      xGenbins[ 7] =  75;      xGenbins[ 8] = 100;      xGenbins[ 9] = 150;
-    xGenbins[10] = 150.001;  xGenbins[11] = 150.002;  xGenbins[12] = 150.003;  xGenbins[13] = 150.004;  xGenbins[14] = 150.005;
-    xGenbins[15] = 150.006;  xGenbins[16] = 150.007;
+  else if(shapeAnaType == 4){ // ptl2 25,30,40,45,50,75,100,150
+    xGenbins[ 0] =  25;      xGenbins[ 1] =  30;      xGenbins[ 2] =  35;      xGenbins[ 3] =  40;      xGenbins[ 4] =  45;      
+    xGenbins[ 5] =  50;      xGenbins[ 6] =  75;      xGenbins[ 7] = 100;      xGenbins[ 8] = 150;      xGenbins[ 9] = 150.001;  
+    xGenbins[10] = 150.002;  xGenbins[11] = 150.003;  xGenbins[12] = 150.004;  xGenbins[13] = 150.005;  xGenbins[14] = 150.006;  
+    xGenbins[15] = 150.007;  xGenbins[16] = 150.008;
     
     if(theControlRegion == 0){
-    xRecbins[ 0] =  20;      xRecbins[ 1] =  25;      xRecbins[ 2] =  30;      xRecbins[ 3] =  35;      xRecbins[ 4] =  40;      
-    xRecbins[ 5] =  45;      xRecbins[ 6] =  50;      xRecbins[ 7] =  62;      xRecbins[ 8] =  75;      xRecbins[ 9] =  87; 
-    xRecbins[10] = 100;      xRecbins[11] = 125;      xRecbins[12] = 150;      xRecbins[13] = 150.001;  xRecbins[14] = 150.002;
-    xRecbins[15] = 150.003;  xRecbins[16] = 150.004;  xRecbins[17] = 150.005;  xRecbins[18] = 150.006;  xRecbins[19] = 150.007; 
-    xRecbins[20] = 150.008;  xRecbins[21] = 150.009;  xRecbins[22] = 150.010;  xRecbins[23] = 150.011;  xRecbins[24] = 150.012;
-    xRecbins[25] = 150.013;  xRecbins[26] = 150.014;  xRecbins[27] = 150.015;  xRecbins[28] = 150.016;  xRecbins[29] = 150.017;
+    xRecbins[ 0] =  25;      xRecbins[ 1] =  30;      xRecbins[ 2] =  35;      xRecbins[ 3] =  40;	xRecbins[ 4] =  45;	 
+    xRecbins[ 5] =  50;      xRecbins[ 6] =  62;      xRecbins[ 7] =  75;      xRecbins[ 8] =  87;	xRecbins[ 9] = 100;	 
+    xRecbins[10] = 125;      xRecbins[11] = 150;      xRecbins[12] = 150.001;  xRecbins[13] = 150.002;  xRecbins[14] = 150.003;  
+    xRecbins[15] = 150.004;  xRecbins[16] = 150.005;  xRecbins[17] = 150.006;  xRecbins[18] = 150.007;  xRecbins[19] = 150.008;  
+    xRecbins[20] = 150.009;  xRecbins[21] = 150.010;  xRecbins[22] = 150.011;  xRecbins[23] = 150.012;  xRecbins[24] = 150.013;  
+    xRecbins[25] = 150.014;  xRecbins[26] = 150.015;  xRecbins[27] = 150.016;  xRecbins[28] = 150.017;  xRecbins[29] = 150.017;
     }
   }
   else if(shapeAnaType == 5){ // ptll 30,35,40,45,50,55,60,65,70,75,80,90,105,140,200,300
@@ -493,7 +496,7 @@ void wwAnalysis(
       histoOneBin_FidqqWW[i] = (TH1D*) histoOneBin->Clone(Form("histoOneBin_qqNonFid")); 
       histoOneBin_FidggWW[i] = (TH1D*) histoOneBin->Clone(Form("histoOneBin_ggNonFid")); 
     }
-    else if(i == nGenBins-2 && shapeAnaType == 10){
+    else if(i == nGenBins-2 && shapeAnaType == 12){
       qqWWLastOneName = "qqPU";
       histoOneBin_FidqqWW[i] = (TH1D*) histoOneBin->Clone(Form("histoOneBin_qqPU")); 
       histoOneBin_FidggWW[i] = (TH1D*) histoOneBin->Clone(Form("histoOneBin_ggPU")); 
@@ -1211,7 +1214,7 @@ void wwAnalysis(
       passFilter[0] = passFilter[0] * (signQ == 0);
 
       TLorentzVector dilep(( ( *(TLorentzVector*)(eventLeptons.p4->At(idLep[0])) ) + ( *(TLorentzVector*)(eventLeptons.p4->At(idLep[1])) ) )); 
-      if(dilep.M() > 20.0) passFilter[2] = kTRUE;
+      if(dilep.M() > mllCut) passFilter[2] = kTRUE;
       if(theControlRegion == 2) passFilter[2] = passFilter[2] && dilep.M() < 80.0;
 
       //if(infilecatv[ifile] == 7 && dilep.M() > 500) continue;
@@ -1364,7 +1367,7 @@ void wwAnalysis(
       if(theMET.Pt() > 20) passFilter[3] = kTRUE;
       passFilter[4] = kTRUE;
       if(minPMET[0] > 20) passFilter[5] = kTRUE;
-      if(dilep.Pt() > 30) passFilter[6] = kTRUE;
+      if(dilep.Pt() > ptLLCut) passFilter[6] = kTRUE;
       if(typePair == 1){
         if(TMath::Abs(dilep.M()-91.1876) <= 15.0) passFilter[4] = kFALSE;
         if     (useDYMVA == false && minPMET[0] <= 45) passFilter[5] = kFALSE;
@@ -1374,7 +1377,7 @@ void wwAnalysis(
       if(bDiscrMax < bTagCuts[0]) passFilter[7] = kTRUE;
       //if(idSoft.size() == 0) passFilter[8] = kTRUE;
       passFilter[8] = kTRUE;
-      if(idJet.size() == nJetsType || shapeAnaType == 10) passFilter[9] = kTRUE;
+      if(idJet.size() == nJetsType || shapeAnaType == 12) passFilter[9] = kTRUE;
 
       bool passBtagJES[2] = {bDiscrMaxJESUp < bTagCuts[0], bDiscrMaxJESDown < bTagCuts[0]};
       bool passBtagJER[2] = {bDiscrMaxJERUp < bTagCuts[0], bDiscrMaxJERDown < bTagCuts[0]};
@@ -1615,7 +1618,7 @@ void wwAnalysis(
       else               printf("0.0 0.0 0.0 0.0 ");
       printf("\n");
       }
-      if(typeSel == 2 && totalSel && debug == 3){
+      if(typeSel == 2 && totalSel && debug == 3 && theCategory == 0){
       printf("WEIGHTS %d %d %lld %f %f %f %f %f %f %f %f %f\n",eventEvent.runNum,eventEvent.lumiNum,eventEvent.eventNum,totalWeight,mcWeight,theLumi,puWeight,effSF,fakeSF,thePtwwWeight[0],total_bjetb_probLOOSE[1]/total_bjetb_probLOOSE[0],total_bjetl_probLOOSE[1]/total_bjetl_probLOOSE[0]);
       }
       if(totalWeight == 0) continue;
@@ -1734,12 +1737,12 @@ void wwAnalysis(
 	else if(shapeAnaType == 5 && theControlRegion == 0){
           MVAVar =  TMath::Min(dilep.Pt(),299.999);
         }
-	else if(shapeAnaType == 10){
+	else if(shapeAnaType == 12){
           MVAVar =  TMath::Min((double)idJet.size(),2.499);
         }
 
         // Variables for jes/jer systematics
-        if(shapeAnaType == 10){
+        if(shapeAnaType == 12){
           MVAVarSyst[0] =  TMath::Min((double)idJesUp.size(),2.499);
           MVAVarSyst[1] =  TMath::Min((double)idJesDown.size(),2.499);
           MVAVarSyst[2] =  TMath::Min((double)idJerUp.size(),2.499);
@@ -1833,7 +1836,7 @@ void wwAnalysis(
 	  }
 
 	  vector<int> idGenJet30;
-	  if(countSelectedGenLeptons >= 2 && dilepGen.M() > 20 && ((TLorentzVector*)(*eventMet.genP4)[0])->Pt() >= 0){
+	  if(countSelectedGenLeptons >= 2 && dilepGen.M() > mllCut && dilepGen.Pt() > ptLLCut && ((TLorentzVector*)(*eventMet.genP4)[0])->Pt() >= 20){
 	    passFiducial[0] = true;
 	    for(int njetgen=0; njetgen<eventMonteCarlo.jetP4->GetEntriesFast(); njetgen++) {
               if(TMath::Abs(((TLorentzVector*)(*eventMonteCarlo.jetP4)[njetgen])->Eta()) >= jetEtaCut) continue;
@@ -1887,17 +1890,17 @@ void wwAnalysis(
           else if(shapeAnaType == 5){
             MVAGenVar = TMath::Min(dilepGen.Pt(),299.999);
           }
-          else if(shapeAnaType == 10){
+          else if(shapeAnaType == 12){
             MVAGenVar = TMath::Min((double)idGenJet30.size(),2.499);
           }
           int genbin = histoGenMVA->GetXaxis()->FindBin(MVAGenVar)-1;
 	  if     (genbin == -1) {/*printf("%d %d %f\n",genbin,passFiducial[0],MVAGenVar);*/ genbin = nGenBins - 1;}
 	  else if(genbin >= nGenBins) {printf("PROBLEM %d %d %f\n",genbin,passFiducial[0],MVAGenVar);}
-	  if     (shapeAnaType == 10 && passFiducial[0] == false) genbin = nGenBins - 1; // non leptonic fiducial
-	  else if(shapeAnaType == 10 && passFiducial[2] == false) genbin = nGenBins - 2; // non reco to gen jet matching
+	  if     (shapeAnaType == 12 && passFiducial[0] == false) genbin = nGenBins - 1; // non leptonic fiducial
+	  else if(shapeAnaType == 12 && passFiducial[2] == false) genbin = nGenBins - 2; // non reco to gen jet matching
 	  else if(shapeAnaType <= 6 && passFiducial[0] == false) genbin = nGenBins - 1;
 	  else if(shapeAnaType >  6 && 
-	          shapeAnaType != 10 && passFiducial[1] == false) genbin = nGenBins - 1;
+	          shapeAnaType != 12 && passFiducial[1] == false) genbin = nGenBins - 1;
 	  // End gen fiducial selection
 
 	  if((passAllCuts[SIGSEL] && theControlRegion == 0) || (passAllCuts[TOPSEL] && theControlRegion == 1) || (passAllCuts[DYSEL] && theControlRegion == 2)) {
@@ -3408,13 +3411,13 @@ void wwAnalysis(
       newcardShape << Form("QCDscale_qqVV                          lnN    -	-   %7.5f   -	%7.5f %7.5f   -	   -    -    -     -     -     -     -     -     -     -     -     -     -     -     -     -     -     -\n",systQCDScale[4],systQCDScale[6],systQCDScale[7]);  	
       newcardShape << Form("QCDscale_ggH		           lnN    -	-     -     -	  -    -   %7.5f   -    -    -     -     -     -     -     -     -     -     -     -     -     -     -     -     -     -\n",systQCDScale[8]); 	
       newcardShape << Form("QCDscale_Top		           lnN  %7.5f	-     -     -	  -    -      -    -    -    -     -     -     -     -     -     -     -     -     -     -     -     -     -     -     -\n",systQCDScale[2]); 	
-      if(shapeAnaType != 10){
+      if(shapeAnaType != 12){
       newcardShape << Form("CMS_ww_Topnorm_jet%d rateParam  * Top 1 [0.1,10]\n",nJetsType);
       }
       else {
       newcardShape << Form("CMS_ww_Topnorm_jet%d rateParam  * Top 1 [0.1,10]\n",nb-1);
       }
-      if(useDYCR == true && shapeAnaType != 10) {
+      if(useDYCR == true && shapeAnaType != 12) {
       newcardShape << Form("CMS_ww_DYnorm_jet%d rateParam  * DY 1 [0.1,10]\n",nJetsType);         
       }
       newcardShape << Form("QCDscale_DY		                   lnN    -   %7.5f   -     -	  -	-     -    -	-    -     -     -     -     -     -     -     -     -     -     -     -     -     -     -     -\n",systQCDScale[3]);	
@@ -3443,14 +3446,14 @@ void wwAnalysis(
 
   // delete garbage
   system(Form("rm -f %s",outputLimitsAll));
-  if     (shapeAnaType == 0 || (theControlRegion != 0 && shapeAnaType != 10)){ // standard
+  if     (shapeAnaType == 0 || (theControlRegion != 0 && shapeAnaType != 12)){ // standard
     for(int i=1; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
   else if(shapeAnaType == 1){ // mll
-    for(int i=25; i<nRecBins; i++){
+    for(int i=23; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
@@ -3468,7 +3471,7 @@ void wwAnalysis(
     }
   }
   else if(shapeAnaType == 4){ // ptl2
-    for(int i=12; i<nRecBins; i++){
+    for(int i=11; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
@@ -3503,7 +3506,19 @@ void wwAnalysis(
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
     }
   }
-  else if(shapeAnaType == 10){ // lep fiducial, njets
+  else if(shapeAnaType ==10){ // lep and jet fiducial, ptjet<45
+    for(int i=1; i<nRecBins; i++){
+      system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+      system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+    }
+  }
+  else if(shapeAnaType ==11){ // lep and jet fiducial, ptjet<60
+    for(int i=1; i<nRecBins; i++){
+      system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+      system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
+    }
+  }
+  else if(shapeAnaType == 12){ // lep fiducial, njets
     for(int i=3; i<nRecBins; i++){
       system(Form("rm -f histo_limits_ww%s_%dj_%s_shapeType%d_bin%d.txt",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
       system(Form("rm -f ww_%s_%dj_input_%s_shapeType%d_bin%d.root",finalStateName,nJetsType,ECMsb.Data(),shapeAnaType,i));
