@@ -1022,7 +1022,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
         if(abs(thePandaFlat.genLep1PdgId)==11) thePDGMass = mass_el;
         vGen1.SetPtEtaPhiM(thePandaFlat.genLep1Pt,thePandaFlat.genLep1Eta,thePandaFlat.genLep1Phi,thePDGMass);
         thePDGMass = mass_mu;
-        if(abs(thePandaFlat.genLep1PdgId)==11) thePDGMass = mass_el;
+        if(abs(thePandaFlat.genLep2PdgId)==11) thePDGMass = mass_el;
         vGen2.SetPtEtaPhiM(thePandaFlat.genLep2Pt,thePandaFlat.genLep2Eta,thePandaFlat.genLep2Phi,thePDGMass);
         if     ((vGen1+vGen2).M() >  20 && (vGen1+vGen2).M() <=  85) theCategory = kPlotSignal0;
 	else if((vGen1+vGen2).M() >  85 && (vGen1+vGen2).M() <= 135) theCategory = kPlotSignal1;
