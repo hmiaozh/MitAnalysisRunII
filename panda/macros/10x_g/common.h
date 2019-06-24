@@ -70,136 +70,83 @@ enum TriggerBits {
 
 enum plotCategory {
   kPlotData      , // 0 
-  kPlotqqWW      , // 1  
-  kPlotggWW      , // 2  
-  kPlotTop       , // 3  
-  kPlotDY        , // 4  
-  kPlotZZ        , // 5  
-  kPlotWZ        , // 6  
-  kPlotEWKWZ     , // 7  
-  kPlotVVV       , // 8  
-  kPlotVG        , // 9  
-  kPlotNonPrompt , //10  
-  kPlotHiggs     , //11  
-  kPlotEWKSSWW   , //12   
-  kPlotQCDSSWW   , //13   
-  kPlotDPSWW     , //14   
-  kPlotWS        , //15   
-  kPlotEM        , //16   
-  kPlotBSM       , //17 
-  kPlotSignal0   , //18
-  kPlotSignal1   , //19
-  kPlotSignal2   , //20
-  kPlotSignal3   , //21
+  kPlotWW        , // 1  
+  kPlotZZ        , // 2  
+  kPlotWZ        , // 3  
+  kPlotWJ        , // 4  
+  kPlotDY        , // 5  
+  kPlotTop       , // 6  
+  kPlotVVV       , // 7  
+  kPlotWG        , // 8  
+  kPlotZG        , // 9  
+  kPlotGJ        , //10 
+  kPlotNonPrompt , //11  
+  kPlotBSM       , //12 
   nPlotCategories
 };
 
 std::map<int, TString> plotBaseNames={
   { kPlotData	   , "Data" },
-  { kPlotqqWW	   , "qqWW" },
-  { kPlotggWW	   , "ggWW" },
-  { kPlotTop	   , "Top" },
-  { kPlotDY	   , "DY" },
+  { kPlotWW	   , "WW" },
   { kPlotZZ	   , "ZZ" },
   { kPlotWZ	   , "WZ" },
-  { kPlotEWKWZ	   , "EWKWZ" },
+  { kPlotWJ	   , "WJ" },
+  { kPlotDY	   , "DY" },
+  { kPlotTop	   , "Top" },
   { kPlotVVV	   , "VVV" },
-  { kPlotVG	   , "VG" },
+  { kPlotWG	   , "WG" },
+  { kPlotZG        , "ZG" },
+  { kPlotGJ	   , "GJ" },
   { kPlotNonPrompt , "NonPrompt" },
-  { kPlotHiggs     , "Higgs" },
-  { kPlotEWKSSWW   , "EWKSSWW" },
-  { kPlotQCDSSWW   , "QCDSSWW" },
-  { kPlotDPSWW     , "DPSWW" },
-  { kPlotWS	   , "WS" },
-  { kPlotEM	   , "EM" },
-  { kPlotBSM	   , "BSM" },
-  { kPlotSignal0   , "Signal0" },
-  { kPlotSignal1   , "Signal1" },
-  { kPlotSignal2   , "Signal2" },
-  { kPlotSignal3   , "Signal3" }
+  { kPlotBSM	   , "BSM" }
 }; 
 
 std::map<int, int> plotColors={
   { kPlotData	   , kBlack},
-  { kPlotqqWW	   , kAzure-9},
-  { kPlotggWW	   , 901},
-  { kPlotTop	   , kYellow},
-  { kPlotDY	   , kAzure-2},
+  { kPlotWW	   , kAzure-9},
   { kPlotZZ	   , TColor::GetColor(155,152,204)},
   { kPlotWZ	   , kViolet-9},
-  { kPlotEWKWZ     , kCyan+3},
+  { kPlotWJ	   , 901},
+  { kPlotDY	   , kAzure-2},
+  { kPlotTop	   , kYellow},
   { kPlotVVV	   , 809},
-  { kPlotVG	   , 419},
-  { kPlotNonPrompt , kAzure-9},
-  { kPlotHiggs     , 842},
-  { kPlotEWKSSWW   , 832},
-  { kPlotQCDSSWW   , 798},
-  { kPlotDPSWW     , TColor::GetColor(248,206,104)},
-  { kPlotWS	   , kAzure+10},
-  { kPlotEM	   , kGreen-5},
-  { kPlotBSM	   , kGreen},
-  { kPlotSignal0   , kMagenta+1},
-  { kPlotSignal1   , kMagenta+2},
-  { kPlotSignal2   , kMagenta+3},
-  { kPlotSignal3   , kMagenta+4}
+  { kPlotWG	   , 419},
+  { kPlotZG        , kAzure-9},
+  { kPlotGJ	   , kGreen-5},
+  { kPlotNonPrompt , kOrange},
+  { kPlotBSM	   , kGreen}
 }; 
 
 std::map<int, TString> plotNames={
     { kPlotData      , "Data"},
-    { kPlotqqWW      , "qq #rightarrow WW"},
-    { kPlotggWW      , "gg #rightarrow WW"},
-    { kPlotTop       , "Top quark"},
-    { kPlotDY	     , "Drell-Yan"},
+    { kPlotWW        , "WW"},
     { kPlotZZ	     , "ZZ"},
     { kPlotWZ	     , "WZ"},
-    { kPlotEWKWZ     , "EWK WZ"},
+    { kPlotWJ        , "W+jets"},
+    { kPlotDY	     , "Z+jets"},
+    { kPlotTop       , "Top quark"},
     { kPlotVVV       , "VVV"},
-    { kPlotVG	     , "V#gamma" },
+    { kPlotWG	     , "W#gamma" },
+    { kPlotZG        , "Z#gamma"},
+    { kPlotGJ	     , "#gamma+jets"},
     { kPlotNonPrompt , "Nonprompt"},
-    { kPlotHiggs     , "Higgs"},
-    { kPlotEWKSSWW   , "EWK W^{#pm}W^{#pm}"},
-    { kPlotQCDSSWW   , "QCD W^{#pm}W^{#pm}"},
-    { kPlotDPSWW     , "DPS W^{#pm}W^{#pm}"},
-    { kPlotWS	     , "Wrong sign"},
-    { kPlotEM	     , "Top-quark/WW"},
-    { kPlotBSM       , "BSM"},
-    { kPlotSignal0   , "Signal 0"},
-    { kPlotSignal1   , "Signal 1"},
-    { kPlotSignal2   , "Signal 2"},
-    { kPlotSignal3   , "Signal 3"}
+    { kPlotBSM       , "BSM"}
 };
 
 const double mass_el = 0.000510998928;
 const double mass_mu = 0.10566;
 
-double mcCorrection(int type, int year, int jetNMBtags, int jetNBtags, int nJot, double dphillmet, int infileCat){
+double mcCorrection(int type, int year, int infileCat){
   double totalWeight = 1.0;
 
-  if     (type == 0){ // SSWW
-    if     (year == 2017 && jetNMBtags > 0) totalWeight = totalWeight * 0.70;
-    else if(year == 2017 && jetNBtags  > 0) totalWeight = totalWeight * 0.95;
+  if     (type == 0){ // VBFG
+    if(year == 2017) totalWeight = totalWeight * 0.45;
 
-    if     (year == 2018 && jetNMBtags > 0) totalWeight = totalWeight * 0.70;
-    else if(year == 2018 && jetNBtags  > 0) totalWeight = totalWeight * 1.00;
-  }
-  else if(type == 1){ // ZH
-    if     (year == 2016 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 1.40;
-    else if(year == 2016 && infileCat == kPlotDY && nJot >= 1) totalWeight = totalWeight * 0.88;
+    if     (year == 2017 && infileCat == kPlotWG) totalWeight = totalWeight * 0.45;
+    else if(year == 2017 && infileCat == kPlotGJ) totalWeight = totalWeight * 0.45;
+    else if(year == 2017 && infileCat == kPlotWJ) totalWeight = totalWeight * 0.70;
 
-    else if(year == 2017 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 1.45;
-    else if(year == 2017 && infileCat == kPlotDY && nJot >= 1) totalWeight = totalWeight * 1.10;
-
-    else if(year == 2018 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 2.40;
-    else if(year == 2018 && infileCat == kPlotDY && nJot >= 1) totalWeight = totalWeight * 1.70;
-  }
-
-  if(type == 1 || type  == 2){ // ZH or Z
-    if     (year == 2016 && infileCat == kPlotDY) totalWeight = totalWeight * (0.986772 + 0.00796195 * dphillmet);
- 
-    else if(year == 2017 && infileCat == kPlotDY) totalWeight = totalWeight * (0.968796 + 0.01901070 * dphillmet);
-
-    else if(year == 2018 && infileCat == kPlotDY) totalWeight = totalWeight * (0.917654 + 0.04973930 * dphillmet);
-  }
+ }
 
   return totalWeight;
 }
