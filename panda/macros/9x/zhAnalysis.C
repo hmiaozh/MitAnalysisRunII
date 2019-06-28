@@ -229,7 +229,7 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
     else if(thePlot >=  42 && thePlot <=  44) {nBinPlot = 40;  xminPlot =  0.0; xmaxPlot = 4.0;}
     else if(thePlot >=  45 && thePlot <=  47) {nBinPlot = 10;  xminPlot = -0.5; xmaxPlot = 9.5;}
     else if(thePlot >=  48 && thePlot <=  53) {is1DPlot = true;}
-    else if(thePlot >=  54 && thePlot <=  56) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = TMath::Pi();}
+    else if(thePlot >=  54 && thePlot <=  56) {nBinPlot = 24;  xminPlot =  0.0; xmaxPlot = 3.0;}
     else if(thePlot >=  57 && thePlot <=  59) {nBinPlot = 160; xminPlot = 80.0; xmaxPlot = 240;}
     else if(thePlot >=  60 && thePlot <=  62) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 1;}
     else if(thePlot >=  63 && thePlot <=  65) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = TMath::Pi();}
@@ -547,7 +547,7 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
       passZMass   && passNjets && passMETTight && passPTFrac && passDPhiZMETTight && !passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,   // BTAGSEL
       passZMass   &&              passMETTight &&                                                     passPTLL &&                   passTauVeto,               // ZLLSEL
       passZMassSB && passNjets && passMETTight && passPTFrac && passDPhiZMETTight &&  passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto && passDRLL,   // WWSEL
-      passZMass   && passNjets && passMET      &&                                                     passPTLL && passDPhiJetMET && passTauVeto && passDRLL,   // PRESEL
+      passZMass   && passNjets && passMET      &&                                                     passPTLL &&                   passTauVeto,               // PRESEL
       passZMass   && passNjets && passMET      && passPTFrac &&                       passBtagVeto && passPTLL && passDPhiJetMET && passTauVeto                // DYSEL
                                     };
 
@@ -697,11 +697,11 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
       if(passAllCuts[ZHSEL] && lepType != 2 && thePandaFlat.nJot == 1 && passMET && !passDPhiZMETTight) histo[51][theCategory]->Fill(TMath::Min(vMet.Pt(),metMax),totalWeight);
       if(passAllCuts[ZHSEL] && lepType == 2 && thePandaFlat.nJot <= 1 && passMET &&  passDPhiZMETTight) histo[52][theCategory]->Fill(TMath::Min(vMet.Pt(),metMax),totalWeight);
       if(passAllCuts[ZHSEL] && lepType == 2 && thePandaFlat.nJot <= 1 && passMET && !passDPhiZMETTight) histo[53][theCategory]->Fill(TMath::Min(vMet.Pt(),metMax),totalWeight);
-      if(passNMinusOne[1] || passNMinusOne[7]) histo[lepType+ 54][theCategory]->Fill(dPhiMETTrackMETMin,totalWeight);
-      if(passAllCuts[PRESEL])	  histo[lepType+ 57][theCategory]->Fill(TMath::Min(vMet.Pt(),239.999),totalWeight);
-      if(passAllCuts[PRESEL])	  histo[lepType+ 60][theCategory]->Fill(TMath::Min(ptFrac,0.999),totalWeight);
-      if(passAllCuts[PRESEL])	  histo[lepType+ 63][theCategory]->Fill(dPhiDiLepMET,totalWeight);
-      if(passAllCuts[PRESEL])	  histo[lepType+ 66][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNBtags,3.499),totalWeight);
+      if(passAllCuts[PRESEL] && !passAllCuts[ZHTIGHTSEL]) histo[lepType+ 54][theCategory]->Fill(TMath::Min(dPhiJetMET,2.999),totalWeight);
+      if(passAllCuts[PRESEL] && !passAllCuts[ZHTIGHTSEL]) histo[lepType+ 57][theCategory]->Fill(TMath::Min(vMet.Pt(),239.999),totalWeight);
+      if(passAllCuts[PRESEL] && !passAllCuts[ZHTIGHTSEL]) histo[lepType+ 60][theCategory]->Fill(TMath::Min(ptFrac,0.999),totalWeight);
+      if(passAllCuts[PRESEL] && !passAllCuts[ZHTIGHTSEL]) histo[lepType+ 63][theCategory]->Fill(dPhiDiLepMET,totalWeight);
+      if(passAllCuts[PRESEL] && !passAllCuts[ZHTIGHTSEL]) histo[lepType+ 66][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNBtags,3.499),totalWeight);
       if((passNMinusOne[ 1] ||
           passNMinusOne[ 4] ||
           passNMinusOne[ 7]) && lepType != 2) {
