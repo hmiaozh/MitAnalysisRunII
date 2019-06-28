@@ -52,7 +52,7 @@ int year, int mH = 125
   TString puPath;
   TString photonSFPath;
   TString elephoSFPath = Form("MitAnalysisRunII/data/90x/histoDY0LGSF_%d.root",year);
-  TString trgSFPath = Form("MitAnalysisRunII/data/90x/histo_triggerEff_sel0_%d.root",year);
+  TString trgSFPath = Form("MitAnalysisRunII/data/10x_g/histoTriggerSFVBFG_%d.root",year);
   TString effSFPath = Form("MitAnalysisRunII/data/90x/histoDY0EffSFStudy_%d.root",year);
   //TString npvPath = Form("MitAnalysisRunII/data/90x/npvWeights_%d.root",year);
   if(year == 2018) {
@@ -141,6 +141,10 @@ int year, int mH = 125
   TH2D *fhDElePhoSF    = (TH2D*)(fElePhoSF->Get("histoLGSF"));    assert(fhDElePhoSF);    fhDElePhoSF  ->SetDirectory(0);
   TH2D *fhDElePhoEffda = (TH2D*)(fElePhoSF->Get("histoLGEffda")); assert(fhDElePhoEffda); fhDElePhoEffda->SetDirectory(0);
   delete fElePhoSF;
+
+  TFile *ftrgSF = TFile::Open(trgSFPath.Data());
+  TH1D *trgSF = (TH1D*)(ftrgSF->Get("hDTrgSF_2")); assert(trgSF); trgSF->SetDirectory(0);
+  delete ftrgSF;
 
   const int nBinMVA = 55; Double_t xbins[nBinMVA+1] = {0, 
      50,  100,  150,  200,  250,  300,  400,  500,  600,  800, 1000,
@@ -552,6 +556,12 @@ int year, int mH = 125
         sf_l1PrefireE = 1.0 + TMath::Abs(1.0 - thePandaFlat.sf_l1Prefire) * 0.2;
 
 	//double npvWeight = nPUScaleFactor(fhDNPV, thePandaFlat.npv);
+
+	if(passPhoSel == true) {
+	  int nphbin = trgSF->GetXaxis()->FindBin(TMath::Min((double)vPhoton.Pt(), 399.99));
+          triggerWeights[0] = trgSF->GetBinContent(nphbin);
+          triggerWeights[1] = trgSF->GetBinError(nphbin)/triggerWeights[0];
+        }
 
         totalWeight = thePandaFlat.normalizedWeight * lumiV[whichYear] * 1000 * puWeight * thePandaFlat.sf_l1Prefire * triggerWeights[0] * theMCPrescale;
 
