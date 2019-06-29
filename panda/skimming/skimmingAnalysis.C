@@ -128,6 +128,8 @@ void skimmingAnalysis(int year, bool specialMC = false)
     infileName_.push_back(Form("ZH_ZToLL_HToGDarkG_M125.root"));
     infileName_.push_back(Form("ZH_ZToLL_HToGDarkG_M200.root"));
     infileName_.push_back(Form("ZH_ZToLL_HToGDarkG_M300.root"));
+    infileName_.push_back(Form("WWjj_SS_dim8_ewk.root"));
+    infileName_.push_back(Form("WZjj_dim8_ewk.root"));
   }
 
   for(UInt_t ifile=0; ifile<infileName_.size(); ifile++) {

@@ -91,6 +91,10 @@ PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ZH_ZToLL_HToGDarkG_M125
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ZH_ZToLL_HToGDarkG_M200
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ZH_ZToLL_HToGDarkG_M300
 
+elif [ $NSEL == 'dim8' ]; then
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 WWjj_SS_dim8_ewk
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 WZjj_dim8_ewk
+
 elif [ $NSEL == 'da' ]; then
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 data_overlaps
 
