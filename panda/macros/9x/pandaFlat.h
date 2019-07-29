@@ -22,6 +22,692 @@ public :
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
    // Declaration of leaf types
+   //Float_t         rw_FT9_10;
+   Float_t         rw_fm0_0;
+   Float_t         rw_fm0_0p1;
+   Float_t         rw_fm0_0p2;
+   Float_t         rw_fm0_0p3;
+   Float_t         rw_fm0_0p4;
+   Float_t         rw_fm0_0p5;
+   Float_t         rw_fm0_0p6;
+   Float_t         rw_fm0_0p7;
+   Float_t         rw_fm0_0p8;
+   Float_t         rw_fm0_0p9;
+   Float_t         rw_fm0_10;
+   Float_t         rw_fm0_1p0;
+   Float_t         rw_fm0_1p5;
+   Float_t         rw_fm0_2p0;
+   Float_t         rw_fm0_3;
+   Float_t         rw_fm0_4;
+   Float_t         rw_fm0_5;
+   Float_t         rw_fm0_6;
+   Float_t         rw_fm0_7;
+   Float_t         rw_fm0_8;
+   Float_t         rw_fm0_9;
+   Float_t         rw_fm0_m0p1;
+   Float_t         rw_fm0_m0p2;
+   Float_t         rw_fm0_m0p3;
+   Float_t         rw_fm0_m0p4;
+   Float_t         rw_fm0_m0p5;
+   Float_t         rw_fm0_m0p6;
+   Float_t         rw_fm0_m0p7;
+   Float_t         rw_fm0_m0p8;
+   Float_t         rw_fm0_m0p9;
+   Float_t         rw_fm0_m10;
+   Float_t         rw_fm0_m1p0;
+   Float_t         rw_fm0_m1p5;
+   Float_t         rw_fm0_m2p0;
+   Float_t         rw_fm0_m3;
+   Float_t         rw_fm0_m4;
+   Float_t         rw_fm0_m5;
+   Float_t         rw_fm0_m6;
+   Float_t         rw_fm0_m7;
+   Float_t         rw_fm0_m8;
+   Float_t         rw_fm0_m9;
+   Float_t         rw_fm1_0;
+   Float_t         rw_fm1_0p3;
+   Float_t         rw_fm1_0p6;
+   Float_t         rw_fm1_0p9;
+   Float_t         rw_fm1_10;
+   Float_t         rw_fm1_13;
+   Float_t         rw_fm1_15;
+   Float_t         rw_fm1_18;
+   Float_t         rw_fm1_1p2;
+   Float_t         rw_fm1_1p5;
+   Float_t         rw_fm1_1p8;
+   Float_t         rw_fm1_21;
+   Float_t         rw_fm1_23p0;
+   Float_t         rw_fm1_28;
+   Float_t         rw_fm1_2p1;
+   Float_t         rw_fm1_2p5;
+   Float_t         rw_fm1_30;
+   Float_t         rw_fm1_3p0;
+   Float_t         rw_fm1_5p0;
+   Float_t         rw_fm1_m0p3;
+   Float_t         rw_fm1_m0p6;
+   Float_t         rw_fm1_m0p9;
+   Float_t         rw_fm1_m10;
+   Float_t         rw_fm1_m13;
+   Float_t         rw_fm1_m15;
+   Float_t         rw_fm1_m18;
+   Float_t         rw_fm1_m1p2;
+   Float_t         rw_fm1_m1p5;
+   Float_t         rw_fm1_m1p8;
+   Float_t         rw_fm1_m21;
+   Float_t         rw_fm1_m23p0;
+   Float_t         rw_fm1_m28;
+   Float_t         rw_fm1_m2p1;
+   Float_t         rw_fm1_m2p5;
+   Float_t         rw_fm1_m30;
+   Float_t         rw_fm1_m3p0;
+   Float_t         rw_fm1_m5p0;
+   Float_t         rw_fm2_0;
+   Float_t         rw_fm2_1;
+   Float_t         rw_fm2_10;
+   Float_t         rw_fm2_15;
+   Float_t         rw_fm2_2;
+   Float_t         rw_fm2_20;
+   Float_t         rw_fm2_25;
+   Float_t         rw_fm2_3;
+   Float_t         rw_fm2_30;
+   Float_t         rw_fm2_35;
+   Float_t         rw_fm2_40;
+   Float_t         rw_fm2_45;
+   Float_t         rw_fm2_50;
+   Float_t         rw_fm2_55;
+   Float_t         rw_fm2_6;
+   Float_t         rw_fm2_60;
+   Float_t         rw_fm2_m1;
+   Float_t         rw_fm2_m10;
+   Float_t         rw_fm2_m15;
+   Float_t         rw_fm2_m2;
+   Float_t         rw_fm2_m20;
+   Float_t         rw_fm2_m25;
+   Float_t         rw_fm2_m3;
+   Float_t         rw_fm2_m30;
+   Float_t         rw_fm2_m35;
+   Float_t         rw_fm2_m40;
+   Float_t         rw_fm2_m45;
+   Float_t         rw_fm2_m50;
+   Float_t         rw_fm2_m55;
+   Float_t         rw_fm2_m6;
+   Float_t         rw_fm2_m60;
+   Float_t         rw_fm3_0;
+   Float_t         rw_fm3_1;
+   Float_t         rw_fm3_105;
+   Float_t         rw_fm3_13;
+   Float_t         rw_fm3_2;
+   Float_t         rw_fm3_21;
+   Float_t         rw_fm3_3;
+   Float_t         rw_fm3_31;
+   Float_t         rw_fm3_44;
+   Float_t         rw_fm3_5;
+   Float_t         rw_fm3_55;
+   Float_t         rw_fm3_65;
+   Float_t         rw_fm3_75;
+   Float_t         rw_fm3_8;
+   Float_t         rw_fm3_85;
+   Float_t         rw_fm3_95;
+   Float_t         rw_fm3_m1;
+   Float_t         rw_fm3_m105;
+   Float_t         rw_fm3_m13;
+   Float_t         rw_fm3_m2;
+   Float_t         rw_fm3_m21;
+   Float_t         rw_fm3_m3;
+   Float_t         rw_fm3_m31;
+   Float_t         rw_fm3_m44;
+   Float_t         rw_fm3_m5;
+   Float_t         rw_fm3_m55;
+   Float_t         rw_fm3_m65;
+   Float_t         rw_fm3_m75;
+   Float_t         rw_fm3_m8;
+   Float_t         rw_fm3_m85;
+   Float_t         rw_fm3_m95;
+   Float_t         rw_fm4_0;
+   Float_t         rw_fm4_1;
+   Float_t         rw_fm4_105;
+   Float_t         rw_fm4_115;
+   Float_t         rw_fm4_121;
+   Float_t         rw_fm4_13;
+   Float_t         rw_fm4_130;
+   Float_t         rw_fm4_2;
+   Float_t         rw_fm4_21;
+   Float_t         rw_fm4_3;
+   Float_t         rw_fm4_31;
+   Float_t         rw_fm4_44;
+   Float_t         rw_fm4_5;
+   Float_t         rw_fm4_55;
+   Float_t         rw_fm4_65;
+   Float_t         rw_fm4_75;
+   Float_t         rw_fm4_8;
+   Float_t         rw_fm4_85;
+   Float_t         rw_fm4_95;
+   Float_t         rw_fm4_m1;
+   Float_t         rw_fm4_m105;
+   Float_t         rw_fm4_m115;
+   Float_t         rw_fm4_m121;
+   Float_t         rw_fm4_m13;
+   Float_t         rw_fm4_m130;
+   Float_t         rw_fm4_m2;
+   Float_t         rw_fm4_m21;
+   Float_t         rw_fm4_m3;
+   Float_t         rw_fm4_m31;
+   Float_t         rw_fm4_m44;
+   Float_t         rw_fm4_m5;
+   Float_t         rw_fm4_m55;
+   Float_t         rw_fm4_m65;
+   Float_t         rw_fm4_m75;
+   Float_t         rw_fm4_m8;
+   Float_t         rw_fm4_m85;
+   Float_t         rw_fm4_m95;
+   Float_t         rw_fm5_0;
+   Float_t         rw_fm5_1;
+   Float_t         rw_fm5_105;
+   Float_t         rw_fm5_115;
+   Float_t         rw_fm5_121;
+   Float_t         rw_fm5_13;
+   Float_t         rw_fm5_130;
+   Float_t         rw_fm5_150;
+   Float_t         rw_fm5_170;
+   Float_t         rw_fm5_190;
+   Float_t         rw_fm5_2;
+   Float_t         rw_fm5_200;
+   Float_t         rw_fm5_21;
+   Float_t         rw_fm5_3;
+   Float_t         rw_fm5_31;
+   Float_t         rw_fm5_44;
+   Float_t         rw_fm5_5;
+   Float_t         rw_fm5_55;
+   Float_t         rw_fm5_65;
+   Float_t         rw_fm5_75;
+   Float_t         rw_fm5_8;
+   Float_t         rw_fm5_85;
+   Float_t         rw_fm5_95;
+   Float_t         rw_fm5_m1;
+   Float_t         rw_fm5_m105;
+   Float_t         rw_fm5_m115;
+   Float_t         rw_fm5_m121;
+   Float_t         rw_fm5_m13;
+   Float_t         rw_fm5_m130;
+   Float_t         rw_fm5_m150;
+   Float_t         rw_fm5_m170;
+   Float_t         rw_fm5_m190;
+   Float_t         rw_fm5_m2;
+   Float_t         rw_fm5_m200;
+   Float_t         rw_fm5_m21;
+   Float_t         rw_fm5_m3;
+   Float_t         rw_fm5_m31;
+   Float_t         rw_fm5_m44;
+   Float_t         rw_fm5_m5;
+   Float_t         rw_fm5_m55;
+   Float_t         rw_fm5_m65;
+   Float_t         rw_fm5_m75;
+   Float_t         rw_fm5_m8;
+   Float_t         rw_fm5_m85;
+   Float_t         rw_fm5_m95;
+   Float_t         rw_fm6_0;
+   Float_t         rw_fm6_0p2;
+   Float_t         rw_fm6_0p5;
+   Float_t         rw_fm6_0p7;
+   Float_t         rw_fm6_10;
+   Float_t         rw_fm6_12;
+   Float_t         rw_fm6_15;
+   Float_t         rw_fm6_18;
+   Float_t         rw_fm6_1p0;
+   Float_t         rw_fm6_1p2;
+   Float_t         rw_fm6_1p4;
+   Float_t         rw_fm6_1p6;
+   Float_t         rw_fm6_1p8;
+   Float_t         rw_fm6_20;
+   Float_t         rw_fm6_2p0;
+   Float_t         rw_fm6_3;
+   Float_t         rw_fm6_5;
+   Float_t         rw_fm6_7;
+   Float_t         rw_fm6_m0p2;
+   Float_t         rw_fm6_m0p5;
+   Float_t         rw_fm6_m0p7;
+   Float_t         rw_fm6_m10;
+   Float_t         rw_fm6_m12;
+   Float_t         rw_fm6_m15;
+   Float_t         rw_fm6_m18;
+   Float_t         rw_fm6_m1p0;
+   Float_t         rw_fm6_m1p2;
+   Float_t         rw_fm6_m1p4;
+   Float_t         rw_fm6_m1p6;
+   Float_t         rw_fm6_m1p8;
+   Float_t         rw_fm6_m20;
+   Float_t         rw_fm6_m2p0;
+   Float_t         rw_fm6_m3;
+   Float_t         rw_fm6_m5;
+   Float_t         rw_fm6_m7;
+   Float_t         rw_fm7_0;
+   Float_t         rw_fm7_0p5;
+   Float_t         rw_fm7_10;
+   Float_t         rw_fm7_15;
+   Float_t         rw_fm7_1p0;
+   Float_t         rw_fm7_1p5;
+   Float_t         rw_fm7_20;
+   Float_t         rw_fm7_25;
+   Float_t         rw_fm7_2p0;
+   Float_t         rw_fm7_2p5;
+   Float_t         rw_fm7_30;
+   Float_t         rw_fm7_35;
+   Float_t         rw_fm7_3p0;
+   Float_t         rw_fm7_3p5;
+   Float_t         rw_fm7_40;
+   Float_t         rw_fm7_5p0;
+   Float_t         rw_fm7_m0p5;
+   Float_t         rw_fm7_m10;
+   Float_t         rw_fm7_m15;
+   Float_t         rw_fm7_m1p0;
+   Float_t         rw_fm7_m1p5;
+   Float_t         rw_fm7_m20;
+   Float_t         rw_fm7_m25;
+   Float_t         rw_fm7_m2p0;
+   Float_t         rw_fm7_m2p5;
+   Float_t         rw_fm7_m30;
+   Float_t         rw_fm7_m35;
+   Float_t         rw_fm7_m3p0;
+   Float_t         rw_fm7_m3p5;
+   Float_t         rw_fm7_m40;
+   Float_t         rw_fm7_m5p0;
+   Float_t         rw_fs0_0p0;
+   Float_t         rw_fs0_0p2;
+   Float_t         rw_fs0_0p4;
+   Float_t         rw_fs0_0p6;
+   Float_t         rw_fs0_0p8;
+   Float_t         rw_fs0_10;
+   Float_t         rw_fs0_1p0;
+   Float_t         rw_fs0_1p2;
+   Float_t         rw_fs0_1p5;
+   Float_t         rw_fs0_20;
+   Float_t         rw_fs0_2p0;
+   Float_t         rw_fs0_2p5;
+   Float_t         rw_fs0_30;
+   Float_t         rw_fs0_35;
+   Float_t         rw_fs0_3p0;
+   Float_t         rw_fs0_4;
+   Float_t         rw_fs0_40;
+   Float_t         rw_fs0_45;
+   Float_t         rw_fs0_5;
+   Float_t         rw_fs0_50;
+   Float_t         rw_fs0_6;
+   Float_t         rw_fs0_8;
+   Float_t         rw_fs0_m0p2;
+   Float_t         rw_fs0_m0p4;
+   Float_t         rw_fs0_m0p6;
+   Float_t         rw_fs0_m0p8;
+   Float_t         rw_fs0_m10;
+   Float_t         rw_fs0_m1p0;
+   Float_t         rw_fs0_m1p2;
+   Float_t         rw_fs0_m1p5;
+   Float_t         rw_fs0_m20;
+   Float_t         rw_fs0_m2p0;
+   Float_t         rw_fs0_m2p5;
+   Float_t         rw_fs0_m30;
+   Float_t         rw_fs0_m35;
+   Float_t         rw_fs0_m3p0;
+   Float_t         rw_fs0_m4;
+   Float_t         rw_fs0_m40;
+   Float_t         rw_fs0_m45;
+   Float_t         rw_fs0_m5;
+   Float_t         rw_fs0_m50;
+   Float_t         rw_fs0_m6;
+   Float_t         rw_fs0_m8;
+   Float_t         rw_fs1_0;
+   Float_t         rw_fs1_0p5;
+   Float_t         rw_fs1_10;
+   Float_t         rw_fs1_15;
+   Float_t         rw_fs1_1p0;
+   Float_t         rw_fs1_1p5;
+   Float_t         rw_fs1_20;
+   Float_t         rw_fs1_25;
+   Float_t         rw_fs1_2p0;
+   Float_t         rw_fs1_2p5;
+   Float_t         rw_fs1_30;
+   Float_t         rw_fs1_33;
+   Float_t         rw_fs1_35;
+   Float_t         rw_fs1_3p0;
+   Float_t         rw_fs1_4p0;
+   Float_t         rw_fs1_5p0;
+   Float_t         rw_fs1_7p5;
+   Float_t         rw_fs1_m0p5;
+   Float_t         rw_fs1_m10;
+   Float_t         rw_fs1_m15;
+   Float_t         rw_fs1_m1p0;
+   Float_t         rw_fs1_m1p5;
+   Float_t         rw_fs1_m20;
+   Float_t         rw_fs1_m25;
+   Float_t         rw_fs1_m2p0;
+   Float_t         rw_fs1_m2p5;
+   Float_t         rw_fs1_m30;
+   Float_t         rw_fs1_m33;
+   Float_t         rw_fs1_m35;
+   Float_t         rw_fs1_m3p0;
+   Float_t         rw_fs1_m4p0;
+   Float_t         rw_fs1_m5p0;
+   Float_t         rw_fs1_m7p5;
+   Float_t         rw_ft0_0;
+   Float_t         rw_ft0_0p02;
+   Float_t         rw_ft0_0p04;
+   Float_t         rw_ft0_0p06;
+   Float_t         rw_ft0_0p08;
+   Float_t         rw_ft0_0p1;
+   Float_t         rw_ft0_0p12;
+   Float_t         rw_ft0_0p14;
+   Float_t         rw_ft0_0p18;
+   Float_t         rw_ft0_0p2;
+   Float_t         rw_ft0_0p3;
+   Float_t         rw_ft0_0p5;
+   Float_t         rw_ft0_0p7;
+   Float_t         rw_ft0_1p0;
+   Float_t         rw_ft0_1p2;
+   Float_t         rw_ft0_1p4;
+   Float_t         rw_ft0_1p8;
+   Float_t         rw_ft0_2p0;
+   Float_t         rw_ft0_m0p02;
+   Float_t         rw_ft0_m0p04;
+   Float_t         rw_ft0_m0p06;
+   Float_t         rw_ft0_m0p08;
+   Float_t         rw_ft0_m0p1;
+   Float_t         rw_ft0_m0p12;
+   Float_t         rw_ft0_m0p14;
+   Float_t         rw_ft0_m0p18;
+   Float_t         rw_ft0_m0p2;
+   Float_t         rw_ft0_m0p3;
+   Float_t         rw_ft0_m0p5;
+   Float_t         rw_ft0_m0p7;
+   Float_t         rw_ft0_m1p0;
+   Float_t         rw_ft0_m1p2;
+   Float_t         rw_ft0_m1p4;
+   Float_t         rw_ft0_m1p8;
+   Float_t         rw_ft0_m2p0;
+   Float_t         rw_ft1_0;
+   Float_t         rw_ft1_0p02;
+   Float_t         rw_ft1_0p04;
+   Float_t         rw_ft1_0p06;
+   Float_t         rw_ft1_0p08;
+   Float_t         rw_ft1_0p1;
+   Float_t         rw_ft1_0p12;
+   Float_t         rw_ft1_0p14;
+   Float_t         rw_ft1_0p18;
+   Float_t         rw_ft1_0p2;
+   Float_t         rw_ft1_0p3;
+   Float_t         rw_ft1_0p5;
+   Float_t         rw_ft1_0p7;
+   Float_t         rw_ft1_1p0;
+   Float_t         rw_ft1_1p2;
+   Float_t         rw_ft1_1p4;
+   Float_t         rw_ft1_1p8;
+   Float_t         rw_ft1_2p0;
+   Float_t         rw_ft1_m0p02;
+   Float_t         rw_ft1_m0p04;
+   Float_t         rw_ft1_m0p06;
+   Float_t         rw_ft1_m0p08;
+   Float_t         rw_ft1_m0p1;
+   Float_t         rw_ft1_m0p12;
+   Float_t         rw_ft1_m0p14;
+   Float_t         rw_ft1_m0p18;
+   Float_t         rw_ft1_m0p2;
+   Float_t         rw_ft1_m0p3;
+   Float_t         rw_ft1_m0p5;
+   Float_t         rw_ft1_m0p7;
+   Float_t         rw_ft1_m1p0;
+   Float_t         rw_ft1_m1p2;
+   Float_t         rw_ft1_m1p4;
+   Float_t         rw_ft1_m1p8;
+   Float_t         rw_ft1_m2p0;
+   Float_t         rw_ft2_0;
+   Float_t         rw_ft2_0p02;
+   Float_t         rw_ft2_0p04;
+   Float_t         rw_ft2_0p08;
+   Float_t         rw_ft2_0p14;
+   Float_t         rw_ft2_0p2;
+   Float_t         rw_ft2_0p26;
+   Float_t         rw_ft2_0p32;
+   Float_t         rw_ft2_0p5;
+   Float_t         rw_ft2_0p7;
+   Float_t         rw_ft2_0p9;
+   Float_t         rw_ft2_1p2;
+   Float_t         rw_ft2_1p7;
+   Float_t         rw_ft2_2p5;
+   Float_t         rw_ft2_2p9;
+   Float_t         rw_ft2_3p4;
+   Float_t         rw_ft2_3p9;
+   Float_t         rw_ft2_4p5;
+   Float_t         rw_ft2_m0p02;
+   Float_t         rw_ft2_m0p04;
+   Float_t         rw_ft2_m0p08;
+   Float_t         rw_ft2_m0p14;
+   Float_t         rw_ft2_m0p2;
+   Float_t         rw_ft2_m0p26;
+   Float_t         rw_ft2_m0p32;
+   Float_t         rw_ft2_m0p5;
+   Float_t         rw_ft2_m0p7;
+   Float_t         rw_ft2_m0p9;
+   Float_t         rw_ft2_m1p2;
+   Float_t         rw_ft2_m1p7;
+   Float_t         rw_ft2_m2p5;
+   Float_t         rw_ft2_m2p9;
+   Float_t         rw_ft2_m3p4;
+   Float_t         rw_ft2_m3p9;
+   Float_t         rw_ft2_m4p5;
+   Float_t         rw_ft5_0;
+   Float_t         rw_ft5_0p2;
+   Float_t         rw_ft5_0p5;
+   Float_t         rw_ft5_0p7;
+   Float_t         rw_ft5_10;
+   Float_t         rw_ft5_12;
+   Float_t         rw_ft5_15;
+   Float_t         rw_ft5_18;
+   Float_t         rw_ft5_1p0;
+   Float_t         rw_ft5_1p2;
+   Float_t         rw_ft5_1p4;
+   Float_t         rw_ft5_1p6;
+   Float_t         rw_ft5_1p8;
+   Float_t         rw_ft5_20;
+   Float_t         rw_ft5_22;
+   Float_t         rw_ft5_25;
+   Float_t         rw_ft5_2p0;
+   Float_t         rw_ft5_3;
+   Float_t         rw_ft5_5;
+   Float_t         rw_ft5_7;
+   Float_t         rw_ft5_m0p2;
+   Float_t         rw_ft5_m0p5;
+   Float_t         rw_ft5_m0p7;
+   Float_t         rw_ft5_m10;
+   Float_t         rw_ft5_m12;
+   Float_t         rw_ft5_m15;
+   Float_t         rw_ft5_m18;
+   Float_t         rw_ft5_m1p0;
+   Float_t         rw_ft5_m1p2;
+   Float_t         rw_ft5_m1p4;
+   Float_t         rw_ft5_m1p6;
+   Float_t         rw_ft5_m1p8;
+   Float_t         rw_ft5_m20;
+   Float_t         rw_ft5_m22;
+   Float_t         rw_ft5_m25;
+   Float_t         rw_ft5_m2p0;
+   Float_t         rw_ft5_m3;
+   Float_t         rw_ft5_m5;
+   Float_t         rw_ft5_m7;
+   Float_t         rw_ft6_0;
+   Float_t         rw_ft6_0p2;
+   Float_t         rw_ft6_0p5;
+   Float_t         rw_ft6_0p7;
+   Float_t         rw_ft6_10;
+   Float_t         rw_ft6_12;
+   Float_t         rw_ft6_15;
+   Float_t         rw_ft6_18;
+   Float_t         rw_ft6_1p0;
+   Float_t         rw_ft6_1p2;
+   Float_t         rw_ft6_1p4;
+   Float_t         rw_ft6_1p6;
+   Float_t         rw_ft6_1p8;
+   Float_t         rw_ft6_20;
+   Float_t         rw_ft6_22;
+   Float_t         rw_ft6_25;
+   Float_t         rw_ft6_27;
+   Float_t         rw_ft6_29;
+   Float_t         rw_ft6_2p0;
+   Float_t         rw_ft6_3;
+   Float_t         rw_ft6_5;
+   Float_t         rw_ft6_7;
+   Float_t         rw_ft6_m0p2;
+   Float_t         rw_ft6_m0p5;
+   Float_t         rw_ft6_m0p7;
+   Float_t         rw_ft6_m10;
+   Float_t         rw_ft6_m12;
+   Float_t         rw_ft6_m15;
+   Float_t         rw_ft6_m18;
+   Float_t         rw_ft6_m1p0;
+   Float_t         rw_ft6_m1p2;
+   Float_t         rw_ft6_m1p4;
+   Float_t         rw_ft6_m1p6;
+   Float_t         rw_ft6_m1p8;
+   Float_t         rw_ft6_m20;
+   Float_t         rw_ft6_m22;
+   Float_t         rw_ft6_m25;
+   Float_t         rw_ft6_m27;
+   Float_t         rw_ft6_m29;
+   Float_t         rw_ft6_m2p0;
+   Float_t         rw_ft6_m3;
+   Float_t         rw_ft6_m5;
+   Float_t         rw_ft6_m7;
+   Float_t         rw_ft7_0p0;
+   Float_t         rw_ft7_0p2;
+   Float_t         rw_ft7_0p4;
+   Float_t         rw_ft7_0p6;
+   Float_t         rw_ft7_0p8;
+   Float_t         rw_ft7_10;
+   Float_t         rw_ft7_1p0;
+   Float_t         rw_ft7_1p2;
+   Float_t         rw_ft7_1p5;
+   Float_t         rw_ft7_20;
+   Float_t         rw_ft7_2p0;
+   Float_t         rw_ft7_2p5;
+   Float_t         rw_ft7_30;
+   Float_t         rw_ft7_35;
+   Float_t         rw_ft7_3p0;
+   Float_t         rw_ft7_4;
+   Float_t         rw_ft7_40;
+   Float_t         rw_ft7_45;
+   Float_t         rw_ft7_5;
+   Float_t         rw_ft7_50;
+   Float_t         rw_ft7_55;
+   Float_t         rw_ft7_6;
+   Float_t         rw_ft7_60;
+   Float_t         rw_ft7_65;
+   Float_t         rw_ft7_70;
+   Float_t         rw_ft7_8;
+   Float_t         rw_ft7_m0p2;
+   Float_t         rw_ft7_m0p4;
+   Float_t         rw_ft7_m0p6;
+   Float_t         rw_ft7_m0p8;
+   Float_t         rw_ft7_m10;
+   Float_t         rw_ft7_m1p0;
+   Float_t         rw_ft7_m1p2;
+   Float_t         rw_ft7_m1p5;
+   Float_t         rw_ft7_m20;
+   Float_t         rw_ft7_m2p0;
+   Float_t         rw_ft7_m2p5;
+   Float_t         rw_ft7_m30;
+   Float_t         rw_ft7_m35;
+   Float_t         rw_ft7_m3p0;
+   Float_t         rw_ft7_m4;
+   Float_t         rw_ft7_m40;
+   Float_t         rw_ft7_m45;
+   Float_t         rw_ft7_m5;
+   Float_t         rw_ft7_m50;
+   Float_t         rw_ft7_m55;
+   Float_t         rw_ft7_m6;
+   Float_t         rw_ft7_m60;
+   Float_t         rw_ft7_m65;
+   Float_t         rw_ft7_m70;
+   Float_t         rw_ft7_m8;
+   Float_t         rw_ft8_0;
+   Float_t         rw_ft8_0p02;
+   Float_t         rw_ft8_0p04;
+   Float_t         rw_ft8_0p06;
+   Float_t         rw_ft8_0p08;
+   Float_t         rw_ft8_0p1;
+   Float_t         rw_ft8_0p12;
+   Float_t         rw_ft8_0p14;
+   Float_t         rw_ft8_0p18;
+   Float_t         rw_ft8_0p2;
+   Float_t         rw_ft8_0p3;
+   Float_t         rw_ft8_0p5;
+   Float_t         rw_ft8_0p7;
+   Float_t         rw_ft8_1p0;
+   Float_t         rw_ft8_1p2;
+   Float_t         rw_ft8_1p4;
+   Float_t         rw_ft8_1p8;
+   Float_t         rw_ft8_2p2;
+   Float_t         rw_ft8_2p6;
+   Float_t         rw_ft8_3p0;
+   Float_t         rw_ft8_3p5;
+   Float_t         rw_ft8_4p0;
+   Float_t         rw_ft8_m0p02;
+   Float_t         rw_ft8_m0p04;
+   Float_t         rw_ft8_m0p06;
+   Float_t         rw_ft8_m0p08;
+   Float_t         rw_ft8_m0p1;
+   Float_t         rw_ft8_m0p12;
+   Float_t         rw_ft8_m0p14;
+   Float_t         rw_ft8_m0p18;
+   Float_t         rw_ft8_m0p2;
+   Float_t         rw_ft8_m0p3;
+   Float_t         rw_ft8_m0p5;
+   Float_t         rw_ft8_m0p7;
+   Float_t         rw_ft8_m1p0;
+   Float_t         rw_ft8_m1p2;
+   Float_t         rw_ft8_m1p4;
+   Float_t         rw_ft8_m1p8;
+   Float_t         rw_ft8_m2p2;
+   Float_t         rw_ft8_m2p6;
+   Float_t         rw_ft8_m3p0;
+   Float_t         rw_ft8_m3p5;
+   Float_t         rw_ft8_m4p0;
+   Float_t         rw_ft9_0;
+   Float_t         rw_ft9_0p1;
+   Float_t         rw_ft9_0p2;
+   Float_t         rw_ft9_0p3;
+   Float_t         rw_ft9_0p4;
+   Float_t         rw_ft9_0p5;
+   Float_t         rw_ft9_0p6;
+   Float_t         rw_ft9_0p7;
+   Float_t         rw_ft9_0p8;
+   Float_t         rw_ft9_0p9;
+   Float_t         rw_ft9_1p0;
+   Float_t         rw_ft9_1p5;
+   Float_t         rw_ft9_2p0;
+   Float_t         rw_ft9_3;
+   Float_t         rw_ft9_4;
+   Float_t         rw_ft9_5;
+   Float_t         rw_ft9_6;
+   Float_t         rw_ft9_7;
+   Float_t         rw_ft9_8;
+   Float_t         rw_ft9_9;
+   Float_t         rw_ft9_m0p1;
+   Float_t         rw_ft9_m0p2;
+   Float_t         rw_ft9_m0p3;
+   Float_t         rw_ft9_m0p4;
+   Float_t         rw_ft9_m0p5;
+   Float_t         rw_ft9_m0p6;
+   Float_t         rw_ft9_m0p7;
+   Float_t         rw_ft9_m0p8;
+   Float_t         rw_ft9_m0p9;
+   Float_t         rw_ft9_m10;
+   Float_t         rw_ft9_m1p0;
+   Float_t         rw_ft9_m1p5;
+   Float_t         rw_ft9_m2p0;
+   Float_t         rw_ft9_m3;
+   Float_t         rw_ft9_m4;
+   Float_t         rw_ft9_m5;
+   Float_t         rw_ft9_m6;
+   Float_t         rw_ft9_m7;
+   Float_t         rw_ft9_m8;
+   Float_t         rw_ft9_m9;
    Float_t         sf_btag0;
    Float_t         sf_btag1;
    Float_t         sf_btag2;
@@ -248,6 +934,692 @@ public :
    Float_t         normalizedWeight;
 
    // List of branches
+   //TBranch        *b_rw_FT9_10;   //!
+   TBranch        *b_rw_fm0_0;   //!
+   TBranch        *b_rw_fm0_0p1;   //!
+   TBranch        *b_rw_fm0_0p2;   //!
+   TBranch        *b_rw_fm0_0p3;   //!
+   TBranch        *b_rw_fm0_0p4;   //!
+   TBranch        *b_rw_fm0_0p5;   //!
+   TBranch        *b_rw_fm0_0p6;   //!
+   TBranch        *b_rw_fm0_0p7;   //!
+   TBranch        *b_rw_fm0_0p8;   //!
+   TBranch        *b_rw_fm0_0p9;   //!
+   TBranch        *b_rw_fm0_10;   //!
+   TBranch        *b_rw_fm0_1p0;   //!
+   TBranch        *b_rw_fm0_1p5;   //!
+   TBranch        *b_rw_fm0_2p0;   //!
+   TBranch        *b_rw_fm0_3;   //!
+   TBranch        *b_rw_fm0_4;   //!
+   TBranch        *b_rw_fm0_5;   //!
+   TBranch        *b_rw_fm0_6;   //!
+   TBranch        *b_rw_fm0_7;   //!
+   TBranch        *b_rw_fm0_8;   //!
+   TBranch        *b_rw_fm0_9;   //!
+   TBranch        *b_rw_fm0_m0p1;   //!
+   TBranch        *b_rw_fm0_m0p2;   //!
+   TBranch        *b_rw_fm0_m0p3;   //!
+   TBranch        *b_rw_fm0_m0p4;   //!
+   TBranch        *b_rw_fm0_m0p5;   //!
+   TBranch        *b_rw_fm0_m0p6;   //!
+   TBranch        *b_rw_fm0_m0p7;   //!
+   TBranch        *b_rw_fm0_m0p8;   //!
+   TBranch        *b_rw_fm0_m0p9;   //!
+   TBranch        *b_rw_fm0_m10;   //!
+   TBranch        *b_rw_fm0_m1p0;   //!
+   TBranch        *b_rw_fm0_m1p5;   //!
+   TBranch        *b_rw_fm0_m2p0;   //!
+   TBranch        *b_rw_fm0_m3;   //!
+   TBranch        *b_rw_fm0_m4;   //!
+   TBranch        *b_rw_fm0_m5;   //!
+   TBranch        *b_rw_fm0_m6;   //!
+   TBranch        *b_rw_fm0_m7;   //!
+   TBranch        *b_rw_fm0_m8;   //!
+   TBranch        *b_rw_fm0_m9;   //!
+   TBranch        *b_rw_fm1_0;   //!
+   TBranch        *b_rw_fm1_0p3;   //!
+   TBranch        *b_rw_fm1_0p6;   //!
+   TBranch        *b_rw_fm1_0p9;   //!
+   TBranch        *b_rw_fm1_10;   //!
+   TBranch        *b_rw_fm1_13;   //!
+   TBranch        *b_rw_fm1_15;   //!
+   TBranch        *b_rw_fm1_18;   //!
+   TBranch        *b_rw_fm1_1p2;   //!
+   TBranch        *b_rw_fm1_1p5;   //!
+   TBranch        *b_rw_fm1_1p8;   //!
+   TBranch        *b_rw_fm1_21;   //!
+   TBranch        *b_rw_fm1_23p0;   //!
+   TBranch        *b_rw_fm1_28;   //!
+   TBranch        *b_rw_fm1_2p1;   //!
+   TBranch        *b_rw_fm1_2p5;   //!
+   TBranch        *b_rw_fm1_30;   //!
+   TBranch        *b_rw_fm1_3p0;   //!
+   TBranch        *b_rw_fm1_5p0;   //!
+   TBranch        *b_rw_fm1_m0p3;   //!
+   TBranch        *b_rw_fm1_m0p6;   //!
+   TBranch        *b_rw_fm1_m0p9;   //!
+   TBranch        *b_rw_fm1_m10;   //!
+   TBranch        *b_rw_fm1_m13;   //!
+   TBranch        *b_rw_fm1_m15;   //!
+   TBranch        *b_rw_fm1_m18;   //!
+   TBranch        *b_rw_fm1_m1p2;   //!
+   TBranch        *b_rw_fm1_m1p5;   //!
+   TBranch        *b_rw_fm1_m1p8;   //!
+   TBranch        *b_rw_fm1_m21;   //!
+   TBranch        *b_rw_fm1_m23p0;   //!
+   TBranch        *b_rw_fm1_m28;   //!
+   TBranch        *b_rw_fm1_m2p1;   //!
+   TBranch        *b_rw_fm1_m2p5;   //!
+   TBranch        *b_rw_fm1_m30;   //!
+   TBranch        *b_rw_fm1_m3p0;   //!
+   TBranch        *b_rw_fm1_m5p0;   //!
+   TBranch        *b_rw_fm2_0;   //!
+   TBranch        *b_rw_fm2_1;   //!
+   TBranch        *b_rw_fm2_10;   //!
+   TBranch        *b_rw_fm2_15;   //!
+   TBranch        *b_rw_fm2_2;   //!
+   TBranch        *b_rw_fm2_20;   //!
+   TBranch        *b_rw_fm2_25;   //!
+   TBranch        *b_rw_fm2_3;   //!
+   TBranch        *b_rw_fm2_30;   //!
+   TBranch        *b_rw_fm2_35;   //!
+   TBranch        *b_rw_fm2_40;   //!
+   TBranch        *b_rw_fm2_45;   //!
+   TBranch        *b_rw_fm2_50;   //!
+   TBranch        *b_rw_fm2_55;   //!
+   TBranch        *b_rw_fm2_6;   //!
+   TBranch        *b_rw_fm2_60;   //!
+   TBranch        *b_rw_fm2_m1;   //!
+   TBranch        *b_rw_fm2_m10;   //!
+   TBranch        *b_rw_fm2_m15;   //!
+   TBranch        *b_rw_fm2_m2;   //!
+   TBranch        *b_rw_fm2_m20;   //!
+   TBranch        *b_rw_fm2_m25;   //!
+   TBranch        *b_rw_fm2_m3;   //!
+   TBranch        *b_rw_fm2_m30;   //!
+   TBranch        *b_rw_fm2_m35;   //!
+   TBranch        *b_rw_fm2_m40;   //!
+   TBranch        *b_rw_fm2_m45;   //!
+   TBranch        *b_rw_fm2_m50;   //!
+   TBranch        *b_rw_fm2_m55;   //!
+   TBranch        *b_rw_fm2_m6;   //!
+   TBranch        *b_rw_fm2_m60;   //!
+   TBranch        *b_rw_fm3_0;   //!
+   TBranch        *b_rw_fm3_1;   //!
+   TBranch        *b_rw_fm3_105;   //!
+   TBranch        *b_rw_fm3_13;   //!
+   TBranch        *b_rw_fm3_2;   //!
+   TBranch        *b_rw_fm3_21;   //!
+   TBranch        *b_rw_fm3_3;   //!
+   TBranch        *b_rw_fm3_31;   //!
+   TBranch        *b_rw_fm3_44;   //!
+   TBranch        *b_rw_fm3_5;   //!
+   TBranch        *b_rw_fm3_55;   //!
+   TBranch        *b_rw_fm3_65;   //!
+   TBranch        *b_rw_fm3_75;   //!
+   TBranch        *b_rw_fm3_8;   //!
+   TBranch        *b_rw_fm3_85;   //!
+   TBranch        *b_rw_fm3_95;   //!
+   TBranch        *b_rw_fm3_m1;   //!
+   TBranch        *b_rw_fm3_m105;   //!
+   TBranch        *b_rw_fm3_m13;   //!
+   TBranch        *b_rw_fm3_m2;   //!
+   TBranch        *b_rw_fm3_m21;   //!
+   TBranch        *b_rw_fm3_m3;   //!
+   TBranch        *b_rw_fm3_m31;   //!
+   TBranch        *b_rw_fm3_m44;   //!
+   TBranch        *b_rw_fm3_m5;   //!
+   TBranch        *b_rw_fm3_m55;   //!
+   TBranch        *b_rw_fm3_m65;   //!
+   TBranch        *b_rw_fm3_m75;   //!
+   TBranch        *b_rw_fm3_m8;   //!
+   TBranch        *b_rw_fm3_m85;   //!
+   TBranch        *b_rw_fm3_m95;   //!
+   TBranch        *b_rw_fm4_0;   //!
+   TBranch        *b_rw_fm4_1;   //!
+   TBranch        *b_rw_fm4_105;   //!
+   TBranch        *b_rw_fm4_115;   //!
+   TBranch        *b_rw_fm4_121;   //!
+   TBranch        *b_rw_fm4_13;   //!
+   TBranch        *b_rw_fm4_130;   //!
+   TBranch        *b_rw_fm4_2;   //!
+   TBranch        *b_rw_fm4_21;   //!
+   TBranch        *b_rw_fm4_3;   //!
+   TBranch        *b_rw_fm4_31;   //!
+   TBranch        *b_rw_fm4_44;   //!
+   TBranch        *b_rw_fm4_5;   //!
+   TBranch        *b_rw_fm4_55;   //!
+   TBranch        *b_rw_fm4_65;   //!
+   TBranch        *b_rw_fm4_75;   //!
+   TBranch        *b_rw_fm4_8;   //!
+   TBranch        *b_rw_fm4_85;   //!
+   TBranch        *b_rw_fm4_95;   //!
+   TBranch        *b_rw_fm4_m1;   //!
+   TBranch        *b_rw_fm4_m105;   //!
+   TBranch        *b_rw_fm4_m115;   //!
+   TBranch        *b_rw_fm4_m121;   //!
+   TBranch        *b_rw_fm4_m13;   //!
+   TBranch        *b_rw_fm4_m130;   //!
+   TBranch        *b_rw_fm4_m2;   //!
+   TBranch        *b_rw_fm4_m21;   //!
+   TBranch        *b_rw_fm4_m3;   //!
+   TBranch        *b_rw_fm4_m31;   //!
+   TBranch        *b_rw_fm4_m44;   //!
+   TBranch        *b_rw_fm4_m5;   //!
+   TBranch        *b_rw_fm4_m55;   //!
+   TBranch        *b_rw_fm4_m65;   //!
+   TBranch        *b_rw_fm4_m75;   //!
+   TBranch        *b_rw_fm4_m8;   //!
+   TBranch        *b_rw_fm4_m85;   //!
+   TBranch        *b_rw_fm4_m95;   //!
+   TBranch        *b_rw_fm5_0;   //!
+   TBranch        *b_rw_fm5_1;   //!
+   TBranch        *b_rw_fm5_105;   //!
+   TBranch        *b_rw_fm5_115;   //!
+   TBranch        *b_rw_fm5_121;   //!
+   TBranch        *b_rw_fm5_13;   //!
+   TBranch        *b_rw_fm5_130;   //!
+   TBranch        *b_rw_fm5_150;   //!
+   TBranch        *b_rw_fm5_170;   //!
+   TBranch        *b_rw_fm5_190;   //!
+   TBranch        *b_rw_fm5_2;   //!
+   TBranch        *b_rw_fm5_200;   //!
+   TBranch        *b_rw_fm5_21;   //!
+   TBranch        *b_rw_fm5_3;   //!
+   TBranch        *b_rw_fm5_31;   //!
+   TBranch        *b_rw_fm5_44;   //!
+   TBranch        *b_rw_fm5_5;   //!
+   TBranch        *b_rw_fm5_55;   //!
+   TBranch        *b_rw_fm5_65;   //!
+   TBranch        *b_rw_fm5_75;   //!
+   TBranch        *b_rw_fm5_8;   //!
+   TBranch        *b_rw_fm5_85;   //!
+   TBranch        *b_rw_fm5_95;   //!
+   TBranch        *b_rw_fm5_m1;   //!
+   TBranch        *b_rw_fm5_m105;   //!
+   TBranch        *b_rw_fm5_m115;   //!
+   TBranch        *b_rw_fm5_m121;   //!
+   TBranch        *b_rw_fm5_m13;   //!
+   TBranch        *b_rw_fm5_m130;   //!
+   TBranch        *b_rw_fm5_m150;   //!
+   TBranch        *b_rw_fm5_m170;   //!
+   TBranch        *b_rw_fm5_m190;   //!
+   TBranch        *b_rw_fm5_m2;   //!
+   TBranch        *b_rw_fm5_m200;   //!
+   TBranch        *b_rw_fm5_m21;   //!
+   TBranch        *b_rw_fm5_m3;   //!
+   TBranch        *b_rw_fm5_m31;   //!
+   TBranch        *b_rw_fm5_m44;   //!
+   TBranch        *b_rw_fm5_m5;   //!
+   TBranch        *b_rw_fm5_m55;   //!
+   TBranch        *b_rw_fm5_m65;   //!
+   TBranch        *b_rw_fm5_m75;   //!
+   TBranch        *b_rw_fm5_m8;   //!
+   TBranch        *b_rw_fm5_m85;   //!
+   TBranch        *b_rw_fm5_m95;   //!
+   TBranch        *b_rw_fm6_0;   //!
+   TBranch        *b_rw_fm6_0p2;   //!
+   TBranch        *b_rw_fm6_0p5;   //!
+   TBranch        *b_rw_fm6_0p7;   //!
+   TBranch        *b_rw_fm6_10;   //!
+   TBranch        *b_rw_fm6_12;   //!
+   TBranch        *b_rw_fm6_15;   //!
+   TBranch        *b_rw_fm6_18;   //!
+   TBranch        *b_rw_fm6_1p0;   //!
+   TBranch        *b_rw_fm6_1p2;   //!
+   TBranch        *b_rw_fm6_1p4;   //!
+   TBranch        *b_rw_fm6_1p6;   //!
+   TBranch        *b_rw_fm6_1p8;   //!
+   TBranch        *b_rw_fm6_20;   //!
+   TBranch        *b_rw_fm6_2p0;   //!
+   TBranch        *b_rw_fm6_3;   //!
+   TBranch        *b_rw_fm6_5;   //!
+   TBranch        *b_rw_fm6_7;   //!
+   TBranch        *b_rw_fm6_m0p2;   //!
+   TBranch        *b_rw_fm6_m0p5;   //!
+   TBranch        *b_rw_fm6_m0p7;   //!
+   TBranch        *b_rw_fm6_m10;   //!
+   TBranch        *b_rw_fm6_m12;   //!
+   TBranch        *b_rw_fm6_m15;   //!
+   TBranch        *b_rw_fm6_m18;   //!
+   TBranch        *b_rw_fm6_m1p0;   //!
+   TBranch        *b_rw_fm6_m1p2;   //!
+   TBranch        *b_rw_fm6_m1p4;   //!
+   TBranch        *b_rw_fm6_m1p6;   //!
+   TBranch        *b_rw_fm6_m1p8;   //!
+   TBranch        *b_rw_fm6_m20;   //!
+   TBranch        *b_rw_fm6_m2p0;   //!
+   TBranch        *b_rw_fm6_m3;   //!
+   TBranch        *b_rw_fm6_m5;   //!
+   TBranch        *b_rw_fm6_m7;   //!
+   TBranch        *b_rw_fm7_0;   //!
+   TBranch        *b_rw_fm7_0p5;   //!
+   TBranch        *b_rw_fm7_10;   //!
+   TBranch        *b_rw_fm7_15;   //!
+   TBranch        *b_rw_fm7_1p0;   //!
+   TBranch        *b_rw_fm7_1p5;   //!
+   TBranch        *b_rw_fm7_20;   //!
+   TBranch        *b_rw_fm7_25;   //!
+   TBranch        *b_rw_fm7_2p0;   //!
+   TBranch        *b_rw_fm7_2p5;   //!
+   TBranch        *b_rw_fm7_30;   //!
+   TBranch        *b_rw_fm7_35;   //!
+   TBranch        *b_rw_fm7_3p0;   //!
+   TBranch        *b_rw_fm7_3p5;   //!
+   TBranch        *b_rw_fm7_40;   //!
+   TBranch        *b_rw_fm7_5p0;   //!
+   TBranch        *b_rw_fm7_m0p5;   //!
+   TBranch        *b_rw_fm7_m10;   //!
+   TBranch        *b_rw_fm7_m15;   //!
+   TBranch        *b_rw_fm7_m1p0;   //!
+   TBranch        *b_rw_fm7_m1p5;   //!
+   TBranch        *b_rw_fm7_m20;   //!
+   TBranch        *b_rw_fm7_m25;   //!
+   TBranch        *b_rw_fm7_m2p0;   //!
+   TBranch        *b_rw_fm7_m2p5;   //!
+   TBranch        *b_rw_fm7_m30;   //!
+   TBranch        *b_rw_fm7_m35;   //!
+   TBranch        *b_rw_fm7_m3p0;   //!
+   TBranch        *b_rw_fm7_m3p5;   //!
+   TBranch        *b_rw_fm7_m40;   //!
+   TBranch        *b_rw_fm7_m5p0;   //!
+   TBranch        *b_rw_fs0_0p0;   //!
+   TBranch        *b_rw_fs0_0p2;   //!
+   TBranch        *b_rw_fs0_0p4;   //!
+   TBranch        *b_rw_fs0_0p6;   //!
+   TBranch        *b_rw_fs0_0p8;   //!
+   TBranch        *b_rw_fs0_10;   //!
+   TBranch        *b_rw_fs0_1p0;   //!
+   TBranch        *b_rw_fs0_1p2;   //!
+   TBranch        *b_rw_fs0_1p5;   //!
+   TBranch        *b_rw_fs0_20;   //!
+   TBranch        *b_rw_fs0_2p0;   //!
+   TBranch        *b_rw_fs0_2p5;   //!
+   TBranch        *b_rw_fs0_30;   //!
+   TBranch        *b_rw_fs0_35;   //!
+   TBranch        *b_rw_fs0_3p0;   //!
+   TBranch        *b_rw_fs0_4;   //!
+   TBranch        *b_rw_fs0_40;   //!
+   TBranch        *b_rw_fs0_45;   //!
+   TBranch        *b_rw_fs0_5;   //!
+   TBranch        *b_rw_fs0_50;   //!
+   TBranch        *b_rw_fs0_6;   //!
+   TBranch        *b_rw_fs0_8;   //!
+   TBranch        *b_rw_fs0_m0p2;   //!
+   TBranch        *b_rw_fs0_m0p4;   //!
+   TBranch        *b_rw_fs0_m0p6;   //!
+   TBranch        *b_rw_fs0_m0p8;   //!
+   TBranch        *b_rw_fs0_m10;   //!
+   TBranch        *b_rw_fs0_m1p0;   //!
+   TBranch        *b_rw_fs0_m1p2;   //!
+   TBranch        *b_rw_fs0_m1p5;   //!
+   TBranch        *b_rw_fs0_m20;   //!
+   TBranch        *b_rw_fs0_m2p0;   //!
+   TBranch        *b_rw_fs0_m2p5;   //!
+   TBranch        *b_rw_fs0_m30;   //!
+   TBranch        *b_rw_fs0_m35;   //!
+   TBranch        *b_rw_fs0_m3p0;   //!
+   TBranch        *b_rw_fs0_m4;   //!
+   TBranch        *b_rw_fs0_m40;   //!
+   TBranch        *b_rw_fs0_m45;   //!
+   TBranch        *b_rw_fs0_m5;   //!
+   TBranch        *b_rw_fs0_m50;   //!
+   TBranch        *b_rw_fs0_m6;   //!
+   TBranch        *b_rw_fs0_m8;   //!
+   TBranch        *b_rw_fs1_0;   //!
+   TBranch        *b_rw_fs1_0p5;   //!
+   TBranch        *b_rw_fs1_10;   //!
+   TBranch        *b_rw_fs1_15;   //!
+   TBranch        *b_rw_fs1_1p0;   //!
+   TBranch        *b_rw_fs1_1p5;   //!
+   TBranch        *b_rw_fs1_20;   //!
+   TBranch        *b_rw_fs1_25;   //!
+   TBranch        *b_rw_fs1_2p0;   //!
+   TBranch        *b_rw_fs1_2p5;   //!
+   TBranch        *b_rw_fs1_30;   //!
+   TBranch        *b_rw_fs1_33;   //!
+   TBranch        *b_rw_fs1_35;   //!
+   TBranch        *b_rw_fs1_3p0;   //!
+   TBranch        *b_rw_fs1_4p0;   //!
+   TBranch        *b_rw_fs1_5p0;   //!
+   TBranch        *b_rw_fs1_7p5;   //!
+   TBranch        *b_rw_fs1_m0p5;   //!
+   TBranch        *b_rw_fs1_m10;   //!
+   TBranch        *b_rw_fs1_m15;   //!
+   TBranch        *b_rw_fs1_m1p0;   //!
+   TBranch        *b_rw_fs1_m1p5;   //!
+   TBranch        *b_rw_fs1_m20;   //!
+   TBranch        *b_rw_fs1_m25;   //!
+   TBranch        *b_rw_fs1_m2p0;   //!
+   TBranch        *b_rw_fs1_m2p5;   //!
+   TBranch        *b_rw_fs1_m30;   //!
+   TBranch        *b_rw_fs1_m33;   //!
+   TBranch        *b_rw_fs1_m35;   //!
+   TBranch        *b_rw_fs1_m3p0;   //!
+   TBranch        *b_rw_fs1_m4p0;   //!
+   TBranch        *b_rw_fs1_m5p0;   //!
+   TBranch        *b_rw_fs1_m7p5;   //!
+   TBranch        *b_rw_ft0_0;   //!
+   TBranch        *b_rw_ft0_0p02;   //!
+   TBranch        *b_rw_ft0_0p04;   //!
+   TBranch        *b_rw_ft0_0p06;   //!
+   TBranch        *b_rw_ft0_0p08;   //!
+   TBranch        *b_rw_ft0_0p1;   //!
+   TBranch        *b_rw_ft0_0p12;   //!
+   TBranch        *b_rw_ft0_0p14;   //!
+   TBranch        *b_rw_ft0_0p18;   //!
+   TBranch        *b_rw_ft0_0p2;   //!
+   TBranch        *b_rw_ft0_0p3;   //!
+   TBranch        *b_rw_ft0_0p5;   //!
+   TBranch        *b_rw_ft0_0p7;   //!
+   TBranch        *b_rw_ft0_1p0;   //!
+   TBranch        *b_rw_ft0_1p2;   //!
+   TBranch        *b_rw_ft0_1p4;   //!
+   TBranch        *b_rw_ft0_1p8;   //!
+   TBranch        *b_rw_ft0_2p0;   //!
+   TBranch        *b_rw_ft0_m0p02;   //!
+   TBranch        *b_rw_ft0_m0p04;   //!
+   TBranch        *b_rw_ft0_m0p06;   //!
+   TBranch        *b_rw_ft0_m0p08;   //!
+   TBranch        *b_rw_ft0_m0p1;   //!
+   TBranch        *b_rw_ft0_m0p12;   //!
+   TBranch        *b_rw_ft0_m0p14;   //!
+   TBranch        *b_rw_ft0_m0p18;   //!
+   TBranch        *b_rw_ft0_m0p2;   //!
+   TBranch        *b_rw_ft0_m0p3;   //!
+   TBranch        *b_rw_ft0_m0p5;   //!
+   TBranch        *b_rw_ft0_m0p7;   //!
+   TBranch        *b_rw_ft0_m1p0;   //!
+   TBranch        *b_rw_ft0_m1p2;   //!
+   TBranch        *b_rw_ft0_m1p4;   //!
+   TBranch        *b_rw_ft0_m1p8;   //!
+   TBranch        *b_rw_ft0_m2p0;   //!
+   TBranch        *b_rw_ft1_0;   //!
+   TBranch        *b_rw_ft1_0p02;   //!
+   TBranch        *b_rw_ft1_0p04;   //!
+   TBranch        *b_rw_ft1_0p06;   //!
+   TBranch        *b_rw_ft1_0p08;   //!
+   TBranch        *b_rw_ft1_0p1;   //!
+   TBranch        *b_rw_ft1_0p12;   //!
+   TBranch        *b_rw_ft1_0p14;   //!
+   TBranch        *b_rw_ft1_0p18;   //!
+   TBranch        *b_rw_ft1_0p2;   //!
+   TBranch        *b_rw_ft1_0p3;   //!
+   TBranch        *b_rw_ft1_0p5;   //!
+   TBranch        *b_rw_ft1_0p7;   //!
+   TBranch        *b_rw_ft1_1p0;   //!
+   TBranch        *b_rw_ft1_1p2;   //!
+   TBranch        *b_rw_ft1_1p4;   //!
+   TBranch        *b_rw_ft1_1p8;   //!
+   TBranch        *b_rw_ft1_2p0;   //!
+   TBranch        *b_rw_ft1_m0p02;   //!
+   TBranch        *b_rw_ft1_m0p04;   //!
+   TBranch        *b_rw_ft1_m0p06;   //!
+   TBranch        *b_rw_ft1_m0p08;   //!
+   TBranch        *b_rw_ft1_m0p1;   //!
+   TBranch        *b_rw_ft1_m0p12;   //!
+   TBranch        *b_rw_ft1_m0p14;   //!
+   TBranch        *b_rw_ft1_m0p18;   //!
+   TBranch        *b_rw_ft1_m0p2;   //!
+   TBranch        *b_rw_ft1_m0p3;   //!
+   TBranch        *b_rw_ft1_m0p5;   //!
+   TBranch        *b_rw_ft1_m0p7;   //!
+   TBranch        *b_rw_ft1_m1p0;   //!
+   TBranch        *b_rw_ft1_m1p2;   //!
+   TBranch        *b_rw_ft1_m1p4;   //!
+   TBranch        *b_rw_ft1_m1p8;   //!
+   TBranch        *b_rw_ft1_m2p0;   //!
+   TBranch        *b_rw_ft2_0;   //!
+   TBranch        *b_rw_ft2_0p02;   //!
+   TBranch        *b_rw_ft2_0p04;   //!
+   TBranch        *b_rw_ft2_0p08;   //!
+   TBranch        *b_rw_ft2_0p14;   //!
+   TBranch        *b_rw_ft2_0p2;   //!
+   TBranch        *b_rw_ft2_0p26;   //!
+   TBranch        *b_rw_ft2_0p32;   //!
+   TBranch        *b_rw_ft2_0p5;   //!
+   TBranch        *b_rw_ft2_0p7;   //!
+   TBranch        *b_rw_ft2_0p9;   //!
+   TBranch        *b_rw_ft2_1p2;   //!
+   TBranch        *b_rw_ft2_1p7;   //!
+   TBranch        *b_rw_ft2_2p5;   //!
+   TBranch        *b_rw_ft2_2p9;   //!
+   TBranch        *b_rw_ft2_3p4;   //!
+   TBranch        *b_rw_ft2_3p9;   //!
+   TBranch        *b_rw_ft2_4p5;   //!
+   TBranch        *b_rw_ft2_m0p02;   //!
+   TBranch        *b_rw_ft2_m0p04;   //!
+   TBranch        *b_rw_ft2_m0p08;   //!
+   TBranch        *b_rw_ft2_m0p14;   //!
+   TBranch        *b_rw_ft2_m0p2;   //!
+   TBranch        *b_rw_ft2_m0p26;   //!
+   TBranch        *b_rw_ft2_m0p32;   //!
+   TBranch        *b_rw_ft2_m0p5;   //!
+   TBranch        *b_rw_ft2_m0p7;   //!
+   TBranch        *b_rw_ft2_m0p9;   //!
+   TBranch        *b_rw_ft2_m1p2;   //!
+   TBranch        *b_rw_ft2_m1p7;   //!
+   TBranch        *b_rw_ft2_m2p5;   //!
+   TBranch        *b_rw_ft2_m2p9;   //!
+   TBranch        *b_rw_ft2_m3p4;   //!
+   TBranch        *b_rw_ft2_m3p9;   //!
+   TBranch        *b_rw_ft2_m4p5;   //!
+   TBranch        *b_rw_ft5_0;   //!
+   TBranch        *b_rw_ft5_0p2;   //!
+   TBranch        *b_rw_ft5_0p5;   //!
+   TBranch        *b_rw_ft5_0p7;   //!
+   TBranch        *b_rw_ft5_10;   //!
+   TBranch        *b_rw_ft5_12;   //!
+   TBranch        *b_rw_ft5_15;   //!
+   TBranch        *b_rw_ft5_18;   //!
+   TBranch        *b_rw_ft5_1p0;   //!
+   TBranch        *b_rw_ft5_1p2;   //!
+   TBranch        *b_rw_ft5_1p4;   //!
+   TBranch        *b_rw_ft5_1p6;   //!
+   TBranch        *b_rw_ft5_1p8;   //!
+   TBranch        *b_rw_ft5_20;   //!
+   TBranch        *b_rw_ft5_22;   //!
+   TBranch        *b_rw_ft5_25;   //!
+   TBranch        *b_rw_ft5_2p0;   //!
+   TBranch        *b_rw_ft5_3;   //!
+   TBranch        *b_rw_ft5_5;   //!
+   TBranch        *b_rw_ft5_7;   //!
+   TBranch        *b_rw_ft5_m0p2;   //!
+   TBranch        *b_rw_ft5_m0p5;   //!
+   TBranch        *b_rw_ft5_m0p7;   //!
+   TBranch        *b_rw_ft5_m10;   //!
+   TBranch        *b_rw_ft5_m12;   //!
+   TBranch        *b_rw_ft5_m15;   //!
+   TBranch        *b_rw_ft5_m18;   //!
+   TBranch        *b_rw_ft5_m1p0;   //!
+   TBranch        *b_rw_ft5_m1p2;   //!
+   TBranch        *b_rw_ft5_m1p4;   //!
+   TBranch        *b_rw_ft5_m1p6;   //!
+   TBranch        *b_rw_ft5_m1p8;   //!
+   TBranch        *b_rw_ft5_m20;   //!
+   TBranch        *b_rw_ft5_m22;   //!
+   TBranch        *b_rw_ft5_m25;   //!
+   TBranch        *b_rw_ft5_m2p0;   //!
+   TBranch        *b_rw_ft5_m3;   //!
+   TBranch        *b_rw_ft5_m5;   //!
+   TBranch        *b_rw_ft5_m7;   //!
+   TBranch        *b_rw_ft6_0;   //!
+   TBranch        *b_rw_ft6_0p2;   //!
+   TBranch        *b_rw_ft6_0p5;   //!
+   TBranch        *b_rw_ft6_0p7;   //!
+   TBranch        *b_rw_ft6_10;   //!
+   TBranch        *b_rw_ft6_12;   //!
+   TBranch        *b_rw_ft6_15;   //!
+   TBranch        *b_rw_ft6_18;   //!
+   TBranch        *b_rw_ft6_1p0;   //!
+   TBranch        *b_rw_ft6_1p2;   //!
+   TBranch        *b_rw_ft6_1p4;   //!
+   TBranch        *b_rw_ft6_1p6;   //!
+   TBranch        *b_rw_ft6_1p8;   //!
+   TBranch        *b_rw_ft6_20;   //!
+   TBranch        *b_rw_ft6_22;   //!
+   TBranch        *b_rw_ft6_25;   //!
+   TBranch        *b_rw_ft6_27;   //!
+   TBranch        *b_rw_ft6_29;   //!
+   TBranch        *b_rw_ft6_2p0;   //!
+   TBranch        *b_rw_ft6_3;   //!
+   TBranch        *b_rw_ft6_5;   //!
+   TBranch        *b_rw_ft6_7;   //!
+   TBranch        *b_rw_ft6_m0p2;   //!
+   TBranch        *b_rw_ft6_m0p5;   //!
+   TBranch        *b_rw_ft6_m0p7;   //!
+   TBranch        *b_rw_ft6_m10;   //!
+   TBranch        *b_rw_ft6_m12;   //!
+   TBranch        *b_rw_ft6_m15;   //!
+   TBranch        *b_rw_ft6_m18;   //!
+   TBranch        *b_rw_ft6_m1p0;   //!
+   TBranch        *b_rw_ft6_m1p2;   //!
+   TBranch        *b_rw_ft6_m1p4;   //!
+   TBranch        *b_rw_ft6_m1p6;   //!
+   TBranch        *b_rw_ft6_m1p8;   //!
+   TBranch        *b_rw_ft6_m20;   //!
+   TBranch        *b_rw_ft6_m22;   //!
+   TBranch        *b_rw_ft6_m25;   //!
+   TBranch        *b_rw_ft6_m27;   //!
+   TBranch        *b_rw_ft6_m29;   //!
+   TBranch        *b_rw_ft6_m2p0;   //!
+   TBranch        *b_rw_ft6_m3;   //!
+   TBranch        *b_rw_ft6_m5;   //!
+   TBranch        *b_rw_ft6_m7;   //!
+   TBranch        *b_rw_ft7_0p0;   //!
+   TBranch        *b_rw_ft7_0p2;   //!
+   TBranch        *b_rw_ft7_0p4;   //!
+   TBranch        *b_rw_ft7_0p6;   //!
+   TBranch        *b_rw_ft7_0p8;   //!
+   TBranch        *b_rw_ft7_10;   //!
+   TBranch        *b_rw_ft7_1p0;   //!
+   TBranch        *b_rw_ft7_1p2;   //!
+   TBranch        *b_rw_ft7_1p5;   //!
+   TBranch        *b_rw_ft7_20;   //!
+   TBranch        *b_rw_ft7_2p0;   //!
+   TBranch        *b_rw_ft7_2p5;   //!
+   TBranch        *b_rw_ft7_30;   //!
+   TBranch        *b_rw_ft7_35;   //!
+   TBranch        *b_rw_ft7_3p0;   //!
+   TBranch        *b_rw_ft7_4;   //!
+   TBranch        *b_rw_ft7_40;   //!
+   TBranch        *b_rw_ft7_45;   //!
+   TBranch        *b_rw_ft7_5;   //!
+   TBranch        *b_rw_ft7_50;   //!
+   TBranch        *b_rw_ft7_55;   //!
+   TBranch        *b_rw_ft7_6;   //!
+   TBranch        *b_rw_ft7_60;   //!
+   TBranch        *b_rw_ft7_65;   //!
+   TBranch        *b_rw_ft7_70;   //!
+   TBranch        *b_rw_ft7_8;   //!
+   TBranch        *b_rw_ft7_m0p2;   //!
+   TBranch        *b_rw_ft7_m0p4;   //!
+   TBranch        *b_rw_ft7_m0p6;   //!
+   TBranch        *b_rw_ft7_m0p8;   //!
+   TBranch        *b_rw_ft7_m10;   //!
+   TBranch        *b_rw_ft7_m1p0;   //!
+   TBranch        *b_rw_ft7_m1p2;   //!
+   TBranch        *b_rw_ft7_m1p5;   //!
+   TBranch        *b_rw_ft7_m20;   //!
+   TBranch        *b_rw_ft7_m2p0;   //!
+   TBranch        *b_rw_ft7_m2p5;   //!
+   TBranch        *b_rw_ft7_m30;   //!
+   TBranch        *b_rw_ft7_m35;   //!
+   TBranch        *b_rw_ft7_m3p0;   //!
+   TBranch        *b_rw_ft7_m4;   //!
+   TBranch        *b_rw_ft7_m40;   //!
+   TBranch        *b_rw_ft7_m45;   //!
+   TBranch        *b_rw_ft7_m5;   //!
+   TBranch        *b_rw_ft7_m50;   //!
+   TBranch        *b_rw_ft7_m55;   //!
+   TBranch        *b_rw_ft7_m6;   //!
+   TBranch        *b_rw_ft7_m60;   //!
+   TBranch        *b_rw_ft7_m65;   //!
+   TBranch        *b_rw_ft7_m70;   //!
+   TBranch        *b_rw_ft7_m8;   //!
+   TBranch        *b_rw_ft8_0;   //!
+   TBranch        *b_rw_ft8_0p02;   //!
+   TBranch        *b_rw_ft8_0p04;   //!
+   TBranch        *b_rw_ft8_0p06;   //!
+   TBranch        *b_rw_ft8_0p08;   //!
+   TBranch        *b_rw_ft8_0p1;   //!
+   TBranch        *b_rw_ft8_0p12;   //!
+   TBranch        *b_rw_ft8_0p14;   //!
+   TBranch        *b_rw_ft8_0p18;   //!
+   TBranch        *b_rw_ft8_0p2;   //!
+   TBranch        *b_rw_ft8_0p3;   //!
+   TBranch        *b_rw_ft8_0p5;   //!
+   TBranch        *b_rw_ft8_0p7;   //!
+   TBranch        *b_rw_ft8_1p0;   //!
+   TBranch        *b_rw_ft8_1p2;   //!
+   TBranch        *b_rw_ft8_1p4;   //!
+   TBranch        *b_rw_ft8_1p8;   //!
+   TBranch        *b_rw_ft8_2p2;   //!
+   TBranch        *b_rw_ft8_2p6;   //!
+   TBranch        *b_rw_ft8_3p0;   //!
+   TBranch        *b_rw_ft8_3p5;   //!
+   TBranch        *b_rw_ft8_4p0;   //!
+   TBranch        *b_rw_ft8_m0p02;   //!
+   TBranch        *b_rw_ft8_m0p04;   //!
+   TBranch        *b_rw_ft8_m0p06;   //!
+   TBranch        *b_rw_ft8_m0p08;   //!
+   TBranch        *b_rw_ft8_m0p1;   //!
+   TBranch        *b_rw_ft8_m0p12;   //!
+   TBranch        *b_rw_ft8_m0p14;   //!
+   TBranch        *b_rw_ft8_m0p18;   //!
+   TBranch        *b_rw_ft8_m0p2;   //!
+   TBranch        *b_rw_ft8_m0p3;   //!
+   TBranch        *b_rw_ft8_m0p5;   //!
+   TBranch        *b_rw_ft8_m0p7;   //!
+   TBranch        *b_rw_ft8_m1p0;   //!
+   TBranch        *b_rw_ft8_m1p2;   //!
+   TBranch        *b_rw_ft8_m1p4;   //!
+   TBranch        *b_rw_ft8_m1p8;   //!
+   TBranch        *b_rw_ft8_m2p2;   //!
+   TBranch        *b_rw_ft8_m2p6;   //!
+   TBranch        *b_rw_ft8_m3p0;   //!
+   TBranch        *b_rw_ft8_m3p5;   //!
+   TBranch        *b_rw_ft8_m4p0;   //!
+   TBranch        *b_rw_ft9_0;   //!
+   TBranch        *b_rw_ft9_0p1;   //!
+   TBranch        *b_rw_ft9_0p2;   //!
+   TBranch        *b_rw_ft9_0p3;   //!
+   TBranch        *b_rw_ft9_0p4;   //!
+   TBranch        *b_rw_ft9_0p5;   //!
+   TBranch        *b_rw_ft9_0p6;   //!
+   TBranch        *b_rw_ft9_0p7;   //!
+   TBranch        *b_rw_ft9_0p8;   //!
+   TBranch        *b_rw_ft9_0p9;   //!
+   TBranch        *b_rw_ft9_1p0;   //!
+   TBranch        *b_rw_ft9_1p5;   //!
+   TBranch        *b_rw_ft9_2p0;   //!
+   TBranch        *b_rw_ft9_3;   //!
+   TBranch        *b_rw_ft9_4;   //!
+   TBranch        *b_rw_ft9_5;   //!
+   TBranch        *b_rw_ft9_6;   //!
+   TBranch        *b_rw_ft9_7;   //!
+   TBranch        *b_rw_ft9_8;   //!
+   TBranch        *b_rw_ft9_9;   //!
+   TBranch        *b_rw_ft9_m0p1;   //!
+   TBranch        *b_rw_ft9_m0p2;   //!
+   TBranch        *b_rw_ft9_m0p3;   //!
+   TBranch        *b_rw_ft9_m0p4;   //!
+   TBranch        *b_rw_ft9_m0p5;   //!
+   TBranch        *b_rw_ft9_m0p6;   //!
+   TBranch        *b_rw_ft9_m0p7;   //!
+   TBranch        *b_rw_ft9_m0p8;   //!
+   TBranch        *b_rw_ft9_m0p9;   //!
+   TBranch        *b_rw_ft9_m10;   //!
+   TBranch        *b_rw_ft9_m1p0;   //!
+   TBranch        *b_rw_ft9_m1p5;   //!
+   TBranch        *b_rw_ft9_m2p0;   //!
+   TBranch        *b_rw_ft9_m3;   //!
+   TBranch        *b_rw_ft9_m4;   //!
+   TBranch        *b_rw_ft9_m5;   //!
+   TBranch        *b_rw_ft9_m6;   //!
+   TBranch        *b_rw_ft9_m7;   //!
+   TBranch        *b_rw_ft9_m8;   //!
+   TBranch        *b_rw_ft9_m9;   //!
    TBranch        *b_sf_btag0;   //!
    TBranch        *b_sf_btag1;   //!
    TBranch        *b_sf_btag2;   //!
@@ -473,12 +1845,12 @@ public :
    TBranch        *b_looseGenLep4PdgId;   //!
    TBranch        *b_normalizedWeight;   //!
 
-   pandaFlat(TTree *tree=0);
+   pandaFlat(TTree *tree=0, bool readWeights = false);
    virtual ~pandaFlat();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
-   virtual void     Init(TTree *tree);
+   virtual void     Init(TTree *tree, bool readWeights);
    virtual void     Loop();
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
@@ -487,7 +1859,7 @@ public :
 #endif
 
 #ifdef pandaFlat_cxx
-pandaFlat::pandaFlat(TTree *tree) : fChain(0) 
+pandaFlat::pandaFlat(TTree *tree, bool readWeights) : fChain(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
@@ -499,7 +1871,7 @@ pandaFlat::pandaFlat(TTree *tree) : fChain(0)
       f->GetObject("events",tree);
 
    }
-   Init(tree);
+   Init(tree, readWeights);
 }
 
 pandaFlat::~pandaFlat()
@@ -527,7 +1899,7 @@ Long64_t pandaFlat::LoadTree(Long64_t entry)
    return centry;
 }
 
-void pandaFlat::Init(TTree *tree)
+void pandaFlat::Init(TTree *tree, bool readWeights)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -543,6 +1915,694 @@ void pandaFlat::Init(TTree *tree)
    fCurrent = -1;
    fChain->SetMakeClass(1);
 
+   if(readWeights){
+   //fChain->SetBranchAddress("rw_FT9_10", &rw_FT9_10, &b_rw_FT9_10);
+   fChain->SetBranchAddress("rw_fm0_0", &rw_fm0_0, &b_rw_fm0_0);
+   fChain->SetBranchAddress("rw_fm0_0p1", &rw_fm0_0p1, &b_rw_fm0_0p1);
+   fChain->SetBranchAddress("rw_fm0_0p2", &rw_fm0_0p2, &b_rw_fm0_0p2);
+   fChain->SetBranchAddress("rw_fm0_0p3", &rw_fm0_0p3, &b_rw_fm0_0p3);
+   fChain->SetBranchAddress("rw_fm0_0p4", &rw_fm0_0p4, &b_rw_fm0_0p4);
+   fChain->SetBranchAddress("rw_fm0_0p5", &rw_fm0_0p5, &b_rw_fm0_0p5);
+   fChain->SetBranchAddress("rw_fm0_0p6", &rw_fm0_0p6, &b_rw_fm0_0p6);
+   fChain->SetBranchAddress("rw_fm0_0p7", &rw_fm0_0p7, &b_rw_fm0_0p7);
+   fChain->SetBranchAddress("rw_fm0_0p8", &rw_fm0_0p8, &b_rw_fm0_0p8);
+   fChain->SetBranchAddress("rw_fm0_0p9", &rw_fm0_0p9, &b_rw_fm0_0p9);
+   fChain->SetBranchAddress("rw_fm0_10", &rw_fm0_10, &b_rw_fm0_10);
+   fChain->SetBranchAddress("rw_fm0_1p0", &rw_fm0_1p0, &b_rw_fm0_1p0);
+   fChain->SetBranchAddress("rw_fm0_1p5", &rw_fm0_1p5, &b_rw_fm0_1p5);
+   fChain->SetBranchAddress("rw_fm0_2p0", &rw_fm0_2p0, &b_rw_fm0_2p0);
+   fChain->SetBranchAddress("rw_fm0_3", &rw_fm0_3, &b_rw_fm0_3);
+   fChain->SetBranchAddress("rw_fm0_4", &rw_fm0_4, &b_rw_fm0_4);
+   fChain->SetBranchAddress("rw_fm0_5", &rw_fm0_5, &b_rw_fm0_5);
+   fChain->SetBranchAddress("rw_fm0_6", &rw_fm0_6, &b_rw_fm0_6);
+   fChain->SetBranchAddress("rw_fm0_7", &rw_fm0_7, &b_rw_fm0_7);
+   fChain->SetBranchAddress("rw_fm0_8", &rw_fm0_8, &b_rw_fm0_8);
+   fChain->SetBranchAddress("rw_fm0_9", &rw_fm0_9, &b_rw_fm0_9);
+   fChain->SetBranchAddress("rw_fm0_m0p1", &rw_fm0_m0p1, &b_rw_fm0_m0p1);
+   fChain->SetBranchAddress("rw_fm0_m0p2", &rw_fm0_m0p2, &b_rw_fm0_m0p2);
+   fChain->SetBranchAddress("rw_fm0_m0p3", &rw_fm0_m0p3, &b_rw_fm0_m0p3);
+   fChain->SetBranchAddress("rw_fm0_m0p4", &rw_fm0_m0p4, &b_rw_fm0_m0p4);
+   fChain->SetBranchAddress("rw_fm0_m0p5", &rw_fm0_m0p5, &b_rw_fm0_m0p5);
+   fChain->SetBranchAddress("rw_fm0_m0p6", &rw_fm0_m0p6, &b_rw_fm0_m0p6);
+   fChain->SetBranchAddress("rw_fm0_m0p7", &rw_fm0_m0p7, &b_rw_fm0_m0p7);
+   fChain->SetBranchAddress("rw_fm0_m0p8", &rw_fm0_m0p8, &b_rw_fm0_m0p8);
+   fChain->SetBranchAddress("rw_fm0_m0p9", &rw_fm0_m0p9, &b_rw_fm0_m0p9);
+   fChain->SetBranchAddress("rw_fm0_m10", &rw_fm0_m10, &b_rw_fm0_m10);
+   fChain->SetBranchAddress("rw_fm0_m1p0", &rw_fm0_m1p0, &b_rw_fm0_m1p0);
+   fChain->SetBranchAddress("rw_fm0_m1p5", &rw_fm0_m1p5, &b_rw_fm0_m1p5);
+   fChain->SetBranchAddress("rw_fm0_m2p0", &rw_fm0_m2p0, &b_rw_fm0_m2p0);
+   fChain->SetBranchAddress("rw_fm0_m3", &rw_fm0_m3, &b_rw_fm0_m3);
+   fChain->SetBranchAddress("rw_fm0_m4", &rw_fm0_m4, &b_rw_fm0_m4);
+   fChain->SetBranchAddress("rw_fm0_m5", &rw_fm0_m5, &b_rw_fm0_m5);
+   fChain->SetBranchAddress("rw_fm0_m6", &rw_fm0_m6, &b_rw_fm0_m6);
+   fChain->SetBranchAddress("rw_fm0_m7", &rw_fm0_m7, &b_rw_fm0_m7);
+   fChain->SetBranchAddress("rw_fm0_m8", &rw_fm0_m8, &b_rw_fm0_m8);
+   fChain->SetBranchAddress("rw_fm0_m9", &rw_fm0_m9, &b_rw_fm0_m9);
+   fChain->SetBranchAddress("rw_fm1_0", &rw_fm1_0, &b_rw_fm1_0);
+   fChain->SetBranchAddress("rw_fm1_0p3", &rw_fm1_0p3, &b_rw_fm1_0p3);
+   fChain->SetBranchAddress("rw_fm1_0p6", &rw_fm1_0p6, &b_rw_fm1_0p6);
+   fChain->SetBranchAddress("rw_fm1_0p9", &rw_fm1_0p9, &b_rw_fm1_0p9);
+   fChain->SetBranchAddress("rw_fm1_10", &rw_fm1_10, &b_rw_fm1_10);
+   fChain->SetBranchAddress("rw_fm1_13", &rw_fm1_13, &b_rw_fm1_13);
+   fChain->SetBranchAddress("rw_fm1_15", &rw_fm1_15, &b_rw_fm1_15);
+   fChain->SetBranchAddress("rw_fm1_18", &rw_fm1_18, &b_rw_fm1_18);
+   fChain->SetBranchAddress("rw_fm1_1p2", &rw_fm1_1p2, &b_rw_fm1_1p2);
+   fChain->SetBranchAddress("rw_fm1_1p5", &rw_fm1_1p5, &b_rw_fm1_1p5);
+   fChain->SetBranchAddress("rw_fm1_1p8", &rw_fm1_1p8, &b_rw_fm1_1p8);
+   fChain->SetBranchAddress("rw_fm1_21", &rw_fm1_21, &b_rw_fm1_21);
+   fChain->SetBranchAddress("rw_fm1_23p0", &rw_fm1_23p0, &b_rw_fm1_23p0);
+   fChain->SetBranchAddress("rw_fm1_28", &rw_fm1_28, &b_rw_fm1_28);
+   fChain->SetBranchAddress("rw_fm1_2p1", &rw_fm1_2p1, &b_rw_fm1_2p1);
+   fChain->SetBranchAddress("rw_fm1_2p5", &rw_fm1_2p5, &b_rw_fm1_2p5);
+   fChain->SetBranchAddress("rw_fm1_30", &rw_fm1_30, &b_rw_fm1_30);
+   fChain->SetBranchAddress("rw_fm1_3p0", &rw_fm1_3p0, &b_rw_fm1_3p0);
+   fChain->SetBranchAddress("rw_fm1_5p0", &rw_fm1_5p0, &b_rw_fm1_5p0);
+   fChain->SetBranchAddress("rw_fm1_m0p3", &rw_fm1_m0p3, &b_rw_fm1_m0p3);
+   fChain->SetBranchAddress("rw_fm1_m0p6", &rw_fm1_m0p6, &b_rw_fm1_m0p6);
+   fChain->SetBranchAddress("rw_fm1_m0p9", &rw_fm1_m0p9, &b_rw_fm1_m0p9);
+   fChain->SetBranchAddress("rw_fm1_m10", &rw_fm1_m10, &b_rw_fm1_m10);
+   fChain->SetBranchAddress("rw_fm1_m13", &rw_fm1_m13, &b_rw_fm1_m13);
+   fChain->SetBranchAddress("rw_fm1_m15", &rw_fm1_m15, &b_rw_fm1_m15);
+   fChain->SetBranchAddress("rw_fm1_m18", &rw_fm1_m18, &b_rw_fm1_m18);
+   fChain->SetBranchAddress("rw_fm1_m1p2", &rw_fm1_m1p2, &b_rw_fm1_m1p2);
+   fChain->SetBranchAddress("rw_fm1_m1p5", &rw_fm1_m1p5, &b_rw_fm1_m1p5);
+   fChain->SetBranchAddress("rw_fm1_m1p8", &rw_fm1_m1p8, &b_rw_fm1_m1p8);
+   fChain->SetBranchAddress("rw_fm1_m21", &rw_fm1_m21, &b_rw_fm1_m21);
+   fChain->SetBranchAddress("rw_fm1_m23p0", &rw_fm1_m23p0, &b_rw_fm1_m23p0);
+   fChain->SetBranchAddress("rw_fm1_m28", &rw_fm1_m28, &b_rw_fm1_m28);
+   fChain->SetBranchAddress("rw_fm1_m2p1", &rw_fm1_m2p1, &b_rw_fm1_m2p1);
+   fChain->SetBranchAddress("rw_fm1_m2p5", &rw_fm1_m2p5, &b_rw_fm1_m2p5);
+   fChain->SetBranchAddress("rw_fm1_m30", &rw_fm1_m30, &b_rw_fm1_m30);
+   fChain->SetBranchAddress("rw_fm1_m3p0", &rw_fm1_m3p0, &b_rw_fm1_m3p0);
+   fChain->SetBranchAddress("rw_fm1_m5p0", &rw_fm1_m5p0, &b_rw_fm1_m5p0);
+   fChain->SetBranchAddress("rw_fm2_0", &rw_fm2_0, &b_rw_fm2_0);
+   fChain->SetBranchAddress("rw_fm2_1", &rw_fm2_1, &b_rw_fm2_1);
+   fChain->SetBranchAddress("rw_fm2_10", &rw_fm2_10, &b_rw_fm2_10);
+   fChain->SetBranchAddress("rw_fm2_15", &rw_fm2_15, &b_rw_fm2_15);
+   fChain->SetBranchAddress("rw_fm2_2", &rw_fm2_2, &b_rw_fm2_2);
+   fChain->SetBranchAddress("rw_fm2_20", &rw_fm2_20, &b_rw_fm2_20);
+   fChain->SetBranchAddress("rw_fm2_25", &rw_fm2_25, &b_rw_fm2_25);
+   fChain->SetBranchAddress("rw_fm2_3", &rw_fm2_3, &b_rw_fm2_3);
+   fChain->SetBranchAddress("rw_fm2_30", &rw_fm2_30, &b_rw_fm2_30);
+   fChain->SetBranchAddress("rw_fm2_35", &rw_fm2_35, &b_rw_fm2_35);
+   fChain->SetBranchAddress("rw_fm2_40", &rw_fm2_40, &b_rw_fm2_40);
+   fChain->SetBranchAddress("rw_fm2_45", &rw_fm2_45, &b_rw_fm2_45);
+   fChain->SetBranchAddress("rw_fm2_50", &rw_fm2_50, &b_rw_fm2_50);
+   fChain->SetBranchAddress("rw_fm2_55", &rw_fm2_55, &b_rw_fm2_55);
+   fChain->SetBranchAddress("rw_fm2_6", &rw_fm2_6, &b_rw_fm2_6);
+   fChain->SetBranchAddress("rw_fm2_60", &rw_fm2_60, &b_rw_fm2_60);
+   fChain->SetBranchAddress("rw_fm2_m1", &rw_fm2_m1, &b_rw_fm2_m1);
+   fChain->SetBranchAddress("rw_fm2_m10", &rw_fm2_m10, &b_rw_fm2_m10);
+   fChain->SetBranchAddress("rw_fm2_m15", &rw_fm2_m15, &b_rw_fm2_m15);
+   fChain->SetBranchAddress("rw_fm2_m2", &rw_fm2_m2, &b_rw_fm2_m2);
+   fChain->SetBranchAddress("rw_fm2_m20", &rw_fm2_m20, &b_rw_fm2_m20);
+   fChain->SetBranchAddress("rw_fm2_m25", &rw_fm2_m25, &b_rw_fm2_m25);
+   fChain->SetBranchAddress("rw_fm2_m3", &rw_fm2_m3, &b_rw_fm2_m3);
+   fChain->SetBranchAddress("rw_fm2_m30", &rw_fm2_m30, &b_rw_fm2_m30);
+   fChain->SetBranchAddress("rw_fm2_m35", &rw_fm2_m35, &b_rw_fm2_m35);
+   fChain->SetBranchAddress("rw_fm2_m40", &rw_fm2_m40, &b_rw_fm2_m40);
+   fChain->SetBranchAddress("rw_fm2_m45", &rw_fm2_m45, &b_rw_fm2_m45);
+   fChain->SetBranchAddress("rw_fm2_m50", &rw_fm2_m50, &b_rw_fm2_m50);
+   fChain->SetBranchAddress("rw_fm2_m55", &rw_fm2_m55, &b_rw_fm2_m55);
+   fChain->SetBranchAddress("rw_fm2_m6", &rw_fm2_m6, &b_rw_fm2_m6);
+   fChain->SetBranchAddress("rw_fm2_m60", &rw_fm2_m60, &b_rw_fm2_m60);
+   fChain->SetBranchAddress("rw_fm3_0", &rw_fm3_0, &b_rw_fm3_0);
+   fChain->SetBranchAddress("rw_fm3_1", &rw_fm3_1, &b_rw_fm3_1);
+   fChain->SetBranchAddress("rw_fm3_105", &rw_fm3_105, &b_rw_fm3_105);
+   fChain->SetBranchAddress("rw_fm3_13", &rw_fm3_13, &b_rw_fm3_13);
+   fChain->SetBranchAddress("rw_fm3_2", &rw_fm3_2, &b_rw_fm3_2);
+   fChain->SetBranchAddress("rw_fm3_21", &rw_fm3_21, &b_rw_fm3_21);
+   fChain->SetBranchAddress("rw_fm3_3", &rw_fm3_3, &b_rw_fm3_3);
+   fChain->SetBranchAddress("rw_fm3_31", &rw_fm3_31, &b_rw_fm3_31);
+   fChain->SetBranchAddress("rw_fm3_44", &rw_fm3_44, &b_rw_fm3_44);
+   fChain->SetBranchAddress("rw_fm3_5", &rw_fm3_5, &b_rw_fm3_5);
+   fChain->SetBranchAddress("rw_fm3_55", &rw_fm3_55, &b_rw_fm3_55);
+   fChain->SetBranchAddress("rw_fm3_65", &rw_fm3_65, &b_rw_fm3_65);
+   fChain->SetBranchAddress("rw_fm3_75", &rw_fm3_75, &b_rw_fm3_75);
+   fChain->SetBranchAddress("rw_fm3_8", &rw_fm3_8, &b_rw_fm3_8);
+   fChain->SetBranchAddress("rw_fm3_85", &rw_fm3_85, &b_rw_fm3_85);
+   fChain->SetBranchAddress("rw_fm3_95", &rw_fm3_95, &b_rw_fm3_95);
+   fChain->SetBranchAddress("rw_fm3_m1", &rw_fm3_m1, &b_rw_fm3_m1);
+   fChain->SetBranchAddress("rw_fm3_m105", &rw_fm3_m105, &b_rw_fm3_m105);
+   fChain->SetBranchAddress("rw_fm3_m13", &rw_fm3_m13, &b_rw_fm3_m13);
+   fChain->SetBranchAddress("rw_fm3_m2", &rw_fm3_m2, &b_rw_fm3_m2);
+   fChain->SetBranchAddress("rw_fm3_m21", &rw_fm3_m21, &b_rw_fm3_m21);
+   fChain->SetBranchAddress("rw_fm3_m3", &rw_fm3_m3, &b_rw_fm3_m3);
+   fChain->SetBranchAddress("rw_fm3_m31", &rw_fm3_m31, &b_rw_fm3_m31);
+   fChain->SetBranchAddress("rw_fm3_m44", &rw_fm3_m44, &b_rw_fm3_m44);
+   fChain->SetBranchAddress("rw_fm3_m5", &rw_fm3_m5, &b_rw_fm3_m5);
+   fChain->SetBranchAddress("rw_fm3_m55", &rw_fm3_m55, &b_rw_fm3_m55);
+   fChain->SetBranchAddress("rw_fm3_m65", &rw_fm3_m65, &b_rw_fm3_m65);
+   fChain->SetBranchAddress("rw_fm3_m75", &rw_fm3_m75, &b_rw_fm3_m75);
+   fChain->SetBranchAddress("rw_fm3_m8", &rw_fm3_m8, &b_rw_fm3_m8);
+   fChain->SetBranchAddress("rw_fm3_m85", &rw_fm3_m85, &b_rw_fm3_m85);
+   fChain->SetBranchAddress("rw_fm3_m95", &rw_fm3_m95, &b_rw_fm3_m95);
+   fChain->SetBranchAddress("rw_fm4_0", &rw_fm4_0, &b_rw_fm4_0);
+   fChain->SetBranchAddress("rw_fm4_1", &rw_fm4_1, &b_rw_fm4_1);
+   fChain->SetBranchAddress("rw_fm4_105", &rw_fm4_105, &b_rw_fm4_105);
+   fChain->SetBranchAddress("rw_fm4_115", &rw_fm4_115, &b_rw_fm4_115);
+   fChain->SetBranchAddress("rw_fm4_121", &rw_fm4_121, &b_rw_fm4_121);
+   fChain->SetBranchAddress("rw_fm4_13", &rw_fm4_13, &b_rw_fm4_13);
+   fChain->SetBranchAddress("rw_fm4_130", &rw_fm4_130, &b_rw_fm4_130);
+   fChain->SetBranchAddress("rw_fm4_2", &rw_fm4_2, &b_rw_fm4_2);
+   fChain->SetBranchAddress("rw_fm4_21", &rw_fm4_21, &b_rw_fm4_21);
+   fChain->SetBranchAddress("rw_fm4_3", &rw_fm4_3, &b_rw_fm4_3);
+   fChain->SetBranchAddress("rw_fm4_31", &rw_fm4_31, &b_rw_fm4_31);
+   fChain->SetBranchAddress("rw_fm4_44", &rw_fm4_44, &b_rw_fm4_44);
+   fChain->SetBranchAddress("rw_fm4_5", &rw_fm4_5, &b_rw_fm4_5);
+   fChain->SetBranchAddress("rw_fm4_55", &rw_fm4_55, &b_rw_fm4_55);
+   fChain->SetBranchAddress("rw_fm4_65", &rw_fm4_65, &b_rw_fm4_65);
+   fChain->SetBranchAddress("rw_fm4_75", &rw_fm4_75, &b_rw_fm4_75);
+   fChain->SetBranchAddress("rw_fm4_8", &rw_fm4_8, &b_rw_fm4_8);
+   fChain->SetBranchAddress("rw_fm4_85", &rw_fm4_85, &b_rw_fm4_85);
+   fChain->SetBranchAddress("rw_fm4_95", &rw_fm4_95, &b_rw_fm4_95);
+   fChain->SetBranchAddress("rw_fm4_m1", &rw_fm4_m1, &b_rw_fm4_m1);
+   fChain->SetBranchAddress("rw_fm4_m105", &rw_fm4_m105, &b_rw_fm4_m105);
+   fChain->SetBranchAddress("rw_fm4_m115", &rw_fm4_m115, &b_rw_fm4_m115);
+   fChain->SetBranchAddress("rw_fm4_m121", &rw_fm4_m121, &b_rw_fm4_m121);
+   fChain->SetBranchAddress("rw_fm4_m13", &rw_fm4_m13, &b_rw_fm4_m13);
+   fChain->SetBranchAddress("rw_fm4_m130", &rw_fm4_m130, &b_rw_fm4_m130);
+   fChain->SetBranchAddress("rw_fm4_m2", &rw_fm4_m2, &b_rw_fm4_m2);
+   fChain->SetBranchAddress("rw_fm4_m21", &rw_fm4_m21, &b_rw_fm4_m21);
+   fChain->SetBranchAddress("rw_fm4_m3", &rw_fm4_m3, &b_rw_fm4_m3);
+   fChain->SetBranchAddress("rw_fm4_m31", &rw_fm4_m31, &b_rw_fm4_m31);
+   fChain->SetBranchAddress("rw_fm4_m44", &rw_fm4_m44, &b_rw_fm4_m44);
+   fChain->SetBranchAddress("rw_fm4_m5", &rw_fm4_m5, &b_rw_fm4_m5);
+   fChain->SetBranchAddress("rw_fm4_m55", &rw_fm4_m55, &b_rw_fm4_m55);
+   fChain->SetBranchAddress("rw_fm4_m65", &rw_fm4_m65, &b_rw_fm4_m65);
+   fChain->SetBranchAddress("rw_fm4_m75", &rw_fm4_m75, &b_rw_fm4_m75);
+   fChain->SetBranchAddress("rw_fm4_m8", &rw_fm4_m8, &b_rw_fm4_m8);
+   fChain->SetBranchAddress("rw_fm4_m85", &rw_fm4_m85, &b_rw_fm4_m85);
+   fChain->SetBranchAddress("rw_fm4_m95", &rw_fm4_m95, &b_rw_fm4_m95);
+   fChain->SetBranchAddress("rw_fm5_0", &rw_fm5_0, &b_rw_fm5_0);
+   fChain->SetBranchAddress("rw_fm5_1", &rw_fm5_1, &b_rw_fm5_1);
+   fChain->SetBranchAddress("rw_fm5_105", &rw_fm5_105, &b_rw_fm5_105);
+   fChain->SetBranchAddress("rw_fm5_115", &rw_fm5_115, &b_rw_fm5_115);
+   fChain->SetBranchAddress("rw_fm5_121", &rw_fm5_121, &b_rw_fm5_121);
+   fChain->SetBranchAddress("rw_fm5_13", &rw_fm5_13, &b_rw_fm5_13);
+   fChain->SetBranchAddress("rw_fm5_130", &rw_fm5_130, &b_rw_fm5_130);
+   fChain->SetBranchAddress("rw_fm5_150", &rw_fm5_150, &b_rw_fm5_150);
+   fChain->SetBranchAddress("rw_fm5_170", &rw_fm5_170, &b_rw_fm5_170);
+   fChain->SetBranchAddress("rw_fm5_190", &rw_fm5_190, &b_rw_fm5_190);
+   fChain->SetBranchAddress("rw_fm5_2", &rw_fm5_2, &b_rw_fm5_2);
+   fChain->SetBranchAddress("rw_fm5_200", &rw_fm5_200, &b_rw_fm5_200);
+   fChain->SetBranchAddress("rw_fm5_21", &rw_fm5_21, &b_rw_fm5_21);
+   fChain->SetBranchAddress("rw_fm5_3", &rw_fm5_3, &b_rw_fm5_3);
+   fChain->SetBranchAddress("rw_fm5_31", &rw_fm5_31, &b_rw_fm5_31);
+   fChain->SetBranchAddress("rw_fm5_44", &rw_fm5_44, &b_rw_fm5_44);
+   fChain->SetBranchAddress("rw_fm5_5", &rw_fm5_5, &b_rw_fm5_5);
+   fChain->SetBranchAddress("rw_fm5_55", &rw_fm5_55, &b_rw_fm5_55);
+   fChain->SetBranchAddress("rw_fm5_65", &rw_fm5_65, &b_rw_fm5_65);
+   fChain->SetBranchAddress("rw_fm5_75", &rw_fm5_75, &b_rw_fm5_75);
+   fChain->SetBranchAddress("rw_fm5_8", &rw_fm5_8, &b_rw_fm5_8);
+   fChain->SetBranchAddress("rw_fm5_85", &rw_fm5_85, &b_rw_fm5_85);
+   fChain->SetBranchAddress("rw_fm5_95", &rw_fm5_95, &b_rw_fm5_95);
+   fChain->SetBranchAddress("rw_fm5_m1", &rw_fm5_m1, &b_rw_fm5_m1);
+   fChain->SetBranchAddress("rw_fm5_m105", &rw_fm5_m105, &b_rw_fm5_m105);
+   fChain->SetBranchAddress("rw_fm5_m115", &rw_fm5_m115, &b_rw_fm5_m115);
+   fChain->SetBranchAddress("rw_fm5_m121", &rw_fm5_m121, &b_rw_fm5_m121);
+   fChain->SetBranchAddress("rw_fm5_m13", &rw_fm5_m13, &b_rw_fm5_m13);
+   fChain->SetBranchAddress("rw_fm5_m130", &rw_fm5_m130, &b_rw_fm5_m130);
+   fChain->SetBranchAddress("rw_fm5_m150", &rw_fm5_m150, &b_rw_fm5_m150);
+   fChain->SetBranchAddress("rw_fm5_m170", &rw_fm5_m170, &b_rw_fm5_m170);
+   fChain->SetBranchAddress("rw_fm5_m190", &rw_fm5_m190, &b_rw_fm5_m190);
+   fChain->SetBranchAddress("rw_fm5_m2", &rw_fm5_m2, &b_rw_fm5_m2);
+   fChain->SetBranchAddress("rw_fm5_m200", &rw_fm5_m200, &b_rw_fm5_m200);
+   fChain->SetBranchAddress("rw_fm5_m21", &rw_fm5_m21, &b_rw_fm5_m21);
+   fChain->SetBranchAddress("rw_fm5_m3", &rw_fm5_m3, &b_rw_fm5_m3);
+   fChain->SetBranchAddress("rw_fm5_m31", &rw_fm5_m31, &b_rw_fm5_m31);
+   fChain->SetBranchAddress("rw_fm5_m44", &rw_fm5_m44, &b_rw_fm5_m44);
+   fChain->SetBranchAddress("rw_fm5_m5", &rw_fm5_m5, &b_rw_fm5_m5);
+   fChain->SetBranchAddress("rw_fm5_m55", &rw_fm5_m55, &b_rw_fm5_m55);
+   fChain->SetBranchAddress("rw_fm5_m65", &rw_fm5_m65, &b_rw_fm5_m65);
+   fChain->SetBranchAddress("rw_fm5_m75", &rw_fm5_m75, &b_rw_fm5_m75);
+   fChain->SetBranchAddress("rw_fm5_m8", &rw_fm5_m8, &b_rw_fm5_m8);
+   fChain->SetBranchAddress("rw_fm5_m85", &rw_fm5_m85, &b_rw_fm5_m85);
+   fChain->SetBranchAddress("rw_fm5_m95", &rw_fm5_m95, &b_rw_fm5_m95);
+   fChain->SetBranchAddress("rw_fm6_0", &rw_fm6_0, &b_rw_fm6_0);
+   fChain->SetBranchAddress("rw_fm6_0p2", &rw_fm6_0p2, &b_rw_fm6_0p2);
+   fChain->SetBranchAddress("rw_fm6_0p5", &rw_fm6_0p5, &b_rw_fm6_0p5);
+   fChain->SetBranchAddress("rw_fm6_0p7", &rw_fm6_0p7, &b_rw_fm6_0p7);
+   fChain->SetBranchAddress("rw_fm6_10", &rw_fm6_10, &b_rw_fm6_10);
+   fChain->SetBranchAddress("rw_fm6_12", &rw_fm6_12, &b_rw_fm6_12);
+   fChain->SetBranchAddress("rw_fm6_15", &rw_fm6_15, &b_rw_fm6_15);
+   fChain->SetBranchAddress("rw_fm6_18", &rw_fm6_18, &b_rw_fm6_18);
+   fChain->SetBranchAddress("rw_fm6_1p0", &rw_fm6_1p0, &b_rw_fm6_1p0);
+   fChain->SetBranchAddress("rw_fm6_1p2", &rw_fm6_1p2, &b_rw_fm6_1p2);
+   fChain->SetBranchAddress("rw_fm6_1p4", &rw_fm6_1p4, &b_rw_fm6_1p4);
+   fChain->SetBranchAddress("rw_fm6_1p6", &rw_fm6_1p6, &b_rw_fm6_1p6);
+   fChain->SetBranchAddress("rw_fm6_1p8", &rw_fm6_1p8, &b_rw_fm6_1p8);
+   fChain->SetBranchAddress("rw_fm6_20", &rw_fm6_20, &b_rw_fm6_20);
+   fChain->SetBranchAddress("rw_fm6_2p0", &rw_fm6_2p0, &b_rw_fm6_2p0);
+   fChain->SetBranchAddress("rw_fm6_3", &rw_fm6_3, &b_rw_fm6_3);
+   fChain->SetBranchAddress("rw_fm6_5", &rw_fm6_5, &b_rw_fm6_5);
+   fChain->SetBranchAddress("rw_fm6_7", &rw_fm6_7, &b_rw_fm6_7);
+   fChain->SetBranchAddress("rw_fm6_m0p2", &rw_fm6_m0p2, &b_rw_fm6_m0p2);
+   fChain->SetBranchAddress("rw_fm6_m0p5", &rw_fm6_m0p5, &b_rw_fm6_m0p5);
+   fChain->SetBranchAddress("rw_fm6_m0p7", &rw_fm6_m0p7, &b_rw_fm6_m0p7);
+   fChain->SetBranchAddress("rw_fm6_m10", &rw_fm6_m10, &b_rw_fm6_m10);
+   fChain->SetBranchAddress("rw_fm6_m12", &rw_fm6_m12, &b_rw_fm6_m12);
+   fChain->SetBranchAddress("rw_fm6_m15", &rw_fm6_m15, &b_rw_fm6_m15);
+   fChain->SetBranchAddress("rw_fm6_m18", &rw_fm6_m18, &b_rw_fm6_m18);
+   fChain->SetBranchAddress("rw_fm6_m1p0", &rw_fm6_m1p0, &b_rw_fm6_m1p0);
+   fChain->SetBranchAddress("rw_fm6_m1p2", &rw_fm6_m1p2, &b_rw_fm6_m1p2);
+   fChain->SetBranchAddress("rw_fm6_m1p4", &rw_fm6_m1p4, &b_rw_fm6_m1p4);
+   fChain->SetBranchAddress("rw_fm6_m1p6", &rw_fm6_m1p6, &b_rw_fm6_m1p6);
+   fChain->SetBranchAddress("rw_fm6_m1p8", &rw_fm6_m1p8, &b_rw_fm6_m1p8);
+   fChain->SetBranchAddress("rw_fm6_m20", &rw_fm6_m20, &b_rw_fm6_m20);
+   fChain->SetBranchAddress("rw_fm6_m2p0", &rw_fm6_m2p0, &b_rw_fm6_m2p0);
+   fChain->SetBranchAddress("rw_fm6_m3", &rw_fm6_m3, &b_rw_fm6_m3);
+   fChain->SetBranchAddress("rw_fm6_m5", &rw_fm6_m5, &b_rw_fm6_m5);
+   fChain->SetBranchAddress("rw_fm6_m7", &rw_fm6_m7, &b_rw_fm6_m7);
+   fChain->SetBranchAddress("rw_fm7_0", &rw_fm7_0, &b_rw_fm7_0);
+   fChain->SetBranchAddress("rw_fm7_0p5", &rw_fm7_0p5, &b_rw_fm7_0p5);
+   fChain->SetBranchAddress("rw_fm7_10", &rw_fm7_10, &b_rw_fm7_10);
+   fChain->SetBranchAddress("rw_fm7_15", &rw_fm7_15, &b_rw_fm7_15);
+   fChain->SetBranchAddress("rw_fm7_1p0", &rw_fm7_1p0, &b_rw_fm7_1p0);
+   fChain->SetBranchAddress("rw_fm7_1p5", &rw_fm7_1p5, &b_rw_fm7_1p5);
+   fChain->SetBranchAddress("rw_fm7_20", &rw_fm7_20, &b_rw_fm7_20);
+   fChain->SetBranchAddress("rw_fm7_25", &rw_fm7_25, &b_rw_fm7_25);
+   fChain->SetBranchAddress("rw_fm7_2p0", &rw_fm7_2p0, &b_rw_fm7_2p0);
+   fChain->SetBranchAddress("rw_fm7_2p5", &rw_fm7_2p5, &b_rw_fm7_2p5);
+   fChain->SetBranchAddress("rw_fm7_30", &rw_fm7_30, &b_rw_fm7_30);
+   fChain->SetBranchAddress("rw_fm7_35", &rw_fm7_35, &b_rw_fm7_35);
+   fChain->SetBranchAddress("rw_fm7_3p0", &rw_fm7_3p0, &b_rw_fm7_3p0);
+   fChain->SetBranchAddress("rw_fm7_3p5", &rw_fm7_3p5, &b_rw_fm7_3p5);
+   fChain->SetBranchAddress("rw_fm7_40", &rw_fm7_40, &b_rw_fm7_40);
+   fChain->SetBranchAddress("rw_fm7_5p0", &rw_fm7_5p0, &b_rw_fm7_5p0);
+   fChain->SetBranchAddress("rw_fm7_m0p5", &rw_fm7_m0p5, &b_rw_fm7_m0p5);
+   fChain->SetBranchAddress("rw_fm7_m10", &rw_fm7_m10, &b_rw_fm7_m10);
+   fChain->SetBranchAddress("rw_fm7_m15", &rw_fm7_m15, &b_rw_fm7_m15);
+   fChain->SetBranchAddress("rw_fm7_m1p0", &rw_fm7_m1p0, &b_rw_fm7_m1p0);
+   fChain->SetBranchAddress("rw_fm7_m1p5", &rw_fm7_m1p5, &b_rw_fm7_m1p5);
+   fChain->SetBranchAddress("rw_fm7_m20", &rw_fm7_m20, &b_rw_fm7_m20);
+   fChain->SetBranchAddress("rw_fm7_m25", &rw_fm7_m25, &b_rw_fm7_m25);
+   fChain->SetBranchAddress("rw_fm7_m2p0", &rw_fm7_m2p0, &b_rw_fm7_m2p0);
+   fChain->SetBranchAddress("rw_fm7_m2p5", &rw_fm7_m2p5, &b_rw_fm7_m2p5);
+   fChain->SetBranchAddress("rw_fm7_m30", &rw_fm7_m30, &b_rw_fm7_m30);
+   fChain->SetBranchAddress("rw_fm7_m35", &rw_fm7_m35, &b_rw_fm7_m35);
+   fChain->SetBranchAddress("rw_fm7_m3p0", &rw_fm7_m3p0, &b_rw_fm7_m3p0);
+   fChain->SetBranchAddress("rw_fm7_m3p5", &rw_fm7_m3p5, &b_rw_fm7_m3p5);
+   fChain->SetBranchAddress("rw_fm7_m40", &rw_fm7_m40, &b_rw_fm7_m40);
+   fChain->SetBranchAddress("rw_fm7_m5p0", &rw_fm7_m5p0, &b_rw_fm7_m5p0);
+   fChain->SetBranchAddress("rw_fs0_0p0", &rw_fs0_0p0, &b_rw_fs0_0p0);
+   fChain->SetBranchAddress("rw_fs0_0p2", &rw_fs0_0p2, &b_rw_fs0_0p2);
+   fChain->SetBranchAddress("rw_fs0_0p4", &rw_fs0_0p4, &b_rw_fs0_0p4);
+   fChain->SetBranchAddress("rw_fs0_0p6", &rw_fs0_0p6, &b_rw_fs0_0p6);
+   fChain->SetBranchAddress("rw_fs0_0p8", &rw_fs0_0p8, &b_rw_fs0_0p8);
+   fChain->SetBranchAddress("rw_fs0_10", &rw_fs0_10, &b_rw_fs0_10);
+   fChain->SetBranchAddress("rw_fs0_1p0", &rw_fs0_1p0, &b_rw_fs0_1p0);
+   fChain->SetBranchAddress("rw_fs0_1p2", &rw_fs0_1p2, &b_rw_fs0_1p2);
+   fChain->SetBranchAddress("rw_fs0_1p5", &rw_fs0_1p5, &b_rw_fs0_1p5);
+   fChain->SetBranchAddress("rw_fs0_20", &rw_fs0_20, &b_rw_fs0_20);
+   fChain->SetBranchAddress("rw_fs0_2p0", &rw_fs0_2p0, &b_rw_fs0_2p0);
+   fChain->SetBranchAddress("rw_fs0_2p5", &rw_fs0_2p5, &b_rw_fs0_2p5);
+   fChain->SetBranchAddress("rw_fs0_30", &rw_fs0_30, &b_rw_fs0_30);
+   fChain->SetBranchAddress("rw_fs0_35", &rw_fs0_35, &b_rw_fs0_35);
+   fChain->SetBranchAddress("rw_fs0_3p0", &rw_fs0_3p0, &b_rw_fs0_3p0);
+   fChain->SetBranchAddress("rw_fs0_4", &rw_fs0_4, &b_rw_fs0_4);
+   fChain->SetBranchAddress("rw_fs0_40", &rw_fs0_40, &b_rw_fs0_40);
+   fChain->SetBranchAddress("rw_fs0_45", &rw_fs0_45, &b_rw_fs0_45);
+   fChain->SetBranchAddress("rw_fs0_5", &rw_fs0_5, &b_rw_fs0_5);
+   fChain->SetBranchAddress("rw_fs0_50", &rw_fs0_50, &b_rw_fs0_50);
+   fChain->SetBranchAddress("rw_fs0_6", &rw_fs0_6, &b_rw_fs0_6);
+   fChain->SetBranchAddress("rw_fs0_8", &rw_fs0_8, &b_rw_fs0_8);
+   fChain->SetBranchAddress("rw_fs0_m0p2", &rw_fs0_m0p2, &b_rw_fs0_m0p2);
+   fChain->SetBranchAddress("rw_fs0_m0p4", &rw_fs0_m0p4, &b_rw_fs0_m0p4);
+   fChain->SetBranchAddress("rw_fs0_m0p6", &rw_fs0_m0p6, &b_rw_fs0_m0p6);
+   fChain->SetBranchAddress("rw_fs0_m0p8", &rw_fs0_m0p8, &b_rw_fs0_m0p8);
+   fChain->SetBranchAddress("rw_fs0_m10", &rw_fs0_m10, &b_rw_fs0_m10);
+   fChain->SetBranchAddress("rw_fs0_m1p0", &rw_fs0_m1p0, &b_rw_fs0_m1p0);
+   fChain->SetBranchAddress("rw_fs0_m1p2", &rw_fs0_m1p2, &b_rw_fs0_m1p2);
+   fChain->SetBranchAddress("rw_fs0_m1p5", &rw_fs0_m1p5, &b_rw_fs0_m1p5);
+   fChain->SetBranchAddress("rw_fs0_m20", &rw_fs0_m20, &b_rw_fs0_m20);
+   fChain->SetBranchAddress("rw_fs0_m2p0", &rw_fs0_m2p0, &b_rw_fs0_m2p0);
+   fChain->SetBranchAddress("rw_fs0_m2p5", &rw_fs0_m2p5, &b_rw_fs0_m2p5);
+   fChain->SetBranchAddress("rw_fs0_m30", &rw_fs0_m30, &b_rw_fs0_m30);
+   fChain->SetBranchAddress("rw_fs0_m35", &rw_fs0_m35, &b_rw_fs0_m35);
+   fChain->SetBranchAddress("rw_fs0_m3p0", &rw_fs0_m3p0, &b_rw_fs0_m3p0);
+   fChain->SetBranchAddress("rw_fs0_m4", &rw_fs0_m4, &b_rw_fs0_m4);
+   fChain->SetBranchAddress("rw_fs0_m40", &rw_fs0_m40, &b_rw_fs0_m40);
+   fChain->SetBranchAddress("rw_fs0_m45", &rw_fs0_m45, &b_rw_fs0_m45);
+   fChain->SetBranchAddress("rw_fs0_m5", &rw_fs0_m5, &b_rw_fs0_m5);
+   fChain->SetBranchAddress("rw_fs0_m50", &rw_fs0_m50, &b_rw_fs0_m50);
+   fChain->SetBranchAddress("rw_fs0_m6", &rw_fs0_m6, &b_rw_fs0_m6);
+   fChain->SetBranchAddress("rw_fs0_m8", &rw_fs0_m8, &b_rw_fs0_m8);
+   fChain->SetBranchAddress("rw_fs1_0", &rw_fs1_0, &b_rw_fs1_0);
+   fChain->SetBranchAddress("rw_fs1_0p5", &rw_fs1_0p5, &b_rw_fs1_0p5);
+   fChain->SetBranchAddress("rw_fs1_10", &rw_fs1_10, &b_rw_fs1_10);
+   fChain->SetBranchAddress("rw_fs1_15", &rw_fs1_15, &b_rw_fs1_15);
+   fChain->SetBranchAddress("rw_fs1_1p0", &rw_fs1_1p0, &b_rw_fs1_1p0);
+   fChain->SetBranchAddress("rw_fs1_1p5", &rw_fs1_1p5, &b_rw_fs1_1p5);
+   fChain->SetBranchAddress("rw_fs1_20", &rw_fs1_20, &b_rw_fs1_20);
+   fChain->SetBranchAddress("rw_fs1_25", &rw_fs1_25, &b_rw_fs1_25);
+   fChain->SetBranchAddress("rw_fs1_2p0", &rw_fs1_2p0, &b_rw_fs1_2p0);
+   fChain->SetBranchAddress("rw_fs1_2p5", &rw_fs1_2p5, &b_rw_fs1_2p5);
+   fChain->SetBranchAddress("rw_fs1_30", &rw_fs1_30, &b_rw_fs1_30);
+   fChain->SetBranchAddress("rw_fs1_33", &rw_fs1_33, &b_rw_fs1_33);
+   fChain->SetBranchAddress("rw_fs1_35", &rw_fs1_35, &b_rw_fs1_35);
+   fChain->SetBranchAddress("rw_fs1_3p0", &rw_fs1_3p0, &b_rw_fs1_3p0);
+   fChain->SetBranchAddress("rw_fs1_4p0", &rw_fs1_4p0, &b_rw_fs1_4p0);
+   fChain->SetBranchAddress("rw_fs1_5p0", &rw_fs1_5p0, &b_rw_fs1_5p0);
+   fChain->SetBranchAddress("rw_fs1_7p5", &rw_fs1_7p5, &b_rw_fs1_7p5);
+   fChain->SetBranchAddress("rw_fs1_m0p5", &rw_fs1_m0p5, &b_rw_fs1_m0p5);
+   fChain->SetBranchAddress("rw_fs1_m10", &rw_fs1_m10, &b_rw_fs1_m10);
+   fChain->SetBranchAddress("rw_fs1_m15", &rw_fs1_m15, &b_rw_fs1_m15);
+   fChain->SetBranchAddress("rw_fs1_m1p0", &rw_fs1_m1p0, &b_rw_fs1_m1p0);
+   fChain->SetBranchAddress("rw_fs1_m1p5", &rw_fs1_m1p5, &b_rw_fs1_m1p5);
+   fChain->SetBranchAddress("rw_fs1_m20", &rw_fs1_m20, &b_rw_fs1_m20);
+   fChain->SetBranchAddress("rw_fs1_m25", &rw_fs1_m25, &b_rw_fs1_m25);
+   fChain->SetBranchAddress("rw_fs1_m2p0", &rw_fs1_m2p0, &b_rw_fs1_m2p0);
+   fChain->SetBranchAddress("rw_fs1_m2p5", &rw_fs1_m2p5, &b_rw_fs1_m2p5);
+   fChain->SetBranchAddress("rw_fs1_m30", &rw_fs1_m30, &b_rw_fs1_m30);
+   fChain->SetBranchAddress("rw_fs1_m33", &rw_fs1_m33, &b_rw_fs1_m33);
+   fChain->SetBranchAddress("rw_fs1_m35", &rw_fs1_m35, &b_rw_fs1_m35);
+   fChain->SetBranchAddress("rw_fs1_m3p0", &rw_fs1_m3p0, &b_rw_fs1_m3p0);
+   fChain->SetBranchAddress("rw_fs1_m4p0", &rw_fs1_m4p0, &b_rw_fs1_m4p0);
+   fChain->SetBranchAddress("rw_fs1_m5p0", &rw_fs1_m5p0, &b_rw_fs1_m5p0);
+   fChain->SetBranchAddress("rw_fs1_m7p5", &rw_fs1_m7p5, &b_rw_fs1_m7p5);
+   fChain->SetBranchAddress("rw_ft0_0", &rw_ft0_0, &b_rw_ft0_0);
+   fChain->SetBranchAddress("rw_ft0_0p02", &rw_ft0_0p02, &b_rw_ft0_0p02);
+   fChain->SetBranchAddress("rw_ft0_0p04", &rw_ft0_0p04, &b_rw_ft0_0p04);
+   fChain->SetBranchAddress("rw_ft0_0p06", &rw_ft0_0p06, &b_rw_ft0_0p06);
+   fChain->SetBranchAddress("rw_ft0_0p08", &rw_ft0_0p08, &b_rw_ft0_0p08);
+   fChain->SetBranchAddress("rw_ft0_0p1", &rw_ft0_0p1, &b_rw_ft0_0p1);
+   fChain->SetBranchAddress("rw_ft0_0p12", &rw_ft0_0p12, &b_rw_ft0_0p12);
+   fChain->SetBranchAddress("rw_ft0_0p14", &rw_ft0_0p14, &b_rw_ft0_0p14);
+   fChain->SetBranchAddress("rw_ft0_0p18", &rw_ft0_0p18, &b_rw_ft0_0p18);
+   fChain->SetBranchAddress("rw_ft0_0p2", &rw_ft0_0p2, &b_rw_ft0_0p2);
+   fChain->SetBranchAddress("rw_ft0_0p3", &rw_ft0_0p3, &b_rw_ft0_0p3);
+   fChain->SetBranchAddress("rw_ft0_0p5", &rw_ft0_0p5, &b_rw_ft0_0p5);
+   fChain->SetBranchAddress("rw_ft0_0p7", &rw_ft0_0p7, &b_rw_ft0_0p7);
+   fChain->SetBranchAddress("rw_ft0_1p0", &rw_ft0_1p0, &b_rw_ft0_1p0);
+   fChain->SetBranchAddress("rw_ft0_1p2", &rw_ft0_1p2, &b_rw_ft0_1p2);
+   fChain->SetBranchAddress("rw_ft0_1p4", &rw_ft0_1p4, &b_rw_ft0_1p4);
+   fChain->SetBranchAddress("rw_ft0_1p8", &rw_ft0_1p8, &b_rw_ft0_1p8);
+   fChain->SetBranchAddress("rw_ft0_2p0", &rw_ft0_2p0, &b_rw_ft0_2p0);
+   fChain->SetBranchAddress("rw_ft0_m0p02", &rw_ft0_m0p02, &b_rw_ft0_m0p02);
+   fChain->SetBranchAddress("rw_ft0_m0p04", &rw_ft0_m0p04, &b_rw_ft0_m0p04);
+   fChain->SetBranchAddress("rw_ft0_m0p06", &rw_ft0_m0p06, &b_rw_ft0_m0p06);
+   fChain->SetBranchAddress("rw_ft0_m0p08", &rw_ft0_m0p08, &b_rw_ft0_m0p08);
+   fChain->SetBranchAddress("rw_ft0_m0p1", &rw_ft0_m0p1, &b_rw_ft0_m0p1);
+   fChain->SetBranchAddress("rw_ft0_m0p12", &rw_ft0_m0p12, &b_rw_ft0_m0p12);
+   fChain->SetBranchAddress("rw_ft0_m0p14", &rw_ft0_m0p14, &b_rw_ft0_m0p14);
+   fChain->SetBranchAddress("rw_ft0_m0p18", &rw_ft0_m0p18, &b_rw_ft0_m0p18);
+   fChain->SetBranchAddress("rw_ft0_m0p2", &rw_ft0_m0p2, &b_rw_ft0_m0p2);
+   fChain->SetBranchAddress("rw_ft0_m0p3", &rw_ft0_m0p3, &b_rw_ft0_m0p3);
+   fChain->SetBranchAddress("rw_ft0_m0p5", &rw_ft0_m0p5, &b_rw_ft0_m0p5);
+   fChain->SetBranchAddress("rw_ft0_m0p7", &rw_ft0_m0p7, &b_rw_ft0_m0p7);
+   fChain->SetBranchAddress("rw_ft0_m1p0", &rw_ft0_m1p0, &b_rw_ft0_m1p0);
+   fChain->SetBranchAddress("rw_ft0_m1p2", &rw_ft0_m1p2, &b_rw_ft0_m1p2);
+   fChain->SetBranchAddress("rw_ft0_m1p4", &rw_ft0_m1p4, &b_rw_ft0_m1p4);
+   fChain->SetBranchAddress("rw_ft0_m1p8", &rw_ft0_m1p8, &b_rw_ft0_m1p8);
+   fChain->SetBranchAddress("rw_ft0_m2p0", &rw_ft0_m2p0, &b_rw_ft0_m2p0);
+   fChain->SetBranchAddress("rw_ft1_0", &rw_ft1_0, &b_rw_ft1_0);
+   fChain->SetBranchAddress("rw_ft1_0p02", &rw_ft1_0p02, &b_rw_ft1_0p02);
+   fChain->SetBranchAddress("rw_ft1_0p04", &rw_ft1_0p04, &b_rw_ft1_0p04);
+   fChain->SetBranchAddress("rw_ft1_0p06", &rw_ft1_0p06, &b_rw_ft1_0p06);
+   fChain->SetBranchAddress("rw_ft1_0p08", &rw_ft1_0p08, &b_rw_ft1_0p08);
+   fChain->SetBranchAddress("rw_ft1_0p1", &rw_ft1_0p1, &b_rw_ft1_0p1);
+   fChain->SetBranchAddress("rw_ft1_0p12", &rw_ft1_0p12, &b_rw_ft1_0p12);
+   fChain->SetBranchAddress("rw_ft1_0p14", &rw_ft1_0p14, &b_rw_ft1_0p14);
+   fChain->SetBranchAddress("rw_ft1_0p18", &rw_ft1_0p18, &b_rw_ft1_0p18);
+   fChain->SetBranchAddress("rw_ft1_0p2", &rw_ft1_0p2, &b_rw_ft1_0p2);
+   fChain->SetBranchAddress("rw_ft1_0p3", &rw_ft1_0p3, &b_rw_ft1_0p3);
+   fChain->SetBranchAddress("rw_ft1_0p5", &rw_ft1_0p5, &b_rw_ft1_0p5);
+   fChain->SetBranchAddress("rw_ft1_0p7", &rw_ft1_0p7, &b_rw_ft1_0p7);
+   fChain->SetBranchAddress("rw_ft1_1p0", &rw_ft1_1p0, &b_rw_ft1_1p0);
+   fChain->SetBranchAddress("rw_ft1_1p2", &rw_ft1_1p2, &b_rw_ft1_1p2);
+   fChain->SetBranchAddress("rw_ft1_1p4", &rw_ft1_1p4, &b_rw_ft1_1p4);
+   fChain->SetBranchAddress("rw_ft1_1p8", &rw_ft1_1p8, &b_rw_ft1_1p8);
+   fChain->SetBranchAddress("rw_ft1_2p0", &rw_ft1_2p0, &b_rw_ft1_2p0);
+   fChain->SetBranchAddress("rw_ft1_m0p02", &rw_ft1_m0p02, &b_rw_ft1_m0p02);
+   fChain->SetBranchAddress("rw_ft1_m0p04", &rw_ft1_m0p04, &b_rw_ft1_m0p04);
+   fChain->SetBranchAddress("rw_ft1_m0p06", &rw_ft1_m0p06, &b_rw_ft1_m0p06);
+   fChain->SetBranchAddress("rw_ft1_m0p08", &rw_ft1_m0p08, &b_rw_ft1_m0p08);
+   fChain->SetBranchAddress("rw_ft1_m0p1", &rw_ft1_m0p1, &b_rw_ft1_m0p1);
+   fChain->SetBranchAddress("rw_ft1_m0p12", &rw_ft1_m0p12, &b_rw_ft1_m0p12);
+   fChain->SetBranchAddress("rw_ft1_m0p14", &rw_ft1_m0p14, &b_rw_ft1_m0p14);
+   fChain->SetBranchAddress("rw_ft1_m0p18", &rw_ft1_m0p18, &b_rw_ft1_m0p18);
+   fChain->SetBranchAddress("rw_ft1_m0p2", &rw_ft1_m0p2, &b_rw_ft1_m0p2);
+   fChain->SetBranchAddress("rw_ft1_m0p3", &rw_ft1_m0p3, &b_rw_ft1_m0p3);
+   fChain->SetBranchAddress("rw_ft1_m0p5", &rw_ft1_m0p5, &b_rw_ft1_m0p5);
+   fChain->SetBranchAddress("rw_ft1_m0p7", &rw_ft1_m0p7, &b_rw_ft1_m0p7);
+   fChain->SetBranchAddress("rw_ft1_m1p0", &rw_ft1_m1p0, &b_rw_ft1_m1p0);
+   fChain->SetBranchAddress("rw_ft1_m1p2", &rw_ft1_m1p2, &b_rw_ft1_m1p2);
+   fChain->SetBranchAddress("rw_ft1_m1p4", &rw_ft1_m1p4, &b_rw_ft1_m1p4);
+   fChain->SetBranchAddress("rw_ft1_m1p8", &rw_ft1_m1p8, &b_rw_ft1_m1p8);
+   fChain->SetBranchAddress("rw_ft1_m2p0", &rw_ft1_m2p0, &b_rw_ft1_m2p0);
+   fChain->SetBranchAddress("rw_ft2_0", &rw_ft2_0, &b_rw_ft2_0);
+   fChain->SetBranchAddress("rw_ft2_0p02", &rw_ft2_0p02, &b_rw_ft2_0p02);
+   fChain->SetBranchAddress("rw_ft2_0p04", &rw_ft2_0p04, &b_rw_ft2_0p04);
+   fChain->SetBranchAddress("rw_ft2_0p08", &rw_ft2_0p08, &b_rw_ft2_0p08);
+   fChain->SetBranchAddress("rw_ft2_0p14", &rw_ft2_0p14, &b_rw_ft2_0p14);
+   fChain->SetBranchAddress("rw_ft2_0p2", &rw_ft2_0p2, &b_rw_ft2_0p2);
+   fChain->SetBranchAddress("rw_ft2_0p26", &rw_ft2_0p26, &b_rw_ft2_0p26);
+   fChain->SetBranchAddress("rw_ft2_0p32", &rw_ft2_0p32, &b_rw_ft2_0p32);
+   fChain->SetBranchAddress("rw_ft2_0p5", &rw_ft2_0p5, &b_rw_ft2_0p5);
+   fChain->SetBranchAddress("rw_ft2_0p7", &rw_ft2_0p7, &b_rw_ft2_0p7);
+   fChain->SetBranchAddress("rw_ft2_0p9", &rw_ft2_0p9, &b_rw_ft2_0p9);
+   fChain->SetBranchAddress("rw_ft2_1p2", &rw_ft2_1p2, &b_rw_ft2_1p2);
+   fChain->SetBranchAddress("rw_ft2_1p7", &rw_ft2_1p7, &b_rw_ft2_1p7);
+   fChain->SetBranchAddress("rw_ft2_2p5", &rw_ft2_2p5, &b_rw_ft2_2p5);
+   fChain->SetBranchAddress("rw_ft2_2p9", &rw_ft2_2p9, &b_rw_ft2_2p9);
+   fChain->SetBranchAddress("rw_ft2_3p4", &rw_ft2_3p4, &b_rw_ft2_3p4);
+   fChain->SetBranchAddress("rw_ft2_3p9", &rw_ft2_3p9, &b_rw_ft2_3p9);
+   fChain->SetBranchAddress("rw_ft2_4p5", &rw_ft2_4p5, &b_rw_ft2_4p5);
+   fChain->SetBranchAddress("rw_ft2_m0p02", &rw_ft2_m0p02, &b_rw_ft2_m0p02);
+   fChain->SetBranchAddress("rw_ft2_m0p04", &rw_ft2_m0p04, &b_rw_ft2_m0p04);
+   fChain->SetBranchAddress("rw_ft2_m0p08", &rw_ft2_m0p08, &b_rw_ft2_m0p08);
+   fChain->SetBranchAddress("rw_ft2_m0p14", &rw_ft2_m0p14, &b_rw_ft2_m0p14);
+   fChain->SetBranchAddress("rw_ft2_m0p2", &rw_ft2_m0p2, &b_rw_ft2_m0p2);
+   fChain->SetBranchAddress("rw_ft2_m0p26", &rw_ft2_m0p26, &b_rw_ft2_m0p26);
+   fChain->SetBranchAddress("rw_ft2_m0p32", &rw_ft2_m0p32, &b_rw_ft2_m0p32);
+   fChain->SetBranchAddress("rw_ft2_m0p5", &rw_ft2_m0p5, &b_rw_ft2_m0p5);
+   fChain->SetBranchAddress("rw_ft2_m0p7", &rw_ft2_m0p7, &b_rw_ft2_m0p7);
+   fChain->SetBranchAddress("rw_ft2_m0p9", &rw_ft2_m0p9, &b_rw_ft2_m0p9);
+   fChain->SetBranchAddress("rw_ft2_m1p2", &rw_ft2_m1p2, &b_rw_ft2_m1p2);
+   fChain->SetBranchAddress("rw_ft2_m1p7", &rw_ft2_m1p7, &b_rw_ft2_m1p7);
+   fChain->SetBranchAddress("rw_ft2_m2p5", &rw_ft2_m2p5, &b_rw_ft2_m2p5);
+   fChain->SetBranchAddress("rw_ft2_m2p9", &rw_ft2_m2p9, &b_rw_ft2_m2p9);
+   fChain->SetBranchAddress("rw_ft2_m3p4", &rw_ft2_m3p4, &b_rw_ft2_m3p4);
+   fChain->SetBranchAddress("rw_ft2_m3p9", &rw_ft2_m3p9, &b_rw_ft2_m3p9);
+   fChain->SetBranchAddress("rw_ft2_m4p5", &rw_ft2_m4p5, &b_rw_ft2_m4p5);
+   fChain->SetBranchAddress("rw_ft5_0", &rw_ft5_0, &b_rw_ft5_0);
+   fChain->SetBranchAddress("rw_ft5_0p2", &rw_ft5_0p2, &b_rw_ft5_0p2);
+   fChain->SetBranchAddress("rw_ft5_0p5", &rw_ft5_0p5, &b_rw_ft5_0p5);
+   fChain->SetBranchAddress("rw_ft5_0p7", &rw_ft5_0p7, &b_rw_ft5_0p7);
+   fChain->SetBranchAddress("rw_ft5_10", &rw_ft5_10, &b_rw_ft5_10);
+   fChain->SetBranchAddress("rw_ft5_12", &rw_ft5_12, &b_rw_ft5_12);
+   fChain->SetBranchAddress("rw_ft5_15", &rw_ft5_15, &b_rw_ft5_15);
+   fChain->SetBranchAddress("rw_ft5_18", &rw_ft5_18, &b_rw_ft5_18);
+   fChain->SetBranchAddress("rw_ft5_1p0", &rw_ft5_1p0, &b_rw_ft5_1p0);
+   fChain->SetBranchAddress("rw_ft5_1p2", &rw_ft5_1p2, &b_rw_ft5_1p2);
+   fChain->SetBranchAddress("rw_ft5_1p4", &rw_ft5_1p4, &b_rw_ft5_1p4);
+   fChain->SetBranchAddress("rw_ft5_1p6", &rw_ft5_1p6, &b_rw_ft5_1p6);
+   fChain->SetBranchAddress("rw_ft5_1p8", &rw_ft5_1p8, &b_rw_ft5_1p8);
+   fChain->SetBranchAddress("rw_ft5_20", &rw_ft5_20, &b_rw_ft5_20);
+   fChain->SetBranchAddress("rw_ft5_22", &rw_ft5_22, &b_rw_ft5_22);
+   fChain->SetBranchAddress("rw_ft5_25", &rw_ft5_25, &b_rw_ft5_25);
+   fChain->SetBranchAddress("rw_ft5_2p0", &rw_ft5_2p0, &b_rw_ft5_2p0);
+   fChain->SetBranchAddress("rw_ft5_3", &rw_ft5_3, &b_rw_ft5_3);
+   fChain->SetBranchAddress("rw_ft5_5", &rw_ft5_5, &b_rw_ft5_5);
+   fChain->SetBranchAddress("rw_ft5_7", &rw_ft5_7, &b_rw_ft5_7);
+   fChain->SetBranchAddress("rw_ft5_m0p2", &rw_ft5_m0p2, &b_rw_ft5_m0p2);
+   fChain->SetBranchAddress("rw_ft5_m0p5", &rw_ft5_m0p5, &b_rw_ft5_m0p5);
+   fChain->SetBranchAddress("rw_ft5_m0p7", &rw_ft5_m0p7, &b_rw_ft5_m0p7);
+   fChain->SetBranchAddress("rw_ft5_m10", &rw_ft5_m10, &b_rw_ft5_m10);
+   fChain->SetBranchAddress("rw_ft5_m12", &rw_ft5_m12, &b_rw_ft5_m12);
+   fChain->SetBranchAddress("rw_ft5_m15", &rw_ft5_m15, &b_rw_ft5_m15);
+   fChain->SetBranchAddress("rw_ft5_m18", &rw_ft5_m18, &b_rw_ft5_m18);
+   fChain->SetBranchAddress("rw_ft5_m1p0", &rw_ft5_m1p0, &b_rw_ft5_m1p0);
+   fChain->SetBranchAddress("rw_ft5_m1p2", &rw_ft5_m1p2, &b_rw_ft5_m1p2);
+   fChain->SetBranchAddress("rw_ft5_m1p4", &rw_ft5_m1p4, &b_rw_ft5_m1p4);
+   fChain->SetBranchAddress("rw_ft5_m1p6", &rw_ft5_m1p6, &b_rw_ft5_m1p6);
+   fChain->SetBranchAddress("rw_ft5_m1p8", &rw_ft5_m1p8, &b_rw_ft5_m1p8);
+   fChain->SetBranchAddress("rw_ft5_m20", &rw_ft5_m20, &b_rw_ft5_m20);
+   fChain->SetBranchAddress("rw_ft5_m22", &rw_ft5_m22, &b_rw_ft5_m22);
+   fChain->SetBranchAddress("rw_ft5_m25", &rw_ft5_m25, &b_rw_ft5_m25);
+   fChain->SetBranchAddress("rw_ft5_m2p0", &rw_ft5_m2p0, &b_rw_ft5_m2p0);
+   fChain->SetBranchAddress("rw_ft5_m3", &rw_ft5_m3, &b_rw_ft5_m3);
+   fChain->SetBranchAddress("rw_ft5_m5", &rw_ft5_m5, &b_rw_ft5_m5);
+   fChain->SetBranchAddress("rw_ft5_m7", &rw_ft5_m7, &b_rw_ft5_m7);
+   fChain->SetBranchAddress("rw_ft6_0", &rw_ft6_0, &b_rw_ft6_0);
+   fChain->SetBranchAddress("rw_ft6_0p2", &rw_ft6_0p2, &b_rw_ft6_0p2);
+   fChain->SetBranchAddress("rw_ft6_0p5", &rw_ft6_0p5, &b_rw_ft6_0p5);
+   fChain->SetBranchAddress("rw_ft6_0p7", &rw_ft6_0p7, &b_rw_ft6_0p7);
+   fChain->SetBranchAddress("rw_ft6_10", &rw_ft6_10, &b_rw_ft6_10);
+   fChain->SetBranchAddress("rw_ft6_12", &rw_ft6_12, &b_rw_ft6_12);
+   fChain->SetBranchAddress("rw_ft6_15", &rw_ft6_15, &b_rw_ft6_15);
+   fChain->SetBranchAddress("rw_ft6_18", &rw_ft6_18, &b_rw_ft6_18);
+   fChain->SetBranchAddress("rw_ft6_1p0", &rw_ft6_1p0, &b_rw_ft6_1p0);
+   fChain->SetBranchAddress("rw_ft6_1p2", &rw_ft6_1p2, &b_rw_ft6_1p2);
+   fChain->SetBranchAddress("rw_ft6_1p4", &rw_ft6_1p4, &b_rw_ft6_1p4);
+   fChain->SetBranchAddress("rw_ft6_1p6", &rw_ft6_1p6, &b_rw_ft6_1p6);
+   fChain->SetBranchAddress("rw_ft6_1p8", &rw_ft6_1p8, &b_rw_ft6_1p8);
+   fChain->SetBranchAddress("rw_ft6_20", &rw_ft6_20, &b_rw_ft6_20);
+   fChain->SetBranchAddress("rw_ft6_22", &rw_ft6_22, &b_rw_ft6_22);
+   fChain->SetBranchAddress("rw_ft6_25", &rw_ft6_25, &b_rw_ft6_25);
+   fChain->SetBranchAddress("rw_ft6_27", &rw_ft6_27, &b_rw_ft6_27);
+   fChain->SetBranchAddress("rw_ft6_29", &rw_ft6_29, &b_rw_ft6_29);
+   fChain->SetBranchAddress("rw_ft6_2p0", &rw_ft6_2p0, &b_rw_ft6_2p0);
+   fChain->SetBranchAddress("rw_ft6_3", &rw_ft6_3, &b_rw_ft6_3);
+   fChain->SetBranchAddress("rw_ft6_5", &rw_ft6_5, &b_rw_ft6_5);
+   fChain->SetBranchAddress("rw_ft6_7", &rw_ft6_7, &b_rw_ft6_7);
+   fChain->SetBranchAddress("rw_ft6_m0p2", &rw_ft6_m0p2, &b_rw_ft6_m0p2);
+   fChain->SetBranchAddress("rw_ft6_m0p5", &rw_ft6_m0p5, &b_rw_ft6_m0p5);
+   fChain->SetBranchAddress("rw_ft6_m0p7", &rw_ft6_m0p7, &b_rw_ft6_m0p7);
+   fChain->SetBranchAddress("rw_ft6_m10", &rw_ft6_m10, &b_rw_ft6_m10);
+   fChain->SetBranchAddress("rw_ft6_m12", &rw_ft6_m12, &b_rw_ft6_m12);
+   fChain->SetBranchAddress("rw_ft6_m15", &rw_ft6_m15, &b_rw_ft6_m15);
+   fChain->SetBranchAddress("rw_ft6_m18", &rw_ft6_m18, &b_rw_ft6_m18);
+   fChain->SetBranchAddress("rw_ft6_m1p0", &rw_ft6_m1p0, &b_rw_ft6_m1p0);
+   fChain->SetBranchAddress("rw_ft6_m1p2", &rw_ft6_m1p2, &b_rw_ft6_m1p2);
+   fChain->SetBranchAddress("rw_ft6_m1p4", &rw_ft6_m1p4, &b_rw_ft6_m1p4);
+   fChain->SetBranchAddress("rw_ft6_m1p6", &rw_ft6_m1p6, &b_rw_ft6_m1p6);
+   fChain->SetBranchAddress("rw_ft6_m1p8", &rw_ft6_m1p8, &b_rw_ft6_m1p8);
+   fChain->SetBranchAddress("rw_ft6_m20", &rw_ft6_m20, &b_rw_ft6_m20);
+   fChain->SetBranchAddress("rw_ft6_m22", &rw_ft6_m22, &b_rw_ft6_m22);
+   fChain->SetBranchAddress("rw_ft6_m25", &rw_ft6_m25, &b_rw_ft6_m25);
+   fChain->SetBranchAddress("rw_ft6_m27", &rw_ft6_m27, &b_rw_ft6_m27);
+   fChain->SetBranchAddress("rw_ft6_m29", &rw_ft6_m29, &b_rw_ft6_m29);
+   fChain->SetBranchAddress("rw_ft6_m2p0", &rw_ft6_m2p0, &b_rw_ft6_m2p0);
+   fChain->SetBranchAddress("rw_ft6_m3", &rw_ft6_m3, &b_rw_ft6_m3);
+   fChain->SetBranchAddress("rw_ft6_m5", &rw_ft6_m5, &b_rw_ft6_m5);
+   fChain->SetBranchAddress("rw_ft6_m7", &rw_ft6_m7, &b_rw_ft6_m7);
+   fChain->SetBranchAddress("rw_ft7_0p0", &rw_ft7_0p0, &b_rw_ft7_0p0);
+   fChain->SetBranchAddress("rw_ft7_0p2", &rw_ft7_0p2, &b_rw_ft7_0p2);
+   fChain->SetBranchAddress("rw_ft7_0p4", &rw_ft7_0p4, &b_rw_ft7_0p4);
+   fChain->SetBranchAddress("rw_ft7_0p6", &rw_ft7_0p6, &b_rw_ft7_0p6);
+   fChain->SetBranchAddress("rw_ft7_0p8", &rw_ft7_0p8, &b_rw_ft7_0p8);
+   fChain->SetBranchAddress("rw_ft7_10", &rw_ft7_10, &b_rw_ft7_10);
+   fChain->SetBranchAddress("rw_ft7_1p0", &rw_ft7_1p0, &b_rw_ft7_1p0);
+   fChain->SetBranchAddress("rw_ft7_1p2", &rw_ft7_1p2, &b_rw_ft7_1p2);
+   fChain->SetBranchAddress("rw_ft7_1p5", &rw_ft7_1p5, &b_rw_ft7_1p5);
+   fChain->SetBranchAddress("rw_ft7_20", &rw_ft7_20, &b_rw_ft7_20);
+   fChain->SetBranchAddress("rw_ft7_2p0", &rw_ft7_2p0, &b_rw_ft7_2p0);
+   fChain->SetBranchAddress("rw_ft7_2p5", &rw_ft7_2p5, &b_rw_ft7_2p5);
+   fChain->SetBranchAddress("rw_ft7_30", &rw_ft7_30, &b_rw_ft7_30);
+   fChain->SetBranchAddress("rw_ft7_35", &rw_ft7_35, &b_rw_ft7_35);
+   fChain->SetBranchAddress("rw_ft7_3p0", &rw_ft7_3p0, &b_rw_ft7_3p0);
+   fChain->SetBranchAddress("rw_ft7_4", &rw_ft7_4, &b_rw_ft7_4);
+   fChain->SetBranchAddress("rw_ft7_40", &rw_ft7_40, &b_rw_ft7_40);
+   fChain->SetBranchAddress("rw_ft7_45", &rw_ft7_45, &b_rw_ft7_45);
+   fChain->SetBranchAddress("rw_ft7_5", &rw_ft7_5, &b_rw_ft7_5);
+   fChain->SetBranchAddress("rw_ft7_50", &rw_ft7_50, &b_rw_ft7_50);
+   fChain->SetBranchAddress("rw_ft7_55", &rw_ft7_55, &b_rw_ft7_55);
+   fChain->SetBranchAddress("rw_ft7_6", &rw_ft7_6, &b_rw_ft7_6);
+   fChain->SetBranchAddress("rw_ft7_60", &rw_ft7_60, &b_rw_ft7_60);
+   fChain->SetBranchAddress("rw_ft7_65", &rw_ft7_65, &b_rw_ft7_65);
+   fChain->SetBranchAddress("rw_ft7_70", &rw_ft7_70, &b_rw_ft7_70);
+   fChain->SetBranchAddress("rw_ft7_8", &rw_ft7_8, &b_rw_ft7_8);
+   fChain->SetBranchAddress("rw_ft7_m0p2", &rw_ft7_m0p2, &b_rw_ft7_m0p2);
+   fChain->SetBranchAddress("rw_ft7_m0p4", &rw_ft7_m0p4, &b_rw_ft7_m0p4);
+   fChain->SetBranchAddress("rw_ft7_m0p6", &rw_ft7_m0p6, &b_rw_ft7_m0p6);
+   fChain->SetBranchAddress("rw_ft7_m0p8", &rw_ft7_m0p8, &b_rw_ft7_m0p8);
+   fChain->SetBranchAddress("rw_ft7_m10", &rw_ft7_m10, &b_rw_ft7_m10);
+   fChain->SetBranchAddress("rw_ft7_m1p0", &rw_ft7_m1p0, &b_rw_ft7_m1p0);
+   fChain->SetBranchAddress("rw_ft7_m1p2", &rw_ft7_m1p2, &b_rw_ft7_m1p2);
+   fChain->SetBranchAddress("rw_ft7_m1p5", &rw_ft7_m1p5, &b_rw_ft7_m1p5);
+   fChain->SetBranchAddress("rw_ft7_m20", &rw_ft7_m20, &b_rw_ft7_m20);
+   fChain->SetBranchAddress("rw_ft7_m2p0", &rw_ft7_m2p0, &b_rw_ft7_m2p0);
+   fChain->SetBranchAddress("rw_ft7_m2p5", &rw_ft7_m2p5, &b_rw_ft7_m2p5);
+   fChain->SetBranchAddress("rw_ft7_m30", &rw_ft7_m30, &b_rw_ft7_m30);
+   fChain->SetBranchAddress("rw_ft7_m35", &rw_ft7_m35, &b_rw_ft7_m35);
+   fChain->SetBranchAddress("rw_ft7_m3p0", &rw_ft7_m3p0, &b_rw_ft7_m3p0);
+   fChain->SetBranchAddress("rw_ft7_m4", &rw_ft7_m4, &b_rw_ft7_m4);
+   fChain->SetBranchAddress("rw_ft7_m40", &rw_ft7_m40, &b_rw_ft7_m40);
+   fChain->SetBranchAddress("rw_ft7_m45", &rw_ft7_m45, &b_rw_ft7_m45);
+   fChain->SetBranchAddress("rw_ft7_m5", &rw_ft7_m5, &b_rw_ft7_m5);
+   fChain->SetBranchAddress("rw_ft7_m50", &rw_ft7_m50, &b_rw_ft7_m50);
+   fChain->SetBranchAddress("rw_ft7_m55", &rw_ft7_m55, &b_rw_ft7_m55);
+   fChain->SetBranchAddress("rw_ft7_m6", &rw_ft7_m6, &b_rw_ft7_m6);
+   fChain->SetBranchAddress("rw_ft7_m60", &rw_ft7_m60, &b_rw_ft7_m60);
+   fChain->SetBranchAddress("rw_ft7_m65", &rw_ft7_m65, &b_rw_ft7_m65);
+   fChain->SetBranchAddress("rw_ft7_m70", &rw_ft7_m70, &b_rw_ft7_m70);
+   fChain->SetBranchAddress("rw_ft7_m8", &rw_ft7_m8, &b_rw_ft7_m8);
+   fChain->SetBranchAddress("rw_ft8_0", &rw_ft8_0, &b_rw_ft8_0);
+   fChain->SetBranchAddress("rw_ft8_0p02", &rw_ft8_0p02, &b_rw_ft8_0p02);
+   fChain->SetBranchAddress("rw_ft8_0p04", &rw_ft8_0p04, &b_rw_ft8_0p04);
+   fChain->SetBranchAddress("rw_ft8_0p06", &rw_ft8_0p06, &b_rw_ft8_0p06);
+   fChain->SetBranchAddress("rw_ft8_0p08", &rw_ft8_0p08, &b_rw_ft8_0p08);
+   fChain->SetBranchAddress("rw_ft8_0p1", &rw_ft8_0p1, &b_rw_ft8_0p1);
+   fChain->SetBranchAddress("rw_ft8_0p12", &rw_ft8_0p12, &b_rw_ft8_0p12);
+   fChain->SetBranchAddress("rw_ft8_0p14", &rw_ft8_0p14, &b_rw_ft8_0p14);
+   fChain->SetBranchAddress("rw_ft8_0p18", &rw_ft8_0p18, &b_rw_ft8_0p18);
+   fChain->SetBranchAddress("rw_ft8_0p2", &rw_ft8_0p2, &b_rw_ft8_0p2);
+   fChain->SetBranchAddress("rw_ft8_0p3", &rw_ft8_0p3, &b_rw_ft8_0p3);
+   fChain->SetBranchAddress("rw_ft8_0p5", &rw_ft8_0p5, &b_rw_ft8_0p5);
+   fChain->SetBranchAddress("rw_ft8_0p7", &rw_ft8_0p7, &b_rw_ft8_0p7);
+   fChain->SetBranchAddress("rw_ft8_1p0", &rw_ft8_1p0, &b_rw_ft8_1p0);
+   fChain->SetBranchAddress("rw_ft8_1p2", &rw_ft8_1p2, &b_rw_ft8_1p2);
+   fChain->SetBranchAddress("rw_ft8_1p4", &rw_ft8_1p4, &b_rw_ft8_1p4);
+   fChain->SetBranchAddress("rw_ft8_1p8", &rw_ft8_1p8, &b_rw_ft8_1p8);
+   fChain->SetBranchAddress("rw_ft8_2p2", &rw_ft8_2p2, &b_rw_ft8_2p2);
+   fChain->SetBranchAddress("rw_ft8_2p6", &rw_ft8_2p6, &b_rw_ft8_2p6);
+   fChain->SetBranchAddress("rw_ft8_3p0", &rw_ft8_3p0, &b_rw_ft8_3p0);
+   fChain->SetBranchAddress("rw_ft8_3p5", &rw_ft8_3p5, &b_rw_ft8_3p5);
+   fChain->SetBranchAddress("rw_ft8_4p0", &rw_ft8_4p0, &b_rw_ft8_4p0);
+   fChain->SetBranchAddress("rw_ft8_m0p02", &rw_ft8_m0p02, &b_rw_ft8_m0p02);
+   fChain->SetBranchAddress("rw_ft8_m0p04", &rw_ft8_m0p04, &b_rw_ft8_m0p04);
+   fChain->SetBranchAddress("rw_ft8_m0p06", &rw_ft8_m0p06, &b_rw_ft8_m0p06);
+   fChain->SetBranchAddress("rw_ft8_m0p08", &rw_ft8_m0p08, &b_rw_ft8_m0p08);
+   fChain->SetBranchAddress("rw_ft8_m0p1", &rw_ft8_m0p1, &b_rw_ft8_m0p1);
+   fChain->SetBranchAddress("rw_ft8_m0p12", &rw_ft8_m0p12, &b_rw_ft8_m0p12);
+   fChain->SetBranchAddress("rw_ft8_m0p14", &rw_ft8_m0p14, &b_rw_ft8_m0p14);
+   fChain->SetBranchAddress("rw_ft8_m0p18", &rw_ft8_m0p18, &b_rw_ft8_m0p18);
+   fChain->SetBranchAddress("rw_ft8_m0p2", &rw_ft8_m0p2, &b_rw_ft8_m0p2);
+   fChain->SetBranchAddress("rw_ft8_m0p3", &rw_ft8_m0p3, &b_rw_ft8_m0p3);
+   fChain->SetBranchAddress("rw_ft8_m0p5", &rw_ft8_m0p5, &b_rw_ft8_m0p5);
+   fChain->SetBranchAddress("rw_ft8_m0p7", &rw_ft8_m0p7, &b_rw_ft8_m0p7);
+   fChain->SetBranchAddress("rw_ft8_m1p0", &rw_ft8_m1p0, &b_rw_ft8_m1p0);
+   fChain->SetBranchAddress("rw_ft8_m1p2", &rw_ft8_m1p2, &b_rw_ft8_m1p2);
+   fChain->SetBranchAddress("rw_ft8_m1p4", &rw_ft8_m1p4, &b_rw_ft8_m1p4);
+   fChain->SetBranchAddress("rw_ft8_m1p8", &rw_ft8_m1p8, &b_rw_ft8_m1p8);
+   fChain->SetBranchAddress("rw_ft8_m2p2", &rw_ft8_m2p2, &b_rw_ft8_m2p2);
+   fChain->SetBranchAddress("rw_ft8_m2p6", &rw_ft8_m2p6, &b_rw_ft8_m2p6);
+   fChain->SetBranchAddress("rw_ft8_m3p0", &rw_ft8_m3p0, &b_rw_ft8_m3p0);
+   fChain->SetBranchAddress("rw_ft8_m3p5", &rw_ft8_m3p5, &b_rw_ft8_m3p5);
+   fChain->SetBranchAddress("rw_ft8_m4p0", &rw_ft8_m4p0, &b_rw_ft8_m4p0);
+   fChain->SetBranchAddress("rw_ft9_0", &rw_ft9_0, &b_rw_ft9_0);
+   fChain->SetBranchAddress("rw_ft9_0p1", &rw_ft9_0p1, &b_rw_ft9_0p1);
+   fChain->SetBranchAddress("rw_ft9_0p2", &rw_ft9_0p2, &b_rw_ft9_0p2);
+   fChain->SetBranchAddress("rw_ft9_0p3", &rw_ft9_0p3, &b_rw_ft9_0p3);
+   fChain->SetBranchAddress("rw_ft9_0p4", &rw_ft9_0p4, &b_rw_ft9_0p4);
+   fChain->SetBranchAddress("rw_ft9_0p5", &rw_ft9_0p5, &b_rw_ft9_0p5);
+   fChain->SetBranchAddress("rw_ft9_0p6", &rw_ft9_0p6, &b_rw_ft9_0p6);
+   fChain->SetBranchAddress("rw_ft9_0p7", &rw_ft9_0p7, &b_rw_ft9_0p7);
+   fChain->SetBranchAddress("rw_ft9_0p8", &rw_ft9_0p8, &b_rw_ft9_0p8);
+   fChain->SetBranchAddress("rw_ft9_0p9", &rw_ft9_0p9, &b_rw_ft9_0p9);
+   fChain->SetBranchAddress("rw_ft9_1p0", &rw_ft9_1p0, &b_rw_ft9_1p0);
+   fChain->SetBranchAddress("rw_ft9_1p5", &rw_ft9_1p5, &b_rw_ft9_1p5);
+   fChain->SetBranchAddress("rw_ft9_2p0", &rw_ft9_2p0, &b_rw_ft9_2p0);
+   fChain->SetBranchAddress("rw_ft9_3", &rw_ft9_3, &b_rw_ft9_3);
+   fChain->SetBranchAddress("rw_ft9_4", &rw_ft9_4, &b_rw_ft9_4);
+   fChain->SetBranchAddress("rw_ft9_5", &rw_ft9_5, &b_rw_ft9_5);
+   fChain->SetBranchAddress("rw_ft9_6", &rw_ft9_6, &b_rw_ft9_6);
+   fChain->SetBranchAddress("rw_ft9_7", &rw_ft9_7, &b_rw_ft9_7);
+   fChain->SetBranchAddress("rw_ft9_8", &rw_ft9_8, &b_rw_ft9_8);
+   fChain->SetBranchAddress("rw_ft9_9", &rw_ft9_9, &b_rw_ft9_9);
+   fChain->SetBranchAddress("rw_ft9_m0p1", &rw_ft9_m0p1, &b_rw_ft9_m0p1);
+   fChain->SetBranchAddress("rw_ft9_m0p2", &rw_ft9_m0p2, &b_rw_ft9_m0p2);
+   fChain->SetBranchAddress("rw_ft9_m0p3", &rw_ft9_m0p3, &b_rw_ft9_m0p3);
+   fChain->SetBranchAddress("rw_ft9_m0p4", &rw_ft9_m0p4, &b_rw_ft9_m0p4);
+   fChain->SetBranchAddress("rw_ft9_m0p5", &rw_ft9_m0p5, &b_rw_ft9_m0p5);
+   fChain->SetBranchAddress("rw_ft9_m0p6", &rw_ft9_m0p6, &b_rw_ft9_m0p6);
+   fChain->SetBranchAddress("rw_ft9_m0p7", &rw_ft9_m0p7, &b_rw_ft9_m0p7);
+   fChain->SetBranchAddress("rw_ft9_m0p8", &rw_ft9_m0p8, &b_rw_ft9_m0p8);
+   fChain->SetBranchAddress("rw_ft9_m0p9", &rw_ft9_m0p9, &b_rw_ft9_m0p9);
+   fChain->SetBranchAddress("rw_ft9_m10", &rw_ft9_m10, &b_rw_ft9_m10);
+   fChain->SetBranchAddress("rw_ft9_m1p0", &rw_ft9_m1p0, &b_rw_ft9_m1p0);
+   fChain->SetBranchAddress("rw_ft9_m1p5", &rw_ft9_m1p5, &b_rw_ft9_m1p5);
+   fChain->SetBranchAddress("rw_ft9_m2p0", &rw_ft9_m2p0, &b_rw_ft9_m2p0);
+   fChain->SetBranchAddress("rw_ft9_m3", &rw_ft9_m3, &b_rw_ft9_m3);
+   fChain->SetBranchAddress("rw_ft9_m4", &rw_ft9_m4, &b_rw_ft9_m4);
+   fChain->SetBranchAddress("rw_ft9_m5", &rw_ft9_m5, &b_rw_ft9_m5);
+   fChain->SetBranchAddress("rw_ft9_m6", &rw_ft9_m6, &b_rw_ft9_m6);
+   fChain->SetBranchAddress("rw_ft9_m7", &rw_ft9_m7, &b_rw_ft9_m7);
+   fChain->SetBranchAddress("rw_ft9_m8", &rw_ft9_m8, &b_rw_ft9_m8);
+   fChain->SetBranchAddress("rw_ft9_m9", &rw_ft9_m9, &b_rw_ft9_m9);
+   }
    fChain->SetBranchAddress("sf_btag0", &sf_btag0, &b_sf_btag0);
    fChain->SetBranchAddress("sf_btag1", &sf_btag1, &b_sf_btag1);
    fChain->SetBranchAddress("sf_btag2", &sf_btag2, &b_sf_btag2);

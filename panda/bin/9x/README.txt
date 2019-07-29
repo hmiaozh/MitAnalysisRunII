@@ -18,7 +18,7 @@ PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$US
 
 # standard 2016
 PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$USER/catalog/test.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/009 \
---include SingleElectron SingleMuon DoubleEG DoubleMuon MuonEG ZZ WZ WW WLLJJ DYJetsToLL_M-50_Tune DYJetsToLL_M-10to50_Tune tZq GluGluH VBFH VBF_H ttHToNonbb VHToNonbb \
+--include SingleElectron SingleMuon DoubleEG DoubleMuon MuonEG Unpart_Z ADDMonoZ ZZ WZ WW WLLJJ DYJetsToLL_M-50_Tune DYJetsToLL_M-10to50_Tune tZq GluGluH VBFH VBF_H ttHToNonbb VHToNonbb \
 TTG TTZ TTW ST_tW TTTo2L2Nu WGstarTo WGToLNuG ZGTo2LG JetsToLL DYJetsToTauTau MET WJetsToLNu TT_TuneCUETP8M2T4 WpWpJJ HToInvisible HToInv_ZToLL MJJ-120 \
 --exclude ZpWW_med JetsToLL_M-50_HT DYJetsToLL_Zpt-100to200_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8 DYJetsToLL_Zpt-200toInf_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8
 
@@ -32,7 +32,7 @@ DoubleScattering WZTo3LNu_0Jets WZTo3LNu_1Jets WZTo3LNu_2Jets WZTo3LNu_3Jets ZZJ
 
 # standard 2017
 PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$USER/catalog/test.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/012 \
---include SingleElectron SingleMuon DoubleEG DoubleMuon MuonEG EGamma ZZ WZ WW JetsToLL_M-50 DYJetsToLL_M-10to50_Tune tZq GluGluH VBFH VBF_H ttHToNonbb VHToNonbb \
+--include SingleElectron SingleMuon DoubleEG DoubleMuon MuonEG EGamma Unpart_Z ADDMonoZ ZZ WZ WW JetsToLL_M-50 DYJetsToLL_M-10to50_Tune tZq GluGluH VBFH VBF_H ttHToNonbb VHToNonbb \
 TTG TTZ TTW ST_tW TT WGstarTo WGToLNuG ZGTo2LG ZGToLLG JetsToLL DYJetsToTauTau NNPDF30_13TeV-powheg MET WJetsToLNu WpWpJJ WLLJJ JJ_EWK_M HToInvisible HToInv_ZToLL \
 --exclude ZpWW_med JetsToLL_M-50_HT NNPDF30_13TeV-powheg DYJetsToLL_Zpt-100to200 DYJetsToLL_Zpt-200toInf WW_TuneCP5_13TeV-pythia8 ZZ_TuneCP5_13TeV-pythia8 WZ_TuneCP5_13TeV-pythia8 TTToSemiLeptonic TTTo2L2Nu_TuneCP5_13TeV
 
@@ -50,7 +50,7 @@ PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$US
 --include SingleElectron SingleMuon DoubleEG DoubleMuon MuonEG EGamma MET
 
 PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$USER/catalog/testB.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/013 \
---include ZZ WZ WW JetsToLL_M-50 DYJetsToLL_M-10to50_Tune tZq GluGluH VBFH VBF_H ttHToNonbb VHToNonbb \
+--include ADDMonoZ ZZ WZ WW JetsToLL_M-50 DYJetsToLL_M-10to50_Tune Unpart_Z tZq GluGluH VBFH VBF_H ttHToNonbb VHToNonbb \
 TTG TTZ TTW ST_tW TT WGstarTo WGToLNuG ZGTo2LG ZGToLLG JetsToLL DYJetsToTauTau NNPDF30_13TeV-powheg WJetsToLNu WpWpJJ WLLJJ JJ_EWK_M HToInvisible HToInv_ZToLL \
 --exclude ZpWW_med JetsToLL_M-50_HT NNPDF30_13TeV-powheg DYJetsToLL_Zpt-100to200 DYJetsToLL_Zpt-200toInf ZZ_TuneCP5_13TeV-pythia8 WZ_TuneCP5_13TeV-pythia8 TTToSemiLeptonic WW_TuneCP5_13TeV-pythia8
 

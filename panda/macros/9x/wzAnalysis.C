@@ -222,7 +222,7 @@ int year, bool isDesk014 = false, TString WZName = "default"
   //TH1D *fhDNPV    = (TH1D*)(fNPVFile->Get("npvWeights"));   assert(fhDNPV);    fhDNPV	->SetDirectory(0);
   //delete fNPVFile;
 
-  const int nBinMVA = 10; Float_t xbins[nBinMVA+1] = {100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600};
+  const int nBinMVA = 11; Float_t xbins[nBinMVA+1] = {100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600, 1000};
 
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
@@ -520,16 +520,16 @@ int year, bool isDesk014 = false, TString WZName = "default"
       bool passPTFrac = ptFrac < 0.4; bool passPTFracUp = ptFracUp < 0.4; bool passPTFracDown = ptFracDown < 0.4;
 
       double dPhiDiLepMET = TMath::Abs(dilep.DeltaPhi(vMetZXLike)); double dPhiDiLepMETUp = TMath::Abs(dilep.DeltaPhi(vMetZXLikeUp)); double dPhiDiLepMETDown = TMath::Abs(dilep.DeltaPhi(vMetZXLikeDown));
-      bool passDPhiZMET = dPhiDiLepMET > 2.5; bool passDPhiZMETUp = dPhiDiLepMETUp > 2.5; bool passDPhiZMETDown = dPhiDiLepMETDown > 2.5;
+      bool passDPhiZMET = dPhiDiLepMET > 2.6; bool passDPhiZMETUp = dPhiDiLepMETUp > 2.6; bool passDPhiZMETDown = dPhiDiLepMETDown > 2.6;
 
-      bool passNjets     = thePandaFlat.nJot <= 10;
-      bool passNjetsUp   = thePandaFlat.nJot_JESTotalUp <= 10;
-      bool passNjetsDown = thePandaFlat.nJot_JESTotalDown <= 10;
+      bool passNjets     = thePandaFlat.nJot <= 10; // i.e. no cut
+      bool passNjetsUp   = thePandaFlat.nJot_JESTotalUp <= 10; // i.e. no cut
+      bool passNjetsDown = thePandaFlat.nJot_JESTotalDown <= 10; // i.e. no cut
 
       double dphill = TMath::Abs(vZl1.DeltaPhi(vZl2));
       double detall = TMath::Abs(vZl1.Eta()-vZl2.Eta());
       double drll = sqrt(dphill*dphill+detall*detall);
-      bool passDRLL = drll < 10.8;
+      bool passDRLL = drll < 10.8; // i.e. no cut
 
       //                          0                        1               2               3                                    4             5
       bool passSel[6] = {mllmin > 4, fabs(mllZ-91.1876) < 15, vWln.Pt() > 20, vMet.Pt() > 30, (vLoose[0]+vLoose[1]+vLoose[2]).M() > 100, passBtagVeto};

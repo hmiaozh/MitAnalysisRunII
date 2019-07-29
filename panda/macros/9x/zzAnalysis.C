@@ -160,7 +160,7 @@ int year, bool isDesk014 = false
   //TH1D *fhDNPV    = (TH1D*)(fNPVFile->Get("npvWeights"));   assert(fhDNPV);    fhDNPV	->SetDirectory(0);
   //delete fNPVFile;
 
-  const int nBinMVA = 10; Float_t xbins[nBinMVA+1] = {100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600};
+  const int nBinMVA = 11; Float_t xbins[nBinMVA+1] = {100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600, 1000};
 
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
@@ -450,7 +450,7 @@ int year, bool isDesk014 = false
       bool passPTFrac = ptFrac < 0.4; bool passPTFracUp = ptFracUp < 0.4; bool passPTFracDown = ptFracDown < 0.4;
 
       double dPhiDiLepMET = TMath::Abs(dilep.DeltaPhi(vMetZXLike)); double dPhiDiLepMETUp = TMath::Abs(dilep.DeltaPhi(vMetZXLikeUp)); double dPhiDiLepMETDown = TMath::Abs(dilep.DeltaPhi(vMetZXLikeDown));
-      bool passDPhiZMET = dPhiDiLepMET > 2.5; bool passDPhiZMETUp = dPhiDiLepMETUp > 2.5; bool passDPhiZMETDown = dPhiDiLepMETDown > 2.5;
+      bool passDPhiZMET = dPhiDiLepMET > 2.6; bool passDPhiZMETUp = dPhiDiLepMETUp > 2.6; bool passDPhiZMETDown = dPhiDiLepMETDown > 2.6;
 
       bool passNjets     = thePandaFlat.nJot <= 10;
       bool passNjetsUp   = thePandaFlat.nJot_JESTotalUp <= 10;

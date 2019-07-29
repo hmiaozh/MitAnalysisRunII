@@ -41,6 +41,40 @@ PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 DYJetsToLL_M-50_LO
 #PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 DYJetsToEE_POWHEG
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 WJets
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 MET
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 Unpart_ZToLL_SU-0_dU-1p01
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 Unpart_ZToLL_SU-0_dU-1p02
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 Unpart_ZToLL_SU-0_dU-1p04
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 Unpart_ZToLL_SU-0_dU-1p06
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 Unpart_ZToLL_SU-0_dU-1p09
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 Unpart_ZToLL_SU-0_dU-1p10
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 Unpart_ZToLL_SU-0_dU-1p20
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 Unpart_ZToLL_SU-0_dU-1p30
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 Unpart_ZToLL_SU-0_dU-1p40
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 Unpart_ZToLL_SU-0_dU-1p50
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 Unpart_ZToLL_SU-0_dU-1p60
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 Unpart_ZToLL_SU-0_dU-1p70
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 Unpart_ZToLL_SU-0_dU-1p80
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 Unpart_ZToLL_SU-0_dU-1p90
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 Unpart_ZToLL_SU-0_dU-2p00
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 Unpart_ZToLL_SU-0_dU-2p20
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_1_d_2
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_1_d_3
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_1_d_4
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_1_d_5
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_1_d_6
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_1_d_7
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_2_d_2
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_2_d_3
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_2_d_4
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_2_d_5
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_2_d_6
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_2_d_7
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_3_d_2
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_3_d_3
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_3_d_4
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_3_d_5
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_3_d_6
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ADDMonoZ_MD_3_d_7
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ggZH125inv
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 qqZH125inv
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 WpWp_EWK_QCD
@@ -56,6 +90,10 @@ elif [ $NSEL == 'specialmc' ]; then
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ZH_ZToLL_HToGDarkG_M125
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ZH_ZToLL_HToGDarkG_M200
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 ZH_ZToLL_HToGDarkG_M300
+
+elif [ $NSEL == 'dim8' ]; then
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 WWjj_SS_dim8_ewk
+PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 WZjj_dim8_ewk
 
 elif [ $NSEL == 'da' ]; then
 PandaAnalysis/T3/merging/merge.py --cfg leptonic_2017 data_overlaps

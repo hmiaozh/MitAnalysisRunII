@@ -161,7 +161,7 @@ std::map<int, TString> plotNames={
     { kPlotQCDSSWW   , "QCD W^{#pm}W^{#pm}"},
     { kPlotDPSWW     , "DPS W^{#pm}W^{#pm}"},
     { kPlotWS	     , "Wrong sign"},
-    { kPlotEM	     , "Top-quark/WW"},
+    { kPlotEM	     , "Top quark/WW"},
     { kPlotBSM       , "BSM"},
     { kPlotSignal0   , "Signal 0"},
     { kPlotSignal1   , "Signal 1"},

@@ -74,6 +74,16 @@ void studyFitResults(int nsel = 0,  TString plotName = "done_ana/histoZHG_mH125_
     for(int i=0; i<44; i++) excludeBins[i] = i+1;
     binToCount = kPlotWZ;
   }
+  else if(nsel == 21){ // ZH SR
+    excludeBins[0] =  1;excludeBins[1] = 2;
+    for(int i=2; i<25; i++) excludeBins[i] = i+12;
+    binToCount = kPlotEM;
+  }
+  else if(nsel == 22){ // ZH SR
+    for(int i=0; i<15; i++) excludeBins[i] = i+1;
+    for(int i=15; i<25; i++) excludeBins[i] = i+12;
+    binToCount = kPlotEM;
+  }
   printf("Bins to exclude:");
   for(int i=0; i<allExcludeBins; i++) if(excludeBins[i] != -1) printf(" %d",excludeBins[i]);
   printf("\n");

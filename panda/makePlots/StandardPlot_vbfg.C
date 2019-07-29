@@ -17,12 +17,12 @@
 
 Bool_t isBSMOverlaid = true;
 
-float xPos[nPlotCategories] = {0.19,0.19,0.19,0.19,0.19,0.19,0.40,0.40,0.40,0.40,0.40,0.40,0.40,0.40,0.40}; 
-float yOff[nPlotCategories] = {   0,	1,   2,   3,   4,  5,   0,   1,   2,   3,   4,   5,   6,   7,   8};
+float xPos[nPlotCategories] = {0.19,0.19,0.19,0.19,0.19,0.19,0.40,0.40,0.40,0.40,0.40,0.40,0.40}; 
+float yOff[nPlotCategories] = {   0,   1,   2,   3,   4,   5,   0,   1,   2,   3,   4,   5,   6};
 
-const Float_t _tsize   = 0.035;
-const Float_t _xoffset = 0.200;
-const Float_t _yoffset = 0.051;
+const Float_t _tsize   = 0.030;
+const Float_t _xoffset = 0.20;
+const Float_t _yoffset = 0.055;
 
 const bool doApplyBinWidth = false;
 const double SFBinWidth = 1;
@@ -203,7 +203,7 @@ class StandardPlot {
 
                 // signal gets overlaid
                 if (ic == kPlotBSM && isBSMOverlaid == false) continue;
-                if (ic == kPlotSignal0 && isBSMOverlaid == false) continue;
+                //if (ic == kPlotSignal0 && isBSMOverlaid == false) continue;
 
                 _hist[ic]->SetFillColor(plotColors[ic]);
                 _hist[ic]->SetFillStyle(1001);
@@ -213,11 +213,11 @@ class StandardPlot {
             }
 
             if(_hist[kPlotBSM] ) _hist[kPlotBSM]->SetLineWidth(4);
-            if(_hist[kPlotSignal0] ) _hist[kPlotSignal0]->SetLineWidth(4);
+            //if(_hist[kPlotSignal0] ) _hist[kPlotSignal0]->SetLineWidth(4);
             if(_hist[kPlotBSM] ) _hist[kPlotBSM]->SetFillColor(0);
-            if(_hist[kPlotSignal0] ) _hist[kPlotSignal0]->SetFillColor(0);
+            //if(_hist[kPlotSignal0] ) _hist[kPlotSignal0]->SetFillColor(0);
             if(_hist[kPlotBSM] ) _hist[kPlotBSM]->SetFillStyle(3001);
-            if(_hist[kPlotSignal0] ) _hist[kPlotSignal0]->SetFillStyle(3002);
+            //if(_hist[kPlotSignal0] ) _hist[kPlotSignal0]->SetFillStyle(3002);
             if(_hist[kPlotData]) _hist[kPlotData]->Rebin(rebin);
             if(_hist[kPlotData]) _hist[kPlotData]->SetLineColor  (kBlack);
             if(_hist[kPlotData]) _hist[kPlotData]->SetMarkerStyle(kFullCircle);
@@ -250,7 +250,7 @@ class StandardPlot {
 	    }
 
             if(_hist[kPlotBSM] && isBSMOverlaid == false) _hist[kPlotBSM]->Draw("hist,same");
-            if(_hist[kPlotSignal0] && isBSMOverlaid == false) _hist[kPlotSignal0]->Draw("hist,same");
+            //if(_hist[kPlotSignal0] && isBSMOverlaid == false) _hist[kPlotSignal0]->Draw("hist,same");
 
             if(_hist[kPlotData]) {
 	      bool plotCorrectErrorBars = true;
@@ -264,13 +264,8 @@ class StandardPlot {
                   g->SetPointEYlow(i,double(N)-L);
                   g->SetPointEYhigh(i, U-double(N));
 
-                  g->SetPointEXlow (i, _hist[kPlotData]->GetBinWidth(i+1)/2.);
-                  g->SetPointEXhigh(i, _hist[kPlotData]->GetBinWidth(i+1)/2.);
-
-                  //if(N==0) {
-                  //  g->SetPoint(i, g->GetX()[i], -0.1);
-                  //  g->SetPointEYhigh(i, U-double(N)+0.1);
-                  //}
+                  g->SetPointEXlow (i, 0);
+                  g->SetPointEXhigh(i, 0);
   		}
                 if(doApplyBinWidth == true){
  		  for (int i = 0; i < g->GetN(); ++i) {
@@ -329,14 +324,14 @@ class StandardPlot {
             }
 
             if(_breakdown) {
-                THStackAxisFonts(hstack, "y", "Events / bin");
+                THStackAxisFonts(hstack, "y", "Events");
                 hstack->GetHistogram()->LabelsOption("v");
             } else {
                 if(_units.Sizeof() == 1) {
                     THStackAxisFonts(hstack, "x", _xLabel.Data());
                     if     (doApplyBinWidth == true && SFBinWidth == 1) THStackAxisFonts(hstack, "y", "Events / GeV");
                     else if(doApplyBinWidth == true)                    THStackAxisFonts(hstack, "y", Form("Events / %.2f",SFBinWidth));
-                    else                                                THStackAxisFonts(hstack, "y", "Events / bin");
+                    else                                                THStackAxisFonts(hstack, "y", "Events");
                 } else {
 		    if(_units.EndsWith("BIN") == false){
                       THStackAxisFonts(hstack, "x", TString::Format("%s [%s]",_xLabel.Data(),_units.Data()));
@@ -346,7 +341,7 @@ class StandardPlot {
 		    else {
 		      _units = _units.ReplaceAll("BIN","");
                       THStackAxisFonts(hstack, "x", TString::Format("%s [%s]",_xLabel.Data(),_units.Data()));
-                      THStackAxisFonts(hstack, "y", TString::Format("Events / bin"));
+                      THStackAxisFonts(hstack, "y", TString::Format("Events"));
 		    }
                 }
             }
@@ -357,16 +352,16 @@ class StandardPlot {
 
             for (int ic=0; ic<nPlotCategories; ic++) {
 	      if     (ic==kPlotData){
-	        if(_hist[ic] && _hist[ic]->GetSumOfWeights() > 0) { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], plotNames[ic].Data(), "epl"); j++;}
+	        if(_hist[ic] && _hist[ic]->GetSumOfWeights() > 0) { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], plotNames[ic].Data(), "lp"); j++;}
               }
 	      else if(ic == kPlotBSM){
                 if     (_hist[ic] && isBSMOverlaid) { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], higgsLabel, "f" ); j++; }
                 else if(_hist[ic])		    { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], higgsLabel, "l" ); j++; }
 	      }
-	      else if(ic == kPlotSignal0){
-                if     (_hist[ic] && isBSMOverlaid) { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], higgs2Label, "f" ); j++; }
-                else if(_hist[ic])		    { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], higgs2Label, "l" ); j++; }
-	      }
+	      //else if(ic == kPlotSignal0){
+              //  if     (_hist[ic] && isBSMOverlaid) { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], higgs2Label, "f" ); j++; }
+              //  else if(_hist[ic])		    { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], higgs2Label, "l" ); j++; }
+	      //}
 	      else {
 	        if(_hist[ic] && _hist[ic]->GetSumOfWeights() > 0) { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], plotNames[ic].Data(), "f"); j++;}
 	      }
@@ -393,7 +388,7 @@ class StandardPlot {
             _extraLabel->SetNDC();
             _extraLabel->SetTextAlign(32);
             _extraLabel->SetTextFont(42);
-            _extraLabel->SetTextSize(0.06);
+            _extraLabel->SetTextSize(0.04); // 0.06
         }
 
     private: 

@@ -12,8 +12,9 @@
 #include "TSystem.h"
 #include "CMS_lumi.C"
 #include "TRandom.h"
-#include "MitAnalysisRunII/panda/macros/9x/common.h"
-#include "StandardPlot.C"
+//#include "MitAnalysisRunII/panda/macros/9x/common.h"
+#include "MitAnalysisRunII/panda/macros/10x_g/common.h"
+#include "StandardPlot_vbfg.C"
 #include "GoodStyle.C"
 
 double scaling[8] = {1,1,1,1,1,1,1,1};
@@ -68,7 +69,7 @@ void atributes(TH1D *histo, TString xtitle = "", TString ytitle = "Fraction", TS
   histo->SetMarkerStyle(kFullCircle);
 }
 
-void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString units = "", TString plotName = "histoWW_56.root", TString outputName = "njets",
+void finalPlot_vbfg(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString units = "", TString plotName = "histoWW_56.root", TString outputName = "njets",
                 bool isLogY = false, int year = 2017, TString higgsLabel = "", double lumi = 1.0, bool isBlind = false, TString extraLabel = "",
 		bool show2D = true, bool applyScaling = false,
 		TString mlfitResult = "", TString channelName = "", bool applyBBBBSF = false,
@@ -118,9 +119,8 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
       hData = (TH1F*)_hist[ic]->Clone();
       hBck  = (TH1F*)_hist[ic]->Clone(); hBck->Scale(0);
     }
-    else if(applySmoothing && _hist[ic]->GetSumOfWeights() > 0 && ic != kPlotBSM && ic != kPlotVG &&
-      ic != kPlotSignal0 && ic != kPlotSignal1 &&
-      ic != kPlotSignal2 && ic != kPlotSignal3) {double scale = _hist[ic]->GetSumOfWeights(); _hist[ic]->Smooth(); if(_hist[ic]->GetSumOfWeights() > 0) _hist[ic]->Scale(scale/_hist[ic]->GetSumOfWeights());}
+    else if(applySmoothing && _hist[ic]->GetSumOfWeights() > 0 && ic != kPlotBSM && ic != kPlotWG) 
+    {double scale = _hist[ic]->GetSumOfWeights(); _hist[ic]->Smooth(); if(_hist[ic]->GetSumOfWeights() > 0) _hist[ic]->Scale(scale/_hist[ic]->GetSumOfWeights());}
 
     if(isBlind == true && ic == kPlotData) continue;
 
@@ -180,18 +180,18 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
     }
   }
   
-  TFile* fileExtra;
+  /*TFile* fileExtra;
   if(plotExtraName != ""){
      fileExtra = new TFile(plotExtraName, "read");
       _hist[kPlotSignal0] = (TH1F*)fileExtra->Get(Form("histo%d",kPlotBSM));
      myPlot.setMCHist(kPlotSignal0, _hist[kPlotSignal0]);
-  }
+  }*/
 
   myPlot.setOverlaid(false);
   if(isSignalStack == true){
     //if(_hist[kPlotSignal0]->GetSumOfWeights() > 0 &&
     //   _hist[kPlotBSM]    ->GetSumOfWeights() > 0) { _hist[kPlotSignal0]->Add(_hist[kPlotBSM],-1); myPlot.setMCHist(kPlotSignal0, _hist[kPlotSignal0]);}
-    if(_hist[kPlotSignal0]->GetSumOfWeights() > 0) { _hist[kPlotSignal0]->Add(hBck); myPlot.setMCHist(kPlotSignal0, _hist[kPlotSignal0]);}
+    //if(_hist[kPlotSignal0]->GetSumOfWeights() > 0) { _hist[kPlotSignal0]->Add(hBck); myPlot.setMCHist(kPlotSignal0, _hist[kPlotSignal0]);}
     if(_hist[kPlotBSM]    ->GetSumOfWeights() > 0) { _hist[kPlotBSM    ]->Add(hBck); myPlot.setMCHist(kPlotBSM,     _hist[kPlotBSM    ]);}
     //myPlot.setOverlaid(true);
   }
@@ -218,7 +218,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   if(isLogY == true) c1->SetLogy();
   if(isLogX == true) c1->SetLogx();
   myPlot.Draw(ReBin);  // Can pass a rebin 
-  CMS_lumi( c1, year, 1 );
+  CMS_lumi( c1, year, 12 );
   } else {
   c1->SetBottomMargin(0.1);
   c1->cd();
@@ -240,7 +240,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   if(isLogSpecial) {c1->SetLogx();pad1->SetLogx();pad2->SetLogx();}
 
   myPlot.Draw(ReBin);
-  CMS_lumi( pad1, year, 1 );
+  CMS_lumi( pad1, year, 12 );
 
   pad2->cd();
   pad2->RedrawAxis();
