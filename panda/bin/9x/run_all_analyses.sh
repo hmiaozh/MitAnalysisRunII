@@ -53,24 +53,24 @@ elif [ $NSEL == 5 ]; then
     nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"Unpart_ZToLL_SU-0_dU-2p00")' >& log_zhUnpart_ZToLL_SU-0_dU-2p00_${YEAR} &
     nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"Unpart_ZToLL_SU-0_dU-2p20")' >& log_zhUnpart_ZToLL_SU-0_dU-2p20_${YEAR} &
 
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_1_d_2")' >& log_zhADDMonoZ_MD_1_d_2_${YEAR} &
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_1_d_3")' >& log_zhADDMonoZ_MD_1_d_3_${YEAR} &
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_1_d_4")' >& log_zhADDMonoZ_MD_1_d_4_${YEAR} &
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_1_d_5")' >& log_zhADDMonoZ_MD_1_d_5_${YEAR} &
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_1_d_6")' >& log_zhADDMonoZ_MD_1_d_6_${YEAR} &
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_1_d_7")' >& log_zhADDMonoZ_MD_1_d_7_${YEAR} &
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_2_d_2")' >& log_zhADDMonoZ_MD_2_d_2_${YEAR} &
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_2_d_3")' >& log_zhADDMonoZ_MD_2_d_3_${YEAR} &
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_2_d_4")' >& log_zhADDMonoZ_MD_2_d_4_${YEAR} &
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_2_d_5")' >& log_zhADDMonoZ_MD_2_d_5_${YEAR} &
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_2_d_6")' >& log_zhADDMonoZ_MD_2_d_6_${YEAR} &
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_2_d_7")' >& log_zhADDMonoZ_MD_2_d_7_${YEAR} &
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_3_d_2")' >& log_zhADDMonoZ_MD_3_d_2_${YEAR} &
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_3_d_3")' >& log_zhADDMonoZ_MD_3_d_3_${YEAR} &
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_3_d_4")' >& log_zhADDMonoZ_MD_3_d_4_${YEAR} &
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_3_d_5")' >& log_zhADDMonoZ_MD_3_d_5_${YEAR} &
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_3_d_6")' >& log_zhADDMonoZ_MD_3_d_6_${YEAR} &
-    #nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_3_d_7")' >& log_zhADDMonoZ_MD_3_d_7_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_1_d_2")' >& log_zhADDMonoZ_MD_1_d_2_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_1_d_3")' >& log_zhADDMonoZ_MD_1_d_3_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_1_d_4")' >& log_zhADDMonoZ_MD_1_d_4_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_1_d_5")' >& log_zhADDMonoZ_MD_1_d_5_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_1_d_6")' >& log_zhADDMonoZ_MD_1_d_6_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_1_d_7")' >& log_zhADDMonoZ_MD_1_d_7_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_2_d_2")' >& log_zhADDMonoZ_MD_2_d_2_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_2_d_3")' >& log_zhADDMonoZ_MD_2_d_3_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_2_d_4")' >& log_zhADDMonoZ_MD_2_d_4_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_2_d_5")' >& log_zhADDMonoZ_MD_2_d_5_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_2_d_6")' >& log_zhADDMonoZ_MD_2_d_6_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_2_d_7")' >& log_zhADDMonoZ_MD_2_d_7_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_3_d_2")' >& log_zhADDMonoZ_MD_3_d_2_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_3_d_3")' >& log_zhADDMonoZ_MD_3_d_3_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_3_d_4")' >& log_zhADDMonoZ_MD_3_d_4_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_3_d_5")' >& log_zhADDMonoZ_MD_3_d_5_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_3_d_6")' >& log_zhADDMonoZ_MD_3_d_6_${YEAR} &
+    nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1,"ADDMonoZ_MD_3_d_7")' >& log_zhADDMonoZ_MD_3_d_7_${YEAR} &
   fi
 
 elif [ $NSEL == 6 ]; then

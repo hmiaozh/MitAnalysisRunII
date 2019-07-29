@@ -17,12 +17,12 @@
 
 Bool_t isBSMOverlaid = true;
 
-float xPos[nPlotCategories] = {0.19,0.19,0.19,0.19,0.19,0.19,0.40,0.40,0.40,0.40,0.40,0.40,0.40,0.40,0.40,}; 
-float yOff[nPlotCategories] = {   0,	1,   2,   3,   4,   5,   0,   1,   2,	3,   4,   5,   6,   7,   8};
+float xPos[nPlotCategories] = {0.19,0.19,0.19,0.19,0.19,0.19,0.40,0.40,0.40,0.40,0.40,0.40,0.40,0.40,0.40}; 
+float yOff[nPlotCategories] = {   0,	1,   2,   3,   4,  5,   0,   1,   2,   3,   4,   5,   6,   7,   8};
 
-const Float_t _tsize   = 0.030;
-const Float_t _xoffset = 0.20;
-const Float_t _yoffset = 0.055;
+const Float_t _tsize   = 0.035;
+const Float_t _xoffset = 0.200;
+const Float_t _yoffset = 0.051;
 
 const bool doApplyBinWidth = false;
 const double SFBinWidth = 1;
@@ -264,8 +264,13 @@ class StandardPlot {
                   g->SetPointEYlow(i,double(N)-L);
                   g->SetPointEYhigh(i, U-double(N));
 
-                  g->SetPointEXlow (i, 0);
-                  g->SetPointEXhigh(i, 0);
+                  g->SetPointEXlow (i, _hist[kPlotData]->GetBinWidth(i+1)/2.);
+                  g->SetPointEXhigh(i, _hist[kPlotData]->GetBinWidth(i+1)/2.);
+
+                  //if(N==0) {
+                  //  g->SetPoint(i, g->GetX()[i], -0.1);
+                  //  g->SetPointEYhigh(i, U-double(N)+0.1);
+                  //}
   		}
                 if(doApplyBinWidth == true){
  		  for (int i = 0; i < g->GetN(); ++i) {
@@ -324,14 +329,14 @@ class StandardPlot {
             }
 
             if(_breakdown) {
-                THStackAxisFonts(hstack, "y", "Events");
+                THStackAxisFonts(hstack, "y", "Events / bin");
                 hstack->GetHistogram()->LabelsOption("v");
             } else {
                 if(_units.Sizeof() == 1) {
                     THStackAxisFonts(hstack, "x", _xLabel.Data());
                     if     (doApplyBinWidth == true && SFBinWidth == 1) THStackAxisFonts(hstack, "y", "Events / GeV");
                     else if(doApplyBinWidth == true)                    THStackAxisFonts(hstack, "y", Form("Events / %.2f",SFBinWidth));
-                    else                                                THStackAxisFonts(hstack, "y", "Events");
+                    else                                                THStackAxisFonts(hstack, "y", "Events / bin");
                 } else {
 		    if(_units.EndsWith("BIN") == false){
                       THStackAxisFonts(hstack, "x", TString::Format("%s [%s]",_xLabel.Data(),_units.Data()));
@@ -341,7 +346,7 @@ class StandardPlot {
 		    else {
 		      _units = _units.ReplaceAll("BIN","");
                       THStackAxisFonts(hstack, "x", TString::Format("%s [%s]",_xLabel.Data(),_units.Data()));
-                      THStackAxisFonts(hstack, "y", TString::Format("Events"));
+                      THStackAxisFonts(hstack, "y", TString::Format("Events / bin"));
 		    }
                 }
             }
@@ -352,7 +357,7 @@ class StandardPlot {
 
             for (int ic=0; ic<nPlotCategories; ic++) {
 	      if     (ic==kPlotData){
-	        if(_hist[ic] && _hist[ic]->GetSumOfWeights() > 0) { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], plotNames[ic].Data(), "lp"); j++;}
+	        if(_hist[ic] && _hist[ic]->GetSumOfWeights() > 0) { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], plotNames[ic].Data(), "epl"); j++;}
               }
 	      else if(ic == kPlotBSM){
                 if     (_hist[ic] && isBSMOverlaid) { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], higgsLabel, "f" ); j++; }
@@ -388,7 +393,7 @@ class StandardPlot {
             _extraLabel->SetNDC();
             _extraLabel->SetTextAlign(32);
             _extraLabel->SetTextFont(42);
-            _extraLabel->SetTextSize(0.04); // 0.06
+            _extraLabel->SetTextSize(0.06);
         }
 
     private: 

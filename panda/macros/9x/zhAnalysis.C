@@ -211,7 +211,7 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 80;
+  const int allPlots = 82;
   TH1D* histo[allPlots][nPlotCategories];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     bool is1DPlot = false;
@@ -241,6 +241,8 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
     else if(thePlot >=  73 && thePlot <=  73) {nBinPlot = 100; xminPlot = -TMath::Pi(); xmaxPlot = TMath::Pi();}
     else if(thePlot >=  74 && thePlot <=  74) {nBinPlot = 40;  xminPlot =  0.0; xmaxPlot = 1.0;}
     else if(thePlot >=  75 && thePlot <=  78) {is1DPlot = true;}
+    else if(thePlot >=  79 && thePlot <=  79) {nBinPlot = 100; xminPlot = 25.0; xmaxPlot = 425.0;}
+    else if(thePlot >=  80 && thePlot <=  80) {nBinPlot = 100; xminPlot = 20.0; xmaxPlot = 220.0;}
     if(thePlot == allPlots-1) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMVA, xbins);
     else if(is1DPlot == true) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBin1DMET, xbins1DMET);
     else                      for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinPlot, xminPlot, xmaxPlot);
@@ -720,6 +722,8 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
 	  else if(!passA &&  passB)  histo[77][theCategory]->Fill(TMath::Min(vMet.Pt(),metMax),totalWeight);
 	  else if(!passA && !passB)  histo[78][theCategory]->Fill(TMath::Min(vMet.Pt(),metMax),totalWeight);
       }
+      if(passAllCuts[ZHTIGHTSEL] && lepType != 2) histo[79][theCategory]->Fill(TMath::Min(TMath::Max(vLoose[0].Pt(),vLoose[1].Pt()),424.999),totalWeight);
+      if(passAllCuts[ZHTIGHTSEL] && lepType != 2) histo[80][theCategory]->Fill(TMath::Min(TMath::Min(vLoose[0].Pt(),vLoose[1].Pt()),219.999),totalWeight);
 
       //double MVAVar = TMath::Min(vMet.Pt(),xbins[nBinMVA]-0.0001); double MVAVarUp = TMath::Min(vMetUp.Pt(),xbins[nBinMVA]-0.0001); double MVAVarDown = TMath::Min(vMetDown.Pt(),xbins[nBinMVA]-0.0001);
       double MVAVar = TMath::Min(vMet.Pt(),metMax); double MVAVarUp = TMath::Min(vMetUp.Pt(),metMax); double MVAVarDown = TMath::Min(vMetDown.Pt(),metMax);

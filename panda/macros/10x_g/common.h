@@ -27,7 +27,8 @@ enum PhoSelectionBit {
    pHighPt  =(1<<2),
    pCsafeVeto =(1<<3),
    pPixelVeto =(1<<4),
-   pTrkVeto   =(1<<5)
+   pTrkVeto   =(1<<5),
+   pMediumNM1  =(1<<6)
 };
 
 enum TriggerBits {
@@ -117,9 +118,12 @@ const double mass_mu = 0.10566;
 double mcCorrection(int type, int year, int infileCat){
   double totalWeight = 1.0;
 
+  if(infileCat == kPlotBSM) totalWeight = totalWeight * 3.782;
+
   if     (type == 0){ // VBFG
-    if     (year == 2017 && infileCat == kPlotGJ) totalWeight = totalWeight * 0.40;
-    else if(year == 2017 && infileCat == kPlotWG) totalWeight = totalWeight * 0.40;
+    if     (year == 2017 && infileCat == kPlotGJ) totalWeight = totalWeight * 1.5;
+    else if(year == 2018 && infileCat == kPlotGJ) totalWeight = totalWeight * 2.7;
+    else if(year == 2018 && infileCat == kPlotWJ) totalWeight = totalWeight * 1.7;
     //else if(year == 2017 && infileCat == kPlotGJ) totalWeight = totalWeight * 0.45;
     //else if(year == 2017 && infileCat == kPlotWJ) totalWeight = totalWeight * 0.70;
 

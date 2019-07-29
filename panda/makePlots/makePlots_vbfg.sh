@@ -95,6 +95,18 @@ if [ $NSEL == 'vbfg' ]; then
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"z^{*}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_73.root","vbfg_sel3_gzep",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"z^{*}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_74.root","vbfg_sel4_gzep",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
 
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"card","","done_vbfg/histoVBFG_mH125_'${YEAR}'_75.root","vbfg_sel_card",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"|#eta_{j}|^{max}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_75.root","vbfg_sel0_etajmax",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"|#eta_{j}|^{max}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_76.root","vbfg_sel1_etajmax",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"|#eta_{j}|^{max}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_77.root","vbfg_sel2_etajmax",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"|#eta_{j}|^{max}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_78.root","vbfg_sel3_etajmax",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"|#eta_{j}|^{max}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_79.root","vbfg_sel4_etajmax",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"|#eta_{j}|^{min}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_80.root","vbfg_sel0_etajmin",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"|#eta_{j}|^{min}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_81.root","vbfg_sel1_etajmin",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"|#eta_{j}|^{min}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_82.root","vbfg_sel2_etajmin",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"|#eta_{j}|^{min}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_83.root","vbfg_sel3_etajmin",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"|#eta_{j}|^{min}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_84.root","vbfg_sel4_etajmin",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"card","","done_vbfg/histoVBFG_mH125_'${YEAR}'_85.root","vbfg_sel_card",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
 
 fi
