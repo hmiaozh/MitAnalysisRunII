@@ -20,7 +20,7 @@ const double mcPrescale = 1;
 const bool usePureMC = false;
 const int debug = 0;
 const bool showSyst = true;
-const bool produceMVAInputs = true;
+const bool produceMVAInputs = false;
 
 enum systType                     {JESUP=0, JESDOWN,  METUP,  METDOWN, nSystTypes};
 TString systTypeName[nSystTypes]= {"JESUP","JESDOWN","METUP","METDOWN"};
@@ -415,6 +415,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
     float mvamjj, mvadeta, mvadphi, mvazstar;
     float mvajetpt1, mvajetpt2, mvajeteta1, mvajeteta2;
     float mvavWlnpt, mvamet, mvazep1, mvazep2, mvazep3, mvamaxzep;
+    float mvamtwz;
     int    category;
     unsigned long long int  eventNum;
     double weight;
@@ -422,20 +423,21 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
     TMVA::Reader *reader;
     float mvaInputs[10];
 
-    mvatree->Branch("mvamjj",	 &mvamjj,	"mvamjj/F");
-    mvatree->Branch("mvadeta",	 &mvadeta,	"mvadeta/F");
-    mvatree->Branch("mvadphi",	 &mvadphi,	"mvadphi/F");
-    mvatree->Branch("mvazstar",	 &mvazstar,	"mvazstar/F");
-    mvatree->Branch("mvamet",	 &mvamet,	"mvamet/F");
-    mvatree->Branch("mvavWlnpt", &mvavWlnpt,	"mvavWlnpt/F");
-    mvatree->Branch("mvajetpt1", &mvajetpt1,	"mvajetpt1/F");
-    mvatree->Branch("mvajetpt2", &mvajetpt2,	"mvajetpt2/F");
+    mvatree->Branch("mvamjj",	&mvamjj,	"mvamjj/F");
+    mvatree->Branch("mvadeta",	&mvadeta,	"mvadeta/F");
+    mvatree->Branch("mvadphi",	&mvadphi,	"mvadphi/F");
+    mvatree->Branch("mvazstar",	&mvazstar,	"mvazstar/F");
+    mvatree->Branch("mvamet",	&mvamet,	"mvamet/F");
+    mvatree->Branch("mvavWlnpt",&mvavWlnpt,	"mvavWlnpt/F");
+    mvatree->Branch("mvajetpt1",&mvajetpt1,	"mvajetpt1/F");
+    mvatree->Branch("mvajetpt2",&mvajetpt2,	"mvajetpt2/F");
     mvatree->Branch("mvajeteta1",&mvajeteta1,	"mvajeteta1/F");
     mvatree->Branch("mvajeteta2",&mvajeteta2,	"mvajeteta2/F");
-    mvatree->Branch("mvazep1",	 &mvazep1,	"mvazep1/F");
-    mvatree->Branch("mvazep2",   &mvazep2,      "mvazep2/F");
-    mvatree->Branch("mvazep3",   &mvazep3,      "mvazep3/F");
-    mvatree->Branch("mvamaxzep", &mvamaxzep,	"mvamaxzep/F");
+    mvatree->Branch("mvazep1",	&mvazep1,	"mvazep1/F");
+    mvatree->Branch("mvazep2",	&mvazep2,	"mvazep2/F");
+    mvatree->Branch("mvazep3",	&mvazep3,	"mvazep3/F");
+    mvatree->Branch("mvamaxzep",&mvamaxzep,	"mvamaxzep/F");
+    mvatree->Branch("mvamtwz",	&mvamtwz,	"mvamtwz/F");
     mvatree->Branch("category",	 &category,	"category/I");
     mvatree->Branch("eventNum",	 &eventNum,	"eventNum/I");
     mvatree->Branch("weight",	 &weight,	"weight/D");
@@ -462,6 +464,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
     theReader->AddVariable("mvajetpt2", &mvaInputs[7]);
     theReader->AddVariable("mvajeteta1",&mvaInputs[8]);
     theReader->AddVariable("mvazstar",  &mvaInputs[9]);
+    //theReader->AddVariable("mvamtwz",	&mvaInputs[10]);
     theReader->BookMVA("BDT", bdtWeights.Data());
     reader = theReader;
     // End MVA initialization
@@ -973,6 +976,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
         mvaInputs[7] = (float)vJot2.Pt();
         mvaInputs[8] = (float)vJot1.Eta();
 	mvaInputs[9] = (float)wzZep;
+        //mvaInputs[10] = (float)mtWZ;
         bdtValue = reader->EvaluateMVA("BDT") ;
 
         category = theCategory;
@@ -992,6 +996,8 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
         mvazep2    = (float)wzZepSS[1];
         mvazep3    = (float)wzZepSS[2];
 	mvamaxzep  = (float)maxLeptonZep;
+        mvamtwz    = (float)mtWZ;
+
         
         mvatree->Fill();
      }
@@ -1007,6 +1013,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
         mvaInputs[7] = (float)vJot2Up.Pt();
         mvaInputs[8] = (float)vJot1Up.Eta();
 	mvaInputs[9] = (float)wzZepUp;
+        //mvaInputs[10]= (float)mtWZUp;
         bdtValueUp = reader->EvaluateMVA("BDT") ;
      }
 
@@ -1021,6 +1028,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
         mvaInputs[7] = (float)vJot2Down.Pt();
         mvaInputs[8] = (float)vJot1Down.Eta();
 	mvaInputs[9] = (float)wzZepDown;
+        //mvaInputs[10]= (float)mtWZDown;
         bdtValueDown = reader->EvaluateMVA("BDT") ;
       }
 
@@ -1046,7 +1054,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
         if(abs(thePandaFlat.genLep1PdgId)==11) thePDGMass = mass_el;
         vGen1.SetPtEtaPhiM(thePandaFlat.genLep1Pt,thePandaFlat.genLep1Eta,thePandaFlat.genLep1Phi,thePDGMass);
         thePDGMass = mass_mu;
-        if(abs(thePandaFlat.genLep1PdgId)==11) thePDGMass = mass_el;
+        if(abs(thePandaFlat.genLep2PdgId)==11) thePDGMass = mass_el;
         vGen2.SetPtEtaPhiM(thePandaFlat.genLep2Pt,thePandaFlat.genLep2Eta,thePandaFlat.genLep2Phi,thePDGMass);
         if     ((vGen1+vGen2).M() >  20 && (vGen1+vGen2).M() <=  85) theCategory = kPlotSignal0;
 	else if((vGen1+vGen2).M() >  85 && (vGen1+vGen2).M() <= 135) theCategory = kPlotSignal1;
