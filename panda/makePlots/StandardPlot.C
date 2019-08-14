@@ -17,8 +17,8 @@
 
 Bool_t isBSMOverlaid = true;
 
-float xPos[nPlotCategories] = {0.19,0.19,0.19,0.19,0.19,0.19,0.40,0.40,0.40,0.40,0.40,0.40,0.40,0.40,0.40}; 
-float yOff[nPlotCategories] = {   0,	1,   2,   3,   4,  5,   0,   1,   2,   3,   4,   5,   6,   7,   8};
+float xPos[nPlotCategories] = {0.45,0.45,0.45,0.45,0.45,0.45,0.45,0.45,0.45,0.19,0.19,0.19,0.19,0.19,0.19}; 
+float yOff[nPlotCategories] = {   0,	1,   2,   3,   4,  5,   6,   7,   8,   0,   1,   2,   3,   4,   5};
 
 const Float_t _tsize   = 0.035;
 const Float_t _xoffset = 0.200;
@@ -255,7 +255,10 @@ class StandardPlot {
             if(_hist[kPlotData]) {
 	      bool plotCorrectErrorBars = true;
 	      if(plotCorrectErrorBars == true) {
-  		TGraphAsymmErrors * g = new TGraphAsymmErrors(_hist[kPlotData]);
+  		TGraphAsymmErrors * gc = new TGraphAsymmErrors(_hist[kPlotData]);
+  		for (int j = 0; j < gc->GetN(); ++j) {
+		TGraphAsymmErrors *g = (TGraphAsymmErrors*)gc->Clone();
+		g->SetLineColor(kBlack);
   		for (int i = 0; i < g->GetN(); ++i) {
                   double N = g->GetY()[i];
                   double alpha=(1-0.6827);
@@ -267,19 +270,23 @@ class StandardPlot {
                   g->SetPointEXlow (i, _hist[kPlotData]->GetBinWidth(i+1)/2.);
                   g->SetPointEXhigh(i, _hist[kPlotData]->GetBinWidth(i+1)/2.);
 
+                  if(N==0 && j!=i) g->SetPoint(i, g->GetX()[i], -0.1);
+                  if(N==0 && j==i) g->SetMarkerSize(0);
+
                   //if(N==0) {
                   //  g->SetPoint(i, g->GetX()[i], -0.1);
                   //  g->SetPointEYhigh(i, U-double(N)+0.1);
                   //}
   		}
-                if(doApplyBinWidth == true){
+		if(doApplyBinWidth == true){
  		  for (int i = 0; i < g->GetN(); ++i) {
                     g->SetPointEYlow (i, g->GetErrorYlow(i) /_hist[kPlotData]->GetBinWidth(i+1)*SFBinWidth);
                     g->SetPointEYhigh(i, g->GetErrorYhigh(i)/_hist[kPlotData]->GetBinWidth(i+1)*SFBinWidth);
                     g->SetPoint      (i, g->GetX()[i], g->GetY()[i]/_hist[kPlotData]->GetBinWidth(i+1)*SFBinWidth);
   		  }
-                }
-  		g->Draw("P");
+		}
+		g->Draw("P");
+  		}
 	      }
 	      else {
                 if(doApplyBinWidth == true){
@@ -325,7 +332,7 @@ class StandardPlot {
             	hstack->SetMaximum(10000 * theMax);
             	hstack->SetMinimum(TMath::Max(0.9 * theMin,0.010));
             } else {
-              hstack->SetMaximum(2.6 * theMax);
+              hstack->SetMaximum(3.5 * theMax);
             }
 
             if(_breakdown) {
@@ -354,12 +361,14 @@ class StandardPlot {
             size_t j=0;
             TString higgsLabel  = Form("%s",_HiggsLabel.Data());
             TString higgs2Label = Form("%s",_Higgs2Label.Data());
+            bool isThereSignal = false;
 
             for (int ic=0; ic<nPlotCategories; ic++) {
 	      if     (ic==kPlotData){
 	        if(_hist[ic] && _hist[ic]->GetSumOfWeights() > 0) { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], plotNames[ic].Data(), "epl"); j++;}
               }
 	      else if(ic == kPlotBSM){
+                if(plotSystErrorBars == true) {DrawLegendTG(xPos[j], 0.84 - yOff[j]*_yoffset,gsyst, "Bkg. unc.",  "f" ); j++;isThereSignal = true;}
                 if     (_hist[ic] && isBSMOverlaid) { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], higgsLabel, "f" ); j++; }
                 else if(_hist[ic])		    { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], higgsLabel, "l" ); j++; }
 	      }
@@ -372,7 +381,7 @@ class StandardPlot {
 	      }
 	    }
 
-            if(plotSystErrorBars == true) {DrawLegendTG(xPos[j], 0.84 - yOff[j]*_yoffset,gsyst, "Bkg. unc.",  "f" ); j++;}
+            if(plotSystErrorBars == true && isThereSignal == false) {DrawLegendTG(xPos[j], 0.84 - yOff[j]*_yoffset,gsyst, "Bkg. unc.",  "f" ); j++;}
 
             //TLatex* luminosity = new TLatex(0.9, 0.8, TString::Format("L = %.1f fb^{-1}",_lumi));
             //luminosity->SetNDC();
@@ -389,11 +398,11 @@ class StandardPlot {
         void setUnits(const TString &s) { _units = s; }
         void setBreakdown(const bool &b = true) { _breakdown = b; }
         void addLabel(const std::string &s) {
-            _extraLabel = new TLatex(0.8, 0.6, TString(s));
+            _extraLabel = new TLatex(0.21, 0.75, TString(s));
             _extraLabel->SetNDC();
-            _extraLabel->SetTextAlign(32);
+            _extraLabel->SetTextAlign(12);
             _extraLabel->SetTextFont(42);
-            _extraLabel->SetTextSize(0.06);
+            _extraLabel->SetTextSize(0.040);
         }
 
     private: 

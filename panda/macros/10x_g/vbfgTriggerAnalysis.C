@@ -82,7 +82,7 @@ int year
     infileName_.push_back(Form("%sZtoNuNu_ht800to1200_CP5.root" ,filesPath.Data()));  infileCat_.push_back(kPlotDY);
     infileName_.push_back(Form("%sZtoNuNu_ht1200to2500_CP5.root" ,filesPath.Data())); infileCat_.push_back(kPlotDY);
     infileName_.push_back(Form("%sZtoNuNu_ht2500toinf_CP5.root" ,filesPath.Data()));  infileCat_.push_back(kPlotDY);
-    infileName_.push_back(Form("%sZtoNuNu_EWK_CP5.root" ,filesPath.Data()));          infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sZtoNuNu_EWK.root" ,filesPath.Data()));              infileCat_.push_back(kPlotDY);
 
     infileName_.push_back(Form("%sTTbar_GJets_CP5.root" ,filesPath.Data()));          infileCat_.push_back(kPlotTop);
     infileName_.push_back(Form("%sSingleTop_tG_CP5.root" ,filesPath.Data()));         infileCat_.push_back(kPlotTop);
@@ -129,13 +129,13 @@ int year
     infileName_.push_back(Form("%sZJets_ht1200to2500_CP5.root" ,filesPath.Data()));   infileCat_.push_back(kPlotDY);
     infileName_.push_back(Form("%sZJets_ht2500toinf_CP5.root" ,filesPath.Data()));    infileCat_.push_back(kPlotDY);
     infileName_.push_back(Form("%sZJets_EWK.root" ,filesPath.Data()));                infileCat_.push_back(kPlotDY);
-    infileName_.push_back(Form("%sZtoNuNu_ht100to200_CP5.root" ,filesPath.Data()));   infileCat_.push_back(kPlotDY);
-    infileName_.push_back(Form("%sZtoNuNu_ht200to400_CP5.root" ,filesPath.Data()));   infileCat_.push_back(kPlotDY);
-    infileName_.push_back(Form("%sZtoNuNu_ht400to600_CP5.root" ,filesPath.Data()));   infileCat_.push_back(kPlotDY);
-    infileName_.push_back(Form("%sZtoNuNu_ht600to800_CP5.root" ,filesPath.Data()));   infileCat_.push_back(kPlotDY);
-    infileName_.push_back(Form("%sZtoNuNu_ht800to1200_CP5.root" ,filesPath.Data()));  infileCat_.push_back(kPlotDY);
-    infileName_.push_back(Form("%sZtoNuNu_ht1200to2500_CP5.root" ,filesPath.Data())); infileCat_.push_back(kPlotDY);
-    infileName_.push_back(Form("%sZtoNuNu_ht2500toinf_CP5.root" ,filesPath.Data()));  infileCat_.push_back(kPlotDY);
+    //infileName_.push_back(Form("%sZtoNuNu_ht100to200_CP5.root" ,filesPath.Data()));   infileCat_.push_back(kPlotDY);
+    //infileName_.push_back(Form("%sZtoNuNu_ht200to400_CP5.root" ,filesPath.Data()));   infileCat_.push_back(kPlotDY);
+    //infileName_.push_back(Form("%sZtoNuNu_ht400to600_CP5.root" ,filesPath.Data()));   infileCat_.push_back(kPlotDY);
+    //infileName_.push_back(Form("%sZtoNuNu_ht600to800_CP5.root" ,filesPath.Data()));   infileCat_.push_back(kPlotDY);
+    //infileName_.push_back(Form("%sZtoNuNu_ht800to1200_CP5.root" ,filesPath.Data()));  infileCat_.push_back(kPlotDY);
+    //infileName_.push_back(Form("%sZtoNuNu_ht1200to2500_CP5.root" ,filesPath.Data())); infileCat_.push_back(kPlotDY);
+    //infileName_.push_back(Form("%sZtoNuNu_ht2500toinf_CP5.root" ,filesPath.Data()));  infileCat_.push_back(kPlotDY);
     infileName_.push_back(Form("%sZtoNuNu_EWK.root" ,filesPath.Data()));              infileCat_.push_back(kPlotDY);
 
     infileName_.push_back(Form("%sTTbar_GJets_CP5.root" ,filesPath.Data()));          infileCat_.push_back(kPlotTop);
@@ -147,6 +147,7 @@ int year
 
     infileName_.push_back(Form("%sZGTo2LG_nlo.root" ,filesPath.Data())); 	      infileCat_.push_back(kPlotZG);
 
+    infileName_.push_back(Form("%sGJets_ht100to200_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
     infileName_.push_back(Form("%sGJets_ht200to400_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
     infileName_.push_back(Form("%sGJets_ht400to600_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
     infileName_.push_back(Form("%sGJets_ht600toinf_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
@@ -156,6 +157,56 @@ int year
     puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
     photonSFPath = "MitAnalysisRunII/data/80x/photon_scalefactors_37ifb.root";
 
+    infileName_.push_back(Form("%sSingleMuon.root",filesPath.Data()));  	      infileCat_.push_back(kPlotData);
+
+    infileName_.push_back(Form("%sDiboson_ww.root" ,filesPath.Data()));           infileCat_.push_back(kPlotWW);
+
+    infileName_.push_back(Form("%sDiboson_wz.root" ,filesPath.Data()));           infileCat_.push_back(kPlotWZ);
+
+    infileName_.push_back(Form("%sDiboson_zz.root" ,filesPath.Data()));           infileCat_.push_back(kPlotZZ);
+
+    infileName_.push_back(Form("%sWJets_ht100to200.root" ,filesPath.Data()));     infileCat_.push_back(kPlotWJ);
+    infileName_.push_back(Form("%sWJets_ht200to400.root" ,filesPath.Data()));     infileCat_.push_back(kPlotWJ);
+    infileName_.push_back(Form("%sWJets_ht400to600.root" ,filesPath.Data()));     infileCat_.push_back(kPlotWJ);
+    infileName_.push_back(Form("%sWJets_ht600to800.root" ,filesPath.Data()));     infileCat_.push_back(kPlotWJ);
+    infileName_.push_back(Form("%sWJets_ht800to1200.root" ,filesPath.Data()));    infileCat_.push_back(kPlotWJ);
+    infileName_.push_back(Form("%sWJets_ht1200to2500.root" ,filesPath.Data()));   infileCat_.push_back(kPlotWJ);
+    infileName_.push_back(Form("%sWJets_ht2500toinf.root" ,filesPath.Data()));    infileCat_.push_back(kPlotWJ);
+    infileName_.push_back(Form("%sWJets_EWKWPlus.root" ,filesPath.Data()));       infileCat_.push_back(kPlotWJ);
+    infileName_.push_back(Form("%sWJets_EWKWMinus.root" ,filesPath.Data()));      infileCat_.push_back(kPlotWJ);
+
+    infileName_.push_back(Form("%sZJets_ht100to200.root" ,filesPath.Data()));     infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sZJets_ht200to400.root" ,filesPath.Data()));     infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sZJets_ht400to600.root" ,filesPath.Data()));     infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sZJets_ht600to800.root" ,filesPath.Data()));     infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sZJets_ht800to1200.root" ,filesPath.Data()));    infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sZJets_ht1200to2500.root" ,filesPath.Data()));   infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sZJets_ht2500toinf.root" ,filesPath.Data()));    infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sZJets_EWK.root" ,filesPath.Data()));                infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sZtoNuNu_ht100to200_CP5.root" ,filesPath.Data()));   infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sZtoNuNu_ht200to400_CP5.root" ,filesPath.Data()));   infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sZtoNuNu_ht400to600_CP5.root" ,filesPath.Data()));   infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sZtoNuNu_ht600to800_CP5.root" ,filesPath.Data()));   infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sZtoNuNu_ht800to1200_CP5.root" ,filesPath.Data()));  infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sZtoNuNu_ht1200to2500_CP5.root" ,filesPath.Data())); infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sZtoNuNu_ht2500toinf_CP5.root" ,filesPath.Data()));  infileCat_.push_back(kPlotDY);
+    infileName_.push_back(Form("%sZtoNuNu_EWK.root" ,filesPath.Data()));              infileCat_.push_back(kPlotDY);
+
+    infileName_.push_back(Form("%sTTbar_GJets.root" ,filesPath.Data()));          infileCat_.push_back(kPlotTop);
+    //infileName_.push_back(Form("%sSingleTop_tG.root" ,filesPath.Data()));         infileCat_.push_back(kPlotTop);
+
+    infileName_.push_back(Form("%sWZG.root" ,filesPath.Data()));		      infileCat_.push_back(kPlotVVV);
+
+    //infileName_.push_back(Form("%sWGtoLNuG_nlo.root" ,filesPath.Data())); 	      infileCat_.push_back(kPlotWG);
+
+    infileName_.push_back(Form("%sZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8.root" ,filesPath.Data())); infileCat_.push_back(kPlotZG);
+
+    infileName_.push_back(Form("%sGJets_ht100to200.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
+    infileName_.push_back(Form("%sGJets_ht200to400.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
+    infileName_.push_back(Form("%sGJets_ht400to600.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
+    infileName_.push_back(Form("%sGJets_ht600toinf.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
+
+    infileName_.push_back(Form("%sDarkPhotonVBFHM%d.root" ,filesPath.Data(),mH));     infileCat_.push_back(kPlotBSM);
   }
   else {
     return;

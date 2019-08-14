@@ -11,10 +11,12 @@ CMS_lumi( TPad* pad, int iPeriod, int iPosX )
   int alignY_=3;
   int alignX_=2;
   if( iPosX/10==0 ) alignX_=1;
+  if( iPosX==0    ) alignX_=1;
   if( iPosX==0    ) alignY_=1;
   if( iPosX/10==1 ) alignX_=1;
   if( iPosX/10==2 ) alignX_=2;
   if( iPosX/10==3 ) alignX_=3;
+  //if( iPosX == 0  ) relPosX = 0.12;
   int align_ = 10*alignX_ + alignY_;
 
   float H = pad->GetWh();
@@ -23,6 +25,7 @@ CMS_lumi( TPad* pad, int iPeriod, int iPosX )
   float t = pad->GetTopMargin();
   float r = pad->GetRightMargin();
   float b = pad->GetBottomMargin();
+  //  float e = 0.025;
 
   pad->cd();
 
@@ -107,7 +110,7 @@ CMS_lumi( TPad* pad, int iPeriod, int iPosX )
   
   pad->cd();
 
-  float posX_ = 0;
+  float posX_=0;
   if( iPosX%10<=1 )
     {
       posX_ =   l + relPosX*(1-l-r);
@@ -144,13 +147,13 @@ CMS_lumi( TPad* pad, int iPeriod, int iPosX )
 	  latex.SetTextFont(cmsTextFont);
 	  latex.SetTextSize(cmsTextSize*t);
 	  latex.SetTextAlign(align_);
-	  latex.DrawLatex(posX_+0.1, posY_-0.10, cmsText);
+	  latex.DrawLatex(posX_, posY_, cmsText);
 	  if( writeExtraText ) 
 	    {
 	      latex.SetTextFont(extraTextFont);
 	      latex.SetTextAlign(align_);
 	      latex.SetTextSize(extraTextSize*t);
-	      latex.DrawLatex(posX_+0.1, posY_- relExtraDY*cmsTextSize*t-0.08, extraText);
+	      latex.DrawLatex(posX_, posY_- relExtraDY*cmsTextSize*t, extraText);
 	    }
 	}
     }
@@ -164,7 +167,7 @@ CMS_lumi( TPad* pad, int iPeriod, int iPosX )
       latex.SetTextFont(extraTextFont);
       latex.SetTextSize(extraTextSize*t);
       latex.SetTextAlign(align_);
-      latex.DrawLatex(posX_+0.1, posY_, extraText);      
+      latex.DrawLatex(posX_, posY_, extraText);      
     }
   return;
 }

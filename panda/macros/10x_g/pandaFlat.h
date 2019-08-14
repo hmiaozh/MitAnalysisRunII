@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Fri Jul 19 09:56:29 2019 by ROOT version 6.12/07
+// Tue Aug  6 10:01:23 2019 by ROOT version 6.12/07
 // from TTree events/events
-// found on file: /scratch5/bmaier/darkg/2017/vbfg_v_012_v5/WZG.root
+// found on file: /scratch5/bmaier/darkg/2018/vbfg_v_013_v6/WZG.root
 //////////////////////////////////////////////////////////
 
 #ifndef pandaFlat_h
@@ -439,19 +439,29 @@ public :
    Float_t         loosePho1sieie;
    Int_t           loosePho1SelBit;
    Int_t           looseGenPho1PdgId;
+   Float_t         alterPho1Pt;
+   Float_t         alterPho1Eta;
+   Float_t         alterPho1Phi;
+   Float_t         alterPho1r9;
+   Float_t         alterPho1chIso;
+   Float_t         alterPho1nhIso;
+   Float_t         alterPho1phIso;
+   Float_t         alterPho1hOverE;
+   Float_t         alterPho1sieie;
+   Int_t           alterPho1SelBit;
    Int_t           nLooseLep;
    Int_t           nLooseElectron;
    Int_t           nLooseMuon;
    Int_t           nTightLep;
    Int_t           nTightElectron;
    Int_t           nTightMuon;
-   Float_t         electronPt[3];   //[nLooseElectron]
-   Float_t         electronEta[3];   //[nLooseElectron]
-   Float_t         electronPhi[3];   //[nLooseElectron]
-   Int_t           electronSelBit[3];   //[nLooseElectron]
-   Int_t           electronPdgId[3];   //[nLooseElectron]
-   Int_t           electronPhoMatch[3];   //[nLooseElectron]
-   Int_t           electronLPhoMatch[3];   //[nLooseElectron]
+   Float_t         electronPt[4];   //[nLooseElectron]
+   Float_t         electronEta[4];   //[nLooseElectron]
+   Float_t         electronPhi[4];   //[nLooseElectron]
+   Int_t           electronSelBit[4];   //[nLooseElectron]
+   Int_t           electronPdgId[4];   //[nLooseElectron]
+   Int_t           electronPhoMatch[4];   //[nLooseElectron]
+   Int_t           electronLPhoMatch[4];   //[nLooseElectron]
    Float_t         muonPt[4];   //[nLooseMuon]
    Float_t         muonEta[4];   //[nLooseMuon]
    Float_t         muonPhi[4];   //[nLooseMuon]
@@ -476,18 +486,18 @@ public :
    Float_t         lheHT;
    Int_t           isGS;
    Float_t         genMjj;
-   Float_t         electronSfLoose[3];   //[nLooseElectron]
-   Float_t         electronSfMedium[3];   //[nLooseElectron]
-   Float_t         electronSfTight[3];   //[nLooseElectron]
-   Float_t         electronSfMvaWP90[3];   //[nLooseElectron]
-   Float_t         electronSfMvaWP80[3];   //[nLooseElectron]
-   Float_t         electronSfUnc[3];   //[nLooseElectron]
-   Float_t         electronSfReco[3];   //[nLooseElectron]
-   Float_t         electronD0[3];   //[nLooseElectron]
-   Float_t         electronDZ[3];   //[nLooseElectron]
-   Int_t           electronNMissingHits[3];   //[nLooseElectron]
-   Int_t           electronTripleCharge[3];   //[nLooseElectron]
-   Float_t         electronCombIso[3];   //[nLooseElectron]
+   Float_t         electronSfLoose[4];   //[nLooseElectron]
+   Float_t         electronSfMedium[4];   //[nLooseElectron]
+   Float_t         electronSfTight[4];   //[nLooseElectron]
+   Float_t         electronSfMvaWP90[4];   //[nLooseElectron]
+   Float_t         electronSfMvaWP80[4];   //[nLooseElectron]
+   Float_t         electronSfUnc[4];   //[nLooseElectron]
+   Float_t         electronSfReco[4];   //[nLooseElectron]
+   Float_t         electronD0[4];   //[nLooseElectron]
+   Float_t         electronDZ[4];   //[nLooseElectron]
+   Int_t           electronNMissingHits[4];   //[nLooseElectron]
+   Int_t           electronTripleCharge[4];   //[nLooseElectron]
+   Float_t         electronCombIso[4];   //[nLooseElectron]
    Float_t         muonSfLoose[4];   //[nLooseMuon]
    Float_t         muonSfMedium[4];   //[nLooseMuon]
    Float_t         muonSfTight[4];   //[nLooseMuon]
@@ -522,10 +532,6 @@ public :
    Int_t           looseGenLep3PdgId;
    Int_t           looseGenLep4PdgId;
    Float_t         normalizedWeight;
-   Float_t         sf_photon;
-   Float_t         sf_photon_unc[3];
-   Float_t         sf_trigWeight[2];
-   Float_t         sf_lepton;
 
    // List of branches
    TBranch        *b_sf_btag0;   //!
@@ -945,6 +951,16 @@ public :
    TBranch        *b_loosePho1sieie;   //!
    TBranch        *b_loosePho1SelBit;   //!
    TBranch        *b_looseGenPho1PdgId;   //!
+   TBranch        *b_alterPho1Pt;   //!
+   TBranch        *b_alterPho1Eta;   //!
+   TBranch        *b_alterPho1Phi;   //!
+   TBranch        *b_alterPho1r9;   //!
+   TBranch        *b_alterPho1chIso;   //!
+   TBranch        *b_alterPho1nhIso;   //!
+   TBranch        *b_alterPho1phIso;   //!
+   TBranch        *b_alterPho1hOverE;   //!
+   TBranch        *b_alterPho1sieie;   //!
+   TBranch        *b_alterPho1SelBit;   //!
    TBranch        *b_nLooseLep;   //!
    TBranch        *b_nLooseElectron;   //!
    TBranch        *b_nLooseMuon;   //!
@@ -1028,10 +1044,6 @@ public :
    TBranch        *b_looseGenLep3PdgId;   //!
    TBranch        *b_looseGenLep4PdgId;   //!
    TBranch        *b_normalizedWeight;   //!
-   TBranch        *b_sf_photon;   //!
-   TBranch        *b_sf_photon_unc;   //!
-   TBranch        *b_sf_trigWeight;   //!
-   TBranch        *b_sf_lepton;   //!
 
    pandaFlat(TTree *tree=0);
    virtual ~pandaFlat();
@@ -1052,9 +1064,9 @@ pandaFlat::pandaFlat(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/scratch5/bmaier/darkg/2017/vbfg_v_012_v5/WZG.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/scratch5/bmaier/darkg/2018/vbfg_v_013_v6/WZG.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/scratch5/bmaier/darkg/2017/vbfg_v_012_v5/WZG.root");
+         f = new TFile("/scratch5/bmaier/darkg/2018/vbfg_v_013_v6/WZG.root");
       }
       f->GetObject("events",tree);
 
@@ -1520,6 +1532,16 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("loosePho1sieie", &loosePho1sieie, &b_loosePho1sieie);
    fChain->SetBranchAddress("loosePho1SelBit", &loosePho1SelBit, &b_loosePho1SelBit);
    fChain->SetBranchAddress("looseGenPho1PdgId", &looseGenPho1PdgId, &b_looseGenPho1PdgId);
+   fChain->SetBranchAddress("alterPho1Pt", &alterPho1Pt, &b_alterPho1Pt);
+   fChain->SetBranchAddress("alterPho1Eta", &alterPho1Eta, &b_alterPho1Eta);
+   fChain->SetBranchAddress("alterPho1Phi", &alterPho1Phi, &b_alterPho1Phi);
+   fChain->SetBranchAddress("alterPho1r9", &alterPho1r9, &b_alterPho1r9);
+   fChain->SetBranchAddress("alterPho1chIso", &alterPho1chIso, &b_alterPho1chIso);
+   fChain->SetBranchAddress("alterPho1nhIso", &alterPho1nhIso, &b_alterPho1nhIso);
+   fChain->SetBranchAddress("alterPho1phIso", &alterPho1phIso, &b_alterPho1phIso);
+   fChain->SetBranchAddress("alterPho1hOverE", &alterPho1hOverE, &b_alterPho1hOverE);
+   fChain->SetBranchAddress("alterPho1sieie", &alterPho1sieie, &b_alterPho1sieie);
+   fChain->SetBranchAddress("alterPho1SelBit", &alterPho1SelBit, &b_alterPho1SelBit);
    fChain->SetBranchAddress("nLooseLep", &nLooseLep, &b_nLooseLep);
    fChain->SetBranchAddress("nLooseElectron", &nLooseElectron, &b_nLooseElectron);
    fChain->SetBranchAddress("nLooseMuon", &nLooseMuon, &b_nLooseMuon);
@@ -1603,10 +1625,6 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("looseGenLep3PdgId", &looseGenLep3PdgId, &b_looseGenLep3PdgId);
    fChain->SetBranchAddress("looseGenLep4PdgId", &looseGenLep4PdgId, &b_looseGenLep4PdgId);
    fChain->SetBranchAddress("normalizedWeight", &normalizedWeight, &b_normalizedWeight);
-   fChain->SetBranchAddress("sf_photon", &sf_photon, &b_sf_photon);
-   fChain->SetBranchAddress("sf_photon_unc", sf_photon_unc, &b_sf_photon_unc);
-   fChain->SetBranchAddress("sf_trigWeight", sf_trigWeight, &b_sf_trigWeight);
-   fChain->SetBranchAddress("sf_lepton", &sf_lepton, &b_sf_lepton);
    Notify();
 }
 

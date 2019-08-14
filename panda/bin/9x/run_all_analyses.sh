@@ -86,4 +86,10 @@ elif [ $NSEL == 7 ]; then
   nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhgAnalysis.C+'('${YEAR}',1,200)'    >& log_zhg_${YEAR}_200 &
   nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhgAnalysis.C+'('${YEAR}',1,300)'    >& log_zhg_${YEAR}_300 &
 
+elif [ $NSEL == 8 ]; then
+  root -l -q -b MitAnalysisRunII/panda/macros/10x_g/vbfgAnalysis.C+
+  nohup time root -l -q -b MitAnalysisRunII/panda/macros/10x_g/vbfgAnalysis.C+'('${YEAR}',125)'  >& log_vbfg_${YEAR}_mh125  &
+  #nohup time root -l -q -b MitAnalysisRunII/panda/macros/10x_g/vbfgAnalysis.C+'('${YEAR}',300)'  >& log_vbfg_${YEAR}_mh300  &
+  #nohup time root -l -q -b MitAnalysisRunII/panda/macros/10x_g/vbfgAnalysis.C+'('${YEAR}',1000)' >& log_vbfg_${YEAR}_mh1000 &
+
 fi

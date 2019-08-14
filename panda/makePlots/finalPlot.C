@@ -81,7 +81,8 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   bool isRemoveBSM = false;
   if(units.Contains("NoBSM")) {isRemoveBSM = true; units = units.ReplaceAll("NoBSM","");}
 
-  //gInterpreter->ExecuteMacro("GoodStyle.C");
+  //gInterpreter->ExecuteMacro("MitAnalysisRunII/panda/makePlots/GoodStyle.C");
+  GoodStyle();
   //gROOT->LoadMacro("StandardPlot.C");
   gStyle->SetOptStat(0);
 
@@ -218,7 +219,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   if(isLogY == true) c1->SetLogy();
   if(isLogX == true) c1->SetLogx();
   myPlot.Draw(ReBin);  // Can pass a rebin 
-  CMS_lumi( c1, year, 1 );
+  CMS_lumi( c1, year, 11 );
   } else {
   c1->SetBottomMargin(0.1);
   c1->cd();
@@ -240,7 +241,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   if(isLogSpecial) {c1->SetLogx();pad1->SetLogx();pad2->SetLogx();}
 
   myPlot.Draw(ReBin);
-  CMS_lumi( pad1, year, 1 );
+  CMS_lumi( pad1, year, 11 );
 
   pad2->cd();
   pad2->RedrawAxis();
