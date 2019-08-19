@@ -6,30 +6,45 @@
 #include <TH1D.h>
 #include <TH2D.h>
 #include <TMath.h>
+#include <TLatex.h>
 #include <TCanvas.h>
 #include "TStyle.h"
 #include "TSystem.h"
 #include "TLorentzVector.h"
 
+void DrawTLatex(Double_t x, Double_t y, Double_t tsize, const char* text, bool isLeft = true)
+{
+  TLatex* tl = new TLatex(x, y, text);
+
+  tl->SetNDC();
+  if(isLeft) tl->SetTextAlign(   11);
+  else       tl->SetTextAlign(   31); 
+  tl->SetTextFont (   42);
+  tl->SetTextSize (tsize);
+
+  tl->Draw("same");
+}
+
 void atributes(TH2D *histo, TString xtitle, TString ytitle, TString title){
 
-  histo->SetTitle(title.Data());
+  histo->SetTitle(title.Data()); histo->SetTitle("");
+  histo->GetXaxis()->SetTitle(xtitle.Data());
   histo->GetXaxis()->SetLabelFont  (   42);
   histo->GetXaxis()->SetLabelOffset(0.015);
   histo->GetXaxis()->SetLabelSize  (0.030);
   histo->GetXaxis()->SetNdivisions (  505);
   histo->GetXaxis()->SetTitleFont  (   42);
   histo->GetXaxis()->SetTitleOffset( 1.20);
-  histo->GetXaxis()->SetTitleSize  (0.035);
+  histo->GetXaxis()->SetTitleSize  (0.030);
   histo->GetXaxis()->SetTickLength (0.07 );
 
   histo->GetYaxis()->SetTitle(ytitle.Data());
   histo->GetYaxis()->SetLabelFont  (   42);
   histo->GetYaxis()->SetLabelOffset(0.015);
-  histo->GetYaxis()->SetLabelSize  (0.040);
+  histo->GetYaxis()->SetLabelSize  (0.030);
   histo->GetYaxis()->SetNdivisions (  505);
   histo->GetYaxis()->SetTitleFont  (   42);
-  histo->GetYaxis()->SetTitleOffset( 1.40);
+  histo->GetYaxis()->SetTitleOffset( 1.50);
   histo->GetYaxis()->SetTitleSize  (0.030);
   histo->GetYaxis()->SetTickLength (0.03 );
 
@@ -39,7 +54,9 @@ void atributes(TH2D *histo, TString xtitle, TString ytitle, TString title){
   histo->SetMarkerStyle(kFullCircle);
 }
 
-void objectEfficiency(TString fileName, TString format = "png"){
+void objectEfficiency(TString fileName = "/data/t3home000/ceballos/panda/prod/v_001_0/ZH_ZToLL_HToGDarkG_M125.root", 
+                      TString format = "pdf",
+		      TString fileNameC = "/data/t3home000/ceballos/panda/prod/v_001_0/fitDiagnosticszhg_comb_125.root"){
 
   gStyle->SetOptStat(0);
   gStyle->SetPaintTextFormat(".3f");
@@ -53,6 +70,10 @@ void objectEfficiency(TString fileName, TString format = "png"){
   TH2D *hDDenElEtaPt = (TH2D*)(fFile->Get("hDDenElEtaPt")); assert(hDDenElEtaPt); hDDenElEtaPt->SetDirectory(0);	 
   TH2D *hDDenPhEtaPt = (TH2D*)(fFile->Get("hDDenPhEtaPt")); assert(hDDenPhEtaPt); hDDenPhEtaPt->SetDirectory(0); 
   delete fFile;
+
+  TFile *fFileC = TFile::Open(fileNameC.Data());
+  TH2D *hDCorrelation = (TH2D*)(fFile->Get("shapes_fit_b/overall_total_covar")); assert(hDCorrelation); hDCorrelation->SetDirectory(0);     
+  delete fFileC;
 
   for(int i=1; i<=hDDenMuEtaPt->GetNbinsX(); i++){
     for(int j=1; j<=hDDenMuEtaPt->GetNbinsY(); j++){
@@ -93,23 +114,33 @@ void objectEfficiency(TString fileName, TString format = "png"){
   atributes(hDDenMuEtaPt,"|#eta|","p_{T} [GeV]","Muon efficiency");
   atributes(hDDenElEtaPt,"|#eta|","p_{T} [GeV]","Electron efficiency");
   atributes(hDDenPhEtaPt,"|#eta|","p_{T} [GeV]","Photon efficiency");
+  atributes(hDCorrelation,"","","Correlation matrix");
   TCanvas* c00 = new TCanvas("c00","c00",5,5,500,500);
   TCanvas* c01 = new TCanvas("c01","c01",5,5,500,500);
   TCanvas* c02 = new TCanvas("c02","c02",5,5,500,500);
-  c00->cd(); hDDenMuEtaPt->Draw("colz,text,e");
-  c01->cd(); hDDenElEtaPt->Draw("colz,text,e");
-  c02->cd(); hDDenPhEtaPt->Draw("colz,text,e");
+  TCanvas* c03 = new TCanvas("c03","c03",5,5,500,500);
+  c00->cd(); hDDenMuEtaPt->Draw("colz,text");DrawTLatex(0.10, 0.91, 0.032, "#bf{CMS} Supplementary       arXiv: 1908.02699");
+  c01->cd(); hDDenElEtaPt->Draw("colz,text");DrawTLatex(0.10, 0.91, 0.032, "#bf{CMS} Supplementary       arXiv: 1908.02699");
+  c02->cd(); hDDenPhEtaPt->Draw("colz,text");DrawTLatex(0.10, 0.91, 0.032, "#bf{CMS} Supplementary       arXiv: 1908.02699");
+  c03->cd();
+  {
+  hDCorrelation->Draw("colz");
+  DrawTLatex(0.10, 0.91, 0.032, "#bf{CMS} Supplementary       arXiv: 1908.02699");
+  DrawTLatex(0.95, 0.91, 0.032, "137 fb^{-1} (13 TeV)",false);
+  }
   TString outputName;
   outputName = Form("hDDenMuEtaPt.%s",format.Data());  c00->SaveAs(outputName.Data());
   outputName = Form("hDDenElEtaPt.%s",format.Data());  c01->SaveAs(outputName.Data());
   outputName = Form("hDDenPhEtaPt.%s",format.Data());  c02->SaveAs(outputName.Data());
+  outputName = Form("hDCorrelation.%s",format.Data()); c03->SaveAs(outputName.Data());
 
   char output[200];
   sprintf(output,"histo_objectEfficiency.root");	
   TFile* outFileEff = new TFile(output,"recreate");
   outFileEff->cd();
-  hDDenMuEtaPt->SetNameTitle(Form("hDEffMuEtaPt"),Form("hDEffMuEtaPt")); hDDenMuEtaPt->Write();
-  hDDenElEtaPt->SetNameTitle(Form("hDEffElEtaPt"),Form("hDEffElEtaPt")); hDDenElEtaPt->Write();
-  hDDenPhEtaPt->SetNameTitle(Form("hDEffPhEtaPt"),Form("hDEffPhEtaPt")); hDDenPhEtaPt->Write();
+  hDDenMuEtaPt ->SetNameTitle(Form("hDEffMuEtaPt"), Form("hDEffMuEtaPt"));  hDDenMuEtaPt ->Write();
+  hDDenElEtaPt ->SetNameTitle(Form("hDEffElEtaPt"), Form("hDEffElEtaPt"));  hDDenElEtaPt ->Write();
+  hDDenPhEtaPt ->SetNameTitle(Form("hDEffPhEtaPt"), Form("hDEffPhEtaPt"));  hDDenPhEtaPt ->Write();
+  hDCorrelation->SetNameTitle(Form("hDCorrelation"),Form("hDCorrelation")); hDCorrelation->Write();
   outFileEff->Close();
 }

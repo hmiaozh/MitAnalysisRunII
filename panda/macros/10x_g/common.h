@@ -61,7 +61,9 @@ enum plotCategory {
   kPlotZG        , // 9  
   kPlotGJ        , //10 
   kPlotNonPrompt , //11  
-  kPlotBSM       , //12 
+  kPlotPhotonE0  , //12  
+  kPlotPhotonE1  , //13  
+  kPlotBSM       , //14 
   nPlotCategories
 };
 
@@ -78,6 +80,8 @@ std::map<int, TString> plotBaseNames={
   { kPlotZG        , "ZG" },
   { kPlotGJ	   , "GJ" },
   { kPlotNonPrompt , "NonPrompt" },
+  { kPlotPhotonE0  , "PhotonE0" },
+  { kPlotPhotonE1  , "PhotonE1" },
   { kPlotBSM	   , "BSM" }
 }; 
 
@@ -94,6 +98,8 @@ std::map<int, int> plotColors={
   { kPlotZG        , kAzure-9},
   { kPlotGJ	   , kGreen-5},
   { kPlotNonPrompt , kOrange},
+  { kPlotPhotonE0  , kBlue+3},
+  { kPlotPhotonE1  , kBlue+4},
   { kPlotBSM	   , kGreen}
 }; 
 
@@ -110,7 +116,9 @@ std::map<int, TString> plotNames={
     { kPlotZG        , "Z#gamma"},
     { kPlotGJ	     , "#gamma+jets"},
     { kPlotNonPrompt , "Nonprompt"},
-    { kPlotBSM       , "BSM"}
+    { kPlotPhotonE0  , "Mismeasured #gamma low m_{jj}"},
+    { kPlotPhotonE1  , "Mismeasured #gamma high m_{jj}"},
+   { kPlotBSM       , "BSM"}
 };
 
 const double mass_el = 0.000510998928;
@@ -122,15 +130,15 @@ double mcCorrection(int type, int year, int infileCat){
   if(infileCat == kPlotBSM) totalWeight = totalWeight * 0.1; // 3.782;
 
   if     (type == 0){ // VBFG
-    if     (year == 2016 && infileCat == kPlotWG) totalWeight = totalWeight * 0.20;
+    if     (year == 2016 && infileCat == kPlotWG) totalWeight = totalWeight * 0.25;
     else if(year == 2017 && infileCat == kPlotWG) totalWeight = totalWeight * 0.25;
     else if(year == 2018 && infileCat == kPlotWG) totalWeight = totalWeight * 0.25;
 
-    else if(year == 2016 && infileCat == kPlotWJ) totalWeight = totalWeight * 1.85;
+    else if(year == 2016 && infileCat == kPlotWJ) totalWeight = totalWeight * 1.90;
     else if(year == 2017 && infileCat == kPlotWJ) totalWeight = totalWeight * 1.05;
     else if(year == 2018 && infileCat == kPlotWJ) totalWeight = totalWeight * 1.70;
 
-    else if(year == 2016 && infileCat == kPlotGJ) totalWeight = totalWeight * 2.10;
+    else if(year == 2016 && infileCat == kPlotGJ) totalWeight = totalWeight * 2.20;
     else if(year == 2017 && infileCat == kPlotGJ) totalWeight = totalWeight * 3.00;
     else if(year == 2018 && infileCat == kPlotGJ) totalWeight = totalWeight * 3.00;
 

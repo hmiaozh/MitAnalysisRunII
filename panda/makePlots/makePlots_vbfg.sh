@@ -53,11 +53,11 @@ if [ $NSEL == 'vbfg' ]; then
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"N_{b jets}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_38.root","vbfg_sel3_nbjets",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"N_{b jets}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_39.root","vbfg_sel4_nbjets",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
 
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"N_{#tau}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_40.root","vbfg_sel0_ntau",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"N_{#tau}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_41.root","vbfg_sel1_ntau",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"N_{#tau}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_42.root","vbfg_sel2_ntau",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"N_{#tau}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_43.root","vbfg_sel3_ntau",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"N_{#tau}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_44.root","vbfg_sel4_ntau",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"m_{T}","GeV","done_vbfg/histoVBFG_mH125_'${YEAR}'_40.root","vbfg_sel0_lowmet_mtg",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"m_{T}","GeV","done_vbfg/histoVBFG_mH125_'${YEAR}'_41.root","vbfg_sel1_lowmet_mtg",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"m_{T}","GeV","done_vbfg/histoVBFG_mH125_'${YEAR}'_42.root","vbfg_sel2_lowmet_mtg",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"m_{T}","GeV","done_vbfg/histoVBFG_mH125_'${YEAR}'_43.root","vbfg_sel3_lowmet_mtg",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"m_{T}","GeV","done_vbfg/histoVBFG_mH125_'${YEAR}'_44.root","vbfg_sel4_lowmet_mtg",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
 
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"|#eta^{#gamma}|","","done_vbfg/histoVBFG_mH125_'${YEAR}'_45.root","vbfg_sel0_etag",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"|#eta^{#gamma}|","","done_vbfg/histoVBFG_mH125_'${YEAR}'_46.root","vbfg_sel1_etag",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
@@ -113,11 +113,11 @@ if [ $NSEL == 'vbfg' ]; then
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"#phi_{j}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_88.root","vbfg_sel3_hcal_phij",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"#phi_{j}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_89.root","vbfg_sel4_hcal_phij",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
 
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"#phi_{#gamma}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_90.root","vbfg_sel0_hcal_nomet_phij",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"#phi_{#gamma}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_91.root","vbfg_sel1_hcal_nomet_phij",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"#phi_{#gamma}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_92.root","vbfg_sel2_hcal_nomet_phij",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"#phi_{#gamma}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_93.root","vbfg_sel3_hcal_nomet_phij",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
-  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"#phi_{#gamma}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_94.root","vbfg_sel4_hcal_nomet_phij",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"#phi_{j}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_90.root","vbfg_sel0_hcal_nomet_phij",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"#phi_{j}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_91.root","vbfg_sel1_hcal_nomet_phij",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"#phi_{j}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_92.root","vbfg_sel2_hcal_nomet_phij",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"#phi_{j}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_93.root","vbfg_sel3_hcal_nomet_phij",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
+  root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"#phi_{j}","","done_vbfg/histoVBFG_mH125_'${YEAR}'_94.root","vbfg_sel4_hcal_nomet_phij",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
 
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"m_{T}","GeV","done_vbfg/histoVBFG_mH125_'${YEAR}'_95.root","vbfg_sel0_mtg_highdphigmet",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';
   root -q -b -l MitAnalysisRunII/panda/makePlots/finalPlot_vbfg.C+'(0,1,"m_{T}","GeV","done_vbfg/histoVBFG_mH125_'${YEAR}'_96.root","vbfg_sel1_mtg_highdphigmet",0,'${YEAR}',"qqH_{125}(inv.)",1,0,"",1,'${APPLYSCALING}')';

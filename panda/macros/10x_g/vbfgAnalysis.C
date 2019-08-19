@@ -229,10 +229,10 @@ int year, int mH = 125
 
   //infileName_.clear();infileCat_.clear();
   //infileName_.push_back(Form("%sDarkPhotonVBFHM%d.root" ,filesPath.Data(),mH));     infileCat_.push_back(kPlotBSM);
-  //infileName_.push_back(Form("%sGJets_ht100to200_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
-  //infileName_.push_back(Form("%sGJets_ht200to400_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
-  //infileName_.push_back(Form("%sGJets_ht400to600_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
-  //infileName_.push_back(Form("%sGJets_ht600toinf_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
+  //infileName_.push_back(Form("%sGJets_ht100to200.root" ,filesPath.Data()));	infileCat_.push_back(kPlotGJ);
+  //infileName_.push_back(Form("%sGJets_ht200to400.root" ,filesPath.Data()));	infileCat_.push_back(kPlotGJ);
+  //infileName_.push_back(Form("%sGJets_ht400to600.root" ,filesPath.Data()));	infileCat_.push_back(kPlotGJ);
+  //infileName_.push_back(Form("%sGJets_ht600toinf.root" ,filesPath.Data()));	infileCat_.push_back(kPlotGJ);
 
   TFile *fLepton_Fakes = TFile::Open(fLepton_FakesName.Data());
   TH2D* histoFakeEffSelMediumEtaPt_m = (TH2D*)fLepton_Fakes->Get("histoFakeEffSelEtaPt_2_0"); histoFakeEffSelMediumEtaPt_m->SetDirectory(0);
@@ -268,7 +268,7 @@ int year, int mH = 125
   delete ftrgSF;
 
   // 0: SR (mjj<=1100), 1: passLGSel, 2: passLLGSel, 3: passLSel, 4: passGJSel, 5: SR (mjj>1500)
-  const int nBinMVA1D = 7; Double_t xbins1D[nBinMVA1D+1] = {0, 40, 80, 120, 160, 200, 300, 1000};
+  const int nBinMVA1D = 9; Double_t xbins1D[nBinMVA1D+1] = {0, 25, 50, 75, 100, 125, 160, 200, 300, 1000};
   const int nBinMVA = nBinMVA1D*6; Double_t xbins[nBinMVA+1];
   for(int chan=0; chan<7; chan++) for(int i=0; i<=nBinMVA1D; i++) xbins[i+nBinMVA1D*chan] = xbins1D[i] + 1000*chan;
   //for(int chan=0; chan<7; chan++) for(int i=0; i<=nBinMVA1D; i++) printf("BinMVA(%2d): %f\n",i+nBinMVA1D*chan,xbins[i+nBinMVA1D*chan]);
@@ -291,7 +291,8 @@ int year, int mH = 125
     else if(thePlot >=  25 && thePlot <=  29) {nBinPlot = 40;  xminPlot =  0.0; xmaxPlot = 8;}
     else if(thePlot >=  30 && thePlot <=  34) {nBinPlot = 8;   xminPlot = -0.5; xmaxPlot = 7.5;}
     else if(thePlot >=  35 && thePlot <=  39) {nBinPlot = 4;   xminPlot = -0.5; xmaxPlot = 3.5;}
-    else if(thePlot >=  40 && thePlot <=  44) {nBinPlot = 4;   xminPlot = -0.5; xmaxPlot = 3.5;}
+    else if(thePlot >=  40 && thePlot <=  40) {nBinPlot = 30;  xminPlot =  0.0; xmaxPlot = 3.0;}
+    else if(thePlot >=  41 && thePlot <=  44) {is1DCard = true;}
     else if(thePlot >=  45 && thePlot <=  49) {nBinPlot = 25;  xminPlot =  0.0; xmaxPlot = 2.5;}
     else if(thePlot >=  50 && thePlot <=  54) {nBinPlot = 50;  xminPlot = 80.0; xmaxPlot = 480.0;}
     else if(thePlot >=  55 && thePlot <=  59) {nBinPlot = 24;  xminPlot =  0.0; xmaxPlot = 3.0;}
@@ -398,10 +399,10 @@ int year, int mH = 125
   TH1D *histo_GJNorm0Down = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_GJNorm0_%dDown" , plotBaseNames[kPlotGJ].Data(),year));
   TH1D *histo_GJNorm1Up   = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_GJNorm1_%dUp"   , plotBaseNames[kPlotGJ].Data(),year));
   TH1D *histo_GJNorm1Down = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_GJNorm1_%dDown" , plotBaseNames[kPlotGJ].Data(),year));
-  TH1D *histo_GJNorm2Up   = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_GJNorm2_%dUp"   , plotBaseNames[kPlotGJ].Data(),year));
-  TH1D *histo_GJNorm2Down = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_GJNorm2_%dDown" , plotBaseNames[kPlotGJ].Data(),year));
-  TH1D *histo_GJNorm3Up   = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_GJNorm3_%dUp"   , plotBaseNames[kPlotGJ].Data(),year));
-  TH1D *histo_GJNorm3Down = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_GJNorm3_%dDown" , plotBaseNames[kPlotGJ].Data(),year));
+  TH1D *histo_GJPhotonE0Up   = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_GJPhotonE0_%dUp"   , plotBaseNames[kPlotPhotonE0].Data(),year));
+  TH1D *histo_GJPhotonE0Down = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_GJPhotonE0_%dDown" , plotBaseNames[kPlotPhotonE0].Data(),year));
+  TH1D *histo_GJPhotonE1Up   = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_GJPhotonE1_%dUp"   , plotBaseNames[kPlotPhotonE1].Data(),year));
+  TH1D *histo_GJPhotonE1Down = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_GJPhotonE1_%dDown" , plotBaseNames[kPlotPhotonE1].Data(),year));
 
   //*******************************************************
   // Chain Loop
@@ -427,6 +428,8 @@ int year, int mH = 125
       bool passTrigger = (thePandaFlat.trigger & (1<<kVBFPhoTrig)) != 0;
       if(passTrigger == false) continue;
       if(thePandaFlat.metFilter == 0) continue;
+
+      //if(infileCat_[ifile] == kPlotData && thePandaFlat.runNumber >= 319077) continue;
 
       if(thePandaFlat.nLooseLep > 2) continue;
 
@@ -801,7 +804,24 @@ int year, int mH = 125
       if(passNMinusOne[4]) histo[25+theMinSelType][theCategory]->Fill(TMath::Min(deltaEtaJJ,7.999),totalWeight);
       for(int i=0; i<numberOfCuts; i++) {passCutEvolAll = passCutEvolAll && passCutEvol[i]; if(passCutEvolAll) histo[30+theMinSelType][theCategory]->Fill((double)i,totalWeight);}
       if(dataCardSel >= 0) histo[35+theMinSelType][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,3.499),totalWeight);
-      if(dataCardSel >= 0) histo[40+theMinSelType][theCategory]->Fill(TMath::Min((double)thePandaFlat.nTau,3.499),totalWeight);
+      if(theMinSelType == 0 && !passVBFGSel){
+        if(passNMinusOne[1] && dPhiGMET < 0.5) histo[41][theCategory]->Fill(TMath::Min(mTGMET,999.999),totalWeight);
+      }
+      if((theMinSelType == 0 || theMinSelType == 4) && passNjets && passMJJ && passDEtaJJ && passgZep){
+        TLorentzVector vMet0p75 = vMet + 0.25 * theG;
+        TLorentzVector vMet0p50 = vMet + 0.50 * theG;
+        TLorentzVector vMet0p25 = vMet + 0.75 * theG;
+	double dPhiGMET0p75 = TMath::Abs(theG.DeltaPhi(vMet0p75)); 
+	double dPhiGMET0p50 = TMath::Abs(theG.DeltaPhi(vMet0p50)); 
+	double dPhiGMET0p25 = TMath::Abs(theG.DeltaPhi(vMet0p25)); 
+        double mTGMET0p75 = TMath::Sqrt(2.0*theG.Pt()*0.75*vMet0p75.Pt()*(1.0 - cos(dPhiGMET0p75))); 
+        double mTGMET0p50 = TMath::Sqrt(2.0*theG.Pt()*0.50*vMet0p50.Pt()*(1.0 - cos(dPhiGMET0p50))); 
+        double mTGMET0p25 = TMath::Sqrt(2.0*theG.Pt()*0.25*vMet0p25.Pt()*(1.0 - cos(dPhiGMET0p25)));
+	histo[40][theCategory]->Fill(TMath::Min(dPhiGMET0p50,2.999),totalWeight); 
+        histo[42][theCategory]->Fill(TMath::Min(mTGMET0p75,999.999),totalWeight);
+        histo[43][theCategory]->Fill(TMath::Min(mTGMET0p50,999.999),totalWeight);
+        histo[44][theCategory]->Fill(TMath::Min(mTGMET0p25,999.999),totalWeight);
+      }
       if(dataCardSel >= 0) histo[45+theMinSelType][theCategory]->Fill(TMath::Abs(theG.Eta()),totalWeight);
       if(dataCardSel >= 0) histo[50+theMinSelType][theCategory]->Fill(TMath::Min(theG.Pt(),479.999),totalWeight);
       if(dataCardSel >= 0) histo[55+theMinSelType][theCategory]->Fill(TMath::Min(dPhiJetG,2.999),totalWeight);
@@ -938,9 +958,6 @@ int year, int mH = 125
     the_input_file->Close();
   } // end chain loop
 
-  for(int ic=1; ic<nPlotCategories; ic++) if(histo_Baseline[ic]->GetSumOfWeights() < 0) histo_Baseline[ic]->Scale(0.0);
-  for(int ic=0; ic<nPlotCategories; ic++) histo[allPlots-1][ic]->Add(histo_Baseline[ic]);
-
   // 0 cat
   histo_GJNorm0Up  ->Add(histo_Baseline[kPlotGJ]);
   histo_GJNorm0Down->Add(histo_Baseline[kPlotGJ]);
@@ -955,27 +972,38 @@ int year, int mH = 125
     histo_GJNorm1Up  ->SetBinContent(i,histo_GJNorm1Up  ->GetBinContent(i)*10.0);
     histo_GJNorm1Down->SetBinContent(i,histo_GJNorm1Down->GetBinContent(i)/10.0);
   }
-  // 2 cat (not used)
-  histo_GJNorm2Up  ->Add(histo_Baseline[kPlotGJ]);
-  histo_GJNorm2Down->Add(histo_Baseline[kPlotGJ]);
-  for(int i=2*nBinMVA1D+1; i<=2*nBinMVA1D+nBinMVA1D; i++) {
-    histo_GJNorm2Up  ->SetBinContent(i,histo_GJNorm2Up  ->GetBinContent(i)*10.0);
-    histo_GJNorm2Down->SetBinContent(i,histo_GJNorm2Down->GetBinContent(i)/10.0);
+  // Mismeasured photon
+  for(int i=0*nBinMVA1D+1; i<=0*nBinMVA1D+nBinMVA1D; i++) {
+    histo_Baseline[kPlotPhotonE0]->SetBinContent(i,histo[43][kPlotGJ]->GetBinContent(i));
+    histo_GJPhotonE0Up           ->SetBinContent(i,histo[42][kPlotGJ]->GetBinContent(i));
+    histo_GJPhotonE0Down         ->SetBinContent(i,histo[44][kPlotGJ]->GetBinContent(i));
+    histo_Baseline[kPlotPhotonE1]->SetBinContent(i+5*nBinMVA1D,histo[43][kPlotGJ]->GetBinContent(i));
+    histo_GJPhotonE1Up           ->SetBinContent(i+5*nBinMVA1D,histo[42][kPlotGJ]->GetBinContent(i));
+    histo_GJPhotonE1Down         ->SetBinContent(i+5*nBinMVA1D,histo[44][kPlotGJ]->GetBinContent(i));
   }
-  // 3 cat (not used)
-  histo_GJNorm3Up  ->Add(histo_Baseline[kPlotGJ]);
-  histo_GJNorm3Down->Add(histo_Baseline[kPlotGJ]);
-  for(int i=3*nBinMVA1D+1; i<=3*nBinMVA1D+nBinMVA1D; i++) {
-    histo_GJNorm3Up  ->SetBinContent(i,histo_GJNorm3Up  ->GetBinContent(i)*10.0);
-    histo_GJNorm3Down->SetBinContent(i,histo_GJNorm3Down->GetBinContent(i)/10.0);
-  }
- 
+  double normPhotonE0 = 20.0; if(year != 2016) normPhotonE0 = 5.0;
+  histo_Baseline[kPlotPhotonE0]->Scale(normPhotonE0/histo_Baseline[kPlotPhotonE0]->GetSumOfWeights());
+  histo_GJPhotonE0Up           ->Scale(normPhotonE0/histo_GJPhotonE0Up		 ->GetSumOfWeights());
+  histo_GJPhotonE0Down         ->Scale(normPhotonE0/histo_GJPhotonE0Down 	 ->GetSumOfWeights());
+  double normPhotonE1 = 10.0; if(year != 2016) normPhotonE1 = 5.0;
+  histo_Baseline[kPlotPhotonE1]->Scale(normPhotonE1/histo_Baseline[kPlotPhotonE1]->GetSumOfWeights());
+  histo_GJPhotonE1Up           ->Scale(normPhotonE1/histo_GJPhotonE1Up		 ->GetSumOfWeights());
+  histo_GJPhotonE1Down         ->Scale(normPhotonE1/histo_GJPhotonE1Down 	 ->GetSumOfWeights());
+
+  histo[ 0][kPlotPhotonE0]->Add(histo[43][kPlotGJ]); histo[ 0][kPlotPhotonE0]->Scale(normPhotonE0/histo[ 0][kPlotPhotonE0]->GetSumOfWeights());
+  histo[ 0][kPlotPhotonE1]->Add(histo[43][kPlotGJ]); histo[ 0][kPlotPhotonE1]->Scale(normPhotonE1/histo[ 0][kPlotPhotonE1]->GetSumOfWeights());
+  histo[65][kPlotPhotonE0]->Add(histo[40][kPlotGJ]); histo[65][kPlotPhotonE0]->Scale(normPhotonE0/histo[65][kPlotPhotonE0]->GetSumOfWeights());
+  histo[65][kPlotPhotonE1]->Add(histo[40][kPlotGJ]); histo[65][kPlotPhotonE1]->Scale(normPhotonE1/histo[65][kPlotPhotonE1]->GetSumOfWeights());
+
+  for(int ic=1; ic<nPlotCategories; ic++) if(histo_Baseline[ic]->GetSumOfWeights() < 0) histo_Baseline[ic]->Scale(0.0);
+  for(int ic=0; ic<nPlotCategories; ic++) histo[allPlots-1][ic]->Add(histo_Baseline[ic]);
+
    double qcdScaleTotal[2] = {0.0345, 0.2200}; // use sigma(ZH) (0.0345) instead of sigma(qq->ZZ) (0.0055) and sigma(gg->ZH) (0.2200)
   double pdfTotal[2] = {0.016, 0.051};
   double syst_WZl[2] = {1.010, 1.012};
 
   for(unsigned ic=0; ic<nPlotCategories; ic++) {
-    if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
     for(int nb=1; nb<=histo_Baseline[ic]->GetNbinsX(); nb++){
       // compute QCD scale uncertainties bin-by-bin
       double diffQCDScale[6] = {
@@ -1057,110 +1085,110 @@ int year, int mH = 125
     }
     printf("uncertainties Statistical\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_Baseline[ic]->GetBinError(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
     printf("uncertainties QCDSCALEUp\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_QCDScaleUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
     printf("uncertainties QCDSCALEDown\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_QCDScaleDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
 
     printf("uncertainties PDFUp\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_PDFBoundingUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
     printf("uncertainties PDFDown\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_PDFBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
 
     printf("uncertainties LEPEFFMUp\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_LepEffMBoundingUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
     printf("uncertainties LEPEFFMDown\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_LepEffMBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
 
     printf("uncertainties LEPEFFEUp\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_LepEffEBoundingUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
     printf("uncertainties LEPEFFEDown\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_LepEffEBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
 
     printf("uncertainties ScaleMUp\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_ScaleMBoundingUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
     printf("uncertainties ScaleMDown\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_ScaleMBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
 
     printf("uncertainties ScaleEUp\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_ScaleEBoundingUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
     printf("uncertainties ScaleEDown\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_ScaleEBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
 
     printf("uncertainties ScaleGUp\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_ScaleGBoundingUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
     printf("uncertainties ScaleGDown\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_ScaleGBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
 
     printf("uncertainties PUUp\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_PUBoundingUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
     printf("uncertainties PUDown\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_PUBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
@@ -1169,65 +1197,65 @@ int year, int mH = 125
       printf("uncertainties year (%d)\n",ny);
       printf("uncertainties BTAGBUp\n");
       for(unsigned ic=0; ic<nPlotCategories; ic++) {
-	if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+	if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
            printf("%10s: ",plotBaseNames[ic].Data());
           for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_BTAGBBoundingUp[ny][ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
       }
       printf("uncertainties BTAGBDown\n");
       for(unsigned ic=0; ic<nPlotCategories; ic++) {
-	if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+	if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
            printf("%10s: ",plotBaseNames[ic].Data());
           for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_BTAGBBoundingDown[ny][ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
       }
 
       printf("uncertainties BTAGLUp\n");
       for(unsigned ic=0; ic<nPlotCategories; ic++) {
-	if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+	if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
            printf("%10s: ",plotBaseNames[ic].Data());
           for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_BTAGLBoundingUp[ny][ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
       }
       printf("uncertainties BTAGLDown\n");
       for(unsigned ic=0; ic<nPlotCategories; ic++) {
-	if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+	if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
            printf("%10s: ",plotBaseNames[ic].Data());
           for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_BTAGLBoundingDown[ny][ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
       }
 
       printf("uncertainties JESUp\n");
       for(unsigned ic=0; ic<nPlotCategories; ic++) {
-	if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+	if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
            printf("%10s: ",plotBaseNames[ic].Data());
           for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_JESBoundingUp[ny][ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
       }
       printf("uncertainties JESDown\n");
       for(unsigned ic=0; ic<nPlotCategories; ic++) {
-	if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+	if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
            printf("%10s: ",plotBaseNames[ic].Data());
           for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_JESBoundingDown[ny][ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
       }
 
       printf("uncertainties PreFireUp\n");
       for(unsigned ic=0; ic<nPlotCategories; ic++) {
-	if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+	if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
            printf("%10s: ",plotBaseNames[ic].Data());
           for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_PreFireBoundingUp[ny][ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
       }
       printf("uncertainties PreFireDown\n");
       for(unsigned ic=0; ic<nPlotCategories; ic++) {
-	if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+	if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
            printf("%10s: ",plotBaseNames[ic].Data());
           for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_PreFireBoundingDown[ny][ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
       }
 
       printf("uncertainties TriggerUp\n");
       for(unsigned ic=0; ic<nPlotCategories; ic++) {
-	if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+	if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
            printf("%10s: ",plotBaseNames[ic].Data());
           for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_TriggerBoundingUp[ny][ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
       }
       printf("uncertainties TriggerDown\n");
       for(unsigned ic=0; ic<nPlotCategories; ic++) {
-	if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+	if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
            printf("%10s: ",plotBaseNames[ic].Data());
           for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_TriggerBoundingDown[ny][ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
       }
@@ -1236,78 +1264,78 @@ int year, int mH = 125
 
     printf("uncertainties PHOEFFUp\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_PhoEffBoundingUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
     printf("uncertainties PHOEFFDown\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_PhoEffBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
 
     printf("uncertainties PHOFakeUp\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_PhoFakeBoundingUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
     printf("uncertainties PHOFakeDown\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_PhoFakeBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
 
     printf("uncertainties ElToPhRateUp\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_ElToPhRateBoundingUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
     printf("uncertainties ElToPhRateDown\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_ElToPhRateBoundingDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
 
     printf("uncertainties EWKCorrWZUp\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_EWKCorrWZUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
     printf("uncertainties EWKCorrWZDown\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_EWKCorrWZDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
 
     printf("uncertainties EWKqqCorrZZUp\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_EWKqqZZCorrUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
     printf("uncertainties EWKqqCorrZZDown\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_EWKqqZZCorrDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
 
     printf("uncertainties ggCorrZZUp\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_ggZZCorrUp[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
     printf("uncertainties ggCorrZZDown\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
-      if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
          printf("%10s: ",plotBaseNames[ic].Data());
         for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {if(histo_Baseline[ic]->GetBinContent(i)>0)printf("%5.1f ",histo_ggZZCorrDown[ic]->GetBinContent(i)/histo_Baseline[ic]->GetBinContent(i)*100);else printf("100.0 ");} printf("\n");
     }
@@ -1369,10 +1397,10 @@ int year, int mH = 125
   histo_GJNorm0Down->Write();
   histo_GJNorm1Up  ->Write();
   histo_GJNorm1Down->Write();
-  histo_GJNorm2Up  ->Write();
-  histo_GJNorm2Down->Write();
-  histo_GJNorm3Up  ->Write();
-  histo_GJNorm3Down->Write();
+  histo_GJPhotonE0Up  ->Write();
+  histo_GJPhotonE0Down->Write();
+  histo_GJPhotonE1Up  ->Write();
+  histo_GJPhotonE1Down->Write();
   outFileLimits->Close();
 
 
@@ -1423,8 +1451,8 @@ int year, int mH = 125
   newcardShape << Form("lumi_13TeV_%d    lnN     ",year);
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-    else                     newcardShape << Form("%6.3f ",lumiE[whichYear]);
+    if(ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1) newcardShape << Form("- ");
+    else                                                                   newcardShape << Form("%6.3f ",lumiE[whichYear]);
   }
   newcardShape << Form("\n");
 
@@ -1445,7 +1473,7 @@ int year, int mH = 125
   newcardShape << Form("\n");
 
   for(unsigned ic=0; ic<nPlotCategories; ic++) {
-    if(ic == kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    if(ic == kPlotData || ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
     newcardShape << Form("QCDScale_%s_ACCEPT    shape   ",plotBaseNames[ic].Data());
     for(unsigned ic2=0; ic2<nPlotCategories; ic2++) {
       if(ic2 == kPlotData || histo_Baseline[ic2]->GetSumOfWeights() <= 0) continue;
@@ -1458,118 +1486,120 @@ int year, int mH = 125
   newcardShape << Form("PDF    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-    else                     newcardShape << Form("1.0 ");
+    if(ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1) newcardShape << Form("- ");
+    else                                                                   newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
   newcardShape << Form("CMS_eff_m    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-    else                     newcardShape << Form("1.0 ");
+    if(ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1) newcardShape << Form("- ");
+    else                                                                   newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
   newcardShape << Form("CMS_eff_e    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-    else                     newcardShape << Form("1.0 ");
+    if(ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1) newcardShape << Form("- ");
+    else                                                                   newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
   newcardShape << Form("CMS_scale_m    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    newcardShape << Form("1.0 ");
+    if(ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1) newcardShape << Form("- ");
+    else                                                                   newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
   newcardShape << Form("CMS_scale_e    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-    else                     newcardShape << Form("1.0 ");
+    if(ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1) newcardShape << Form("- ");
+    else                                                                   newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
   newcardShape << Form("CMS_scale_p    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-    else                     newcardShape << Form("1.0 ");
+    if(ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1) newcardShape << Form("- ");
+    else                                                                   newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
   newcardShape << Form("CMS_pu    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-    else                     newcardShape << Form("1.0 ");
+    if(ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1) newcardShape << Form("- ");
+    else                                                                   newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
   //newcardShape << Form("CMS_btagb_%d    shape     ",year);
   //for (int ic=0; ic<nPlotCategories; ic++){
   //  if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-  //  if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-  //  else                     newcardShape << Form("1.0 ");
+  //  if(ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1) newcardShape << Form("- ");
+  //  else                                                                   newcardShape << Form("1.0 ");
   //}
   //newcardShape << Form("\n");
 
   //newcardShape << Form("CMS_btagl_%d    shape     ",year);
   //for (int ic=0; ic<nPlotCategories; ic++){
   //  if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-  //  if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-  //  else                     newcardShape << Form("1.0 ");
+  //  if(ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1) newcardShape << Form("- ");
+  //  else                                                                   newcardShape << Form("1.0 ");
   //}
   //newcardShape << Form("\n");
 
   newcardShape << Form("CMS_jes_%d    shape     ",year);
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-    else                     newcardShape << Form("1.0 ");
+    if(ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1) newcardShape << Form("- ");
+    else                                                                   newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
   newcardShape << Form("CMS_prefire_%d    shape     ",year);
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-    else                     newcardShape << Form("1.0 ");
+    if(ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1) newcardShape << Form("- ");
+    else                                                                   newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
   newcardShape << Form("CMS_trigger_%d    shape     ",year);
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-    else                     newcardShape << Form("1.0 ");
+    if(ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1) newcardShape << Form("- ");
+    else                                                                   newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
   newcardShape << Form("CMS_eff_photon    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-    else                     newcardShape << Form("1.0 ");
+    if(ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1) newcardShape << Form("- ");
+    else                                                                   newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
   newcardShape << Form("CMS_fake_photon    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    newcardShape << Form("1.0 ");
+    if(ic == kPlotPhotonE0 || ic == kPlotPhotonE1) newcardShape << Form("- ");
+    else                                           newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
   newcardShape << Form("CMS_fake_el    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-    else                     newcardShape << Form("1.0 ");
+    if(ic == kPlotNonPrompt || ic == kPlotPhotonE0 || ic == kPlotPhotonE1) newcardShape << Form("- ");
+    else                                                                   newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
@@ -1589,21 +1619,21 @@ int year, int mH = 125
   }
   newcardShape << Form("\n");
 
-  /*newcardShape << Form("CMS_GJNorm2_%d    shape     ",year);
+  newcardShape << Form("CMS_GJPhotonE0_%d    shape     ",year);
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotGJ) newcardShape << Form("1.0 ");
-    else              newcardShape << Form("- ");
+    if(ic == kPlotPhotonE0) newcardShape << Form("1.0 ");
+    else                    newcardShape << Form("- ");
   }
   newcardShape << Form("\n");
 
-  newcardShape << Form("CMS_GJNorm3_%d    shape     ",year);
+  newcardShape << Form("CMS_GJPhotonE1_%d    shape     ",year);
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotGJ) newcardShape << Form("1.0 ");
-    else              newcardShape << Form("- ");
+    if(ic == kPlotPhotonE1) newcardShape << Form("1.0 ");
+    else                    newcardShape << Form("- ");
   }
-  newcardShape << Form("\n");*/
+  newcardShape << Form("\n");
 
   newcardShape << Form("ch1 autoMCStats 0\n");
 
@@ -1612,6 +1642,8 @@ int year, int mH = 125
   //newcardShape << Form("CMS_vbfg_zgnorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotZG].Data());
   newcardShape << Form("CMS_vbfg_wlnorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotWJ].Data());
   //newcardShape << Form("CMS_vbfg_gjnorm  rateParam * %s 1 [0,10]\n",plotBaseNames[kPlotGJ].Data());
+  newcardShape << Form("CMS_vbfg_photone0norm  rateParam * %s 1 [0,100]\n",plotBaseNames[kPlotPhotonE0].Data());
+  newcardShape << Form("CMS_vbfg_photone1norm  rateParam * %s 1 [0,100]\n",plotBaseNames[kPlotPhotonE1].Data());
 
   newcardShape.close();
 
