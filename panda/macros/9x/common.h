@@ -91,11 +91,14 @@ enum plotCategory {
   kPlotSignal1   , //19
   kPlotSignal2   , //20
   kPlotSignal3   , //21
+  kPlotEWKSSWW_dim8, //22
+  kPlotEWKWZ_dim8,  //23
   nPlotCategories
 };
 
 std::map<int, TString> plotBaseNames={
-  { kPlotData	   , "Data" },
+  //{ kPlotData	   , "Data" },
+  { kPlotData      , "data_obs" },
   { kPlotqqWW	   , "qqWW" },
   { kPlotggWW	   , "ggWW" },
   { kPlotTop	   , "Top" },
@@ -116,7 +119,9 @@ std::map<int, TString> plotBaseNames={
   { kPlotSignal0   , "Signal0" },
   { kPlotSignal1   , "Signal1" },
   { kPlotSignal2   , "Signal2" },
-  { kPlotSignal3   , "Signal3" }
+  { kPlotSignal3   , "Signal3" },
+  { kPlotEWKSSWW_dim8, "EWKSSWW_AQGC"},
+  { kPlotEWKWZ_dim8, "EWKWZ_AQGC"}
 }; 
 
 std::map<int, int> plotColors={

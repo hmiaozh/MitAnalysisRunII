@@ -6,6 +6,7 @@
 #include <TRandom.h>
 #include <TH1D.h>
 #include <TH2D.h>
+#include <TGraphAsymmErrors.h>
 #include <TMath.h>
 #include <iostream>
 #include <fstream>
@@ -26,6 +27,35 @@ const bool produceMVAInputs = false;
 
 enum systType                     {JESUP=0, JESDOWN,  METUP,  METDOWN, nSystTypes};
 TString systTypeName[nSystTypes]= {"JESUP","JESDOWN","METUP","METDOWN"};
+
+
+const int which_para = 3;
+const int which_point = 31;
+
+
+//TString AQGCParaName[1] = {"ft1"};
+TString AQGCParaName[9] = {"ft0","ft1","ft2","fm0","fm1","fm6","fm7","fs0","fs1"};
+const int nscan_ft0 = 35;
+const int nscan_ft1 = 35;
+const int nscan_ft2 = 35;
+const int nscan_fm0 = 41;
+const int nscan_fm1 = 37;
+const int nscan_fm6 = 35;
+const int nscan_fm7 = 31;
+const int nscan_fs0 = 43;
+const int nscan_fs1 = 33;
+
+const double AQGC_ft0_range[nscan_ft0] = {-2, -1.8, -1.4, -1.2, -1, -0.7, -0.5, -0.3, -0.2, -0.18, -0.14, -0.12, -0.1, -0.08, -0.06, -0.04, -0.02, 0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.18, 0.2, 0.3, 0.5, 0.7, 1, 1.2, 1.4, 1.8, 2};
+const double AQGC_ft1_range[nscan_ft1] = {-2, -1.8, -1.4, -1.2, -1, -0.7, -0.5, -0.3, -0.2, -0.18, -0.14, -0.12, -0.1, -0.08, -0.06, -0.04, -0.02, 0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.18, 0.2, 0.3, 0.5, 0.7, 1, 1.2, 1.4, 1.8, 2};
+const double AQGC_ft2_range[nscan_ft2] = {-4.5, -3.9, -3.4, -2.9, -2.5, -1.7, -1.2, -0.9, -0.7, -0.5, -0.32, -0.26, -0.2, -0.14, -0.08, -0.04, -0.02, 0., 0.02, 0.04, 0.08, 0.14, 0.2, 0.26, 0.32, 0.5, 0.7, 0.9, 1.2, 1.7, 2.5, 2.9, 3.4, 3.9, 4.5};
+const double AQGC_fm0_range[nscan_fm0] = {-10, -9, -8, -7, -6, -5, -4, -3, -2, -1.5, -1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0., 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+const double AQGC_fm1_range[nscan_fm1] = {-30, -28, -23, -21, -18, -15, -13, -10, -5, -3, -2.5, -2.1, -1.8, -1.5, -1.2, -0.9, -0.6, -0.3, 0., 0.3, 0.6, 0.9, 1.2, 1.5, 1.8, 2.1, 2.5, 3, 5, 10, 13, 15, 18, 21, 23, 28, 30};
+const double AQGC_fm6_range[nscan_fm6] = {-20, -18, -15, -12, -10, -7, -5, -3, -2, -1.8, -1.6, -1.4, -1.2, -1.0, -0.7, -0.5, -0.2, 0, 0.2, 0.5, 0.7, 1.0, 1.2, 1.4, 1.6, 1.8, 2, 3, 5, 7, 10, 12, 15, 18, 20};
+const double AQGC_fm7_range[nscan_fm7] = {-40, -35, -30, -25, -20, -15, -10, -5, -3.5, -3, -2.5, -2, -1.5, -1, -0.5, 0., 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 5, 10, 15, 20, 25, 30, 35, 40};
+const double AQGC_fs0_range[nscan_fs0] = {-50, -45, -40, -35, -30, -20, -10, -8, -6, -5, -4, -3, -2.5, -2, -1.5, -1.2, -1, -0.8, -0.6, -0.4, -0.2, 0., 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10, 20, 30, 35, 40, 45, 50};
+const double AQGC_fs1_range[nscan_fs1] = {-35, -33, -30, -25, -20, -15, -10, -7.5, -5, -4, -3, -2.5, -2, -1.5, -1, -0.5, 0., 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 7.5, 10, 15, 20, 25, 30, 33, 35};
+
+
 
 void sswwAnalysis(
 int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
@@ -77,14 +107,14 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
     if     (1){
       infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	          infileCat_.push_back(kPlotData);
 
-      if(fidAna != 3) {
+      //if(fidAna != 3) {
       infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotEWKSSWW);
       infileName_.push_back(Form("%sWZ3l_MG_EWK.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
-      }
-      else            {
-      infileName_.push_back(Form("%sWWjj_SS_dim8_ewk.root" ,filesPath.Data()));   infileCat_.push_back(kPlotEWKSSWW);
-      infileName_.push_back(Form("%sWZjj_dim8_ewk.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
-      }
+      //}
+      //else            {
+      //infileName_.push_back(Form("%sWWjj_SS_dim8_ewk.root" ,filesPath.Data()));   infileCat_.push_back(kPlotEWKSSWW);
+      //infileName_.push_back(Form("%sWZjj_dim8_ewk.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
+      //}
 
       infileName_.push_back(Form("%sWpWp_QCD.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotQCDSSWW);
 
@@ -109,6 +139,10 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 
       infileName_.push_back(Form("%sWWdps.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotDPSWW);
 
+      if(fidAna == 3) {
+      infileName_.push_back(Form("%sWWjj_SS_dim8_ewk.root" ,filesPath.Data()));   infileCat_.push_back(kPlotEWKSSWW_dim8);
+      infileName_.push_back(Form("%sWZjj_dim8_ewk.root" ,filesPath.Data()));      infileCat_.push_back(kPlotEWKWZ_dim8);
+      }
     }
   }
   else if(year == 2017) {
@@ -118,14 +152,14 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
     if     (WZName == "WZ3l_MG"){
       infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	          infileCat_.push_back(kPlotData);
 
-      if(fidAna != 3) {
+      //if(fidAna != 3) {
       infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotEWKSSWW);
       infileName_.push_back(Form("%sWZ3l_MG_EWK.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
-      }
-      else            {
-      infileName_.push_back(Form("%sWWjj_SS_dim8_ewk.root" ,filesPath.Data()));   infileCat_.push_back(kPlotEWKSSWW);
-      infileName_.push_back(Form("%sWZjj_dim8_ewk.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
-      }
+      //}
+      //else            {
+      //infileName_.push_back(Form("%sWWjj_SS_dim8_ewk.root" ,filesPath.Data()));   infileCat_.push_back(kPlotEWKSSWW);
+      //infileName_.push_back(Form("%sWZjj_dim8_ewk.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
+      //}
 
       infileName_.push_back(Form("%sWpWp_QCD.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotQCDSSWW);
 
@@ -148,6 +182,12 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       infileName_.push_back(Form("%sVG_M120.root" ,filesPath.Data()));            infileCat_.push_back(kPlotVG);
 
       infileName_.push_back(Form("%sWWdps.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotDPSWW);
+
+      if(fidAna == 3) {
+      infileName_.push_back(Form("%sWWjj_SS_dim8_ewk.root" ,filesPath.Data()));   infileCat_.push_back(kPlotEWKSSWW_dim8);
+      infileName_.push_back(Form("%sWZjj_dim8_ewk.root" ,filesPath.Data()));      infileCat_.push_back(kPlotEWKWZ_dim8);
+      }
+
     }
     else if(WZName == "WZ3l_powheg"){
       infileName_.push_back(Form("%sWZ3l_powheg.root" ,filesPath.Data()));        infileCat_.push_back(kPlotWZ);
@@ -174,14 +214,14 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
     if     (WZName == "WZ3l_MG"){
       infileName_.push_back(Form("%sdata.root",filesPath.Data()));		  infileCat_.push_back(kPlotData);
 
-      if(fidAna != 3) {
+      //if(fidAna != 3) {
       infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotEWKSSWW);
       infileName_.push_back(Form("%sWZ3l_MG_EWK.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
-      }
-      else            {
-      infileName_.push_back(Form("%sWWjj_SS_dim8_ewk.root" ,filesPath.Data()));   infileCat_.push_back(kPlotEWKSSWW);
-      infileName_.push_back(Form("%sWZjj_dim8_ewk.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
-      }
+      //}
+      //else            {
+      //infileName_.push_back(Form("%sWWjj_SS_dim8_ewk.root" ,filesPath.Data()));   infileCat_.push_back(kPlotEWKSSWW);
+      //infileName_.push_back(Form("%sWZjj_dim8_ewk.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
+      //}
 
       infileName_.push_back(Form("%sWpWp_QCD.root" ,filesPath.Data()));		  infileCat_.push_back(kPlotQCDSSWW);
 
@@ -204,6 +244,12 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       infileName_.push_back(Form("%sVG_M120.root" ,filesPath.Data()));            infileCat_.push_back(kPlotVG);
 
       infileName_.push_back(Form("%sWWdps.root" ,filesPath.Data()));		  infileCat_.push_back(kPlotDPSWW);
+
+      if(fidAna == 3) {
+      infileName_.push_back(Form("%sWWjj_SS_dim8_ewk.root" ,filesPath.Data()));   infileCat_.push_back(kPlotEWKSSWW_dim8);
+      infileName_.push_back(Form("%sWZjj_dim8_ewk.root" ,filesPath.Data()));      infileCat_.push_back(kPlotEWKWZ_dim8);
+      }
+
     }
     else if(WZName == "WZ3l_powheg"){
       infileName_.push_back(Form("%sWZ.root" ,filesPath.Data()));                 infileCat_.push_back(kPlotWZ);
@@ -294,8 +340,16 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 							 22800,23200,23800,24000,
 						         24950,25150,25390,26000
 							 };
-
-  if(fidAna == 3){
+  const int nBinMVA_dim8 = 20; Float_t xbins_dim8[nBinMVA_dim8+1] = 
+                                                     {500, 800, 1200, 1800, 2000,
+                                                          2800, 3200, 3800, 4000,
+                                                          4800, 5200, 5800, 6000,
+                                                          6800, 7200, 7800, 8000,
+							  8800, 9200, 9800, 10000};                                                        
+							  //5200, 6000, 7200, 8000,
+                                                          //9200, 10000,11200,12000};
+/*
+  if(fidAna == 3){ 
     xbins[21] = 11200; xbins[22] = 12000; 
     xbins[23] = 13200; xbins[24] = 14000; 
     xbins[25] = 15200; xbins[26] = 16000; 
@@ -303,6 +357,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
     xbins[29] = 19200; xbins[30] = 20000;
     for(int i=31; i<=nBinMVA; i++) xbins[i] = 20000 + 0.001*i;
   }
+*/
 
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
@@ -334,7 +389,9 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
     else if(thePlot >=  82 && thePlot <=  87) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 1.0;}
     else if(thePlot >=  88 && thePlot <=  90) {nBinPlot = 200; xminPlot = 20.0; xmaxPlot = 220;}
     else if(thePlot >=  94 && thePlot <=  94) {nBinPlot = 20; xminPlot =  0.0; xmaxPlot = 1000;}
-    if     (thePlot == allPlots-1)            for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMVA, xbins);
+    if     (thePlot == allPlots-1){
+           if(fidAna != 3){                   for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMVA, xbins);}
+           else{                              for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMVA_dim8, xbins_dim8);}}
     else if(thePlot >=  30 && thePlot <=  39) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMJJ, xbinsMJJ);
     else if(thePlot >=  40 && thePlot <=  45) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMLL, xbinsMLL);
     else if(thePlot >=  91 && thePlot <=  92) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMJJ, xbinsMJJ);
@@ -349,7 +406,10 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 	//}
   }
 
-  TH1D* histo_MVA = new TH1D("histo_MVA", "histo_MVA", nBinMVA, xbins); histo_MVA->Sumw2();
+  TH1D* histo_MVA;
+  if(fidAna != 3) histo_MVA = new TH1D("histo_MVA", "histo_MVA", nBinMVA, xbins);
+  else            histo_MVA = new TH1D("histo_MVA", "histo_MVA", nBinMVA_dim8, xbins_dim8);
+  histo_MVA->Sumw2();
 
   TH1D *histo_Baseline[nPlotCategories];
   TH1D *histo_QCDScaleBounding[nPlotCategories][6];
@@ -381,10 +441,31 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   TH1D *histo_EWKqqZZCorrDown[nPlotCategories];
   TH1D *histo_ggZZCorrUp[nPlotCategories];
   TH1D *histo_ggZZCorrDown[nPlotCategories];
+
+  TH1D *histo_aqgc_ft0_Baseline[2][nscan_ft0];
+  TH1D *histo_aqgc_ft1_Baseline[2][nscan_ft1];
+  TH1D *histo_aqgc_ft2_Baseline[2][nscan_ft2];
+  TH1D *histo_aqgc_fm0_Baseline[2][nscan_fm0];
+  TH1D *histo_aqgc_fm1_Baseline[2][nscan_fm1];
+  TH1D *histo_aqgc_fm6_Baseline[2][nscan_fm6];
+  TH1D *histo_aqgc_fm7_Baseline[2][nscan_fm7];
+  TH1D *histo_aqgc_fs0_Baseline[2][nscan_fs0];
+  TH1D *histo_aqgc_fs1_Baseline[2][nscan_fs1];
+
+  TGraphAsymmErrors *aqgc_ft0_full[2][nBinMVA_dim8];
+  TGraphAsymmErrors *aqgc_ft1_full[2][nBinMVA_dim8];
+  TGraphAsymmErrors *aqgc_ft2_full[2][nBinMVA_dim8];
+  TGraphAsymmErrors *aqgc_fm0_full[2][nBinMVA_dim8];
+  TGraphAsymmErrors *aqgc_fm1_full[2][nBinMVA_dim8];
+  TGraphAsymmErrors *aqgc_fm6_full[2][nBinMVA_dim8];
+  TGraphAsymmErrors *aqgc_fm7_full[2][nBinMVA_dim8];
+  TGraphAsymmErrors *aqgc_fs0_full[2][nBinMVA_dim8];
+  TGraphAsymmErrors *aqgc_fs1_full[2][nBinMVA_dim8];
   
   for(unsigned ic=kPlotData; ic!=nPlotCategories; ic++) {
     for(int i=0; i<6; i++)  histo_QCDScaleBounding[ic][i] = (TH1D*)histo_MVA->Clone(Form("histo_%s_%d_QCDScaleBounding",plotBaseNames[ic].Data(),i));
-    histo_Baseline              [ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s"                    , plotBaseNames[ic].Data()));
+    if(ic==kPlotData) histo_Baseline              [ic] = (TH1D*)histo_MVA->Clone(Form("%s"                    , plotBaseNames[ic].Data()));
+    else histo_Baseline              [ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s"                    , plotBaseNames[ic].Data()));
     histo_QCDScaleUp            [ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_QCDScale_%s_ACCEPTUp"         , plotBaseNames[ic].Data(), plotBaseNames[ic].Data()));
     histo_QCDScaleDown          [ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_QCDScale_%s_ACCEPTDown"       , plotBaseNames[ic].Data(), plotBaseNames[ic].Data()));
     histo_PDFBoundingUp 	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_PDFUp"              , plotBaseNames[ic].Data()));
@@ -415,12 +496,49 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
     histo_EWKqqZZCorrDown	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_EWKqqZZCorrDown"    , plotBaseNames[ic].Data()));
     histo_ggZZCorrUp		[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_ggZZCorrUp"         , plotBaseNames[ic].Data()));
     histo_ggZZCorrDown		[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_ggZZCorrDown"       , plotBaseNames[ic].Data()));
+
+    if(ic == kPlotEWKWZ_dim8 || ic == kPlotEWKSSWW_dim8){
+      int icc = (ic == kPlotEWKWZ_dim8) ? 1 : 0;
+      for(int iscan=0; iscan<nscan_ft0; iscan++) histo_aqgc_ft0_Baseline[icc][iscan]=(TH1D*)histo_MVA->Clone(Form("histo_aqgc_ft0_%s_%f", plotBaseNames[ic].Data(), AQGC_ft0_range[iscan]));
+      for(int iscan=0; iscan<nscan_ft1; iscan++) histo_aqgc_ft1_Baseline[icc][iscan]=(TH1D*)histo_MVA->Clone(Form("histo_aqgc_ft1_%s_%f", plotBaseNames[ic].Data(), AQGC_ft1_range[iscan]));
+      for(int iscan=0; iscan<nscan_ft2; iscan++) histo_aqgc_ft2_Baseline[icc][iscan]=(TH1D*)histo_MVA->Clone(Form("histo_aqgc_ft2_%s_%f", plotBaseNames[ic].Data(), AQGC_ft2_range[iscan]));
+      for(int iscan=0; iscan<nscan_fm0; iscan++) histo_aqgc_fm0_Baseline[icc][iscan]=(TH1D*)histo_MVA->Clone(Form("histo_aqgc_fm0_%s_%f", plotBaseNames[ic].Data(), AQGC_fm0_range[iscan]));
+      for(int iscan=0; iscan<nscan_fm1; iscan++) histo_aqgc_fm1_Baseline[icc][iscan]=(TH1D*)histo_MVA->Clone(Form("histo_aqgc_fm1_%s_%f", plotBaseNames[ic].Data(), AQGC_fm1_range[iscan]));
+      for(int iscan=0; iscan<nscan_fm6; iscan++) histo_aqgc_fm6_Baseline[icc][iscan]=(TH1D*)histo_MVA->Clone(Form("histo_aqgc_fm6_%s_%f", plotBaseNames[ic].Data(), AQGC_fm6_range[iscan]));
+      for(int iscan=0; iscan<nscan_fm7; iscan++) histo_aqgc_fm7_Baseline[icc][iscan]=(TH1D*)histo_MVA->Clone(Form("histo_aqgc_fm7_%s_%f", plotBaseNames[ic].Data(), AQGC_fm7_range[iscan]));
+      for(int iscan=0; iscan<nscan_fs0; iscan++) histo_aqgc_fs0_Baseline[icc][iscan]=(TH1D*)histo_MVA->Clone(Form("histo_aqgc_fs0_%s_%f", plotBaseNames[ic].Data(), AQGC_fs0_range[iscan]));
+      for(int iscan=0; iscan<nscan_fs1; iscan++) histo_aqgc_fs1_Baseline[icc][iscan]=(TH1D*)histo_MVA->Clone(Form("histo_aqgc_fs1_%s_%f", plotBaseNames[ic].Data(), AQGC_fs1_range[iscan]));
+
+      for(int isbin=0; isbin<nBinMVA_dim8; isbin++){ 
+        //histo_aqgc_ft1_full[icc][isbin] = (TH1D*)histo_para->Clone(Form("histo_aqgc_ft1_%s_bin%i", plotBaseNames[ic].Data(),isbin+1));
+        aqgc_ft0_full[icc][isbin] = new TGraphAsymmErrors(nscan_ft0);
+        aqgc_ft1_full[icc][isbin] = new TGraphAsymmErrors(nscan_ft1);
+        aqgc_ft2_full[icc][isbin] = new TGraphAsymmErrors(nscan_ft2);
+        aqgc_fm0_full[icc][isbin] = new TGraphAsymmErrors(nscan_fm0);
+        aqgc_fm1_full[icc][isbin] = new TGraphAsymmErrors(nscan_fm1);
+        aqgc_fm6_full[icc][isbin] = new TGraphAsymmErrors(nscan_fm6);
+        aqgc_fm7_full[icc][isbin] = new TGraphAsymmErrors(nscan_fm7);
+        aqgc_fs0_full[icc][isbin] = new TGraphAsymmErrors(nscan_fs0);
+        aqgc_fs1_full[icc][isbin] = new TGraphAsymmErrors(nscan_fs1);
+        aqgc_ft0_full[icc][isbin]->SetNameTitle(Form("graph_aqgc_ft0_%s_bin%i", plotBaseNames[ic].Data(),isbin+1),Form("graph_aqgc_ft0_%s_bin%i", plotBaseNames[ic].Data(),isbin+1));
+        aqgc_ft1_full[icc][isbin]->SetNameTitle(Form("graph_aqgc_ft1_%s_bin%i", plotBaseNames[ic].Data(),isbin+1),Form("graph_aqgc_ft1_%s_bin%i", plotBaseNames[ic].Data(),isbin+1));
+        aqgc_ft2_full[icc][isbin]->SetNameTitle(Form("graph_aqgc_ft2_%s_bin%i", plotBaseNames[ic].Data(),isbin+1),Form("graph_aqgc_ft2_%s_bin%i", plotBaseNames[ic].Data(),isbin+1));
+        aqgc_fm0_full[icc][isbin]->SetNameTitle(Form("graph_aqgc_fm0_%s_bin%i", plotBaseNames[ic].Data(),isbin+1),Form("graph_aqgc_fm0_%s_bin%i", plotBaseNames[ic].Data(),isbin+1));
+        aqgc_fm1_full[icc][isbin]->SetNameTitle(Form("graph_aqgc_fm1_%s_bin%i", plotBaseNames[ic].Data(),isbin+1),Form("graph_aqgc_fm1_%s_bin%i", plotBaseNames[ic].Data(),isbin+1));
+        aqgc_fm6_full[icc][isbin]->SetNameTitle(Form("graph_aqgc_fm6_%s_bin%i", plotBaseNames[ic].Data(),isbin+1),Form("graph_aqgc_fm6_%s_bin%i", plotBaseNames[ic].Data(),isbin+1));
+        aqgc_fm7_full[icc][isbin]->SetNameTitle(Form("graph_aqgc_fm7_%s_bin%i", plotBaseNames[ic].Data(),isbin+1),Form("graph_aqgc_fm7_%s_bin%i", plotBaseNames[ic].Data(),isbin+1));
+        aqgc_fs0_full[icc][isbin]->SetNameTitle(Form("graph_aqgc_fs0_%s_bin%i", plotBaseNames[ic].Data(),isbin+1),Form("graph_aqgc_fs0_%s_bin%i", plotBaseNames[ic].Data(),isbin+1));
+        aqgc_fs1_full[icc][isbin]->SetNameTitle(Form("graph_aqgc_fs1_%s_bin%i", plotBaseNames[ic].Data(),isbin+1),Form("graph_aqgc_fs1_%s_bin%i", plotBaseNames[ic].Data(),isbin+1));
+      }
+    }	
   }
 
   //*******************************************************
   // Chain Loop
   //*******************************************************
+//  for(UInt_t ifile=1; ifile<2; ifile++) {
   for(UInt_t ifile=0; ifile<infileName_.size(); ifile++) {
+	//if(ifile!=1 && ifile!=2 && ifile!=17 && ifile!=18) continue;
     printf("sampleNames(%d): %s\n",ifile,infileName_[ifile].Data());
     TFile *the_input_file = TFile::Open(infileName_[ifile].Data());
     TTree *the_input_tree = (TTree*)the_input_file->FindObjectAny("events");
@@ -503,6 +621,8 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       if (infileCat_[ifile] != kPlotData && jentry%(int)theMCPrescale != 0) continue;
 
       if(debug == 2) printf("STEP1 %llu\n",thePandaFlat.eventNumber);
+
+      //printf("evt%i : re-weights: %f\n",jentry, thePandaFlat.rw_fm0_0p9);
 
       bool passTrigger = (thePandaFlat.trigger & (1<<kEMuTrig)) != 0       || (thePandaFlat.trigger & (1<<kDoubleMuTrig)) != 0  ||
                          (thePandaFlat.trigger & (1<<kSingleMuTrig)) != 0  || (thePandaFlat.trigger & (1<<kDoubleEleTrig)) != 0 ||
@@ -899,10 +1019,102 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       else if(passWZbSelDown)  dataCardSelDown = 3;
       else if(passWZSelDown)   dataCardSelDown = 4;
 
+      //if(fidAna == 3 && (dataCardSel == 2 || dataCardSelUp == 2 || dataCardSelDown == 2)) continue;
+      //if(fidAna == 3 && (dataCardSel == 0 || dataCardSelUp == 0 || dataCardSelDown == 0) && mllZ < 210) continue;
+ 
       bool passSystCuts[nSystTypes] = {dataCardSelUp >= 0, dataCardSelDown >= 0, dataCardSel >= 0, dataCardSel >= 0};
 
       double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0; double effWSUnc = 1.0; double sf_l1PrefireE = 1.0;
       double triggerWeights[2] = {1.0, 0.0};
+      double rw_aqgc_ft0[nscan_ft0] =  {thePandaFlat.rw_ft0_m2p0, thePandaFlat.rw_ft0_m1p8, thePandaFlat.rw_ft0_m1p4, thePandaFlat.rw_ft0_m1p2, thePandaFlat.rw_ft0_m1p0,
+					thePandaFlat.rw_ft0_m0p7, thePandaFlat.rw_ft0_m0p5, thePandaFlat.rw_ft0_m0p3, thePandaFlat.rw_ft0_m0p2, thePandaFlat.rw_ft0_m0p18, 
+					thePandaFlat.rw_ft0_m0p14, thePandaFlat.rw_ft0_m0p12, thePandaFlat.rw_ft0_m0p1, thePandaFlat.rw_ft0_m0p08, thePandaFlat.rw_ft0_m0p06, 
+					thePandaFlat.rw_ft0_m0p04, thePandaFlat.rw_ft0_m0p02, thePandaFlat.rw_ft0_0, thePandaFlat.rw_ft0_0p02, thePandaFlat.rw_ft0_0p04, 
+					thePandaFlat.rw_ft0_0p06, thePandaFlat.rw_ft0_0p08, thePandaFlat.rw_ft0_0p1, thePandaFlat.rw_ft0_0p12, thePandaFlat.rw_ft0_0p14, 
+					thePandaFlat.rw_ft0_0p18, thePandaFlat.rw_ft0_0p2, thePandaFlat.rw_ft0_0p3, thePandaFlat.rw_ft0_0p5, thePandaFlat.rw_ft0_0p7, 
+					thePandaFlat.rw_ft0_1p0, thePandaFlat.rw_ft0_1p2, thePandaFlat.rw_ft0_1p4, thePandaFlat.rw_ft0_1p8, thePandaFlat.rw_ft0_2p0}; 
+
+      double rw_aqgc_ft1[nscan_ft1] =  {thePandaFlat.rw_ft1_m2p0, thePandaFlat.rw_ft1_m1p8, thePandaFlat.rw_ft1_m1p4, thePandaFlat.rw_ft1_m1p2, thePandaFlat.rw_ft1_m1p0,
+                                        thePandaFlat.rw_ft1_m0p7, thePandaFlat.rw_ft1_m0p5, thePandaFlat.rw_ft1_m0p3, thePandaFlat.rw_ft1_m0p2, thePandaFlat.rw_ft1_m0p18,
+                                        thePandaFlat.rw_ft1_m0p14, thePandaFlat.rw_ft1_m0p12, thePandaFlat.rw_ft1_m0p1, thePandaFlat.rw_ft1_m0p08, thePandaFlat.rw_ft1_m0p06,
+                                        thePandaFlat.rw_ft1_m0p04, thePandaFlat.rw_ft1_m0p02, thePandaFlat.rw_ft1_0, thePandaFlat.rw_ft1_0p02, thePandaFlat.rw_ft1_0p04,
+                                        thePandaFlat.rw_ft1_0p06, thePandaFlat.rw_ft1_0p08, thePandaFlat.rw_ft1_0p1, thePandaFlat.rw_ft1_0p12, thePandaFlat.rw_ft1_0p14,
+                                        thePandaFlat.rw_ft1_0p18, thePandaFlat.rw_ft1_0p2, thePandaFlat.rw_ft1_0p3, thePandaFlat.rw_ft1_0p5, thePandaFlat.rw_ft1_0p7,
+                                        thePandaFlat.rw_ft1_1p0, thePandaFlat.rw_ft1_1p2, thePandaFlat.rw_ft1_1p4, thePandaFlat.rw_ft1_1p8, thePandaFlat.rw_ft1_2p0};
+
+      double rw_aqgc_ft2[nscan_ft2] =  {thePandaFlat.rw_ft2_m4p5, thePandaFlat.rw_ft2_m3p9, thePandaFlat.rw_ft2_m3p4, thePandaFlat.rw_ft2_m2p9, thePandaFlat.rw_ft2_m2p5,
+                                        thePandaFlat.rw_ft2_m1p7, thePandaFlat.rw_ft2_m1p2, thePandaFlat.rw_ft2_m0p9, thePandaFlat.rw_ft2_m0p7, thePandaFlat.rw_ft2_m0p5,
+                                        thePandaFlat.rw_ft2_m0p32, thePandaFlat.rw_ft2_m0p26, thePandaFlat.rw_ft2_m0p2, thePandaFlat.rw_ft2_m0p14, thePandaFlat.rw_ft2_m0p08,
+                                        thePandaFlat.rw_ft2_m0p04, thePandaFlat.rw_ft2_m0p02, thePandaFlat.rw_ft2_0, thePandaFlat.rw_ft2_0p02, thePandaFlat.rw_ft2_0p04,
+                                        thePandaFlat.rw_ft2_0p08, thePandaFlat.rw_ft2_0p14, thePandaFlat.rw_ft2_0p2, thePandaFlat.rw_ft2_0p26, thePandaFlat.rw_ft2_0p32,
+                                        thePandaFlat.rw_ft2_0p5, thePandaFlat.rw_ft2_0p7, thePandaFlat.rw_ft2_0p9, thePandaFlat.rw_ft2_1p2, thePandaFlat.rw_ft2_1p7,
+                                        thePandaFlat.rw_ft2_2p5, thePandaFlat.rw_ft2_2p9, thePandaFlat.rw_ft2_3p4, thePandaFlat.rw_ft2_3p9, thePandaFlat.rw_ft2_4p5};
+
+      double rw_aqgc_fm0[nscan_fm0] =  {thePandaFlat.rw_fm0_m10, thePandaFlat.rw_fm0_m9, thePandaFlat.rw_fm0_m8, thePandaFlat.rw_fm0_m7, thePandaFlat.rw_fm0_m6, 
+					thePandaFlat.rw_fm0_m5, thePandaFlat.rw_fm0_m4, thePandaFlat.rw_fm0_m3, thePandaFlat.rw_fm0_m2p0, thePandaFlat.rw_fm0_m1p5, 
+					thePandaFlat.rw_fm0_m1p0, thePandaFlat.rw_fm0_m0p9, thePandaFlat.rw_fm0_m0p8, thePandaFlat.rw_fm0_m0p7, thePandaFlat.rw_fm0_m0p6, 
+					thePandaFlat.rw_fm0_m0p5, thePandaFlat.rw_fm0_m0p4, thePandaFlat.rw_fm0_m0p3, thePandaFlat.rw_fm0_m0p2, thePandaFlat.rw_fm0_m0p1, 
+					thePandaFlat.rw_fm0_0, thePandaFlat.rw_fm0_0p1, thePandaFlat.rw_fm0_0p2, thePandaFlat.rw_fm0_0p3, thePandaFlat.rw_fm0_0p4, 
+					thePandaFlat.rw_fm0_0p5, thePandaFlat.rw_fm0_0p6, thePandaFlat.rw_fm0_0p7, thePandaFlat.rw_fm0_0p8, thePandaFlat.rw_fm0_0p9, 
+					thePandaFlat.rw_fm0_1p0, thePandaFlat.rw_fm0_1p5, thePandaFlat.rw_fm0_2p0, thePandaFlat.rw_fm0_3, thePandaFlat.rw_fm0_4, 
+					thePandaFlat.rw_fm0_5, thePandaFlat.rw_fm0_6, thePandaFlat.rw_fm0_7, thePandaFlat.rw_fm0_8, thePandaFlat.rw_fm0_9, thePandaFlat.rw_fm0_10};
+
+      double rw_aqgc_fm1[nscan_fm1] =  {thePandaFlat.rw_fm1_m30, thePandaFlat.rw_fm1_m28, thePandaFlat.rw_fm1_m23p0, thePandaFlat.rw_fm1_m21, thePandaFlat.rw_fm1_m18, 
+					thePandaFlat.rw_fm1_m15, thePandaFlat.rw_fm1_m13, thePandaFlat.rw_fm1_m10, thePandaFlat.rw_fm1_m5p0, thePandaFlat.rw_fm1_m3p0, 
+					thePandaFlat.rw_fm1_m2p5, thePandaFlat.rw_fm1_m2p1, thePandaFlat.rw_fm1_m1p8, thePandaFlat.rw_fm1_m1p5, thePandaFlat.rw_fm1_m1p2, 
+					thePandaFlat.rw_fm1_m0p9, thePandaFlat.rw_fm1_m0p6, thePandaFlat.rw_fm1_m0p3, thePandaFlat.rw_fm1_0, thePandaFlat.rw_fm1_0p3, 
+					thePandaFlat.rw_fm1_0p6, thePandaFlat.rw_fm1_0p9, thePandaFlat.rw_fm1_1p2, thePandaFlat.rw_fm1_1p5, thePandaFlat.rw_fm1_1p8, 
+					thePandaFlat.rw_fm1_2p1, thePandaFlat.rw_fm1_2p5, thePandaFlat.rw_fm1_3p0, thePandaFlat.rw_fm1_5p0, thePandaFlat.rw_fm1_10, 
+					thePandaFlat.rw_fm1_13, thePandaFlat.rw_fm1_15, thePandaFlat.rw_fm1_18, thePandaFlat.rw_fm1_21, thePandaFlat.rw_fm1_23p0, 
+					thePandaFlat.rw_fm1_28, thePandaFlat.rw_fm1_30};
+
+      double rw_aqgc_fm6[nscan_fm6] =  {thePandaFlat.rw_fm6_m20, thePandaFlat.rw_fm6_m18, thePandaFlat.rw_fm6_m15, thePandaFlat.rw_fm6_m12, thePandaFlat.rw_fm6_m10,
+                                        thePandaFlat.rw_fm6_m7, thePandaFlat.rw_fm6_m5, thePandaFlat.rw_fm6_m3, thePandaFlat.rw_fm6_m2p0, thePandaFlat.rw_fm6_m1p8,
+                                        thePandaFlat.rw_fm6_m1p6, thePandaFlat.rw_fm6_m1p4, thePandaFlat.rw_fm6_m1p2, thePandaFlat.rw_fm6_m1p0, thePandaFlat.rw_fm6_m0p7,
+                                        thePandaFlat.rw_fm6_m0p5, thePandaFlat.rw_fm6_m0p2, thePandaFlat.rw_fm6_0, thePandaFlat.rw_fm6_0p2, thePandaFlat.rw_fm6_0p5, 
+					thePandaFlat.rw_fm6_0p7, thePandaFlat.rw_fm6_1p0, thePandaFlat.rw_fm6_1p2, thePandaFlat.rw_fm6_1p4, thePandaFlat.rw_fm6_1p6, 
+					thePandaFlat.rw_fm6_1p8, thePandaFlat.rw_fm6_2p0, thePandaFlat.rw_fm6_3, thePandaFlat.rw_fm6_5, thePandaFlat.rw_fm6_7, 
+					thePandaFlat.rw_fm6_10, thePandaFlat.rw_fm6_12, thePandaFlat.rw_fm6_15, thePandaFlat.rw_fm6_18, thePandaFlat.rw_fm6_20};
+
+      double rw_aqgc_fm7[nscan_fm7] =  {thePandaFlat.rw_fm7_m40, thePandaFlat.rw_fm7_m35, thePandaFlat.rw_fm7_m30, thePandaFlat.rw_fm7_m25, thePandaFlat.rw_fm7_m20,
+                                        thePandaFlat.rw_fm7_m15, thePandaFlat.rw_fm7_m10, thePandaFlat.rw_fm7_m5p0, thePandaFlat.rw_fm7_m3p5, thePandaFlat.rw_fm7_m3p0,
+                                        thePandaFlat.rw_fm7_m2p5, thePandaFlat.rw_fm7_m2p0, thePandaFlat.rw_fm7_m1p5, thePandaFlat.rw_fm7_m1p0, thePandaFlat.rw_fm7_m0p5,
+                                        thePandaFlat.rw_fm7_0, thePandaFlat.rw_fm7_0p5, thePandaFlat.rw_fm7_1p0, thePandaFlat.rw_fm7_1p5, thePandaFlat.rw_fm7_2p0, 
+					thePandaFlat.rw_fm7_2p5, thePandaFlat.rw_fm7_3p0, thePandaFlat.rw_fm7_3p5, thePandaFlat.rw_fm7_5p0, thePandaFlat.rw_fm7_10, 
+					thePandaFlat.rw_fm7_15, thePandaFlat.rw_fm7_20, thePandaFlat.rw_fm7_25, thePandaFlat.rw_fm7_30, thePandaFlat.rw_fm7_35, thePandaFlat.rw_fm7_40};
+
+      double rw_aqgc_fs0[nscan_fs0] =  {thePandaFlat.rw_fs0_m50, thePandaFlat.rw_fs0_m45, thePandaFlat.rw_fs0_m40, thePandaFlat.rw_fs0_m35, thePandaFlat.rw_fs0_m30,
+                                        thePandaFlat.rw_fs0_m20, thePandaFlat.rw_fs0_m10, thePandaFlat.rw_fs0_m8, thePandaFlat.rw_fs0_m6, thePandaFlat.rw_fs0_m5,
+                                        thePandaFlat.rw_fs0_m4, thePandaFlat.rw_fs0_m3p0, thePandaFlat.rw_fs0_m2p5, thePandaFlat.rw_fs0_m2p0, thePandaFlat.rw_fs0_m1p5,
+					thePandaFlat.rw_fs0_m1p2, thePandaFlat.rw_fs0_m1p0, thePandaFlat.rw_fs0_m0p8, thePandaFlat.rw_fs0_m0p6, thePandaFlat.rw_fs0_m0p4,
+                                        thePandaFlat.rw_fs0_m0p2, thePandaFlat.rw_fs0_0p0, thePandaFlat.rw_fs0_0p2, thePandaFlat.rw_fs0_0p4, thePandaFlat.rw_fs0_0p6, 
+					thePandaFlat.rw_fs0_0p8, thePandaFlat.rw_fs0_1p0, thePandaFlat.rw_fs0_1p2, thePandaFlat.rw_fs0_1p5, thePandaFlat.rw_fs0_2p0, 
+					thePandaFlat.rw_fs0_2p5, thePandaFlat.rw_fs0_3p0, thePandaFlat.rw_fs0_4, thePandaFlat.rw_fs0_5, thePandaFlat.rw_fs0_6, 
+					thePandaFlat.rw_fs0_8, thePandaFlat.rw_fs0_10, thePandaFlat.rw_fs0_20, thePandaFlat.rw_fs0_30, thePandaFlat.rw_fs0_35, 
+					thePandaFlat.rw_fs0_40, thePandaFlat.rw_fs0_45, thePandaFlat.rw_fs0_50};
+
+      double rw_aqgc_fs1[nscan_fs1] =  {thePandaFlat.rw_fs1_m35, thePandaFlat.rw_fs1_m33, thePandaFlat.rw_fs1_m30, thePandaFlat.rw_fs1_m25, thePandaFlat.rw_fs1_m20,
+                                        thePandaFlat.rw_fs1_m15, thePandaFlat.rw_fs1_m10, thePandaFlat.rw_fs1_m7p5, thePandaFlat.rw_fs1_m5p0, thePandaFlat.rw_fs1_m4p0, 
+					thePandaFlat.rw_fs1_m3p0, thePandaFlat.rw_fs1_m2p5, thePandaFlat.rw_fs1_m2p0, thePandaFlat.rw_fs1_m1p5, thePandaFlat.rw_fs1_m1p0, 
+					thePandaFlat.rw_fs1_m0p5, thePandaFlat.rw_fs1_0, thePandaFlat.rw_fs1_0p5, thePandaFlat.rw_fs1_1p0, thePandaFlat.rw_fs1_1p5, 
+					thePandaFlat.rw_fs1_2p0, thePandaFlat.rw_fs1_2p5, thePandaFlat.rw_fs1_3p0, thePandaFlat.rw_fs1_4p0, thePandaFlat.rw_fs1_5p0, 
+					thePandaFlat.rw_fs1_7p5, thePandaFlat.rw_fs1_10, thePandaFlat.rw_fs1_15, thePandaFlat.rw_fs1_20, thePandaFlat.rw_fs1_25, 
+					thePandaFlat.rw_fs1_30, thePandaFlat.rw_fs1_33, thePandaFlat.rw_fs1_35};
+
+      //for(int rwi = 0; rwi < nscan_ft0; rwi++) rw_aqgc_ft0[rwi] /= thePandaFlat.rw_ft0_0;
+      //for(int rwi = 0; rwi < nscan_ft1; rwi++) rw_aqgc_ft1[rwi] /= thePandaFlat.rw_ft1_0;
+      //for(int rwi = 0; rwi < nscan_ft2; rwi++) rw_aqgc_ft2[rwi] /= thePandaFlat.rw_ft2_0;
+      //for(int rwi = 0; rwi < nscan_fm0; rwi++) rw_aqgc_fm0[rwi] /= thePandaFlat.rw_fm0_0;
+      //for(int rwi = 0; rwi < nscan_fm1; rwi++) rw_aqgc_fm1[rwi] /= thePandaFlat.rw_fm1_0;
+      //for(int rwi = 0; rwi < nscan_fm6; rwi++) rw_aqgc_fm6[rwi] /= thePandaFlat.rw_fm6_0;
+      //for(int rwi = 0; rwi < nscan_fm7; rwi++) rw_aqgc_fm7[rwi] /= thePandaFlat.rw_fm7_0;
+      //for(int rwi = 0; rwi < nscan_fs0; rwi++) rw_aqgc_fs0[rwi] /= thePandaFlat.rw_fs0_0p0;
+      //for(int rwi = 0; rwi < nscan_fs1; rwi++) rw_aqgc_fs1[rwi] /= thePandaFlat.rw_fs1_0;
+
+
+
+      //for(int ipoint=0; ipoint<nscan_ft1; ipoint++) printf("point-%i: %f", ipoint, rw_aqgc_ft1[ipoint]);
+
       if(theCategory != kPlotData){
 	trigger_sf(triggerWeights,thePandaFlat.nLooseLep,
 	trgSFMMBB,trgSFMMEB,trgSFMMBE,trgSFMMEE,trgSFEEBB,trgSFEEEB,trgSFEEBE,trgSFEEEE,
@@ -1084,6 +1296,22 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 	else if((vGen1+vGen2).M() > 210)                             theCategory = kPlotSignal3;
       }
 
+      double totalWeight_aqgc = totalWeight;
+
+      if(fidAna == 3 && (theCategory == kPlotEWKSSWW_dim8 || theCategory == kPlotEWKWZ_dim8)){
+        switch(which_para){
+          case 1: totalWeight *= rw_aqgc_ft0[which_point]; break;
+          case 2: totalWeight *= rw_aqgc_ft1[which_point]; break;
+          case 3: totalWeight *= rw_aqgc_ft2[which_point]; break;
+          case 4: totalWeight *= rw_aqgc_fm0[which_point]; break;
+          case 5: totalWeight *= rw_aqgc_fm1[which_point]; break;
+          case 6: totalWeight *= rw_aqgc_fm6[which_point]; break;
+          case 7: totalWeight *= rw_aqgc_fm7[which_point]; break;
+          case 8: totalWeight *= rw_aqgc_fs0[which_point]; break;
+          case 9: totalWeight *= rw_aqgc_fs1[which_point]; break;
+        }
+      }
+ 
       if(passAllButOneSel[0])histo[lepType+  0][theCategory]->Fill(TMath::Min(mllZ,199.999),totalWeight);
       if(passAllButOneSel[1])histo[lepType+  3][theCategory]->Fill(TMath::Min(vMet.Pt(),199.999),totalWeight);
       if(passAllButOneSel[2])histo[lepType+  6][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,5.499),totalWeight);
@@ -1175,7 +1403,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
         }
         else {
           double typeSelAux2[3] = {0,0,0};
-          if     (mtWZ <  400) typeSelAux2[0] = 0;
+          /*if     (mtWZ <  400) typeSelAux2[0] = 0;
 	  else if(mtWZ <  800) typeSelAux2[0] = 1;
 	  else                 typeSelAux2[0] = 2; 
           if     (mtWZUp <  400) typeSelAux2[1] = 0;
@@ -1184,23 +1412,44 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
           if     (mtWZDown <  400) typeSelAux2[2] = 0;
 	  else if(mtWZDown <  800) typeSelAux2[2] = 1;
 	  else                     typeSelAux2[2] = 2; 
-          if     (dataCardSel     == 0) MVAVar     = MVAVar     + 2000 * typeSelAux0;
-          else if(dataCardSel     == 1) MVAVar     = MVAVar     + 8000;
-          else if(dataCardSel     == 2) MVAVar     = MVAVar     + 10000;
-          else if(dataCardSel     == 3) MVAVar     = MVAVar     + 12000;
-          else if(dataCardSel     == 4) MVAVar     = MVAVar     + 14000 + 2000 * typeSelAux2[0];
+          */
 
-          if     (dataCardSelUp   == 0) MVAVarUp   = MVAVarUp   + 2000;
-          else if(dataCardSelUp   == 1) MVAVarUp   = MVAVarUp   + 8000;
-          else if(dataCardSelUp   == 2) MVAVarUp   = MVAVarUp   + 10000;
-          else if(dataCardSelUp   == 3) MVAVarUp   = MVAVarUp   + 12000;
-          else if(dataCardSelUp   == 4) MVAVarUp   = MVAVarUp   + 14000 + 2000 * typeSelAux2[1];
+          if     (mtWZ <  350) typeSelAux2[0] = 0;
+          else if(mtWZ <  700) typeSelAux2[0] = 1;
+          else if(mtWZ <  1000) typeSelAux2[0] = 2;
+          else                 typeSelAux2[0] = 3;
+          if     (mtWZUp <  350) typeSelAux2[1] = 0;
+          else if(mtWZUp <  700) typeSelAux2[1] = 1;
+          else if(mtWZUp <  1000) typeSelAux2[1] = 2;
+          else                   typeSelAux2[1] = 3; 
+          if     (mtWZDown <  350) typeSelAux2[2] = 0;
+          else if(mtWZDown <  700) typeSelAux2[2] = 1;
+          else if(mtWZDown <  1000) typeSelAux2[2] = 2;
+          else                     typeSelAux2[2] = 3;
 
-          if     (dataCardSelDown == 0) MVAVarDown = MVAVarDown + 2000 * typeSelAux0;
-          else if(dataCardSelDown == 1) MVAVarDown = MVAVarDown + 8000;
-          else if(dataCardSelDown == 2) MVAVarDown = MVAVarDown + 10000;
-          else if(dataCardSelDown == 3) MVAVarDown = MVAVarDown + 12000;
-          else if(dataCardSelDown == 4) MVAVarDown = MVAVarDown + 14000 + 2000 * typeSelAux2[2];
+          //if     (dataCardSel     == 0)			MVAVar     = MVAVar;
+          //else if(dataCardSel     == 1) 		MVAVar     = MVAVar     + 2000;
+          //else if(dataCardSel     == 3) 		MVAVar     = MVAVar     + 4000;
+          //else if(dataCardSel     == 4) 		MVAVar     = MVAVar     + 6000 + 2000 * typeSelAux2[0];
+          if     (dataCardSel     == 3)               MVAVar     = MVAVar;
+          else if(dataCardSel     == 4)               MVAVar     = MVAVar     + 2000 + 2000 * typeSelAux2[0];
+	  else continue;
+
+          //if     (dataCardSelUp   == 0)			MVAVarUp   = MVAVarUp;
+          //else if(dataCardSelUp   == 1) 		MVAVarUp   = MVAVarUp   + 2000;
+          //else if(dataCardSelUp   == 3) 		MVAVarUp   = MVAVarUp   + 4000;
+          //else if(dataCardSelUp   == 4) 		MVAVarUp   = MVAVarUp   + 6000 + 2000 * typeSelAux2[1];
+          if     (dataCardSelUp     == 3)               MVAVarUp     = MVAVarUp;
+          else if(dataCardSelUp     == 4)               MVAVarUp     = MVAVarUp     + 2000 + 2000 * typeSelAux2[1];
+	  else continue;
+
+          //if     (dataCardSelDown == 0)			MVAVarDown = MVAVarDown;
+          //else if(dataCardSelDown == 1) 		MVAVarDown = MVAVarDown + 2000;
+          //else if(dataCardSelDown == 3) 		MVAVarDown = MVAVarDown + 4000;
+          //else if(dataCardSelDown == 4) 		MVAVarDown = MVAVarDown + 6000 + 2000 * typeSelAux2[2];
+          if     (dataCardSelDown     == 3)               MVAVarDown     = MVAVarDown;
+          else if(dataCardSelDown     == 4)               MVAVarDown     = MVAVarDown     + 2000 + 2000 * typeSelAux2[2];
+	  else continue;
 	}
 
         // Avoid QCD scale weights that are anomalous high
@@ -1274,9 +1523,60 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
               if(dataCardSel >= 0) histo_JESBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight);
 	    }
 	  }
-        }
-      }
-
+        }  //end else if
+        if( (theCategory == kPlotEWKSSWW_dim8 || theCategory == kPlotEWKWZ_dim8) && fidAna == 3){
+          if(dataCardSel >= 0){
+            int icc = (theCategory == kPlotEWKWZ_dim8) ? 1 : 0;
+            for(int iscan = 0; iscan < nscan_ft0; iscan++){
+              rw_aqgc_ft0[iscan] *= totalWeight_aqgc;
+              histo_aqgc_ft0_Baseline[icc][iscan] -> Fill(MVAVar,rw_aqgc_ft0[iscan]);
+            }
+	    for(int iscan = 0; iscan < nscan_ft1; iscan++){
+	      /*
+	      int unit1 = 0; int unit2 =0; int unit3 = 0;
+	      TString signofpoint = (AQGC_ft1_range[iscan] >= 0) ? "_" : "_m";
+	      unit1 = (int) fabs(AQGC_ft1_range[iscan])/1e-12;
+	      unit2 = (int) fabs(AQGC_ft1_range[iscan])/1e-13 - 10 * unit1;
+	      unit3 = (int) fabs(AQGC_ft1_range[iscan])/1e-14 - 100 * unit1 - 10 * unit2;
+	    
+	      TString nameofpoint;
+	      if (unit3 == 0) nameofpoint = Form("rw_%s%s%ip%i", AQGCParaName[1].Data(),signofpoint.Data(),unit1,unit2);
+ 	      else 	    nameofpoint = Form("rw_%s%s%ip%i%i",AQGCParaName[1].Data(),signofpoint.Data(),unit1,unit2,unit3);
+	      */
+	      rw_aqgc_ft1[iscan] *= totalWeight_aqgc;
+	      histo_aqgc_ft1_Baseline[icc][iscan] -> Fill(MVAVar,rw_aqgc_ft1[iscan]);
+            }
+            for(int iscan = 0; iscan < nscan_ft2; iscan++){
+              rw_aqgc_ft2[iscan] *= totalWeight_aqgc;
+              histo_aqgc_ft2_Baseline[icc][iscan] -> Fill(MVAVar,rw_aqgc_ft2[iscan]);
+            }
+            for(int iscan = 0; iscan < nscan_fm0; iscan++){
+              rw_aqgc_fm0[iscan] *= totalWeight_aqgc;
+              histo_aqgc_fm0_Baseline[icc][iscan] -> Fill(MVAVar,rw_aqgc_fm0[iscan]);
+            }
+            for(int iscan = 0; iscan < nscan_fm1; iscan++){
+              rw_aqgc_fm1[iscan] *= totalWeight_aqgc;
+              histo_aqgc_fm1_Baseline[icc][iscan] -> Fill(MVAVar,rw_aqgc_fm1[iscan]);
+            }
+            for(int iscan = 0; iscan < nscan_fm6; iscan++){
+              rw_aqgc_fm6[iscan] *= totalWeight_aqgc;
+              histo_aqgc_fm6_Baseline[icc][iscan] -> Fill(MVAVar,rw_aqgc_fm6[iscan]);
+            }
+            for(int iscan = 0; iscan < nscan_fm7; iscan++){
+              rw_aqgc_fm7[iscan] *= totalWeight_aqgc;
+              histo_aqgc_fm7_Baseline[icc][iscan] -> Fill(MVAVar,rw_aqgc_fm7[iscan]);
+            }
+            for(int iscan = 0; iscan < nscan_fs0; iscan++){
+              rw_aqgc_fs0[iscan] *= totalWeight_aqgc;
+              histo_aqgc_fs0_Baseline[icc][iscan] -> Fill(MVAVar,rw_aqgc_fs0[iscan]);
+            }
+            for(int iscan = 0; iscan < nscan_fs1; iscan++){
+              rw_aqgc_fs1[iscan] *= totalWeight_aqgc;
+              histo_aqgc_fs1_Baseline[icc][iscan] -> Fill(MVAVar,rw_aqgc_fs1[iscan]);
+            }
+          }
+        } // end else if
+      } // end if(1)
     } // end events loop
 
     mvaoutf->cd();
@@ -1364,6 +1664,114 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       histo_EWKqqZZCorrDown[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_EWKqqZZCorrDown[ic]->GetSumOfWeights());
       histo_ggZZCorrUp     [ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_ggZZCorrUp	  [ic]->GetSumOfWeights());
       histo_ggZZCorrDown   [ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_ggZZCorrDown   [ic]->GetSumOfWeights());
+    }
+
+    if( (ic == kPlotEWKSSWW_dim8 || ic == kPlotEWKWZ_dim8) && fidAna == 3){
+      int icc = (ic == kPlotEWKWZ_dim8) ? 1 : 0;
+      int irefer = (ic == kPlotEWKWZ_dim8) ? kPlotEWKWZ : kPlotEWKSSWW;
+      for(int nb=1; nb<=histo_Baseline[irefer]->GetNbinsX(); nb++){
+        for(int iscan = 0; iscan < nscan_ft0; iscan++){
+          histo_aqgc_ft0_Baseline[icc][iscan]->SetBinContent(nb, TMath::Max((float)histo_aqgc_ft0_Baseline[icc][iscan]->GetBinContent(nb),1e-7f));
+        }
+        for(int iscan = 0; iscan < nscan_ft1; iscan++){
+          histo_aqgc_ft1_Baseline[icc][iscan]->SetBinContent(nb, TMath::Max((float)histo_aqgc_ft1_Baseline[icc][iscan]->GetBinContent(nb),1e-7f));
+          //float reference_line = TMath::Max((float)histo_aqgc_ft1_Baseline[icc][17]->GetBinContent(nb),1e-7f);
+	  //histo_aqgc_ft1_full[icc][nb-1]->SetBinContent(iscan+1,TMath::Max( (float)histo_aqgc_ft1_Baseline[icc][iscan]->GetBinContent(nb)/reference_line,1e-7f) );
+        }
+        for(int iscan = 0; iscan < nscan_ft2; iscan++){
+          histo_aqgc_ft2_Baseline[icc][iscan]->SetBinContent(nb, TMath::Max((float)histo_aqgc_ft2_Baseline[icc][iscan]->GetBinContent(nb),1e-7f));
+        }
+        for(int iscan = 0; iscan < nscan_fm0; iscan++){
+          histo_aqgc_fm0_Baseline[icc][iscan]->SetBinContent(nb, TMath::Max((float)histo_aqgc_fm0_Baseline[icc][iscan]->GetBinContent(nb),1e-7f));
+        }
+        for(int iscan = 0; iscan < nscan_fm1; iscan++){
+          histo_aqgc_fm1_Baseline[icc][iscan]->SetBinContent(nb, TMath::Max((float)histo_aqgc_fm1_Baseline[icc][iscan]->GetBinContent(nb),1e-7f));
+        }
+        for(int iscan = 0; iscan < nscan_fm6; iscan++){
+          histo_aqgc_fm6_Baseline[icc][iscan]->SetBinContent(nb, TMath::Max((float)histo_aqgc_fm6_Baseline[icc][iscan]->GetBinContent(nb),1e-7f));
+        }
+        for(int iscan = 0; iscan < nscan_fm7; iscan++){
+          histo_aqgc_fm7_Baseline[icc][iscan]->SetBinContent(nb, TMath::Max((float)histo_aqgc_fm7_Baseline[icc][iscan]->GetBinContent(nb),1e-7f));
+        }
+        for(int iscan = 0; iscan < nscan_fs0; iscan++){
+          histo_aqgc_fs0_Baseline[icc][iscan]->SetBinContent(nb, TMath::Max((float)histo_aqgc_fs0_Baseline[icc][iscan]->GetBinContent(nb),1e-7f));
+        }
+        for(int iscan = 0; iscan < nscan_fs1; iscan++){
+          histo_aqgc_fs1_Baseline[icc][iscan]->SetBinContent(nb, TMath::Max((float)histo_aqgc_fs1_Baseline[icc][iscan]->GetBinContent(nb),1e-7f));
+        }
+	//printf("iscan%i : error_graph: %f ;",iscan, sqrt((histo_aqgc_ft1_Baseline[icc][iscan]->GetBinError(15))*(histo_aqgc_ft1_Baseline[icc][iscan]->GetBinError(15))/(histo_aqgc_ft1_Baseline[icc][17]->GetBinContent(15)*histo_aqgc_ft1_Baseline[icc][17]->GetBinContent(15)) + (histo_aqgc_ft1_Baseline[icc][17]->GetBinError(15)*histo_aqgc_ft1_Baseline[icc][17]->GetBinError(15)*histo_aqgc_ft1_Baseline[icc][iscan]->GetBinContent(15)*histo_aqgc_ft1_Baseline[icc][iscan]->GetBinContent(15))/(histo_aqgc_ft1_Baseline[icc][17]->GetBinContent(15)*histo_aqgc_ft1_Baseline[icc][17]->GetBinContent(15)*histo_aqgc_ft1_Baseline[icc][17]->GetBinContent(15)*histo_aqgc_ft1_Baseline[icc][17]->GetBinContent(15))));
+	//if(iscan!=17	)histo_aqgc_ft1_Baseline[icc][iscan]->Divide(histo_aqgc_ft1_Baseline[icc][17]);
+	//printf("error_histo: %f\n", histo_aqgc_ft1_Baseline[icc][iscan]->GetBinError(15));
+      }
+
+      for(int iscan = 0; iscan < nscan_ft0; iscan++){
+        histo_aqgc_ft0_Baseline[icc][iscan]->Divide(histo_Baseline[irefer]);
+      }
+      for(int iscan = 0; iscan < nscan_ft1; iscan++){
+        histo_aqgc_ft1_Baseline[icc][iscan]->Divide(histo_Baseline[irefer]);
+      }
+      for(int iscan = 0; iscan < nscan_ft2; iscan++){
+        histo_aqgc_ft2_Baseline[icc][iscan]->Divide(histo_Baseline[irefer]);
+      }
+      for(int iscan = 0; iscan < nscan_fm0; iscan++){
+        histo_aqgc_fm0_Baseline[icc][iscan]->Divide(histo_Baseline[irefer]);
+      }
+      for(int iscan = 0; iscan < nscan_fm1; iscan++){
+        histo_aqgc_fm1_Baseline[icc][iscan]->Divide(histo_Baseline[irefer]);
+      }
+      for(int iscan = 0; iscan < nscan_fm6; iscan++){
+        histo_aqgc_fm6_Baseline[icc][iscan]->Divide(histo_Baseline[irefer]);
+      }
+      for(int iscan = 0; iscan < nscan_fm7; iscan++){
+        histo_aqgc_fm7_Baseline[icc][iscan]->Divide(histo_Baseline[irefer]);
+      }
+      for(int iscan = 0; iscan < nscan_fs0; iscan++){
+        histo_aqgc_fs0_Baseline[icc][iscan]->Divide(histo_Baseline[irefer]);
+      }
+      for(int iscan = 0; iscan < nscan_fs1; iscan++){
+        histo_aqgc_fs1_Baseline[icc][iscan]->Divide(histo_Baseline[irefer]);
+      }
+
+      for(int nb=1; nb<=histo_Baseline[irefer]->GetNbinsX(); nb++){
+        for(int iscan = 0; iscan < nscan_ft0; iscan++){
+          aqgc_ft0_full[icc][nb-1]->SetPoint(iscan, AQGC_ft0_range[iscan], TMath::Max( (float)histo_aqgc_ft0_Baseline[icc][iscan]->GetBinContent(nb), 1e-7f) );
+          aqgc_ft0_full[icc][nb-1]->SetPointError(iscan, (AQGC_ft0_range[iscan]-AQGC_ft0_range[(iscan-1)<0?0:iscan-1])/2 , (AQGC_ft0_range[(iscan+1)==nscan_ft0?nscan_ft0-1:iscan+1]-AQGC_ft0_range[iscan])/2, (float)histo_aqgc_ft0_Baseline[icc][iscan]->GetBinError(nb), (float)histo_aqgc_ft0_Baseline[icc][iscan]->GetBinError(nb));
+        }
+        for(int iscan = 0; iscan < nscan_ft1; iscan++){
+          aqgc_ft1_full[icc][nb-1]->SetPoint(iscan, AQGC_ft1_range[iscan], TMath::Max( (float)histo_aqgc_ft1_Baseline[icc][iscan]->GetBinContent(nb), 1e-7f) );
+          aqgc_ft1_full[icc][nb-1]->SetPointError(iscan, (AQGC_ft1_range[iscan]-AQGC_ft1_range[(iscan-1)<0?0:iscan-1])/2 , (AQGC_ft1_range[(iscan+1)==nscan_ft1?nscan_ft1-1:iscan+1]-AQGC_ft1_range[iscan])/2, (float)histo_aqgc_ft1_Baseline[icc][iscan]->GetBinError(nb), (float)histo_aqgc_ft1_Baseline[icc][iscan]->GetBinError(nb));
+        }
+        for(int iscan = 0; iscan < nscan_ft2; iscan++){
+          aqgc_ft2_full[icc][nb-1]->SetPoint(iscan, AQGC_ft2_range[iscan], TMath::Max( (float)histo_aqgc_ft2_Baseline[icc][iscan]->GetBinContent(nb), 1e-7f) );
+          aqgc_ft2_full[icc][nb-1]->SetPointError(iscan, (AQGC_ft2_range[iscan]-AQGC_ft2_range[(iscan-1)<0?0:iscan-1])/2 , (AQGC_ft2_range[(iscan+1)==nscan_ft2?nscan_ft2-1:iscan+1]-AQGC_ft2_range[iscan])/2, (float)histo_aqgc_ft2_Baseline[icc][iscan]->GetBinError(nb), (float)histo_aqgc_ft2_Baseline[icc][iscan]->GetBinError(nb));
+        }
+        for(int iscan = 0; iscan < nscan_fm0; iscan++){
+          aqgc_fm0_full[icc][nb-1]->SetPoint(iscan, AQGC_fm0_range[iscan], TMath::Max( (float)histo_aqgc_fm0_Baseline[icc][iscan]->GetBinContent(nb), 1e-7f) );
+          aqgc_fm0_full[icc][nb-1]->SetPointError(iscan, (AQGC_fm0_range[iscan]-AQGC_fm0_range[(iscan-1)<0?0:iscan-1])/2 , (AQGC_fm0_range[(iscan+1)==nscan_fm0?nscan_fm0-1:iscan+1]-AQGC_fm0_range[iscan])/2, (float)histo_aqgc_fm0_Baseline[icc][iscan]->GetBinError(nb), (float)histo_aqgc_fm0_Baseline[icc][iscan]->GetBinError(nb));
+        }
+        for(int iscan = 0; iscan < nscan_fm1; iscan++){
+          aqgc_fm1_full[icc][nb-1]->SetPoint(iscan, AQGC_fm1_range[iscan], TMath::Max( (float)histo_aqgc_fm1_Baseline[icc][iscan]->GetBinContent(nb), 1e-7f) );
+          aqgc_fm1_full[icc][nb-1]->SetPointError(iscan, (AQGC_fm1_range[iscan]-AQGC_fm1_range[(iscan-1)<0?0:iscan-1])/2 , (AQGC_fm1_range[(iscan+1)==nscan_fm1?nscan_fm1-1:iscan+1]-AQGC_fm1_range[iscan])/2, (float)histo_aqgc_fm1_Baseline[icc][iscan]->GetBinError(nb), (float)histo_aqgc_fm1_Baseline[icc][iscan]->GetBinError(nb));
+        }
+        for(int iscan = 0; iscan < nscan_fm6; iscan++){
+          aqgc_fm6_full[icc][nb-1]->SetPoint(iscan, AQGC_fm6_range[iscan], TMath::Max( (float)histo_aqgc_fm6_Baseline[icc][iscan]->GetBinContent(nb), 1e-7f) );
+          aqgc_fm6_full[icc][nb-1]->SetPointError(iscan, (AQGC_fm6_range[iscan]-AQGC_fm6_range[(iscan-1)<0?0:iscan-1])/2 , (AQGC_fm6_range[(iscan+1)==nscan_fm6?nscan_fm6-1:iscan+1]-AQGC_fm6_range[iscan])/2, (float)histo_aqgc_fm6_Baseline[icc][iscan]->GetBinError(nb), (float)histo_aqgc_fm6_Baseline[icc][iscan]->GetBinError(nb));
+        }
+        for(int iscan = 0; iscan < nscan_fm7; iscan++){
+          aqgc_fm7_full[icc][nb-1]->SetPoint(iscan, AQGC_fm7_range[iscan], TMath::Max( (float)histo_aqgc_fm7_Baseline[icc][iscan]->GetBinContent(nb), 1e-7f) );
+          aqgc_fm7_full[icc][nb-1]->SetPointError(iscan, (AQGC_fm7_range[iscan]-AQGC_fm7_range[(iscan-1)<0?0:iscan-1])/2 , (AQGC_fm7_range[(iscan+1)==nscan_fm7?nscan_fm7-1:iscan+1]-AQGC_fm7_range[iscan])/2, (float)histo_aqgc_fm7_Baseline[icc][iscan]->GetBinError(nb), (float)histo_aqgc_fm7_Baseline[icc][iscan]->GetBinError(nb));
+        }
+        for(int iscan = 0; iscan < nscan_fs0; iscan++){
+          aqgc_fs0_full[icc][nb-1]->SetPoint(iscan, AQGC_fs0_range[iscan], TMath::Max( (float)histo_aqgc_fs0_Baseline[icc][iscan]->GetBinContent(nb), 1e-7f) );
+          aqgc_fs0_full[icc][nb-1]->SetPointError(iscan, (AQGC_fs0_range[iscan]-AQGC_fs0_range[(iscan-1)<0?0:iscan-1])/2 , (AQGC_fs0_range[(iscan+1)==nscan_fs0?nscan_fs0-1:iscan+1]-AQGC_fs0_range[iscan])/2, (float)histo_aqgc_fs0_Baseline[icc][iscan]->GetBinError(nb), (float)histo_aqgc_fs0_Baseline[icc][iscan]->GetBinError(nb));
+        }
+        for(int iscan = 0; iscan < nscan_fs1; iscan++){
+          aqgc_fs1_full[icc][nb-1]->SetPoint(iscan, AQGC_fs1_range[iscan], TMath::Max( (float)histo_aqgc_fs1_Baseline[icc][iscan]->GetBinContent(nb), 1e-7f) );
+          aqgc_fs1_full[icc][nb-1]->SetPointError(iscan, (AQGC_fs1_range[iscan]-AQGC_fs1_range[(iscan-1)<0?0:iscan-1])/2 , (AQGC_fs1_range[(iscan+1)==nscan_fs1?nscan_fs1-1:iscan+1]-AQGC_fs1_range[iscan])/2, (float)histo_aqgc_fs1_Baseline[icc][iscan]->GetBinError(nb), (float)histo_aqgc_fs1_Baseline[icc][iscan]->GetBinError(nb));
+        }
+    
+      }
+
     }
   }
 
@@ -1564,6 +1972,8 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   // Filling datacards input root file
   char outputLimits[200];
   sprintf(outputLimits,"ssww_%d%s_input.root",year,fidAnaName.Data());
+
+  if(fidAna != 3){
   TFile* outFileLimits = new TFile(outputLimits,"recreate");
   outFileLimits->cd();
 
@@ -1603,7 +2013,288 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
     histo_ggZZCorrDown  	[ic]->Write();
   }
   outFileLimits->Close();
+  }
 
+  else if(fidAna == 3){
+
+    char aqgcLimits[200];
+    TString file_VV[2] = {"WW","WZ"};
+    TFile* aqgcFileLimits_histos[2];
+    TFile* aqgcFileLimits_parabola[2][9];
+
+    for(int ioutfile = 0; ioutfile < 2; ioutfile++){
+      if(ioutfile == 0) sprintf(aqgcLimits, "aqgc_%d_histo_WWjj.root",year);
+      else              sprintf(aqgcLimits, "aqgc_%d_histo_WZjj.root",year);
+
+      aqgcFileLimits_histos[ioutfile] = new TFile(aqgcLimits,"recreate");
+      aqgcFileLimits_histos[ioutfile]->cd();
+
+      for(unsigned ic=0; ic<nPlotCategories; ic++) {
+        if(ic != kPlotData && histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+        if(ioutfile == 0 && ic == kPlotEWKSSWW) continue;
+        if(ioutfile == 1 && ic == kPlotEWKWZ) continue;
+        histo_Baseline              [ic]->Write();
+        if(ic == kPlotData) continue;
+        histo_QCDScaleUp            [ic]->Write();
+        histo_QCDScaleDown          [ic]->Write();
+        histo_PDFBoundingUp         [ic]->Write();
+        histo_PDFBoundingDown       [ic]->Write();
+        histo_LepEffMBoundingUp     [ic]->Write();
+        histo_LepEffMBoundingDown   [ic]->Write();
+        histo_LepEffEBoundingUp     [ic]->Write();
+        histo_LepEffEBoundingDown   [ic]->Write();
+        histo_PUBoundingUp          [ic]->Write();
+        histo_PUBoundingDown        [ic]->Write();
+        for(int ny=0; ny<nYears; ny++){
+        histo_BTAGBBoundingUp       [ny][ic]->Write();
+        histo_BTAGBBoundingDown     [ny][ic]->Write();
+        histo_BTAGLBoundingUp       [ny][ic]->Write();
+        histo_BTAGLBoundingDown     [ny][ic]->Write();
+        histo_JESBoundingUp         [ny][ic]->Write();
+        histo_JESBoundingDown       [ny][ic]->Write();
+        histo_PreFireBoundingUp     [ny][ic]->Write();
+        histo_PreFireBoundingDown   [ny][ic]->Write();
+        histo_TriggerBoundingUp     [ny][ic]->Write();
+        histo_TriggerBoundingDown   [ny][ic]->Write();
+        }
+        histo_WSBoundingUp          [ic]->Write();
+        histo_WSBoundingDown        [ic]->Write();
+        histo_EWKCorrVVUp           [ic]->Write();
+        histo_EWKCorrVVDown         [ic]->Write();
+        histo_EWKqqZZCorrUp         [ic]->Write();
+        histo_EWKqqZZCorrDown       [ic]->Write();
+        histo_ggZZCorrUp            [ic]->Write();
+        histo_ggZZCorrDown          [ic]->Write();
+      }
+      //aqgcFileLimits_histos[ioutfile]->Close();
+    }
+
+    //aqgcFileLimits_histos[0]->ReOpen("UPDATE");
+    aqgcFileLimits_histos[0]->cd();
+
+    histo_Baseline              [kPlotEWKSSWW]->SetName("diboson");                                                                 histo_Baseline            [kPlotEWKSSWW]->Write();
+    histo_QCDScaleUp            [kPlotEWKSSWW]->SetName(Form("diboson_QCDScale_%s_ACCEPTUp",  plotBaseNames[kPlotEWKSSWW].Data())); histo_QCDScaleUp          [kPlotEWKSSWW]->Write();
+    histo_QCDScaleDown          [kPlotEWKSSWW]->SetName(Form("diboson_QCDScale_%s_ACCEPTDown",plotBaseNames[kPlotEWKSSWW].Data())); histo_QCDScaleDown        [kPlotEWKSSWW]->Write();
+    histo_PDFBoundingUp         [kPlotEWKSSWW]->SetName("diboson_PDFUp");                                                           histo_PDFBoundingUp       [kPlotEWKSSWW]->Write();
+    histo_PDFBoundingDown       [kPlotEWKSSWW]->SetName("diboson_PDFDown");                                                         histo_PDFBoundingDown     [kPlotEWKSSWW]->Write();
+    histo_LepEffMBoundingUp     [kPlotEWKSSWW]->SetName("diboson_CMS_eff_mUp");                                                     histo_LepEffMBoundingUp   [kPlotEWKSSWW]->Write();
+    histo_LepEffMBoundingDown   [kPlotEWKSSWW]->SetName("diboson_CMS_eff_mDown");                                                   histo_LepEffMBoundingDown [kPlotEWKSSWW]->Write();
+    histo_LepEffEBoundingUp     [kPlotEWKSSWW]->SetName("diboson_CMS_eff_eUp");                                                     histo_LepEffEBoundingUp   [kPlotEWKSSWW]->Write();
+    histo_LepEffEBoundingDown   [kPlotEWKSSWW]->SetName("diboson_CMS_eff_eDown");                                                   histo_LepEffEBoundingDown [kPlotEWKSSWW]->Write();
+    histo_PUBoundingUp          [kPlotEWKSSWW]->SetName("diboson_CMS_puUp");                                                        histo_PUBoundingUp        [kPlotEWKSSWW]->Write();
+    histo_PUBoundingDown        [kPlotEWKSSWW]->SetName("diboson_CMS_puDown");                                                      histo_PUBoundingDown      [kPlotEWKSSWW]->Write();
+    for(int ny=0; ny<nYears; ny++){
+      histo_BTAGBBoundingUp     [ny][kPlotEWKSSWW]->SetName(Form("diboson_CMS_btagb_%dUp"     ,2016+ny));    histo_BTAGBBoundingUp       [ny][kPlotEWKSSWW]->Write();
+      histo_BTAGBBoundingDown   [ny][kPlotEWKSSWW]->SetName(Form("diboson_CMS_btagb_%dDown"   ,2016+ny));    histo_BTAGBBoundingDown     [ny][kPlotEWKSSWW]->Write();
+      histo_BTAGLBoundingUp     [ny][kPlotEWKSSWW]->SetName(Form("diboson_CMS_btagl_%dUp"     ,2016+ny));    histo_BTAGLBoundingUp       [ny][kPlotEWKSSWW]->Write();
+      histo_BTAGLBoundingDown   [ny][kPlotEWKSSWW]->SetName(Form("diboson_CMS_btagl_%dDown"   ,2016+ny));    histo_BTAGLBoundingDown     [ny][kPlotEWKSSWW]->Write();
+      histo_JESBoundingUp       [ny][kPlotEWKSSWW]->SetName(Form("diboson_CMS_jes_%dUp"       ,2016+ny));    histo_JESBoundingUp         [ny][kPlotEWKSSWW]->Write();
+      histo_JESBoundingDown     [ny][kPlotEWKSSWW]->SetName(Form("diboson_CMS_jes_%dDown"     ,2016+ny));    histo_JESBoundingDown       [ny][kPlotEWKSSWW]->Write();
+      histo_PreFireBoundingUp   [ny][kPlotEWKSSWW]->SetName(Form("diboson_CMS_prefire_%dUp"   ,2016+ny));    histo_PreFireBoundingUp     [ny][kPlotEWKSSWW]->Write();
+      histo_PreFireBoundingDown [ny][kPlotEWKSSWW]->SetName(Form("diboson_CMS_prefire_%dDown" ,2016+ny));    histo_PreFireBoundingDown   [ny][kPlotEWKSSWW]->Write();
+      histo_TriggerBoundingUp   [ny][kPlotEWKSSWW]->SetName(Form("diboson_CMS_trigger_%dUp"   ,2016+ny));    histo_TriggerBoundingUp     [ny][kPlotEWKSSWW]->Write();
+      histo_TriggerBoundingDown [ny][kPlotEWKSSWW]->SetName(Form("diboson_CMS_trigger_%dDown" ,2016+ny));    histo_TriggerBoundingDown   [ny][kPlotEWKSSWW]->Write();
+    }
+    histo_WSBoundingUp          [kPlotEWKSSWW]->SetName("diboson_CMS_wseffUp");                                                      histo_WSBoundingUp        [kPlotEWKSSWW]->Write();
+    histo_WSBoundingDown        [kPlotEWKSSWW]->SetName("diboson_CMS_wseffDown");                                                    histo_WSBoundingDown      [kPlotEWKSSWW]->Write();
+    histo_EWKCorrVVUp           [kPlotEWKSSWW]->SetName(Form("diboson_EWKCorrVV%sUp"  , plotBaseNames[kPlotEWKSSWW].Data()));        histo_EWKCorrVVUp         [kPlotEWKSSWW]->Write();
+    histo_EWKCorrVVDown         [kPlotEWKSSWW]->SetName(Form("diboson_EWKCorrVV%sDown", plotBaseNames[kPlotEWKSSWW].Data()));        histo_EWKCorrVVDown       [kPlotEWKSSWW]->Write();
+    histo_EWKqqZZCorrUp         [kPlotEWKSSWW]->SetName("diboson_EWKqqZZCorrUp");                                                    histo_EWKqqZZCorrUp       [kPlotEWKSSWW]->Write();
+    histo_EWKqqZZCorrDown       [kPlotEWKSSWW]->SetName("diboson_EWKqqZZCorrDown");                                                  histo_EWKqqZZCorrDown     [kPlotEWKSSWW]->Write();
+    histo_ggZZCorrUp            [kPlotEWKSSWW]->SetName("diboson_ggZZCorrUp");                                                       histo_ggZZCorrUp          [kPlotEWKSSWW]->Write();
+    histo_ggZZCorrDown          [kPlotEWKSSWW]->SetName("diboson_ggZZCorrDown");                                                     histo_ggZZCorrDown        [kPlotEWKSSWW]->Write();
+
+    aqgcFileLimits_histos[0]->Close();
+
+    //aqgcFileLimits_histos[1]->ReOpen("UPDATE");
+    aqgcFileLimits_histos[1]->cd();
+
+    histo_Baseline              [kPlotEWKWZ]->SetName("diboson");                                                                 histo_Baseline            [kPlotEWKWZ]->Write();
+    histo_QCDScaleUp            [kPlotEWKWZ]->SetName(Form("diboson_QCDScale_%s_ACCEPTUp",  plotBaseNames[kPlotEWKWZ].Data()));   histo_QCDScaleUp          [kPlotEWKWZ]->Write();
+    histo_QCDScaleDown          [kPlotEWKWZ]->SetName(Form("diboson_QCDScale_%s_ACCEPTDown",plotBaseNames[kPlotEWKWZ].Data()));   histo_QCDScaleDown        [kPlotEWKWZ]->Write();
+    histo_PDFBoundingUp         [kPlotEWKWZ]->SetName("diboson_PDFUp");                                                           histo_PDFBoundingUp       [kPlotEWKWZ]->Write();
+    histo_PDFBoundingDown       [kPlotEWKWZ]->SetName("diboson_PDFDown");                                                         histo_PDFBoundingDown     [kPlotEWKWZ]->Write();
+    histo_LepEffMBoundingUp     [kPlotEWKWZ]->SetName("diboson_CMS_eff_mUp");                                                     histo_LepEffMBoundingUp   [kPlotEWKWZ]->Write();
+    histo_LepEffMBoundingDown   [kPlotEWKWZ]->SetName("diboson_CMS_eff_mDown");                                                   histo_LepEffMBoundingDown [kPlotEWKWZ]->Write();
+    histo_LepEffEBoundingUp     [kPlotEWKWZ]->SetName("diboson_CMS_eff_eUp");                                                     histo_LepEffEBoundingUp   [kPlotEWKWZ]->Write();
+    histo_LepEffEBoundingDown   [kPlotEWKWZ]->SetName("diboson_CMS_eff_eDown");                                                   histo_LepEffEBoundingDown [kPlotEWKWZ]->Write();
+    histo_PUBoundingUp          [kPlotEWKWZ]->SetName("diboson_CMS_puUp");                                                        histo_PUBoundingUp        [kPlotEWKWZ]->Write();
+    histo_PUBoundingDown        [kPlotEWKWZ]->SetName("diboson_CMS_puDown");                                                      histo_PUBoundingDown      [kPlotEWKWZ]->Write();
+    for(int ny=0; ny<nYears; ny++){
+      histo_BTAGBBoundingUp     [ny][kPlotEWKWZ]->SetName(Form("diboson_CMS_btagb_%dUp"     ,2016+ny));    histo_BTAGBBoundingUp       [ny][kPlotEWKWZ]->Write();
+      histo_BTAGBBoundingDown   [ny][kPlotEWKWZ]->SetName(Form("diboson_CMS_btagb_%dDown"   ,2016+ny));    histo_BTAGBBoundingDown     [ny][kPlotEWKWZ]->Write();
+      histo_BTAGLBoundingUp     [ny][kPlotEWKWZ]->SetName(Form("diboson_CMS_btagl_%dUp"     ,2016+ny));    histo_BTAGLBoundingUp       [ny][kPlotEWKWZ]->Write();
+      histo_BTAGLBoundingDown   [ny][kPlotEWKWZ]->SetName(Form("diboson_CMS_btagl_%dDown"   ,2016+ny));    histo_BTAGLBoundingDown     [ny][kPlotEWKWZ]->Write();
+      histo_JESBoundingUp       [ny][kPlotEWKWZ]->SetName(Form("diboson_CMS_jes_%dUp"       ,2016+ny));    histo_JESBoundingUp         [ny][kPlotEWKWZ]->Write();
+      histo_JESBoundingDown     [ny][kPlotEWKWZ]->SetName(Form("diboson_CMS_jes_%dDown"     ,2016+ny));    histo_JESBoundingDown       [ny][kPlotEWKWZ]->Write();
+      histo_PreFireBoundingUp   [ny][kPlotEWKWZ]->SetName(Form("diboson_CMS_prefire_%dUp"   ,2016+ny));    histo_PreFireBoundingUp     [ny][kPlotEWKWZ]->Write();
+      histo_PreFireBoundingDown [ny][kPlotEWKWZ]->SetName(Form("diboson_CMS_prefire_%dDown" ,2016+ny));    histo_PreFireBoundingDown   [ny][kPlotEWKWZ]->Write();
+      histo_TriggerBoundingUp   [ny][kPlotEWKWZ]->SetName(Form("diboson_CMS_trigger_%dUp"   ,2016+ny));    histo_TriggerBoundingUp     [ny][kPlotEWKWZ]->Write();
+      histo_TriggerBoundingDown [ny][kPlotEWKWZ]->SetName(Form("diboson_CMS_trigger_%dDown" ,2016+ny));    histo_TriggerBoundingDown   [ny][kPlotEWKWZ]->Write();
+    }
+    histo_WSBoundingUp          [kPlotEWKWZ]->SetName("diboson_CMS_wseffUp");                                                      histo_WSBoundingUp        [kPlotEWKWZ]->Write();
+    histo_WSBoundingDown        [kPlotEWKWZ]->SetName("diboson_CMS_wseffDown");                                                    histo_WSBoundingDown      [kPlotEWKWZ]->Write();
+    histo_EWKCorrVVUp           [kPlotEWKWZ]->SetName(Form("diboson_EWKCorrVV%sUp"  , plotBaseNames[kPlotEWKWZ].Data()));          histo_EWKCorrVVUp         [kPlotEWKWZ]->Write();
+    histo_EWKCorrVVDown         [kPlotEWKWZ]->SetName(Form("diboson_EWKCorrVV%sDown", plotBaseNames[kPlotEWKWZ].Data()));          histo_EWKCorrVVDown       [kPlotEWKWZ]->Write();
+    histo_EWKqqZZCorrUp         [kPlotEWKWZ]->SetName("diboson_EWKqqZZCorrUp");                                                    histo_EWKqqZZCorrUp       [kPlotEWKWZ]->Write();
+    histo_EWKqqZZCorrDown       [kPlotEWKWZ]->SetName("diboson_EWKqqZZCorrDown");                                                  histo_EWKqqZZCorrDown     [kPlotEWKWZ]->Write();
+    histo_ggZZCorrUp            [kPlotEWKWZ]->SetName("diboson_ggZZCorrUp");                                                       histo_ggZZCorrUp          [kPlotEWKWZ]->Write();
+    histo_ggZZCorrDown          [kPlotEWKWZ]->SetName("diboson_ggZZCorrDown");                                                     histo_ggZZCorrDown        [kPlotEWKWZ]->Write();
+
+    aqgcFileLimits_histos[1]->Close();
+
+
+    for(int ioutfile = 0; ioutfile < 2; ioutfile++){
+      for(int ipara=0; ipara<9; ipara++){
+
+        sprintf(aqgcLimits,"aqgc_%d_%s_%s.root",year,file_VV[ioutfile].Data(),AQGCParaName[ipara].Data());
+        aqgcFileLimits_parabola[ioutfile][ipara] = new TFile(aqgcLimits,"recreate");
+        aqgcFileLimits_parabola[ioutfile][ipara]->cd();
+
+        for(int nb=1; nb<=histo_Baseline[0]->GetNbinsX(); nb++){
+          switch(ipara){
+            case 0: aqgc_ft0_full[ioutfile][nb-1]->Write(); break;
+            case 1: aqgc_ft1_full[ioutfile][nb-1]->Write(); break;
+            case 2: aqgc_ft2_full[ioutfile][nb-1]->Write(); break;
+            case 3: aqgc_fm0_full[ioutfile][nb-1]->Write(); break;
+            case 4: aqgc_fm1_full[ioutfile][nb-1]->Write(); break;
+            case 5: aqgc_fm6_full[ioutfile][nb-1]->Write(); break;
+            case 6: aqgc_fm7_full[ioutfile][nb-1]->Write(); break;
+            case 7: aqgc_fs0_full[ioutfile][nb-1]->Write(); break;
+            case 8: aqgc_fs1_full[ioutfile][nb-1]->Write(); break;
+          }
+        }
+        aqgcFileLimits_parabola[ioutfile][ipara]->Close();
+      }
+    }
+      
+  /*    // below if you also want to store the histos for each parameter at each point. used only for check //
+  sprintf(aqgcLimits,"aqgc_%d%s_%s_input.root",year,fidAnaName.Data(),AQGCParaName[0].Data());
+  TFile* aqgcFileLimits_1 = new TFile(aqgcLimits,"recreate");
+  aqgcFileLimits_1->cd();
+
+  for(int iscan = 0; iscan < nscan_ft0; iscan++){
+    histo_aqgc_ft0_Baseline[0][iscan]->Write();
+    histo_aqgc_ft0_Baseline[1][iscan]->Write();
+  }
+  for(int nb=1; nb<=histo_aqgc_ft0_Baseline[0][0]->GetNbinsX(); nb++){
+    aqgc_ft0_full[0][nb-1]->Write();
+    aqgc_ft0_full[1][nb-1]->Write();
+  }
+  aqgcFileLimits_1->Close();
+
+  sprintf(aqgcLimits,"aqgc_%d%s_%s_input.root",year,fidAnaName.Data(),AQGCParaName[1].Data());
+  TFile* aqgcFileLimits_2 = new TFile(aqgcLimits,"recreate");
+  aqgcFileLimits_2->cd();
+
+  for(int iscan = 0; iscan < nscan_ft1; iscan++){
+    histo_aqgc_ft1_Baseline[0][iscan]->Write();
+    histo_aqgc_ft1_Baseline[1][iscan]->Write();
+  }
+  for(int nb=1; nb<=histo_aqgc_ft1_Baseline[0][0]->GetNbinsX(); nb++){
+    aqgc_ft1_full[0][nb-1]->Write();
+    aqgc_ft1_full[1][nb-1]->Write();
+  }
+  aqgcFileLimits_2->Close();
+
+  sprintf(aqgcLimits,"aqgc_%d%s_%s_input.root",year,fidAnaName.Data(),AQGCParaName[2].Data());
+  TFile* aqgcFileLimits_3 = new TFile(aqgcLimits,"recreate");
+  aqgcFileLimits_3->cd();
+
+  for(int iscan = 0; iscan < nscan_ft2; iscan++){
+    histo_aqgc_ft2_Baseline[0][iscan]->Write();
+    histo_aqgc_ft2_Baseline[1][iscan]->Write();
+  }
+  for(int nb=1; nb<=histo_aqgc_ft2_Baseline[0][0]->GetNbinsX(); nb++){
+    aqgc_ft2_full[0][nb-1]->Write();
+    aqgc_ft2_full[1][nb-1]->Write();
+  }
+  aqgcFileLimits_3->Close();
+
+  sprintf(aqgcLimits,"aqgc_%d%s_%s_input.root",year,fidAnaName.Data(),AQGCParaName[3].Data());
+  TFile* aqgcFileLimits_4 = new TFile(aqgcLimits,"recreate");
+  aqgcFileLimits_4->cd();
+
+  for(int iscan = 0; iscan < nscan_fm0; iscan++){
+    histo_aqgc_fm0_Baseline[0][iscan]->Write();
+    histo_aqgc_fm0_Baseline[1][iscan]->Write();
+  }
+  for(int nb=1; nb<=histo_aqgc_fm0_Baseline[0][0]->GetNbinsX(); nb++){
+    aqgc_fm0_full[0][nb-1]->Write();
+    aqgc_fm0_full[1][nb-1]->Write();
+  }
+  aqgcFileLimits_4->Close();
+
+  sprintf(aqgcLimits,"aqgc_%d%s_%s_input.root",year,fidAnaName.Data(),AQGCParaName[4].Data());
+  TFile* aqgcFileLimits_5 = new TFile(aqgcLimits,"recreate");
+  aqgcFileLimits_5->cd();
+
+  for(int iscan = 0; iscan < nscan_fm1; iscan++){
+    histo_aqgc_fm1_Baseline[0][iscan]->Write();
+    histo_aqgc_fm1_Baseline[1][iscan]->Write();
+  }
+  for(int nb=1; nb<=histo_aqgc_fm1_Baseline[0][0]->GetNbinsX(); nb++){
+    aqgc_fm1_full[0][nb-1]->Write();
+    aqgc_fm1_full[1][nb-1]->Write();
+  }
+  aqgcFileLimits_5->Close();
+
+  sprintf(aqgcLimits,"aqgc_%d%s_%s_input.root",year,fidAnaName.Data(),AQGCParaName[5].Data());
+  TFile* aqgcFileLimits_6 = new TFile(aqgcLimits,"recreate");
+  aqgcFileLimits_6->cd();
+
+  for(int iscan = 0; iscan < nscan_fm6; iscan++){
+    histo_aqgc_fm6_Baseline[0][iscan]->Write();
+    histo_aqgc_fm6_Baseline[1][iscan]->Write();
+  }
+  for(int nb=1; nb<=histo_aqgc_fm6_Baseline[0][0]->GetNbinsX(); nb++){
+    aqgc_fm6_full[0][nb-1]->Write();
+    aqgc_fm6_full[1][nb-1]->Write();
+  }
+  aqgcFileLimits_6->Close();
+
+  sprintf(aqgcLimits,"aqgc_%d%s_%s_input.root",year,fidAnaName.Data(),AQGCParaName[6].Data());
+  TFile* aqgcFileLimits_7 = new TFile(aqgcLimits,"recreate");
+  aqgcFileLimits_7->cd();
+
+  for(int iscan = 0; iscan < nscan_fm7; iscan++){
+    histo_aqgc_fm7_Baseline[0][iscan]->Write();
+    histo_aqgc_fm7_Baseline[1][iscan]->Write();
+  }
+  for(int nb=1; nb<=histo_aqgc_fm7_Baseline[0][0]->GetNbinsX(); nb++){
+    aqgc_fm7_full[0][nb-1]->Write();
+    aqgc_fm7_full[1][nb-1]->Write();
+  }
+  aqgcFileLimits_7->Close();
+
+  sprintf(aqgcLimits,"aqgc_%d%s_%s_input.root",year,fidAnaName.Data(),AQGCParaName[7].Data());
+  TFile* aqgcFileLimits_8 = new TFile(aqgcLimits,"recreate");
+  aqgcFileLimits_8->cd();
+
+  for(int iscan = 0; iscan < nscan_fs0; iscan++){
+    histo_aqgc_fs0_Baseline[0][iscan]->Write();
+    histo_aqgc_fs0_Baseline[1][iscan]->Write();
+  }
+  for(int nb=1; nb<=histo_aqgc_fs0_Baseline[0][0]->GetNbinsX(); nb++){
+    aqgc_fs0_full[0][nb-1]->Write();
+    aqgc_fs0_full[1][nb-1]->Write();
+  }
+  aqgcFileLimits_8->Close();
+
+  sprintf(aqgcLimits,"aqgc_%d%s_%s_input.root",year,fidAnaName.Data(),AQGCParaName[8].Data());
+  TFile* aqgcFileLimits_9 = new TFile(aqgcLimits,"recreate");
+  aqgcFileLimits_9->cd();
+
+  for(int iscan = 0; iscan < nscan_fs1; iscan++){
+    histo_aqgc_fs1_Baseline[0][iscan]->Write();
+    histo_aqgc_fs1_Baseline[1][iscan]->Write();
+  }
+  for(int nb=1; nb<=histo_aqgc_fs1_Baseline[0][0]->GetNbinsX(); nb++){
+    aqgc_fs1_full[0][nb-1]->Write();
+    aqgc_fs1_full[1][nb-1]->Write();
+  }
+  aqgcFileLimits_9->Close();*/
+  }
 
   // Filling datacards txt file
   char outputLimitsCard[200];  					  
@@ -1738,7 +2429,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   newcardShape << Form("WZ_lep    lnN     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic != kPlotWZ && ic != kPlotEWKWZ) newcardShape << Form("- ");
+    if(ic != kPlotWZ && ic != kPlotEWKWZ && ic != kPlotEWKWZ_dim8) newcardShape << Form("- ");
     else                                  newcardShape << Form("%f ",syst_WZl[0]);
   }
   newcardShape << Form("\n");
@@ -1746,13 +2437,13 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   newcardShape << Form("WZ_tau    lnN     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic != kPlotWZ && ic != kPlotEWKWZ) newcardShape << Form("- ");
+    if(ic != kPlotWZ && ic != kPlotEWKWZ && ic != kPlotEWKWZ_dim8) newcardShape << Form("- ");
     else                                  newcardShape << Form("%f ",syst_WZl[1]);
   }
   newcardShape << Form("\n");
 
   for(unsigned ic=0; ic<nPlotCategories; ic++) {
-    if(ic== kPlotData || ic == kPlotNonPrompt || ic == kPlotEWKWZ || ic == kPlotEWKSSWW || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    if(ic== kPlotData || ic == kPlotNonPrompt || ic == kPlotEWKWZ || ic == kPlotEWKSSWW || ic == kPlotEWKWZ_dim8 || ic == kPlotEWKSSWW_dim8 || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
     newcardShape << Form("QCDScale_%s_ACCEPT    shape   ",plotBaseNames[ic].Data());
     for(unsigned ic2=0; ic2<nPlotCategories; ic2++) {
       if(ic2 == kPlotData || histo_Baseline[ic2]->GetSumOfWeights() <= 0) continue;
