@@ -1,6 +1,6 @@
 #include<vector>
 
-//#if !defined (__CINT__) || defined (__MAKECINT__)
+#if !defined (__CINT__) || defined (__MAKECINT__)
 #include "THStack.h"
 #include "TGaxis.h"
 #include "TH1F.h"
@@ -13,7 +13,7 @@
 #include "TExec.h"
 #include <iostream>
 #include "TPaveText.h"
-//#endif
+#endif
 
 Bool_t isBSMOverlaid = true;
 
@@ -373,8 +373,8 @@ class StandardPlot {
                 else if(_hist[ic])		    { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], higgsLabel, "l" ); j++; }
 	      }
 	      else if(ic == kPlotSignal0){
-                if     (_hist[ic] && isBSMOverlaid) { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], higgs2Label, "f" ); j++; }
-                else if(_hist[ic])		    { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], higgs2Label, "l" ); j++; }
+                if     (_hist[ic] && isBSMOverlaid) { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset*1.01, _hist[ic], higgs2Label, "f" ); j++; }
+                else if(_hist[ic])		    { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset*1.01, _hist[ic], higgs2Label, "l" ); j++; }
 	      }
 	      else {
 	        if(_hist[ic] && _hist[ic]->GetSumOfWeights() > 0) { DrawLegend(xPos[j], 0.84 - yOff[j]*_yoffset, _hist[ic], plotNames[ic].Data(), "f"); j++;}

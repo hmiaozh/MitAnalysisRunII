@@ -508,14 +508,7 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
                          (thePandaFlat.trigger & (1<<kSingleEleTrig)) != 0;
       TLorentzVector vMet,vTrkMet,vCorrMet;
       vTrkMet.SetPtEtaPhiM(thePandaFlat.trkmet,0.0,thePandaFlat.trkmetphi,0.0);
-      if     (year == 2016 || year == 2018) {
-        vMet    .SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
-        vCorrMet.SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
-      } 
-      else if(year == 2017){
-        vMet    .SetPtEtaPhiM(thePandaFlat.puppimet,0.0,thePandaFlat.puppimetphi,0.0);
-        vCorrMet.SetPtEtaPhiM(thePandaFlat.puppimet,0.0,thePandaFlat.puppimetphi,0.0);
-      }
+      vMet    .SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
       vCorrMet.SetPx(vMet.Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
       vCorrMet.SetPy(vMet.Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
 
@@ -750,7 +743,7 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
       histo[lepType+ 9][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,9.4999),totalWeight);
       histo[lepType+12][theCategory]->Fill(TMath::Min(dilep.Pt(), 399.999),totalWeight);
       histo[lepType+15][theCategory]->Fill(TMath::Min((double)vMet.Pt(), 399.999),totalWeight);
-      histo[lepType+18][theCategory]->Fill(TMath::Min((double)thePandaFlat.trkmet, 399.999),totalWeight);
+      histo[lepType+18][theCategory]->Fill(TMath::Min((double)thePandaFlat.puppimet, 399.999),totalWeight);
       histo[lepType+21][theCategory]->Fill(TMath::Min((double)vCorrMet.Pt(), 399.999),totalWeight);
       histo[lepType+24][theCategory]->Fill(vMet.Phi(),totalWeight);
       histo[lepType+27][theCategory]->Fill(dPhiDiLepMET,totalWeight);

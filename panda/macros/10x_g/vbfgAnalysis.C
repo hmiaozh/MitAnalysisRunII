@@ -446,15 +446,19 @@ int year, int mH = 125
          && (thePandaFlat.alterPho1SelBit & pMediumNM1) == pMediumNM1
 	 && (thePandaFlat.alterPho1SelBit & pCsafeVeto) == pCsafeVeto
 	 && (thePandaFlat.alterPho1SelBit & pPixelVeto) == pPixelVeto) passPhoSel = 2;
-      if     (passPhoSel == 1) {
+      if(passPhoSel == 0
+         && thePandaFlat.loosePho1Pt > ptMin
+         && TMath::Abs(thePandaFlat.loosePho1Eta) < 2.5
+         && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium
+	 &&!((thePandaFlat.loosePho1SelBit & pCsafeVeto) == pCsafeVeto
+	 &&  (thePandaFlat.loosePho1SelBit & pPixelVeto) == pPixelVeto)) passPhoSel = 3;
+      if     (passPhoSel == 1 || passPhoSel == 3) {
         vPhoton.SetPtEtaPhiM(thePandaFlat.loosePho1Pt, thePandaFlat.loosePho1Eta, thePandaFlat.loosePho1Phi, 0);
       }
       else if(passPhoSel == 2) {
         vPhoton.SetPtEtaPhiM(thePandaFlat.alterPho1Pt, thePandaFlat.alterPho1Eta, thePandaFlat.alterPho1Phi, 0);
       }
  
-      if(passPhoSel == 0 && thePandaFlat.nLooseLep != 1) continue;
-
       vector<float>  looseLepPt,looseLepEta,looseLepPhi,looseLepSF,looseLepIso;
       vector<int> looseLepSelBit,looseLepPdgId,looseLepTripleCharge,looseLepMissingHits;
       int ptSelCuts[1] = {0};
@@ -471,6 +475,7 @@ int year, int mH = 125
 	if(looseLepPt[looseLepPt.size()-1] > ptMin) ptSelCuts[0]++;
       }
       for(int i=0; i<thePandaFlat.nLooseElectron; i++){
+        if(passPhoSel == 3 && thePandaFlat.electronLPhoMatch[i] == 1) continue;
         looseLepPt.push_back(thePandaFlat.electronPt[i]);
         looseLepEta.push_back(thePandaFlat.electronEta[i]);
         looseLepPhi.push_back(thePandaFlat.electronPhi[i]);
@@ -485,7 +490,7 @@ int year, int mH = 125
 
       if(passPhoSel == 0 && ptSelCuts[0] != 1) continue;
 
-      if((int)looseLepPt.size() != thePandaFlat.nLooseLep) printf("IMPOSSIBLE\n");
+      if((int)looseLepPt.size() != thePandaFlat.nLooseLep && passPhoSel != 3) printf("IMPOSSIBLE\n");
 
       int theCategory = infileCat_[ifile];
       vector<TLorentzVector> vLoose;
@@ -493,7 +498,7 @@ int year, int mH = 125
       bool passLooseLepId = true;
       int qTot = 0;
       unsigned int countLeptonTight = 0;
-      for(int i=0; i<thePandaFlat.nLooseLep; i++) {
+      for(unsigned int i=0; i<looseLepPt.size(); i++) {
         idLep.push_back(0);
         if     (abs(looseLepPdgId[i])==13 && (looseLepSelBit[i] & kTight)  == kTight  && (looseLepSelBit[i] & kDxyz)  == kDxyz) idLep[i] = 1;
         else if(abs(looseLepPdgId[i])==11 && (looseLepSelBit[i] & kMedium) == kMedium) idLep[i] = 1;
@@ -510,11 +515,11 @@ int year, int mH = 125
       }
 
       int lepType = -1; double muSFUnc = 1.0; double elSFUnc = 1.0;
-      if     (thePandaFlat.nLooseLep == 1){
+      if     (looseLepPt.size() == 1){
         if     (abs(looseLepPdgId[0])==13) {lepType = 0; muSFUnc = 1.015;}
         else if(abs(looseLepPdgId[0])==11) {lepType = 1; elSFUnc = 1.015;}
       }
-      else if(thePandaFlat.nLooseLep == 2){
+      else if(looseLepPt.size() == 2){
         if     (abs(looseLepPdgId[0])==13 && abs(looseLepPdgId[1])==13) {lepType = 0; muSFUnc = 1.015*1.015;}
         else if(abs(looseLepPdgId[0])==11 && abs(looseLepPdgId[1])==11) {lepType = 1; elSFUnc = 1.015*1.015;}
         else  {lepType = 2; muSFUnc = 1.015; elSFUnc = 1.015;}
@@ -530,19 +535,19 @@ int year, int mH = 125
       double mLL = 91.1876;
       int theMinSelType = -1;
       TLorentzVector theG;
-      if     (passPhoSel > 0 && vLoose.size() == 0){       
+      if     ((passPhoSel == 1 || passPhoSel == 2) && vLoose.size() == 0){ // gamma + 0 lepton
         theMinSelType = 0;
         theG = vPhoton;
       }
-      else if(passPhoSel > 0 && vLoose.size() == 1 && TMath::Abs(vPhoton.DeltaR(vLoose[0])) > 0.3){
+      else if((passPhoSel == 1 || passPhoSel == 2) && vLoose.size() == 1 && TMath::Abs(vPhoton.DeltaR(vLoose[0])) > 0.3){ // gamma + 1 lepton
         theMinSelType = 1;
         theG = vPhoton;
 	vMet	 = vMet     + vLoose[0];
 	vMetUp   = vMetUp   + vLoose[0];
 	vMetDown = vMetDown + vLoose[0];
       }
-      else if(passPhoSel > 0 && vLoose.size() == 2 && TMath::Abs(qTot) == 0 && lepType != 2 &&
-              TMath::Abs(vPhoton.DeltaR(vLoose[0])) > 0.3 && TMath::Abs(vPhoton.DeltaR(vLoose[1])) > 0.3){
+      else if((passPhoSel == 1 || passPhoSel == 2) && vLoose.size() == 2 && TMath::Abs(qTot) == 0 && lepType != 2 &&
+              TMath::Abs(vPhoton.DeltaR(vLoose[0])) > 0.3 && TMath::Abs(vPhoton.DeltaR(vLoose[1])) > 0.3){ // gamma + 2 leptons
         theMinSelType = 2;
         theG = vPhoton;
 	vMet	 = vMet     + vLoose[0] + vLoose[1];
@@ -550,9 +555,9 @@ int year, int mH = 125
 	vMetDown = vMetDown + vLoose[0] + vLoose[1];
 	mLL = (vLoose[0]+vLoose[1]).M();
       }
-      else if(passPhoSel == 0 && vLoose.size() == 1 && lepType == 1){
+      else if(passPhoSel == 3){ // electron faking gamma + 0 lepton
         theMinSelType = 3;
-        theG = vLoose[0];
+        theG = vPhoton;
       }
 
       if(theMinSelType == -1) continue;
@@ -726,7 +731,7 @@ int year, int mH = 125
           totalWeight = totalWeight * mcCorrection(0, year, infileCat_[ifile]);
         }
 
-	if(passPhoSel > 0) {
+	if(passPhoSel == 1 || passPhoSel == 2) {
           double photonSF = 1.0;
           if     (thePandaFlat.looseGenPho1PdgId == 1) {
 	    int nxbin = fhDElePhoSF->GetXaxis()->FindBin(TMath::Abs(vPhoton.Eta()));
