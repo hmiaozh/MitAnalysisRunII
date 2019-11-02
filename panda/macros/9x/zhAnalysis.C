@@ -815,6 +815,7 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
   for(int ic=0; ic<nPlotCategories; ic++) histo[allPlots-1][ic]->Add(histo_Baseline[ic]);
 
   double qcdScaleTotal[2] = {0.0345, 0.2200}; // use sigma(ZH) (0.0345) instead of sigma(qq->ZZ) (0.0055) and sigma(gg->ZH) (0.2200)
+  if(whichBSMName != "") {qcdScaleTotal[0] = 0.0; qcdScaleTotal[1] = 0.0;}
   double pdfTotal[2] = {0.016, 0.051};
   double syst_WZl[2] = {1.010, 1.012};
 
@@ -878,7 +879,10 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
     }
     histo_PUBoundingUp	[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_PUBoundingUp  [ic]->GetSumOfWeights());
     histo_PUBoundingDown[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_PUBoundingDown[ic]->GetSumOfWeights());
-    if(ic == kPlotWZ || ic == kPlotZZ || ic == kPlotBSM || ic == kPlotEM || ic == kPlotDY) {
+    if     (ic == kPlotBSM && whichBSMName != "") {
+      // Do nothing
+    }
+    else if(ic == kPlotWZ || ic == kPlotZZ || ic == kPlotBSM || ic == kPlotEM || ic == kPlotDY) {
       histo_QCDScaleUp  [ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_QCDScaleUp  [ic]->GetSumOfWeights());
       histo_QCDScaleDown[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_QCDScaleDown[ic]->GetSumOfWeights());
     }
@@ -887,22 +891,22 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
   // 0 jet
   histo_DYNorm0jetUp  ->Add(histo_Baseline[kPlotDY]);
   histo_DYNorm0jetDown->Add(histo_Baseline[kPlotDY]);
-  for(int i=1; i<=12; i++) {
+  for(int i=1; i<=13; i++) {
     histo_DYNorm0jetUp  ->SetBinContent(i,histo_DYNorm0jetUp  ->GetBinContent(i)*10.0);
     histo_DYNorm0jetDown->SetBinContent(i,histo_DYNorm0jetDown->GetBinContent(i)/10.0);
   }
-  for(int i=25; i<=31; i++) {
+  for(int i=27; i<=31; i++) {
     histo_DYNorm0jetUp  ->SetBinContent(i,histo_DYNorm0jetUp  ->GetBinContent(i)*10.0);
     histo_DYNorm0jetDown->SetBinContent(i,histo_DYNorm0jetDown->GetBinContent(i)/10.0);
   }
   // 1 jet
   histo_DYNorm1jetUp  ->Add(histo_Baseline[kPlotDY]);
   histo_DYNorm1jetDown->Add(histo_Baseline[kPlotDY]);
-  for(int i=13; i<=24; i++) {
+  for(int i=14; i<=26; i++) {
     histo_DYNorm1jetUp  ->SetBinContent(i,histo_DYNorm1jetUp  ->GetBinContent(i)*10.0);
     histo_DYNorm1jetDown->SetBinContent(i,histo_DYNorm1jetDown->GetBinContent(i)/10.0);
   }
-  for(int i=32; i<=38; i++) {
+  for(int i=32; i<=36; i++) {
     histo_DYNorm1jetUp  ->SetBinContent(i,histo_DYNorm1jetUp  ->GetBinContent(i)*10.0);
     histo_DYNorm1jetDown->SetBinContent(i,histo_DYNorm1jetDown->GetBinContent(i)/10.0);
   }
