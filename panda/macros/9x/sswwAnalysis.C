@@ -289,8 +289,8 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 						         24950,25150,25390,26000
 							 };
   if(fidAna == 3){
-    for(int nb=0; nb<22; nb++) xbins[nb] = -0.5 + nb;
-    for(int nb=22; nb<=nBinMVA; nb++) xbins[nb] = 21.5 + nb*0.001;
+    for(int nb=0; nb<38; nb++) xbins[nb] = -0.5 + nb;
+    for(int nb=38; nb<=nBinMVA; nb++) xbins[nb] = 37.5 + nb*0.001;
   }
 
   int nBinPlot      = 200;
@@ -1236,17 +1236,17 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
           else                typeSelAux0 = 4;
           double typeSelAux1[3] = {0,0,0};
           if     (massJJ <  800) typeSelAux1[0] = 0;
-	  else if(massJJ < 1200) typeSelAux1[0] = 0;
-	  else if(massJJ < 1800) typeSelAux1[0] = 1;
-	  else                   typeSelAux1[0] = 1; 
+	  else if(massJJ < 1200) typeSelAux1[0] = 1;
+	  else if(massJJ < 1800) typeSelAux1[0] = 2;
+	  else                   typeSelAux1[0] = 3; 
           if     (massJJUp <  800) typeSelAux1[1] = 0;
-	  else if(massJJUp < 1200) typeSelAux1[1] = 0;
-	  else if(massJJUp < 1800) typeSelAux1[1] = 1;
-	  else                     typeSelAux1[1] = 1; 
+	  else if(massJJUp < 1200) typeSelAux1[1] = 1;
+	  else if(massJJUp < 1800) typeSelAux1[1] = 2;
+	  else                     typeSelAux1[1] = 3; 
           if     (massJJDown <  800) typeSelAux1[2] = 0;
-	  else if(massJJDown < 1200) typeSelAux1[2] = 0;
-	  else if(massJJDown < 1800) typeSelAux1[2] = 1;
-	  else                       typeSelAux1[2] = 1; 
+	  else if(massJJDown < 1200) typeSelAux1[2] = 1;
+	  else if(massJJDown < 1800) typeSelAux1[2] = 2;
+	  else                       typeSelAux1[2] = 3; 
 
           double typeSelAux2[3] = {0,0,0};
           if     (mtWZ <  300) typeSelAux2[0] = 0;
@@ -1263,24 +1263,24 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 	  if(massJJDown > 1200)  typeSelAux2[2] += 3;
 
           if     (dataCardSel     == 0) MVAVar     = typeSelAux0 + 5*typeSelAux1[0];
-          else if(dataCardSel     == 1) MVAVar     = 10 + typeSelAux1[0];
-          else if(dataCardSel     == 2) MVAVar     = 12 + typeSelAux1[0];
-          else if(dataCardSel     == 3) MVAVar     = 14 + typeSelAux1[0];
-          else if(dataCardSel     == 4) MVAVar     = 16 + typeSelAux2[0];
+          else if(dataCardSel     == 1) MVAVar     = 20 + typeSelAux1[0];
+          else if(dataCardSel     == 2) MVAVar     = 24 + typeSelAux1[0];
+          else if(dataCardSel     == 3) MVAVar     = 28 + typeSelAux1[0];
+          else if(dataCardSel     == 4) MVAVar     = 32 + typeSelAux2[0];
           else MVAVar = -9;
 
           if     (dataCardSelUp   == 0) MVAVarUp   = typeSelAux0 + 5*typeSelAux1[1];
-          else if(dataCardSelUp   == 1) MVAVarUp   = 10 + typeSelAux1[1];
-          else if(dataCardSelUp   == 2) MVAVarUp   = 12 + typeSelAux1[1];
-          else if(dataCardSelUp   == 3) MVAVarUp   = 14 + typeSelAux1[1];
-          else if(dataCardSelUp   == 4) MVAVarUp   = 16 + typeSelAux2[1];
+          else if(dataCardSelUp   == 1) MVAVarUp   = 20 + typeSelAux1[1];
+          else if(dataCardSelUp   == 2) MVAVarUp   = 24 + typeSelAux1[1];
+          else if(dataCardSelUp   == 3) MVAVarUp   = 28 + typeSelAux1[1];
+          else if(dataCardSelUp   == 4) MVAVarUp   = 32 + typeSelAux2[1];
           else MVAVarUp = -9;
 
           if     (dataCardSelDown == 0) MVAVarDown = typeSelAux0 + 5*typeSelAux1[2];
-          else if(dataCardSelDown == 1) MVAVarDown = 10 + typeSelAux1[2];
-          else if(dataCardSelDown == 2) MVAVarDown = 12 + typeSelAux1[1];
-          else if(dataCardSelDown == 3) MVAVarDown = 14 + typeSelAux1[1];
-          else if(dataCardSelDown == 4) MVAVarDown = 16 + typeSelAux2[2];
+          else if(dataCardSelDown == 1) MVAVarDown = 20 + typeSelAux1[2];
+          else if(dataCardSelDown == 2) MVAVarDown = 24 + typeSelAux1[2];
+          else if(dataCardSelDown == 3) MVAVarDown = 28 + typeSelAux1[2];
+          else if(dataCardSelDown == 4) MVAVarDown = 32 + typeSelAux2[2];
           else MVAVarDown = -9;
 	  if(MVAVar >= 22) printf("Problem with MVAVar %f %f %f %f %d\n",MVAVar,typeSelAux0,typeSelAux1[0],typeSelAux2[0],dataCardSel);
 	}
@@ -1994,9 +1994,6 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   }
   newcardShape << Form("\n");
 
-  if(fidAna == 0){
-    newcardShape << Form("CMS_ssww_wznorm  rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotWZ].Data());
-  }
   newcardShape << Form("CMS_ssww_vvvnorm rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotVVV].Data());
   newcardShape << Form("CMS_ssww_zznorm  rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotZZ].Data());
 
