@@ -22,7 +22,7 @@ double scaling[8] = {1,1,1,1,1,1,1,1};
 
 bool isLogSpecial = false;
 bool isLogX = false;
-bool printRatios = false;
+bool printRatios = true;
 bool printYieldsBinByBin = false;
 
 void eraselabel(TPad *p,Double_t h){
@@ -241,7 +241,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   if(isLogSpecial) {c1->SetLogx();pad1->SetLogx();pad2->SetLogx();}
 
   myPlot.Draw(ReBin);
-  CMS_lumi( pad1, year, 11 );
+  CMS_lumi( pad1, year, 1 );
 
   pad2->cd();
   pad2->RedrawAxis();

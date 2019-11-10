@@ -17,8 +17,8 @@
 
 Bool_t isBSMOverlaid = true;
 
-float xPos[nPlotCategories] = {0.45,0.45,0.45,0.45,0.45,0.45,0.45,0.45,0.45,0.19,0.19,0.19,0.19,0.19,0.19}; 
-float yOff[nPlotCategories] = {   0,	1,   2,   3,   4,  5,   6,   7,   8,   0,   1,   2,   3,   4,   5};
+float xPos[nPlotCategories] = {0.45,0.45,0.45,0.45,0.45,0.45,0.45,0.19,0.19,0.19,0.19,0.19,0.19,0.19,0.19}; 
+float yOff[nPlotCategories] = {   0,	1,   2,   3,   4,  5,   6,   0,   1,   2,   3,   4,   5,   6,   7};
 
 const Float_t _tsize   = 0.035;
 const Float_t _xoffset = 0.200;

@@ -76,9 +76,11 @@ elif [ $NSEL == 5 ]; then
 elif [ $NSEL == 6 ]; then
   root -q -l -b MitAnalysisRunII/panda/macros/9x/sswwAnalysis.C+
   nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/sswwAnalysis.C+'('${YEAR}',0,1)' >& log_ssww_fid0_${YEAR} &
+  if [ $# == 3 ] && [ $3 == 1 ]; then
   nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/sswwAnalysis.C+'('${YEAR}',1,1)' >& log_ssww_fid1_${YEAR} &
   nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/sswwAnalysis.C+'('${YEAR}',2,1)' >& log_ssww_fid2_${YEAR} &
   nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/sswwAnalysis.C+'('${YEAR}',3,1)' >& log_ssww_fid3_${YEAR} &
+  fi
 
 elif [ $NSEL == 7 ]; then
   root -q -l -b MitAnalysisRunII/panda/macros/9x/zhgAnalysis.C+
@@ -90,6 +92,7 @@ elif [ $NSEL == 8 ]; then
   root -l -q -b MitAnalysisRunII/panda/macros/10x_g/vbfgAnalysis.C+
   nohup time root -l -q -b MitAnalysisRunII/panda/macros/10x_g/vbfgAnalysis.C+'('${YEAR}',125)'  >& log_vbfg_${YEAR}_mh125  &
   if [ $# == 3 ] && [ $3 == 1 ]; then
+    #nohup time root -l -q -b MitAnalysisRunII/panda/macros/10x_g/vbfgAnalysis.C+'('${YEAR}',115)'  >& log_vbfg_${YEAR}_mh115  &
     nohup time root -l -q -b MitAnalysisRunII/panda/macros/10x_g/vbfgAnalysis.C+'('${YEAR}',150)'  >& log_vbfg_${YEAR}_mh150  &
     nohup time root -l -q -b MitAnalysisRunII/panda/macros/10x_g/vbfgAnalysis.C+'('${YEAR}',200)'  >& log_vbfg_${YEAR}_mh200  &
     nohup time root -l -q -b MitAnalysisRunII/panda/macros/10x_g/vbfgAnalysis.C+'('${YEAR}',300)'  >& log_vbfg_${YEAR}_mh300  &

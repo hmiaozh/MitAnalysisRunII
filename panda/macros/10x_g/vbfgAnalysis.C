@@ -218,7 +218,7 @@ int year, int mH = 125
 
     infileName_.push_back(Form("%sWGtoLNuG_nlo.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotWG);
 
-    //infileName_.push_back(Form("%ZGToNuNuG_nlo.root" ,filesPath.Data()));         infileCat_.push_back(kPlotZG);
+    infileName_.push_back(Form("%sZGToNuNuG_nlo.root" ,filesPath.Data()));        infileCat_.push_back(kPlotZG);
     infileName_.push_back(Form("%sZGTo2LG_nlo.root" ,filesPath.Data()));          infileCat_.push_back(kPlotZG);
 
     //infileName_.push_back(Form("%sGJets_ht100to200.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
@@ -226,7 +226,12 @@ int year, int mH = 125
     infileName_.push_back(Form("%sGJets_ht400to600.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
     infileName_.push_back(Form("%sGJets_ht600toinf.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
 
-    infileName_.push_back(Form("%sDarkPhotonVBFHM%d.root" ,filesPath.Data(),mH));     infileCat_.push_back(kPlotBSM);
+    if(mH!=115){
+    infileName_.push_back(Form("%sDarkPhotonVBFHM%d.root" ,filesPath.Data(),mH)); infileCat_.push_back(kPlotBSM);
+    }
+    else {
+    infileName_.push_back(Form("%sVBF_HinvG_125.root" ,filesPath.Data()));        infileCat_.push_back(kPlotBSM);
+    }
   }
   else {
     return;
@@ -810,7 +815,7 @@ int year, int mH = 125
         if     (infileCat_[ifile] == kPlotWZ)                                                totalWeight = totalWeight * thePandaFlat.sf_wz;
 	else if(infileCat_[ifile] == kPlotZZ && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;
 
-        if(theCategory != kPlotData){
+        if(theCategory != kPlotData && infileName_[ifile].Contains("VBF_HinvG") == false){
           totalWeight = totalWeight * mcCorrection(0, year, infileCat_[ifile], massJJ, mTGMET);
         }
 
