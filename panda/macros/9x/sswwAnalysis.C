@@ -1282,7 +1282,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
           else if(dataCardSelDown == 3) MVAVarDown = 28 + typeSelAux1[2];
           else if(dataCardSelDown == 4) MVAVarDown = 32 + typeSelAux2[2];
           else MVAVarDown = -9;
-	  if(MVAVar >= 22) printf("Problem with MVAVar %f %f %f %f %d\n",MVAVar,typeSelAux0,typeSelAux1[0],typeSelAux2[0],dataCardSel);
+	  if(MVAVar >= 38) printf("Problem with MVAVar %f %f %f %f %d\n",MVAVar,typeSelAux0,typeSelAux1[0],typeSelAux2[0],dataCardSel);
 	}
 
         // Avoid QCD scale weights that are anomalous high
@@ -2089,7 +2089,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 	  histo_ggZZCorrDown   [iref]->Scale(aqgcNorm);
 	}
       }
-      if(isZeroYield[0] == false && isZeroYield[1] == false) printf("\n");
+      if(isZeroYield[0] == false || isZeroYield[1] == false) printf("\n");
 
       sprintf(outputLimits,"ssww_aqgc_%s_%d%s_input.root",AQGC_range.Data(),year,fidAnaName.Data());
       TFile* outFileLimits = new TFile(outputLimits,"recreate");

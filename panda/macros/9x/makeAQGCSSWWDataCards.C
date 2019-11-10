@@ -305,9 +305,7 @@ void makeAQGCSSWWDataCards(TString baseFolder = ".", TString outputLimits = "ssw
 
   newcardShape << Form("CMS_ssww_vvvnorm rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotVVV].Data());
   newcardShape << Form("CMS_ssww_zznorm  rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotZZ].Data());
-  //newcardShape << Form("CMS_ssww_wwvnorm rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotEWKSSWW].Data());
   newcardShape << Form("CMS_ssww_wzvnorm rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotWZ].Data());
-  //newcardShape << Form("CMS_ssww_wzvnorm rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotEWKWZ].Data());
 
   newcardShape << Form("ch1 autoMCStats 0\n");
 
