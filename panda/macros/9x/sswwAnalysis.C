@@ -342,28 +342,32 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 							 };
 
 
-/*
   if(fidAna == 3){
-    xbins[25] = 13200; xbins[26] = 14000;
-    xbins[27] = 15200; xbins[28] = 16000;
-    xbins[29] = 17200; xbins[30] = 18000;
-    for(int i=31; i<=nBinMVA; i++) xbins[i] = 18000 + 0.001*i;
+    xbins[33] = 17200; xbins[34] = 18000;
+    xbins[35] = 19200; xbins[36] = 20000;
+    xbins[37] = 21200; xbins[38] = 22000;
+    for(int i=39; i<=nBinMVA; i++) xbins[i] = 22000 + 0.001*i;
   }
 
 
   //WW
-  const int nBinMVA_ww =16; Float_t xbins_ww[nBinMVA_ww+1] =
+  const int nBinMVA_ww =24; Float_t xbins_ww[nBinMVA_ww+1] =
                                                      {500, 800, 1200, 1800, 2000,
                                                           2800, 3200, 3800, 4000,
                                                           4800, 5200, 5800, 6000,
-                                                          6800, 7200, 7800, 8000};
+                                                          6800, 7200, 7800, 8000,
+                                                          8800, 9200, 9800, 10000,
+                                                         10800,11200,11800, 12000};
 
   //WZ
   const int nBinMVA_wz = 6; Float_t xbins_wz[nBinMVA_wz+1] =
                                                      {500,1200, 2000, 3200, 4000,
                                                           5200, 6000};
-*/
 
+
+  const int nBinMVA_interval = 8; //unuseds regions in aQGC
+
+/*//when want to merge mjj bins [500,1200,2000] for running aQGCs
   if(fidAna == 3){
     xbins[1] = 1200; xbins[2] = 2000; xbins[3] = 3200; xbins[4] = 4000;
     xbins[5] = 5200; xbins[6] = 6000; xbins[7] = 7200; xbins[8] = 8000;
@@ -389,7 +393,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 
 
   const int nBinMVA_interval = 4; //unuseds regions in aQGC
-
+*/
 
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
@@ -1227,8 +1231,8 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 
         if     (infileCat_[ifile] == kPlotWZ)                                                totalWeight = totalWeight * thePandaFlat.sf_wz;
 	else if(infileCat_[ifile] == kPlotZZ && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;
-        //else if(infileCat_[ifile] == kPlotEWKSSWW && thePandaFlat.genMjj > 500) totalWeight = totalWeight * hWW_KF_CMS->GetBinContent(hWW_KF_CMS->GetXaxis()->FindFixBin(TMath::Min(thePandaFlat.genMjj,1999.999f)));
-        //else if(infileCat_[ifile] == kPlotEWKWZ && thePandaFlat.genMjj > 500) totalWeight = totalWeight * hWZ_KF_CMS->GetBinContent(hWZ_KF_CMS->GetXaxis()->FindFixBin(TMath::Min(thePandaFlat.genMjj,2999.999f)));
+        else if(infileCat_[ifile] == kPlotEWKSSWW && thePandaFlat.genMjj > 500) totalWeight = totalWeight * hWW_KF_CMS->GetBinContent(hWW_KF_CMS->GetXaxis()->FindFixBin(TMath::Min(thePandaFlat.genMjj,1999.999f)));
+        else if(infileCat_[ifile] == kPlotEWKWZ && thePandaFlat.genMjj > 500) totalWeight = totalWeight * hWZ_KF_CMS->GetBinContent(hWZ_KF_CMS->GetXaxis()->FindFixBin(TMath::Min(thePandaFlat.genMjj,2999.999f)));
 
         double effSF = 1.0;
         for(unsigned int nl=0; nl<idLep.size(); nl++){
@@ -1503,21 +1507,22 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
           //else if(mllZ < 420) typeSelAux0 = 1;
           //else                typeSelAux0 = 2;
 
-          if     (mllZ > 180) typeSelAux0 = 0;
-          else if(mllZ < 360) typeSelAux0 = 1;
-          else if(mllZ < 540) typeSelAux0 = 2;
-          else                typeSelAux0 = 3;
+          if     (mllZ < 150) typeSelAux0 = 0;
+          else if(mllZ < 300) typeSelAux0 = 1;
+          else if(mllZ < 450) typeSelAux0 = 2;
+          else if(mllZ < 600) typeSelAux0 = 3;
+          else                typeSelAux0 = 4;
 
 
           double typeSelAux2[3] = {0,0,0};
-          if     (mtWZ <  350) typeSelAux2[0] = 0;
-	  else if(mtWZ <  550) typeSelAux2[0] = 1;
+          if     (mtWZ <  300) typeSelAux2[0] = 0;
+	  else if(mtWZ <  600) typeSelAux2[0] = 1;
 	  else                 typeSelAux2[0] = 2; 
-          if     (mtWZUp <  350) typeSelAux2[1] = 0;
-	  else if(mtWZUp <  550) typeSelAux2[1] = 1;
+          if     (mtWZUp <  300) typeSelAux2[1] = 0;
+	  else if(mtWZUp <  600) typeSelAux2[1] = 1;
 	  else                   typeSelAux2[1] = 2; 
-          if     (mtWZDown <  350) typeSelAux2[2] = 0;
-	  else if(mtWZDown <  550) typeSelAux2[2] = 1;
+          if     (mtWZDown <  300) typeSelAux2[2] = 0;
+	  else if(mtWZDown <  600) typeSelAux2[2] = 1;
 	  else                     typeSelAux2[2] = 2;
 
           /*
@@ -1556,22 +1561,22 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 	  */
 
           if     (dataCardSel     == 0)                 MVAVar     = MVAVar     + 2000 * typeSelAux0;
-          else if(dataCardSel     == 1)                 MVAVar     = MVAVar     + 8000;
-          else if(dataCardSel     == 2)                 MVAVar     = MVAVar     + 10000;
-          else if(dataCardSel     == 3)                 MVAVar     = MVAVar     + 12000;
-          else if(dataCardSel     == 4)                 MVAVar     = MVAVar     + 14000 + 2000 * typeSelAux2[0];
+          else if(dataCardSel     == 1)                 MVAVar     = MVAVar     + 10000;
+          else if(dataCardSel     == 2)                 MVAVar     = MVAVar     + 12000;
+          else if(dataCardSel     == 3)                 MVAVar     = MVAVar     + 14000;
+          else if(dataCardSel     == 4)                 MVAVar     = MVAVar     + 16000 + 2000 * typeSelAux2[0];
 
           if     (dataCardSelUp   == 0)                 MVAVarUp   = MVAVarUp   + 2000 * typeSelAux0;
-          else if(dataCardSelUp   == 1)                 MVAVarUp   = MVAVarUp   + 8000;
-          else if(dataCardSelUp   == 2)                 MVAVarUp   = MVAVarUp   + 10000;
-          else if(dataCardSelUp   == 3)                 MVAVarUp   = MVAVarUp   + 12000;
-          else if(dataCardSelUp   == 4)                 MVAVarUp   = MVAVarUp   + 14000 + 2000 * typeSelAux2[1];
+          else if(dataCardSelUp   == 1)                 MVAVarUp   = MVAVarUp   + 10000;
+          else if(dataCardSelUp   == 2)                 MVAVarUp   = MVAVarUp   + 12000;
+          else if(dataCardSelUp   == 3)                 MVAVarUp   = MVAVarUp   + 14000;
+          else if(dataCardSelUp   == 4)                 MVAVarUp   = MVAVarUp   + 16000 + 2000 * typeSelAux2[1];
 
           if     (dataCardSelDown == 0)                 MVAVarDown = MVAVarDown + 2000 * typeSelAux0;
-          else if(dataCardSelDown == 1)                 MVAVarDown = MVAVarDown + 8000;
-          else if(dataCardSelDown == 2)                 MVAVarDown = MVAVarDown + 10000;
-          else if(dataCardSelDown == 3)                 MVAVarDown = MVAVarDown + 12000;
-          else if(dataCardSelDown == 4)                 MVAVarDown = MVAVarDown + 14000 + 2000 * typeSelAux2[2];
+          else if(dataCardSelDown == 1)                 MVAVarDown = MVAVarDown + 10000;
+          else if(dataCardSelDown == 2)                 MVAVarDown = MVAVarDown + 12000;
+          else if(dataCardSelDown == 3)                 MVAVarDown = MVAVarDown + 14000;
+          else if(dataCardSelDown == 4)                 MVAVarDown = MVAVarDown + 16000 + 2000 * typeSelAux2[2];
 
 
 	}
@@ -1585,10 +1590,10 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 	if     (theCategory == kPlotWZ) sf_ewkcorrvv_unc = 1.02;
 	else if(theCategory == kPlotZZ && infileName_[ifile].Contains("qqZZ") == true) sf_ewkcorrzz_unc = thePandaFlat.sf_zzUnc;
 	else if(theCategory == kPlotZZ) sf_ggcorrzz_unc = 1.10;
-	//else if((theCategory == kPlotEWKSSWW) && thePandaFlat.genMjj > 500) sf_ewkcorrvv_unc = hWW_KF_CMSUp->GetBinContent(hWW_KF_CMSUp->GetXaxis()->FindFixBin(TMath::Min(thePandaFlat.genMjj,1999.999f)))/
-	 //                                                                                    hWW_KF_CMS  ->GetBinContent(hWW_KF_CMS  ->GetXaxis()->FindFixBin(TMath::Min(thePandaFlat.genMjj,1999.999f)));
-	//else if((theCategory == kPlotEWKWZ) && thePandaFlat.genMjj > 500) sf_ewkcorrvv_unc = hWZ_KF_CMSUp->GetBinContent(hWZ_KF_CMSUp->GetXaxis()->FindFixBin(TMath::Min(thePandaFlat.genMjj,2999.999f)))/
-	   //                                                                                hWZ_KF_CMS  ->GetBinContent(hWZ_KF_CMS  ->GetXaxis()->FindFixBin(TMath::Min(thePandaFlat.genMjj,2999.999f)));
+	else if((theCategory == kPlotEWKSSWW) && thePandaFlat.genMjj > 500) sf_ewkcorrvv_unc = hWW_KF_CMSUp->GetBinContent(hWW_KF_CMSUp->GetXaxis()->FindFixBin(TMath::Min(thePandaFlat.genMjj,1999.999f)))/
+	                                                                                     hWW_KF_CMS  ->GetBinContent(hWW_KF_CMS  ->GetXaxis()->FindFixBin(TMath::Min(thePandaFlat.genMjj,1999.999f)));
+	else if((theCategory == kPlotEWKWZ) && thePandaFlat.genMjj > 500) sf_ewkcorrvv_unc = hWZ_KF_CMSUp->GetBinContent(hWZ_KF_CMSUp->GetXaxis()->FindFixBin(TMath::Min(thePandaFlat.genMjj,2999.999f)))/
+	                                                                                   hWZ_KF_CMS  ->GetBinContent(hWZ_KF_CMS  ->GetXaxis()->FindFixBin(TMath::Min(thePandaFlat.genMjj,2999.999f)));
 
 
 
@@ -1652,11 +1657,11 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 	  }
         }  //end else if category
 
-        if( fidAna == 3 && (theCategory == kPlotEWKSSWW || theCategory == kPlotEWKWZ) && (dataCardSelUp   == 0 || dataCardSelUp   == 1 || dataCardSelUp   == 4) ){
+        if( fidAna == 3 && ( (theCategory == kPlotEWKSSWW && (dataCardSel   == 0 || dataCardSel   == 1)) || (theCategory == kPlotEWKWZ &&  dataCardSel   == 4) ) ){
 
           int icc = (theCategory == kPlotEWKWZ) ? 1 : 0;
           //MVAVar  = (icc == 0) ? MVAVar : (MVAVar-12000);
-          MVAVar  = (icc == 0) ? MVAVar : (MVAVar-14000);
+          MVAVar  = (icc == 0) ? MVAVar : (MVAVar-16000);
 
           for(int iscan = 0; iscan < nscan_ft0; iscan++){
             rw_aqgc_ft0[iscan] *= totalWeight_aqgc;
