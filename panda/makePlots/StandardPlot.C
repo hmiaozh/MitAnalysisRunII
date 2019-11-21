@@ -332,7 +332,7 @@ class StandardPlot {
             	hstack->SetMaximum(10000 * theMax);
             	hstack->SetMinimum(TMath::Max(0.9 * theMin,0.010));
             } else {
-              hstack->SetMaximum(3.5 * theMax);
+              hstack->SetMaximum(2.5 * theMax);
             }
 
             if(_breakdown) {

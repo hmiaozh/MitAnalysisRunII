@@ -198,7 +198,7 @@ void makeSSWWDataCards(TString outputLimits = "ssww_comb_input.root", int fidAna
 
   for(unsigned ic=0; ic<nPlotCategories; ic++) {
     if(!histo_Baseline[ic]) continue;
-    if(ic== kPlotData || ic == kPlotNonPrompt || ic == kPlotEWKWZ || ic == kPlotEWKSSWW || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    if(ic== kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
     newcardShape << Form("QCDScale_%s_ACCEPT    shape   ",plotBaseNames[ic].Data());
     for(unsigned ic2=0; ic2<nPlotCategories; ic2++) {
       if(!histo_Baseline[ic2]) continue;
@@ -292,8 +292,6 @@ void makeSSWWDataCards(TString outputLimits = "ssww_comb_input.root", int fidAna
      newcardShape << Form("\n");
   }
 
-  newcardShape << Form("CMS_ssww_wznorm  rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotWZ].Data());
-  newcardShape << Form("CMS_ssww_wznorm  rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotEWKWZ].Data());
   newcardShape << Form("CMS_ssww_vvvnorm rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotVVV].Data());
   newcardShape << Form("CMS_ssww_zznorm  rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotZZ].Data());
 

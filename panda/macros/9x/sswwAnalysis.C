@@ -22,7 +22,7 @@ const int debug = 0;
 const bool showSyst = true;
 const bool produceMVAInputs = false;
 
-// fidAna == 0 (SM), 1 (MJJ), 2 (MLL), 3 (AQGC)
+// fidAna == 0 (SM), 1 (SM-altWZ), 2 (MJJ), 3 (MLL), 4 (AQGC)
 
 enum systType                     {JESUP=0, JESDOWN,  METUP,  METDOWN, nSystTypes};
 TString systTypeName[nSystTypes]= {"JESUP","JESDOWN","METUP","METDOWN"};
@@ -79,7 +79,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 
       infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotEWKSSWW);
       infileName_.push_back(Form("%sWZ3l_MG_EWK.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
-      if(fidAna == 3) {
+      if(fidAna == 4) {
       infileName_.push_back(Form("%sWWjj_SS_dim8_ewk.root" ,filesPath.Data()));   infileCat_.push_back(kPlotEWKSSWW_dim8);
       infileName_.push_back(Form("%sWZjj_dim8_ewk.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ_dim8);
       }
@@ -118,7 +118,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 
       infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotEWKSSWW);
       infileName_.push_back(Form("%sWZ3l_MG_EWK.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
-      if(fidAna == 3) {
+      if(fidAna == 4) {
       infileName_.push_back(Form("%sWWjj_SS_dim8_ewk.root" ,filesPath.Data()));   infileCat_.push_back(kPlotEWKSSWW_dim8);
       infileName_.push_back(Form("%sWZjj_dim8_ewk.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ_dim8);
       }
@@ -172,7 +172,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 
       infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotEWKSSWW);
       infileName_.push_back(Form("%sWZ3l_MG_EWK.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
-      if(fidAna == 3) {
+      if(fidAna == 4) {
       infileName_.push_back(Form("%sWWjj_SS_dim8_ewk.root" ,filesPath.Data()));   infileCat_.push_back(kPlotEWKSSWW_dim8);
       infileName_.push_back(Form("%sWZjj_dim8_ewk.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ_dim8);
       }
@@ -273,24 +273,17 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 
   const int nBinMJJ = 4; Float_t xbinsMJJ[nBinMJJ+1] = {500, 800, 1200, 1800, 2000};
   const int nBinMLL = 4; Float_t xbinsMLL[nBinMLL+1] = {20, 85, 135, 210, 500};
-  const int nBinBDT = 4; Float_t xbinsBDT[nBinBDT+1]  = {-0.8, -0.05, 0.15, 0.39, 0.8};
-  const int nBinMVA = 48; Float_t xbins[nBinMVA+1] = {500, 800, 1200, 1800, 2000,
-                                                          2800, 3200, 3800, 4000,
-						          4800, 5200, 5800, 6000,
-						          6800, 7200, 7800, 8000,
-						          8800, 9200, 9800,10000,
-						         10800,11200,11800,12000,
-						         12800,13200,13800,14000,
-						         14800,15200,15800,16000,
-						         16800,17200,17800,18000,
-						         18800,19200,19800,20000,
-							 21200,22000,
-							 23200,24000,
-						         24950,25150,25390,26000
-							 };
-  if(fidAna == 3){
-    for(int nb=0; nb<38; nb++) xbins[nb] = -0.5 + nb;
-    for(int nb=38; nb<=nBinMVA; nb++) xbins[nb] = 37.5 + nb*0.001;
+  const int nBinBDT = 5; Float_t xbinsBDT[nBinBDT+1]  = {-0.5, -0.11, 0.05, 0.21, 0.42, 0.5};
+  const int nBinMVA = 53; Float_t xbins[nBinMVA+1];
+  for(int nb=0; nb<=nBinMVA; nb++) xbins[nb] = -0.5 + nb;
+
+  if     (fidAna == 1){
+    for(int nb=0; nb<34; nb++) xbins[nb] = -0.5 + nb;
+    for(int nb=34; nb<=nBinMVA; nb++) xbins[nb] = 33.5 + nb*0.001;
+  }
+  else if(fidAna == 4){
+    for(int nb=0; nb<32; nb++) xbins[nb] = -0.5 + nb;
+    for(int nb=32; nb<=nBinMVA; nb++) xbins[nb] = 31.5 + nb*0.001;
   }
 
   int nBinPlot      = 200;
@@ -318,6 +311,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
     else if(thePlot >=  82 && thePlot <=  87) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 1.0;}
     else if(thePlot >=  88 && thePlot <=  90) {nBinPlot = 200; xminPlot = 20.0; xmaxPlot = 220;}
     else if(thePlot >=  94 && thePlot <=  94) {nBinPlot = 20; xminPlot =  0.0; xmaxPlot = 1000;}
+    //else if(thePlot >=  93 && thePlot <=  93) {nBinPlot = 100; xminPlot = -0.5; xmaxPlot = 0.5;}
     else if(thePlot >=  95 && thePlot <=  95) {nBinPlot = 6; xminPlot =  -0.5; xmaxPlot = 5.5;}
     if     (thePlot == allPlots-1)            for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMVA, xbins);
     else if(thePlot >=  30 && thePlot <=  39) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMJJ, xbinsMJJ);
@@ -1106,7 +1100,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
         bdtValueDown = reader->EvaluateMVA("BDT") ;
       }
 
-      if     (theCategory == kPlotEWKSSWW && fidAna == 1 && 
+      if     (theCategory == kPlotEWKSSWW && fidAna == 2 && 
          thePandaFlat.genLep1Pt > 20 && TMath::Abs(thePandaFlat.genLep1Eta) < 2.5 && TMath::Abs(thePandaFlat.genLep1PdgId) != 15 &&
 	 thePandaFlat.genLep2Pt > 20 && TMath::Abs(thePandaFlat.genLep2Eta) < 2.5 && TMath::Abs(thePandaFlat.genLep2PdgId) != 15 && 
 	 thePandaFlat.genJet1Pt > 50 && TMath::Abs(thePandaFlat.genJet1Eta) < 5.0 &&
@@ -1116,7 +1110,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 	else if(thePandaFlat.genMjj > 1200 && thePandaFlat.genMjj <= 1800) theCategory = kPlotSignal2;
 	else if(thePandaFlat.genMjj > 1800)                                theCategory = kPlotSignal3;
       }
-      else if(theCategory == kPlotEWKSSWW && fidAna == 2 && 
+      else if(theCategory == kPlotEWKSSWW && fidAna == 3 && 
          thePandaFlat.genLep1Pt > 20 && TMath::Abs(thePandaFlat.genLep1Eta) < 2.5 && TMath::Abs(thePandaFlat.genLep1PdgId) != 15 &&
 	 thePandaFlat.genLep2Pt > 20 && TMath::Abs(thePandaFlat.genLep2Eta) < 2.5 && TMath::Abs(thePandaFlat.genLep2PdgId) != 15 && 
 	 thePandaFlat.genJet1Pt > 50 && TMath::Abs(thePandaFlat.genJet1Eta) < 5.0 &&
@@ -1172,7 +1166,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       if(passZSel)           histo[lepType+ 88][theCategory]->Fill(TMath::Min(mllZ,219.999),totalWeight);
       if(passZZSel)          histo[         91][theCategory]->Fill(TMath::Min(massJJ,1999.999),totalWeight);
       if(passWZbSel)         histo[         92][theCategory]->Fill(TMath::Min(massJJ,1999.999),totalWeight);
-      if(passWZSel)          histo[         93][theCategory]->Fill(TMath::Max(-0.8, TMath::Min(bdtValue,0.8)),totalWeight);	
+      if(passWZSel)          histo[         93][theCategory]->Fill(TMath::Max(-0.499, TMath::Min(bdtValue,0.499)),totalWeight);	
       if(passWZSel)          histo[         94][theCategory]->Fill(TMath::Min(mtWZ,999.999),totalWeight);	
       double mtMllVar = -1.0;
       if     (mtWZ < 300)  mtMllVar = 0;
@@ -1191,43 +1185,137 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       }
 
       if(1){
-        double typeSelAux0 = 0;
-        if     (mllZ <  85) typeSelAux0 = 0;
-        else if(mllZ < 135) typeSelAux0 = 1;
-        else if(mllZ < 210) typeSelAux0 = 2;
-        else                typeSelAux0 = 3;
-
-        double MVAVar     = TMath::Min(massJJ     ,xbinsMJJ[nBinMJJ]-0.0001);
-        double MVAVarUp   = TMath::Min(massJJUp   ,xbinsMJJ[nBinMJJ]-0.0001);
-        double MVAVarDown = TMath::Min(massJJDown ,xbinsMJJ[nBinMJJ]-0.0001);
-        if(fidAna != 3){
+        double MVAVar     = -1;
+        double MVAVarUp   = -1;
+        double MVAVarDown = -1;
+        if     (fidAna == 0 || fidAna == 2 || fidAna == 3){
+          double typeSelAux0 = 0;
+          if     (mllZ <  85) typeSelAux0 = 0;
+          else if(mllZ < 135) typeSelAux0 = 1;
+          else if(mllZ < 210) typeSelAux0 = 2;
+          else                typeSelAux0 = 3;
           double typeSelAux1[3] = {0,0,0};
-          if(deltaEtaJJ     > 4.5) typeSelAux1[0] = 1;
-          if(deltaEtaJJUp   > 4.5) typeSelAux1[1] = 1;
-          if(deltaEtaJJDown > 4.5) typeSelAux1[2] = 1;
-          if(dataCardSel     == 4) MVAVar     = (1 + TMath::Max(-1., TMath::Min(bdtValue,     0.7999))) * 1000;
-          if(dataCardSelUp   == 4) MVAVarUp   = (1 + TMath::Max(-1., TMath::Min(bdtValueUp,   0.7999))) * 1000; 
-          if(dataCardSelDown == 4) MVAVarDown = (1 + TMath::Max(-1., TMath::Min(bdtValueDown, 0.7999))) * 1000;
+          if     (massJJ     <  800) typeSelAux1[0] = 0;
+	  else if(massJJ     < 1200) typeSelAux1[0] = 1;
+	  else if(massJJ     < 1800) typeSelAux1[0] = 2;
+	  else                       typeSelAux1[0] = 3;
+          if     (massJJUp   <  800) typeSelAux1[1] = 0;
+	  else if(massJJUp   < 1200) typeSelAux1[1] = 1;
+	  else if(massJJUp   < 1800) typeSelAux1[1] = 2;
+	  else                       typeSelAux1[1] = 3;
+          if     (massJJDown <  800) typeSelAux1[2] = 0;
+	  else if(massJJDown < 1200) typeSelAux1[2] = 1;
+	  else if(massJJDown < 1800) typeSelAux1[2] = 2;
+	  else                       typeSelAux1[2] = 3;
+          double typeSelAux2[3] = {0,0,0};
+          if(deltaEtaJJ     > 4.5) typeSelAux2[0] = 1;
+          if(deltaEtaJJUp   > 4.5) typeSelAux2[1] = 1;
+          if(deltaEtaJJDown > 4.5) typeSelAux2[2] = 1;
+          double bdtValueBin[3] = {0,0,0};
+	  if     (bdtValue     < xbinsBDT[1]) bdtValueBin[0] = 0;
+	  else if(bdtValue     < xbinsBDT[2]) bdtValueBin[0] = 1;
+	  else if(bdtValue     < xbinsBDT[3]) bdtValueBin[0] = 2;
+	  else if(bdtValue     < xbinsBDT[4]) bdtValueBin[0] = 3;
+	  else                                bdtValueBin[0] = 4;
+	  if     (bdtValueUp   < xbinsBDT[1]) bdtValueBin[1] = 0;
+	  else if(bdtValueUp   < xbinsBDT[2]) bdtValueBin[1] = 1;
+	  else if(bdtValueUp   < xbinsBDT[3]) bdtValueBin[1] = 2;
+	  else if(bdtValueUp   < xbinsBDT[4]) bdtValueBin[1] = 3;
+	  else                                bdtValueBin[1] = 4;
+	  if     (bdtValueDown < xbinsBDT[1]) bdtValueBin[2] = 0;
+	  else if(bdtValueDown < xbinsBDT[2]) bdtValueBin[2] = 1;
+	  else if(bdtValueDown < xbinsBDT[3]) bdtValueBin[2] = 2;
+	  else if(bdtValueDown < xbinsBDT[4]) bdtValueBin[2] = 3;
+	  else                                bdtValueBin[2] = 4;
 
-          if     (dataCardSel     == 0) MVAVar     = MVAVar     + 2000 * typeSelAux0 + 8000 * typeSelAux1[0];
-          else if(dataCardSel     == 1) MVAVar     = MVAVar     + 16000 + 2000 * typeSelAux1[0];
-          else if(dataCardSel     == 2) MVAVar     = MVAVar     + 20000;
-          else if(dataCardSel     == 3) MVAVar     = MVAVar     + 22000;
-          else if(dataCardSel     == 4) MVAVar     = MVAVar     + 24000;
+          int whichBin = 0;
+          if     (dataCardSel     == 0) MVAVar     = typeSelAux0 + 4*typeSelAux1[whichBin] + 16*typeSelAux2[whichBin];
+          else if(dataCardSel     == 1) MVAVar     = 32 + typeSelAux1[whichBin] + 4*typeSelAux2[whichBin];
+          else if(dataCardSel     == 2) MVAVar     = 40 + typeSelAux1[whichBin];
+          else if(dataCardSel     == 3) MVAVar     = 44 + typeSelAux1[whichBin];
+          else if(dataCardSel     == 4) MVAVar     = 48 + bdtValueBin[whichBin];
 
-          if     (dataCardSelUp   == 0) MVAVarUp   = MVAVarUp   + 2000 * typeSelAux0 + 8000 * typeSelAux1[1];
-          else if(dataCardSelUp   == 1) MVAVarUp   = MVAVarUp   + 16000 + 2000 * typeSelAux1[1];
-          else if(dataCardSelUp   == 2) MVAVarUp   = MVAVarUp   + 20000;
-          else if(dataCardSelUp   == 3) MVAVarUp   = MVAVarUp   + 22000;
-          else if(dataCardSelUp   == 4) MVAVarUp   = MVAVarUp   + 24000;
+          whichBin = 1;
+          if     (dataCardSelUp   == 0) MVAVarUp   = typeSelAux0 + 4*typeSelAux1[whichBin] + 16*typeSelAux2[whichBin];
+          else if(dataCardSelUp   == 1) MVAVarUp   = 32 + typeSelAux1[whichBin] + 4*typeSelAux2[whichBin];
+          else if(dataCardSelUp   == 2) MVAVarUp   = 40 + typeSelAux1[whichBin];
+          else if(dataCardSelUp   == 3) MVAVarUp   = 44 + typeSelAux1[whichBin];
+          else if(dataCardSelUp   == 4) MVAVarUp   = 48 + bdtValueBin[whichBin];
 
-          if     (dataCardSelDown == 0) MVAVarDown = MVAVarDown + 2000 * typeSelAux0 + 8000 * typeSelAux1[2];
-          else if(dataCardSelDown == 1) MVAVarDown = MVAVarDown + 16000 + 2000 * typeSelAux1[2];
-          else if(dataCardSelDown == 2) MVAVarDown = MVAVarDown + 20000;
-          else if(dataCardSelDown == 3) MVAVarDown = MVAVarDown + 22000;
-          else if(dataCardSelDown == 4) MVAVarDown = MVAVarDown + 24000;
+          whichBin = 2;
+          if     (dataCardSelDown == 0) MVAVarDown = typeSelAux0 + 4*typeSelAux1[whichBin] + 16*typeSelAux2[whichBin];
+          else if(dataCardSelDown == 1) MVAVarDown = 32 + typeSelAux1[whichBin] + 4*typeSelAux2[whichBin];
+          else if(dataCardSelDown == 2) MVAVarDown = 40 + typeSelAux1[whichBin];
+          else if(dataCardSelDown == 3) MVAVarDown = 44 + typeSelAux1[whichBin];
+          else if(dataCardSelDown == 4) MVAVarDown = 48 + bdtValueBin[whichBin];
         }
-        else {
+        else if(fidAna == 1){
+          double typeSelAux0 = 0;
+          if     (mllZ <  85) typeSelAux0 = 0;
+          else if(mllZ < 135) typeSelAux0 = 1;
+          else if(mllZ < 210) typeSelAux0 = 2;
+          else                typeSelAux0 = 3;
+          double typeSelAux1[3] = {0,0,0};
+          if     (massJJ     <  800) typeSelAux1[0] = 0;
+	  else if(massJJ     < 1200) typeSelAux1[0] = 1;
+	  else if(massJJ     < 1800) typeSelAux1[0] = 2;
+	  else                       typeSelAux1[0] = 3; 
+          if     (massJJUp   <  800) typeSelAux1[1] = 0;
+	  else if(massJJUp   < 1200) typeSelAux1[1] = 1;
+	  else if(massJJUp   < 1800) typeSelAux1[1] = 2;
+	  else                       typeSelAux1[1] = 3; 
+          if     (massJJDown <  800) typeSelAux1[2] = 0;
+	  else if(massJJDown < 1200) typeSelAux1[2] = 1;
+	  else if(massJJDown < 1800) typeSelAux1[2] = 2;
+	  else                       typeSelAux1[2] = 3;
+          double typeSelAux2[3] = {0,0,0};
+          if     (massJJ     < 1000) typeSelAux2[0] = 0;
+	  else if(massJJ     < 1500) typeSelAux2[0] = 1;
+	  else if(massJJ     < 2000) typeSelAux2[0] = 2;
+	  else                       typeSelAux2[0] = 3; 
+          if     (massJJUp   < 1000) typeSelAux2[1] = 0;
+	  else if(massJJUp   < 1500) typeSelAux2[1] = 1;
+	  else if(massJJUp   < 2000) typeSelAux2[1] = 2;
+	  else                       typeSelAux2[1] = 3; 
+          if     (massJJDown < 1000) typeSelAux2[2] = 0;
+	  else if(massJJDown < 1500) typeSelAux2[2] = 1;
+	  else if(massJJDown < 2000) typeSelAux2[2] = 2;
+	  else                       typeSelAux2[2] = 3;
+          double typeSelAux3[3] = {0,0,0};
+          if     (deltaEtaJJ     < 4.0) typeSelAux3[0] = 0;
+          else if(deltaEtaJJ     < 5.0) typeSelAux3[0] = 1;
+	  else                          typeSelAux3[0] = 2;
+          if     (deltaEtaJJUp   < 4.0) typeSelAux3[1] = 0;
+          else if(deltaEtaJJUp   < 5.0) typeSelAux3[1] = 1;
+	  else                          typeSelAux3[1] = 2;
+          if     (deltaEtaJJDown < 4.0) typeSelAux3[2] = 0;
+          else if(deltaEtaJJDown < 5.0) typeSelAux3[2] = 1;
+	  else                          typeSelAux3[2] = 2;
+
+          int whichBin = 0;
+          if     (dataCardSel     == 0) MVAVar     = typeSelAux0 + 4*typeSelAux1[whichBin];
+          else if(dataCardSel     == 1) MVAVar     = 16 + typeSelAux1[whichBin];
+          else if(dataCardSel     == 2) MVAVar     = 20;
+          else if(dataCardSel     == 3) MVAVar     = 21;
+          else if(dataCardSel     == 4) MVAVar     = 22 + typeSelAux2[whichBin] + 4*typeSelAux3[whichBin];
+
+          whichBin = 1;
+          if     (dataCardSelUp   == 0) MVAVarUp   = typeSelAux0 + 4*typeSelAux1[whichBin];
+          else if(dataCardSelUp   == 1) MVAVarUp   = 16 + typeSelAux1[whichBin];
+          else if(dataCardSelUp   == 2) MVAVarUp   = 20;
+          else if(dataCardSelUp   == 3) MVAVarUp   = 21;
+          else if(dataCardSelUp   == 4) MVAVarUp   = 22 + typeSelAux2[whichBin] + 4*typeSelAux3[whichBin];
+
+          whichBin = 2;
+          if     (dataCardSelDown == 0) MVAVarDown = typeSelAux0 + 4*typeSelAux1[whichBin];
+          else if(dataCardSelDown == 1) MVAVarDown = 16 + typeSelAux1[whichBin];
+          else if(dataCardSelDown == 2) MVAVarDown = 20;
+          else if(dataCardSelDown == 3) MVAVarDown = 21;
+          else if(dataCardSelDown == 4) MVAVarDown = 22 + typeSelAux2[whichBin] + 4*typeSelAux3[whichBin];
+
+	  if(MVAVar >= 34) printf("Problem with MVAVar %f %f %f %f %d\n",MVAVar,typeSelAux0,typeSelAux1[0],typeSelAux2[0],dataCardSel);
+        }
+        else if(fidAna == 4){
           double typeSelAux0 = 0;
           if     (mllZ < 150) typeSelAux0 = 0;
           else if(mllZ < 300) typeSelAux0 = 1;
@@ -1252,37 +1340,38 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
           if     (mtWZ <  300) typeSelAux2[0] = 0;
 	  else if(mtWZ <  600) typeSelAux2[0] = 1;
 	  else                 typeSelAux2[0] = 2;
-	  if(massJJ > 1200)  typeSelAux2[0] += 3;
+	  if(massJJ > 1200) typeSelAux2[0] += 3;
           if     (mtWZUp <  300) typeSelAux2[1] = 0;
 	  else if(mtWZUp <  600) typeSelAux2[1] = 1;
 	  else                   typeSelAux2[1] = 2;
-	  if(massJJUp > 1200)  typeSelAux2[1] += 3;
+	  if(massJJUp > 1200) typeSelAux2[1] += 3;
           if     (mtWZDown <  300) typeSelAux2[2] = 0;
 	  else if(mtWZDown <  600) typeSelAux2[2] = 1;
 	  else                     typeSelAux2[2] = 2;
-	  if(massJJDown > 1200)  typeSelAux2[2] += 3;
+	  if(massJJDown > 1200) typeSelAux2[2] += 3;
 
-          if     (dataCardSel     == 0) MVAVar     = typeSelAux0 + 5*typeSelAux1[0];
-          else if(dataCardSel     == 1) MVAVar     = 20 + typeSelAux1[0];
-          else if(dataCardSel     == 2) MVAVar     = 24 + typeSelAux1[0];
-          else if(dataCardSel     == 3) MVAVar     = 28 + typeSelAux1[0];
-          else if(dataCardSel     == 4) MVAVar     = 32 + typeSelAux2[0];
-          else MVAVar = -9;
+          int whichBin = 0;
+          if     (dataCardSel     == 0) MVAVar     = typeSelAux0 + 5*typeSelAux1[whichBin];
+          else if(dataCardSel     == 1) MVAVar     = 20 + typeSelAux1[whichBin];
+          else if(dataCardSel     == 2) MVAVar     = 24;
+          else if(dataCardSel     == 3) MVAVar     = 25;
+          else if(dataCardSel     == 4) MVAVar     = 26 + typeSelAux2[whichBin];
 
-          if     (dataCardSelUp   == 0) MVAVarUp   = typeSelAux0 + 5*typeSelAux1[1];
-          else if(dataCardSelUp   == 1) MVAVarUp   = 20 + typeSelAux1[1];
-          else if(dataCardSelUp   == 2) MVAVarUp   = 24 + typeSelAux1[1];
-          else if(dataCardSelUp   == 3) MVAVarUp   = 28 + typeSelAux1[1];
-          else if(dataCardSelUp   == 4) MVAVarUp   = 32 + typeSelAux2[1];
-          else MVAVarUp = -9;
+          whichBin = 1;
+          if     (dataCardSelUp   == 0) MVAVarUp   = typeSelAux0 + 5*typeSelAux1[whichBin];
+          else if(dataCardSelUp   == 1) MVAVarUp   = 20 + typeSelAux1[whichBin];
+          else if(dataCardSelUp   == 2) MVAVarUp   = 24;
+          else if(dataCardSelUp   == 3) MVAVarUp   = 25;
+          else if(dataCardSelUp   == 4) MVAVarUp   = 26 + typeSelAux2[whichBin];
 
-          if     (dataCardSelDown == 0) MVAVarDown = typeSelAux0 + 5*typeSelAux1[2];
-          else if(dataCardSelDown == 1) MVAVarDown = 20 + typeSelAux1[2];
-          else if(dataCardSelDown == 2) MVAVarDown = 24 + typeSelAux1[2];
-          else if(dataCardSelDown == 3) MVAVarDown = 28 + typeSelAux1[2];
-          else if(dataCardSelDown == 4) MVAVarDown = 32 + typeSelAux2[2];
-          else MVAVarDown = -9;
-	  if(MVAVar >= 38) printf("Problem with MVAVar %f %f %f %f %d\n",MVAVar,typeSelAux0,typeSelAux1[0],typeSelAux2[0],dataCardSel);
+          whichBin = 2;
+          if     (dataCardSelDown == 0) MVAVarDown = typeSelAux0 + 5*typeSelAux1[whichBin];
+          else if(dataCardSelDown == 1) MVAVarDown = 20 + typeSelAux1[whichBin];
+          else if(dataCardSelDown == 2) MVAVarDown = 24;
+          else if(dataCardSelDown == 3) MVAVarDown = 25;
+          else if(dataCardSelDown == 4) MVAVarDown = 26 + typeSelAux2[whichBin];
+
+	  if(MVAVar >= 32) printf("Problem with MVAVar %f %f %f %f %d\n",MVAVar,typeSelAux0,typeSelAux1[0],typeSelAux2[0],dataCardSel);
 	}
 
         // Avoid QCD scale weights that are anomalous high
@@ -1435,48 +1524,48 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       histo_QCDScaleUp  [ic]->SetBinContent(nb, histo_Baseline[ic]->GetBinContent(nb)*systQCDScale);
       histo_QCDScaleDown[ic]->SetBinContent(nb, histo_Baseline[ic]->GetBinContent(nb)/systQCDScale);
 
-      histo_Baseline              [ic]->SetBinContent(nb, TMath::Max((float)histo_Baseline		[ic]->GetBinContent(nb),1e-7f));
-      histo_QCDScaleUp  	  [ic]->SetBinContent(nb, TMath::Max((float)histo_QCDScaleUp		[ic]->GetBinContent(nb),1e-7f));
-      histo_QCDScaleDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_QCDScaleDown  	[ic]->GetBinContent(nb),1e-7f));
-      histo_PDFBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PDFBoundingUp 	[ic]->GetBinContent(nb),1e-7f));
-      histo_PDFBoundingDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PDFBoundingDown	[ic]->GetBinContent(nb),1e-7f));
-      histo_LepEffMBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffMBoundingUp	[ic]->GetBinContent(nb),1e-7f));
-      histo_LepEffMBoundingDown   [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffMBoundingDown	[ic]->GetBinContent(nb),1e-7f));
-      histo_LepEffEBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffEBoundingUp	[ic]->GetBinContent(nb),1e-7f));
-      histo_LepEffEBoundingDown   [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffEBoundingDown	[ic]->GetBinContent(nb),1e-7f));
-      histo_PUBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PUBoundingUp  	[ic]->GetBinContent(nb),1e-7f));
-      histo_PUBoundingDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PUBoundingDown	[ic]->GetBinContent(nb),1e-7f));
+      histo_Baseline              [ic]->SetBinContent(nb, TMath::Max((float)histo_Baseline		[ic]->GetBinContent(nb),0.0f));
+      histo_QCDScaleUp  	  [ic]->SetBinContent(nb, TMath::Max((float)histo_QCDScaleUp		[ic]->GetBinContent(nb),0.0f));
+      histo_QCDScaleDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_QCDScaleDown  	[ic]->GetBinContent(nb),0.0f));
+      histo_PDFBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PDFBoundingUp 	[ic]->GetBinContent(nb),0.0f));
+      histo_PDFBoundingDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PDFBoundingDown	[ic]->GetBinContent(nb),0.0f));
+      histo_LepEffMBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffMBoundingUp	[ic]->GetBinContent(nb),0.0f));
+      histo_LepEffMBoundingDown   [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffMBoundingDown	[ic]->GetBinContent(nb),0.0f));
+      histo_LepEffEBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffEBoundingUp	[ic]->GetBinContent(nb),0.0f));
+      histo_LepEffEBoundingDown   [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffEBoundingDown	[ic]->GetBinContent(nb),0.0f));
+      histo_PUBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PUBoundingUp  	[ic]->GetBinContent(nb),0.0f));
+      histo_PUBoundingDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PUBoundingDown	[ic]->GetBinContent(nb),0.0f));
       for(int ny=0; ny<nYears; ny++){
-      histo_BTAGBBoundingUp    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGBBoundingUp    [ny][ic]->GetBinContent(nb),1e-7f));
-      histo_BTAGBBoundingDown  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGBBoundingDown  [ny][ic]->GetBinContent(nb),1e-7f));
-      histo_BTAGLBoundingUp    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGLBoundingUp    [ny][ic]->GetBinContent(nb),1e-7f));
-      histo_BTAGLBoundingDown  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGLBoundingDown  [ny][ic]->GetBinContent(nb),1e-7f));
-      histo_JESBoundingUp      [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingUp      [ny][ic]->GetBinContent(nb),1e-7f));
-      histo_JESBoundingDown    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingDown    [ny][ic]->GetBinContent(nb),1e-7f));
-      histo_PreFireBoundingUp  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingUp  [ny][ic]->GetBinContent(nb),1e-7f));
-      histo_PreFireBoundingDown[ny][ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingDown[ny][ic]->GetBinContent(nb),1e-7f));
-      histo_TriggerBoundingUp  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_TriggerBoundingUp  [ny][ic]->GetBinContent(nb),1e-7f));
-      histo_TriggerBoundingDown[ny][ic]->SetBinContent(nb, TMath::Max((float)histo_TriggerBoundingDown[ny][ic]->GetBinContent(nb),1e-7f));
+      histo_BTAGBBoundingUp    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGBBoundingUp    [ny][ic]->GetBinContent(nb),0.0f));
+      histo_BTAGBBoundingDown  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGBBoundingDown  [ny][ic]->GetBinContent(nb),0.0f));
+      histo_BTAGLBoundingUp    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGLBoundingUp    [ny][ic]->GetBinContent(nb),0.0f));
+      histo_BTAGLBoundingDown  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGLBoundingDown  [ny][ic]->GetBinContent(nb),0.0f));
+      histo_JESBoundingUp      [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingUp      [ny][ic]->GetBinContent(nb),0.0f));
+      histo_JESBoundingDown    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingDown    [ny][ic]->GetBinContent(nb),0.0f));
+      histo_PreFireBoundingUp  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingUp  [ny][ic]->GetBinContent(nb),0.0f));
+      histo_PreFireBoundingDown[ny][ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingDown[ny][ic]->GetBinContent(nb),0.0f));
+      histo_TriggerBoundingUp  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_TriggerBoundingUp  [ny][ic]->GetBinContent(nb),0.0f));
+      histo_TriggerBoundingDown[ny][ic]->SetBinContent(nb, TMath::Max((float)histo_TriggerBoundingDown[ny][ic]->GetBinContent(nb),0.0f));
       }
-      histo_WSBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_WSBoundingUp	        [ic]->GetBinContent(nb),1e-7f));
-      histo_WSBoundingDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_WSBoundingDown	[ic]->GetBinContent(nb),1e-7f));
-      histo_EWKCorrVVUp 	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKCorrVVUp		[ic]->GetBinContent(nb),1e-7f));
-      histo_EWKCorrVVDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKCorrVVDown 	[ic]->GetBinContent(nb),1e-7f));
-      histo_EWKqqZZCorrUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKqqZZCorrUp 	[ic]->GetBinContent(nb),1e-7f));
-      histo_EWKqqZZCorrDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKqqZZCorrDown	[ic]->GetBinContent(nb),1e-7f));
-      histo_ggZZCorrUp  	  [ic]->SetBinContent(nb, TMath::Max((float)histo_ggZZCorrUp		[ic]->GetBinContent(nb),1e-7f));
-      histo_ggZZCorrDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_ggZZCorrDown  	[ic]->GetBinContent(nb),1e-7f));
+      histo_WSBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_WSBoundingUp	        [ic]->GetBinContent(nb),0.0f));
+      histo_WSBoundingDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_WSBoundingDown	[ic]->GetBinContent(nb),0.0f));
+      histo_EWKCorrVVUp 	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKCorrVVUp		[ic]->GetBinContent(nb),0.0f));
+      histo_EWKCorrVVDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKCorrVVDown 	[ic]->GetBinContent(nb),0.0f));
+      histo_EWKqqZZCorrUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKqqZZCorrUp 	[ic]->GetBinContent(nb),0.0f));
+      histo_EWKqqZZCorrDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKqqZZCorrDown	[ic]->GetBinContent(nb),0.0f));
+      histo_ggZZCorrUp  	  [ic]->SetBinContent(nb, TMath::Max((float)histo_ggZZCorrUp		[ic]->GetBinContent(nb),0.0f));
+      histo_ggZZCorrDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_ggZZCorrDown  	[ic]->GetBinContent(nb),0.0f));
     }
     histo_PUBoundingUp	[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_PUBoundingUp  [ic]->GetSumOfWeights());
     histo_PUBoundingDown[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_PUBoundingDown[ic]->GetSumOfWeights());
-    if(fidAna >= 1 && (ic == kPlotWZ || ic == kPlotEWKWZ || ic == kPlotEWKSSWW ||
+    if((fidAna == 2 || fidAna == 3) && (ic == kPlotEWKWZ || ic == kPlotEWKSSWW ||
        ic == kPlotSignal0 || ic == kPlotSignal1 || ic == kPlotSignal2 || ic == kPlotSignal3)) {
       histo_QCDScaleUp   [ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_QCDScaleUp   [ic]->GetSumOfWeights());
       histo_QCDScaleDown [ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_QCDScaleDown [ic]->GetSumOfWeights());
       histo_EWKCorrVVUp  [ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_EWKCorrVVUp  [ic]->GetSumOfWeights());
       histo_EWKCorrVVDown[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_EWKCorrVVDown[ic]->GetSumOfWeights());
     }
-    if(ic == kPlotZZ || ic == kPlotVVV) {
+    if(ic == kPlotZZ || ic == kPlotVVV || ic == kPlotWZ) {
       histo_QCDScaleUp     [ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_QCDScaleUp	  [ic]->GetSumOfWeights());
       histo_QCDScaleDown   [ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_QCDScaleDown   [ic]->GetSumOfWeights());
       histo_EWKCorrVVUp    [ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_EWKCorrVVUp    [ic]->GetSumOfWeights());
@@ -1904,7 +1993,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   newcardShape << Form("\n");
 
   for(unsigned ic=0; ic<nPlotCategories; ic++) {
-    if(ic== kPlotData || ic == kPlotNonPrompt || ic == kPlotEWKWZ || ic == kPlotEWKSSWW || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    if(ic== kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
     newcardShape << Form("QCDScale_%s_ACCEPT    shape   ",plotBaseNames[ic].Data());
     for(unsigned ic2=0; ic2<nPlotCategories; ic2++) {
       if(ic2 == kPlotData || histo_Baseline[ic2]->GetSumOfWeights() <= 0) continue;
@@ -2017,7 +2106,101 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
     outFilePlotsNote->Close();
   }
 
-  if(fidAna == 3){
+  if(fidAna == 4){
+    TH1D *histo_dim8_QCDScaleUp[2];
+    TH1D *histo_dim8_QCDScaleDown[2];
+    TH1D *histo_dim8_PDFBoundingUp[2];
+    TH1D *histo_dim8_PDFBoundingDown[2];
+    TH1D *histo_dim8_LepEffMBoundingUp[2];
+    TH1D *histo_dim8_LepEffMBoundingDown[2];
+    TH1D *histo_dim8_LepEffEBoundingUp[2];
+    TH1D *histo_dim8_LepEffEBoundingDown[2];
+    TH1D *histo_dim8_PUBoundingUp[2];
+    TH1D *histo_dim8_PUBoundingDown[2];
+    TH1D *histo_dim8_BTAGBBoundingUp[nYears][2];
+    TH1D *histo_dim8_BTAGBBoundingDown[nYears][2];
+    TH1D *histo_dim8_BTAGLBoundingUp[nYears][2];
+    TH1D *histo_dim8_BTAGLBoundingDown[nYears][2];
+    TH1D *histo_dim8_JESBoundingUp[nYears][2];
+    TH1D *histo_dim8_JESBoundingDown[nYears][2];
+    TH1D *histo_dim8_PreFireBoundingUp[nYears][2];
+    TH1D *histo_dim8_PreFireBoundingDown[nYears][2];
+    TH1D *histo_dim8_TriggerBoundingUp[nYears][2];
+    TH1D *histo_dim8_TriggerBoundingDown[nYears][2];
+    TH1D *histo_dim8_WSBoundingUp[2];
+    TH1D *histo_dim8_WSBoundingDown[2];
+    TH1D *histo_dim8_EWKCorrVVUp[2];
+    TH1D *histo_dim8_EWKCorrVVDown[2];
+    TH1D *histo_dim8_EWKqqZZCorrUp[2];
+    TH1D *histo_dim8_EWKqqZZCorrDown[2];
+    TH1D *histo_dim8_ggZZCorrUp[2];
+    TH1D *histo_dim8_ggZZCorrDown[2];
+    for(int nAQGCcat=0; nAQGCcat<2; nAQGCcat++) {
+      int iref = kPlotEWKSSWW_dim8;
+      if(nAQGCcat == 1) iref = kPlotEWKWZ_dim8;
+
+      histo_dim8_QCDScaleUp          [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_QCDScale_%s_ACCEPTUp"  , plotBaseNames[iref].Data(), plotBaseNames[iref].Data()));
+      histo_dim8_QCDScaleDown        [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_QCDScale_%s_ACCEPTDown", plotBaseNames[iref].Data(), plotBaseNames[iref].Data()));
+      histo_dim8_PDFBoundingUp 	     [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_PDFUp"		     , plotBaseNames[iref].Data()));
+      histo_dim8_PDFBoundingDown     [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_PDFDown"  	     , plotBaseNames[iref].Data()));
+      histo_dim8_LepEffMBoundingUp   [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_eff_mUp"	     , plotBaseNames[iref].Data()));
+      histo_dim8_LepEffMBoundingDown [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_eff_mDown"	     , plotBaseNames[iref].Data()));
+      histo_dim8_LepEffEBoundingUp   [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_eff_eUp"	     , plotBaseNames[iref].Data()));
+      histo_dim8_LepEffEBoundingDown [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_eff_eDown"	     , plotBaseNames[iref].Data()));
+      histo_dim8_PUBoundingUp	     [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_puUp" 	     , plotBaseNames[iref].Data()));
+      histo_dim8_PUBoundingDown      [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_puDown"	     , plotBaseNames[iref].Data()));
+      for(int ny=0; ny<nYears; ny++){
+      histo_dim8_BTAGBBoundingUp    [ny][nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_btagb_%dUp"     , plotBaseNames[iref].Data(),2016+ny));
+      histo_dim8_BTAGBBoundingDown  [ny][nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_btagb_%dDown"   , plotBaseNames[iref].Data(),2016+ny));
+      histo_dim8_BTAGLBoundingUp    [ny][nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_btagl_%dUp"     , plotBaseNames[iref].Data(),2016+ny));
+      histo_dim8_BTAGLBoundingDown  [ny][nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_btagl_%dDown"   , plotBaseNames[iref].Data(),2016+ny));
+      histo_dim8_JESBoundingUp      [ny][nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_jes_%dUp"       , plotBaseNames[iref].Data(),2016+ny));
+      histo_dim8_JESBoundingDown    [ny][nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_jes_%dDown"     , plotBaseNames[iref].Data(),2016+ny));
+      histo_dim8_PreFireBoundingUp  [ny][nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_prefire_%dUp"   , plotBaseNames[iref].Data(),2016+ny));
+      histo_dim8_PreFireBoundingDown[ny][nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_prefire_%dDown" , plotBaseNames[iref].Data(),2016+ny));
+      histo_dim8_TriggerBoundingUp  [ny][nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_trigger_%dUp"   , plotBaseNames[iref].Data(),2016+ny));
+      histo_dim8_TriggerBoundingDown[ny][nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_trigger_%dDown" , plotBaseNames[iref].Data(),2016+ny));
+      }
+      histo_dim8_WSBoundingUp        [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_wseffUp"	  , plotBaseNames[iref].Data()));
+      histo_dim8_WSBoundingDown      [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_CMS_wseffDown"	  , plotBaseNames[iref].Data()));
+      histo_dim8_EWKCorrVVUp         [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_EWKCorrVV%sUp"	  , plotBaseNames[iref].Data(), plotBaseNames[iref].Data()));
+      histo_dim8_EWKCorrVVDown       [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_EWKCorrVV%sDown"    , plotBaseNames[iref].Data(), plotBaseNames[iref].Data()));
+      histo_dim8_EWKqqZZCorrUp 	     [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_EWKqqZZCorrUp"	  , plotBaseNames[iref].Data()));
+      histo_dim8_EWKqqZZCorrDown     [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_EWKqqZZCorrDown"    , plotBaseNames[iref].Data()));
+      histo_dim8_ggZZCorrUp	     [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_ggZZCorrUp"	  , plotBaseNames[iref].Data()));
+      histo_dim8_ggZZCorrDown	     [nAQGCcat] = (TH1D*)histo_MVA->Clone(Form("histo_dim8_%s_ggZZCorrDown"	  , plotBaseNames[iref].Data()));
+
+      histo_dim8_QCDScaleUp             [nAQGCcat]->Add(histo_QCDScaleUp	     [iref]); histo_dim8_QCDScaleUp		[nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_QCDScaleDown           [nAQGCcat]->Add(histo_QCDScaleDown	     [iref]); histo_dim8_QCDScaleDown		[nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_PDFBoundingUp          [nAQGCcat]->Add(histo_PDFBoundingUp  	     [iref]); histo_dim8_PDFBoundingUp	        [nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_PDFBoundingDown        [nAQGCcat]->Add(histo_PDFBoundingDown	     [iref]); histo_dim8_PDFBoundingDown	[nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_LepEffMBoundingUp      [nAQGCcat]->Add(histo_LepEffMBoundingUp	     [iref]); histo_dim8_LepEffMBoundingUp	[nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_LepEffMBoundingDown    [nAQGCcat]->Add(histo_LepEffMBoundingDown    [iref]); histo_dim8_LepEffMBoundingDown    [nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_LepEffEBoundingUp      [nAQGCcat]->Add(histo_LepEffEBoundingUp	     [iref]); histo_dim8_LepEffEBoundingUp	[nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_LepEffEBoundingDown    [nAQGCcat]->Add(histo_LepEffEBoundingDown    [iref]); histo_dim8_LepEffEBoundingDown    [nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_PUBoundingUp           [nAQGCcat]->Add(histo_PUBoundingUp	     [iref]); histo_dim8_PUBoundingUp	        [nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_PUBoundingDown         [nAQGCcat]->Add(histo_PUBoundingDown         [iref]); histo_dim8_PUBoundingDown         [nAQGCcat]->Divide(histo_Baseline[iref]);
+      for(int ny=0; ny<nYears; ny++){
+      histo_dim8_BTAGBBoundingUp    [ny][nAQGCcat]->Add(histo_BTAGBBoundingUp    [ny][iref]); histo_dim8_BTAGBBoundingUp    [ny][nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_BTAGBBoundingDown  [ny][nAQGCcat]->Add(histo_BTAGBBoundingDown  [ny][iref]); histo_dim8_BTAGBBoundingDown  [ny][nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_BTAGLBoundingUp    [ny][nAQGCcat]->Add(histo_BTAGLBoundingUp    [ny][iref]); histo_dim8_BTAGLBoundingUp    [ny][nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_BTAGLBoundingDown  [ny][nAQGCcat]->Add(histo_BTAGLBoundingDown  [ny][iref]); histo_dim8_BTAGLBoundingDown  [ny][nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_JESBoundingUp      [ny][nAQGCcat]->Add(histo_JESBoundingUp      [ny][iref]); histo_dim8_JESBoundingUp      [ny][nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_JESBoundingDown    [ny][nAQGCcat]->Add(histo_JESBoundingDown    [ny][iref]); histo_dim8_JESBoundingDown    [ny][nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_PreFireBoundingUp  [ny][nAQGCcat]->Add(histo_PreFireBoundingUp  [ny][iref]); histo_dim8_PreFireBoundingUp  [ny][nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_PreFireBoundingDown[ny][nAQGCcat]->Add(histo_PreFireBoundingDown[ny][iref]); histo_dim8_PreFireBoundingDown[ny][nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_TriggerBoundingUp  [ny][nAQGCcat]->Add(histo_TriggerBoundingUp  [ny][iref]); histo_dim8_TriggerBoundingUp  [ny][nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_TriggerBoundingDown[ny][nAQGCcat]->Add(histo_TriggerBoundingDown[ny][iref]); histo_dim8_TriggerBoundingDown[ny][nAQGCcat]->Divide(histo_Baseline[iref]);
+      }
+      histo_dim8_WSBoundingUp           [nAQGCcat]->Add(histo_WSBoundingUp           [iref]); histo_dim8_WSBoundingUp	        [nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_WSBoundingDown         [nAQGCcat]->Add(histo_WSBoundingDown 	     [iref]); histo_dim8_WSBoundingDown	        [nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_EWKCorrVVUp            [nAQGCcat]->Add(histo_EWKCorrVVUp	     [iref]); histo_dim8_EWKCorrVVUp 	        [nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_EWKCorrVVDown          [nAQGCcat]->Add(histo_EWKCorrVVDown  	     [iref]); histo_dim8_EWKCorrVVDown	        [nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_EWKqqZZCorrUp          [nAQGCcat]->Add(histo_EWKqqZZCorrUp  	     [iref]); histo_dim8_EWKqqZZCorrUp	        [nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_EWKqqZZCorrDown        [nAQGCcat]->Add(histo_EWKqqZZCorrDown	     [iref]); histo_dim8_EWKqqZZCorrDown	[nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_ggZZCorrUp             [nAQGCcat]->Add(histo_ggZZCorrUp	     [iref]); histo_dim8_ggZZCorrUp		[nAQGCcat]->Divide(histo_Baseline[iref]);
+      histo_dim8_ggZZCorrDown           [nAQGCcat]->Add(histo_ggZZCorrDown	     [iref]); histo_dim8_ggZZCorrDown		[nAQGCcat]->Divide(histo_Baseline[iref]);
+    }
     int nscanTot = nscan_ft0 + nscan_ft1 + nscan_ft2 + nscan_fm0 + nscan_fm1 + nscan_fm6 + nscan_fm7 + nscan_fs0 + nscan_fs1;
     TH1D *histoAQGC[2];
     histoAQGC[0] = (TH1D*)histo_MVA->Clone(Form("histoAQGC_0"));
@@ -2057,36 +2240,36 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 	  double aqgcNorm = aqgcNorm = histoAQGC[nAQGCcat]->GetSumOfWeights()/histo_Baseline[iref]->GetSumOfWeights();
 	  histo_Baseline[iref]->Reset(); 
 	  histo_Baseline[iref]->Add(histoAQGC[nAQGCcat]);
-	  histo_QCDScaleUp         [iref]->Scale(aqgcNorm);
-	  histo_QCDScaleDown  	   [iref]->Scale(aqgcNorm);
-	  histo_PDFBoundingUp 	   [iref]->Scale(aqgcNorm);
-	  histo_PDFBoundingDown	   [iref]->Scale(aqgcNorm);
-	  histo_LepEffMBoundingUp  [iref]->Scale(aqgcNorm);
-	  histo_LepEffMBoundingDown[iref]->Scale(aqgcNorm);
-	  histo_LepEffEBoundingUp  [iref]->Scale(aqgcNorm);
-	  histo_LepEffEBoundingDown[iref]->Scale(aqgcNorm);
-	  histo_PUBoundingUp  	   [iref]->Scale(aqgcNorm);
-	  histo_PUBoundingDown	   [iref]->Scale(aqgcNorm);
+	  histo_QCDScaleUp             [iref]->Scale(0);  histo_QCDScaleUp	       [iref]->Add(histo_Baseline[iref]); histo_QCDScaleUp	       [iref]->Multiply(histo_dim8_QCDScaleUp		  [nAQGCcat]);
+	  histo_QCDScaleDown  	       [iref]->Scale(0);  histo_QCDScaleDown	       [iref]->Add(histo_Baseline[iref]); histo_QCDScaleDown	       [iref]->Multiply(histo_dim8_QCDScaleDown 	  [nAQGCcat]);
+	  histo_PDFBoundingUp 	       [iref]->Scale(0);  histo_PDFBoundingUp	       [iref]->Add(histo_Baseline[iref]); histo_PDFBoundingUp	       [iref]->Multiply(histo_dim8_PDFBoundingUp	  [nAQGCcat]);
+	  histo_PDFBoundingDown	       [iref]->Scale(0);  histo_PDFBoundingDown        [iref]->Add(histo_Baseline[iref]); histo_PDFBoundingDown        [iref]->Multiply(histo_dim8_PDFBoundingDown	  [nAQGCcat]);
+	  histo_LepEffMBoundingUp      [iref]->Scale(0);  histo_LepEffMBoundingUp      [iref]->Add(histo_Baseline[iref]); histo_LepEffMBoundingUp      [iref]->Multiply(histo_dim8_LepEffMBoundingUp	  [nAQGCcat]);
+	  histo_LepEffMBoundingDown    [iref]->Scale(0);  histo_LepEffMBoundingDown    [iref]->Add(histo_Baseline[iref]); histo_LepEffMBoundingDown    [iref]->Multiply(histo_dim8_LepEffMBoundingDown    [nAQGCcat]);
+	  histo_LepEffEBoundingUp      [iref]->Scale(0);  histo_LepEffEBoundingUp      [iref]->Add(histo_Baseline[iref]); histo_LepEffEBoundingUp      [iref]->Multiply(histo_dim8_LepEffEBoundingUp	  [nAQGCcat]);
+	  histo_LepEffEBoundingDown    [iref]->Scale(0);  histo_LepEffEBoundingDown    [iref]->Add(histo_Baseline[iref]); histo_LepEffEBoundingDown    [iref]->Multiply(histo_dim8_LepEffEBoundingDown    [nAQGCcat]);
+	  histo_PUBoundingUp  	       [iref]->Scale(0);  histo_PUBoundingUp	       [iref]->Add(histo_Baseline[iref]); histo_PUBoundingUp	       [iref]->Multiply(histo_dim8_PUBoundingUp 	  [nAQGCcat]);
+	  histo_PUBoundingDown	       [iref]->Scale(0);  histo_PUBoundingDown         [iref]->Add(histo_Baseline[iref]); histo_PUBoundingDown         [iref]->Multiply(histo_dim8_PUBoundingDown	  [nAQGCcat]);
 	  for(int ny=0; ny<nYears; ny++){
-	  histo_BTAGBBoundingUp    [ny][iref]->Scale(aqgcNorm);
-	  histo_BTAGBBoundingDown  [ny][iref]->Scale(aqgcNorm);
-	  histo_BTAGLBoundingUp    [ny][iref]->Scale(aqgcNorm);
-	  histo_BTAGLBoundingDown  [ny][iref]->Scale(aqgcNorm);
-	  histo_JESBoundingUp 	   [ny][iref]->Scale(aqgcNorm);
-	  histo_JESBoundingDown	   [ny][iref]->Scale(aqgcNorm);
-	  histo_PreFireBoundingUp  [ny][iref]->Scale(aqgcNorm);
-	  histo_PreFireBoundingDown[ny][iref]->Scale(aqgcNorm);
-	  histo_TriggerBoundingUp  [ny][iref]->Scale(aqgcNorm);
-	  histo_TriggerBoundingDown[ny][iref]->Scale(aqgcNorm);
+	  histo_BTAGBBoundingUp    [ny][iref]->Scale(0);  histo_BTAGBBoundingUp    [ny][iref]->Add(histo_Baseline[iref]); histo_BTAGBBoundingUp    [ny][iref]->Multiply(histo_dim8_BTAGBBoundingUp    [ny][nAQGCcat]);
+	  histo_BTAGBBoundingDown  [ny][iref]->Scale(0);  histo_BTAGBBoundingDown  [ny][iref]->Add(histo_Baseline[iref]); histo_BTAGBBoundingDown  [ny][iref]->Multiply(histo_dim8_BTAGBBoundingDown  [ny][nAQGCcat]);
+	  histo_BTAGLBoundingUp    [ny][iref]->Scale(0);  histo_BTAGLBoundingUp    [ny][iref]->Add(histo_Baseline[iref]); histo_BTAGLBoundingUp    [ny][iref]->Multiply(histo_dim8_BTAGLBoundingUp    [ny][nAQGCcat]);
+	  histo_BTAGLBoundingDown  [ny][iref]->Scale(0);  histo_BTAGLBoundingDown  [ny][iref]->Add(histo_Baseline[iref]); histo_BTAGLBoundingDown  [ny][iref]->Multiply(histo_dim8_BTAGLBoundingDown  [ny][nAQGCcat]);
+	  histo_JESBoundingUp 	   [ny][iref]->Scale(0);  histo_JESBoundingUp	   [ny][iref]->Add(histo_Baseline[iref]); histo_JESBoundingUp	   [ny][iref]->Multiply(histo_dim8_JESBoundingUp      [ny][nAQGCcat]);
+	  histo_JESBoundingDown	   [ny][iref]->Scale(0);  histo_JESBoundingDown    [ny][iref]->Add(histo_Baseline[iref]); histo_JESBoundingDown    [ny][iref]->Multiply(histo_dim8_JESBoundingDown    [ny][nAQGCcat]);
+	  histo_PreFireBoundingUp  [ny][iref]->Scale(0);  histo_PreFireBoundingUp  [ny][iref]->Add(histo_Baseline[iref]); histo_PreFireBoundingUp  [ny][iref]->Multiply(histo_dim8_PreFireBoundingUp  [ny][nAQGCcat]);
+	  histo_PreFireBoundingDown[ny][iref]->Scale(0);  histo_PreFireBoundingDown[ny][iref]->Add(histo_Baseline[iref]); histo_PreFireBoundingDown[ny][iref]->Multiply(histo_dim8_PreFireBoundingDown[ny][nAQGCcat]);
+	  histo_TriggerBoundingUp  [ny][iref]->Scale(0);  histo_TriggerBoundingUp  [ny][iref]->Add(histo_Baseline[iref]); histo_TriggerBoundingUp  [ny][iref]->Multiply(histo_dim8_TriggerBoundingUp  [ny][nAQGCcat]);
+	  histo_TriggerBoundingDown[ny][iref]->Scale(0);  histo_TriggerBoundingDown[ny][iref]->Add(histo_Baseline[iref]); histo_TriggerBoundingDown[ny][iref]->Multiply(histo_dim8_TriggerBoundingDown[ny][nAQGCcat]);
 	  }
-	  histo_WSBoundingUp   [iref]->Scale(aqgcNorm);
-	  histo_WSBoundingDown [iref]->Scale(aqgcNorm);
-	  histo_EWKCorrVVUp    [iref]->Scale(aqgcNorm);
-	  histo_EWKCorrVVDown  [iref]->Scale(aqgcNorm);
-	  histo_EWKqqZZCorrUp  [iref]->Scale(aqgcNorm);
-	  histo_EWKqqZZCorrDown[iref]->Scale(aqgcNorm);
-	  histo_ggZZCorrUp     [iref]->Scale(aqgcNorm);
-	  histo_ggZZCorrDown   [iref]->Scale(aqgcNorm);
+	  histo_WSBoundingUp           [iref]->Scale(0);  histo_WSBoundingUp           [iref]->Add(histo_Baseline[iref]); histo_WSBoundingUp	       [iref]->Multiply(histo_dim8_WSBoundingUp 	  [nAQGCcat]);
+	  histo_WSBoundingDown         [iref]->Scale(0); histo_WSBoundingDown	       [iref]->Add(histo_Baseline[iref]); histo_WSBoundingDown         [iref]->Multiply(histo_dim8_WSBoundingDown	  [nAQGCcat]);
+	  histo_EWKCorrVVUp            [iref]->Scale(0); histo_EWKCorrVVUp	       [iref]->Add(histo_Baseline[iref]); histo_EWKCorrVVUp	       [iref]->Multiply(histo_dim8_EWKCorrVVUp  	  [nAQGCcat]);
+	  histo_EWKCorrVVDown          [iref]->Scale(0); histo_EWKCorrVVDown	       [iref]->Add(histo_Baseline[iref]); histo_EWKCorrVVDown	       [iref]->Multiply(histo_dim8_EWKCorrVVDown	  [nAQGCcat]);
+	  histo_EWKqqZZCorrUp          [iref]->Scale(0); histo_EWKqqZZCorrUp	       [iref]->Add(histo_Baseline[iref]); histo_EWKqqZZCorrUp	       [iref]->Multiply(histo_dim8_EWKqqZZCorrUp	  [nAQGCcat]);
+	  histo_EWKqqZZCorrDown        [iref]->Scale(0); histo_EWKqqZZCorrDown         [iref]->Add(histo_Baseline[iref]); histo_EWKqqZZCorrDown        [iref]->Multiply(histo_dim8_EWKqqZZCorrDown	  [nAQGCcat]);
+	  histo_ggZZCorrUp             [iref]->Scale(0); histo_ggZZCorrUp	       [iref]->Add(histo_Baseline[iref]); histo_ggZZCorrUp	       [iref]->Multiply(histo_dim8_ggZZCorrUp		  [nAQGCcat]);
+	  histo_ggZZCorrDown           [iref]->Scale(0); histo_ggZZCorrDown	       [iref]->Add(histo_Baseline[iref]); histo_ggZZCorrDown	       [iref]->Multiply(histo_dim8_ggZZCorrDown 	  [nAQGCcat]);
 	}
       }
       if(isZeroYield[0] == false || isZeroYield[1] == false) printf("\n");
