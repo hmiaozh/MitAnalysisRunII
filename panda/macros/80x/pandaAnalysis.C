@@ -335,7 +335,7 @@ void pandaAnalysis(int whichDY, int whichAnaFlow = 0, unsigned int period = 0, d
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 116;
+  const int allPlots = 106;
   const int histBins = 9;
   TH1D* histo[allPlots][histBins];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
@@ -352,8 +352,9 @@ void pandaAnalysis(int whichDY, int whichAnaFlow = 0, unsigned int period = 0, d
     else if(thePlot >= 92 && thePlot <= 95) {nBinPlot =  90; xminPlot =  0.0; xmaxPlot =180;}
     else if(thePlot >= 96 && thePlot <= 97) {nBinPlot = 180; xminPlot = -TMath::Pi(); xmaxPlot = TMath::Pi();}
     else if(thePlot >= 98 && thePlot <= 99) {nBinPlot =  96; xminPlot = -2.4; xmaxPlot = 2.4;}
-    else if(thePlot >=100 && thePlot <=101) {nBinPlot = 400; xminPlot = -20; xmaxPlot = 20;}
-    else if(thePlot >=102 && thePlot <=115) {nBinPlot =  96; xminPlot = -2.4; xmaxPlot = 2.4;}
+    else if(thePlot >=100 && thePlot <=101) {nBinPlot =  50; xminPlot = 100; xmaxPlot = 1100;}
+    else if(thePlot >=102 && thePlot <=103) {nBinPlot =  48; xminPlot = -2.4; xmaxPlot = 2.4;}
+    else if(thePlot >=104 && thePlot <=105) {nBinPlot =  6; xminPlot = 0.5; xmaxPlot = 6.5;}
     TH1D* histos;
     if     (thePlot != 20 && thePlot != 21){
       histos = new TH1D("histos", "histos", nBinPlot, xminPlot, xmaxPlot);
@@ -1648,39 +1649,11 @@ void pandaAnalysis(int whichDY, int whichAnaFlow = 0, unsigned int period = 0, d
 	  histo[lepType+96][theCategory]->Fill(thePandaFlat.looseLep2Phi,totalWeight);
 	  histo[lepType+98][theCategory]->Fill(thePandaFlat.looseLep1SCEta,totalWeight);
 	  histo[lepType+98][theCategory]->Fill(thePandaFlat.looseLep2SCEta,totalWeight);
-	  histo[lepType+100][theCategory]->Fill(TMath::Min(TMath::Max((double)thePandaFlat.zPos,-19.999),19.999),totalWeight);
-          //histoEtaPhi2D[lepType+0][theCategory]->Fill(thePandaFlat.looseLep1Phi,thePandaFlat.looseLep1Eta,totalWeight);
-          //histoEtaPhi2D[lepType+0][theCategory]->Fill(thePandaFlat.looseLep2Phi,thePandaFlat.looseLep2Eta,totalWeight);
-          //histoEtaPhi2D[lepType+2][theCategory]->Fill(thePandaFlat.looseLep1Phi,thePandaFlat.looseLep1SCEta,totalWeight);
-          //histoEtaPhi2D[lepType+2][theCategory]->Fill(thePandaFlat.looseLep2Phi,thePandaFlat.looseLep2SCEta,totalWeight);
-	  if     (thePandaFlat.zPos < -5) {
-	    histo[lepType+102][theCategory]->Fill(thePandaFlat.looseLep1Eta,totalWeight);
-	    histo[lepType+102][theCategory]->Fill(thePandaFlat.looseLep2Eta,totalWeight);
-	  }
-	  else if(thePandaFlat.zPos < -3) {
-	    histo[lepType+104][theCategory]->Fill(thePandaFlat.looseLep1Eta,totalWeight);
-	    histo[lepType+104][theCategory]->Fill(thePandaFlat.looseLep2Eta,totalWeight);
-	  }
-	  else if(thePandaFlat.zPos < -1) {
-	    histo[lepType+106][theCategory]->Fill(thePandaFlat.looseLep1Eta,totalWeight);
-	    histo[lepType+106][theCategory]->Fill(thePandaFlat.looseLep2Eta,totalWeight);
-	  }
-	  else if(thePandaFlat.zPos <  1) {
-	    histo[lepType+108][theCategory]->Fill(thePandaFlat.looseLep1Eta,totalWeight);
-	    histo[lepType+108][theCategory]->Fill(thePandaFlat.looseLep2Eta,totalWeight);
-	  }
-	  else if(thePandaFlat.zPos <  3) {
-	    histo[lepType+110][theCategory]->Fill(thePandaFlat.looseLep1Eta,totalWeight);
-	    histo[lepType+110][theCategory]->Fill(thePandaFlat.looseLep2Eta,totalWeight);
-	  }
-	  else if(thePandaFlat.zPos <  5) {
-	    histo[lepType+112][theCategory]->Fill(thePandaFlat.looseLep1Eta,totalWeight);
-	    histo[lepType+112][theCategory]->Fill(thePandaFlat.looseLep2Eta,totalWeight);
-	  }
-	  else {
-	    histo[lepType+114][theCategory]->Fill(thePandaFlat.looseLep1Eta,totalWeight);
-	    histo[lepType+114][theCategory]->Fill(thePandaFlat.looseLep2Eta,totalWeight);
-           }
+          if(TMath::Abs(thePandaFlat.jet1Eta) < 2.4 && thePandaFlat.jet1Pt > 100) {
+             histo[lepType+100][theCategory]->Fill(TMath::Min((double)thePandaFlat.jet1Pt,1099.999),totalWeight);
+             histo[lepType+102][theCategory]->Fill(thePandaFlat.jet1Eta,totalWeight);
+             histo[lepType+104][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJet,6.499),totalWeight);
+          }
         }
         else {
           for(int theLepType = 0; theLepType<2; theLepType++) {
@@ -1775,39 +1748,10 @@ void pandaAnalysis(int whichDY, int whichAnaFlow = 0, unsigned int period = 0, d
 	    histo[theLepType+96][theCategory]->Fill(thePandaFlat.looseLep2Phi,totalWeight*theKeff);
 	    histo[theLepType+98][theCategory]->Fill(thePandaFlat.looseLep1SCEta,totalWeight*theKeff);
 	    histo[theLepType+98][theCategory]->Fill(thePandaFlat.looseLep2SCEta,totalWeight*theKeff);
-	    histo[theLepType+100][theCategory]->Fill(TMath::Min(TMath::Max((double)thePandaFlat.zPos,-19.999),19.999),totalWeight*theKeff);
-	    if(thePandaFlat.looseLep1Eta >  2.1 && thePandaFlat.looseLep2Eta >  2.1) histo[theLepType+102][theCategory]->Fill(TMath::Min(TMath::Max((double)thePandaFlat.zPos,-19.999),19.999),totalWeight*theKeff);
-            //histoEtaPhi2D[theLepType+0][theCategory]->Fill(thePandaFlat.looseLep1Phi,thePandaFlat.looseLep1Eta,totalWeight*theKeff);
-            //histoEtaPhi2D[theLepType+0][theCategory]->Fill(thePandaFlat.looseLep2Phi,thePandaFlat.looseLep2Eta,totalWeight*theKeff);
-            //histoEtaPhi2D[theLepType+2][theCategory]->Fill(thePandaFlat.looseLep1Phi,thePandaFlat.looseLep1SCEta,totalWeight*theKeff);
-            //histoEtaPhi2D[theLepType+2][theCategory]->Fill(thePandaFlat.looseLep2Phi,thePandaFlat.looseLep2SCEta,totalWeight*theKeff);
-	    if     (thePandaFlat.zPos < -5) {
-	      histo[theLepType+102][theCategory]->Fill(thePandaFlat.looseLep1Eta,totalWeight*theKeff);
-	      histo[theLepType+102][theCategory]->Fill(thePandaFlat.looseLep2Eta,totalWeight*theKeff);
-	    }
-	    else if(thePandaFlat.zPos < -3) {
-	      histo[theLepType+104][theCategory]->Fill(thePandaFlat.looseLep1Eta,totalWeight*theKeff);
-	      histo[theLepType+104][theCategory]->Fill(thePandaFlat.looseLep2Eta,totalWeight*theKeff);
-	    }
-	    else if(thePandaFlat.zPos < -1) {
-	      histo[theLepType+106][theCategory]->Fill(thePandaFlat.looseLep1Eta,totalWeight*theKeff);
-	      histo[theLepType+106][theCategory]->Fill(thePandaFlat.looseLep2Eta,totalWeight*theKeff);
-	    }
-	    else if(thePandaFlat.zPos <  1) {
-	      histo[theLepType+108][theCategory]->Fill(thePandaFlat.looseLep1Eta,totalWeight*theKeff);
-	      histo[theLepType+108][theCategory]->Fill(thePandaFlat.looseLep2Eta,totalWeight*theKeff);
-	    }
-	    else if(thePandaFlat.zPos <  3) {
-	      histo[theLepType+110][theCategory]->Fill(thePandaFlat.looseLep1Eta,totalWeight*theKeff);
-	      histo[theLepType+110][theCategory]->Fill(thePandaFlat.looseLep2Eta,totalWeight*theKeff);
-	    }
-	    else if(thePandaFlat.zPos <  5) {
-	      histo[theLepType+112][theCategory]->Fill(thePandaFlat.looseLep1Eta,totalWeight*theKeff);
-	      histo[theLepType+112][theCategory]->Fill(thePandaFlat.looseLep2Eta,totalWeight*theKeff);
-	    }
-	    else {
-	      histo[theLepType+114][theCategory]->Fill(thePandaFlat.looseLep1Eta,totalWeight*theKeff);
-	      histo[theLepType+114][theCategory]->Fill(thePandaFlat.looseLep2Eta,totalWeight*theKeff);
+            if(TMath::Abs(thePandaFlat.jet1Eta) < 2.4 && thePandaFlat.jet1Pt > 100) {
+               histo[theLepType+100][theCategory]->Fill(TMath::Min((double)thePandaFlat.jet1Pt,1099.999),totalWeight*theKeff);
+               histo[theLepType+102][theCategory]->Fill(thePandaFlat.jet1Eta,totalWeight*theKeff);
+               histo[theLepType+104][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJet,6.499),totalWeight*theKeff);
             }
           } // end category == 5
         }

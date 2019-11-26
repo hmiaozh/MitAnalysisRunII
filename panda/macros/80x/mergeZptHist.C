@@ -1,10 +1,5 @@
 // v_001_0 --> useDressedLeptons = true; minGenPhotonPt = 0.0
-// v_001_1 --> useDressedLeptons = true; minGenPhotonPt = 0.1
-// v_001_2 --> useDressedLeptons = true; minGenPhotonPt = 0.2
-// v_001_3 --> useDressedLeptons = true; minGenPhotonPt = 0.5
-// v_001_4 --> useDressedLeptons = true; minGenPhotonPt = 1.0
-// v_001_5 --> useDressedLeptons = false;
-// v_001_6 --> useDressedLeptons = true; minGenPhotonPt = inf
+// v_001_1 --> useDressedLeptons = false;
 
 void mergeZptHist(int nsel = 0) {
 TString inputFolder = "/data/t3home000/ceballos/panda/v_001_0";
