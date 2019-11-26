@@ -14,7 +14,7 @@
 #include "MitAnalysisRunII/panda/macros/9x/pandaFlat.C"
 #include "MitAnalysisRunII/panda/macros/9x/common.h"
 
-void makeAQGCSSWWDataCards(TString baseFolder = ".", TString outputLimits = "ssww_comb_input.root", int fidAna = 3){
+void makeAQGCSSWWDataCards(TString baseFolder = ".", TString outputLimits = "ssww_comb_input.root", int fidAna = 4){
 
   int year = -1;
   if     (outputLimits.Contains("2016")) year = 2016;
@@ -28,7 +28,7 @@ void makeAQGCSSWWDataCards(TString baseFolder = ".", TString outputLimits = "ssw
   else {printf("Wrong year (%d)!\n",year); return;}
 
   TString fidAnaName = "";
-  if(fidAna == 3) fidAnaName = "_fiducial3";
+  if(fidAna >= 1) fidAnaName = Form("_fiducial%d",fidAna);
 
   double syst_WZl[2] = {1.010, 1.012};
 
@@ -201,8 +201,7 @@ void makeAQGCSSWWDataCards(TString baseFolder = ".", TString outputLimits = "ssw
 
   for(unsigned ic=0; ic<nPlotCategories; ic++) {
     if(!histo_Baseline[ic]) continue;
-    if(ic== kPlotData || ic == kPlotNonPrompt || ic == kPlotEWKWZ || ic == kPlotEWKSSWW || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotEWKWZ_dim8 || ic == kPlotEWKSSWW_dim8) continue;
+    if(ic== kPlotData || ic == kPlotNonPrompt || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
     newcardShape << Form("QCDScale_%s_ACCEPT    shape   ",plotBaseNames[ic].Data());
     for(unsigned ic2=0; ic2<nPlotCategories; ic2++) {
       if(!histo_Baseline[ic2]) continue;

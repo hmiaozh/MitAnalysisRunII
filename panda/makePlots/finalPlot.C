@@ -219,7 +219,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   if(isLogY == true) c1->SetLogy();
   if(isLogX == true) c1->SetLogx();
   myPlot.Draw(ReBin);  // Can pass a rebin 
-  CMS_lumi( c1, year, 11 );
+  CMS_lumi( c1, year, 1 );
   } else {
   c1->SetBottomMargin(0.1);
   c1->cd();

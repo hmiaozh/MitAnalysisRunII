@@ -13,8 +13,8 @@
 
 #include "MitAnalysisRunII/panda/macros/9x/makeAQGCSSWWDataCards.C"
 
-void makeAllAQGCSSWWDataCards(TString baseFolder){
-  TString fidAnaName = "_fiducial3";
+void makeAllAQGCSSWWDataCards(TString baseFolder = "/home/ceballos/ana_area/ana_ssww"){
+  TString fidAnaName = "_fiducial4";
   int nscanTot = nscan_ft0 + nscan_ft1 + nscan_ft2 + nscan_fm0 + nscan_fm1 + nscan_fm6 + nscan_fm7 + nscan_fs0 + nscan_fs1;
   for(int year=2016; year<=2018; year++){
     for(int iscan=0; iscan<nscanTot; iscan++){
