@@ -180,7 +180,7 @@ std::map<int, TString> plotNames={
     { kPlotZZ	       , "ZZ"},
     { kPlotWZ	       , "WZ"},
     { kPlotEWKWZ       , "EWK WZ"},
-    { kPlotVVV         , "VVV"},
+    { kPlotVVV         , "VVV/t#bar{t}V"},
     { kPlotVG	       , "V#gamma" },
     { kPlotNonPrompt   , "Nonprompt"},
     { kPlotHiggs       , "Higgs"},

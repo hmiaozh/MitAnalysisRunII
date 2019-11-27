@@ -36,7 +36,17 @@ do
   fi
 done
 
-else
+elif [ $# == 1 ] && [ $1 == "ssww" ]; then
+
+for i in `seq 0 100`;
+do
+  ls done_ana/histossww_2016_${i}.root done_ana/histossww_2017_${i}.root done_ana/histossww_2018_${i}.root >& /dev/null
+  if [ $? -eq 0 ]; then
+    hadd -f done_ana/histossww_2019_${i}.root done_ana/histossww_2016_${i}.root done_ana/histossww_2017_${i}.root done_ana/histossww_2018_${i}.root
+  fi
+done
+
+elif [ $# == 1 ] && [ $1 == "zh" ]; then
 
 for i in `seq 0 100`;
 do
@@ -59,14 +69,6 @@ do
   ls done_ana/histoZZ_2016_${i}.root done_ana/histoZZ_2017_${i}.root done_ana/histoZZ_2018_${i}.root >& /dev/null
   if [ $? -eq 0 ]; then
     hadd -f done_ana/histoZZ_2019_${i}.root done_ana/histoZZ_2016_${i}.root done_ana/histoZZ_2017_${i}.root done_ana/histoZZ_2018_${i}.root
-  fi
-done
-
-for i in `seq 0 100`;
-do
-  ls done_ana/histossww_2016_${i}.root done_ana/histossww_2017_${i}.root done_ana/histossww_2018_${i}.root >& /dev/null
-  if [ $? -eq 0 ]; then
-    hadd -f done_ana/histossww_2019_${i}.root done_ana/histossww_2016_${i}.root done_ana/histossww_2017_${i}.root done_ana/histossww_2018_${i}.root
   fi
 done
 

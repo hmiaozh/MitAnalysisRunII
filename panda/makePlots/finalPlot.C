@@ -22,7 +22,7 @@ double scaling[8] = {1,1,1,1,1,1,1,1};
 
 bool isLogSpecial = false;
 bool isLogX = false;
-bool printRatios = true;
+bool printRatios = false;
 bool printYieldsBinByBin = false;
 
 void eraselabel(TPad *p,Double_t h){
@@ -109,6 +109,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   TH1F* hBck = 0;
   for(int ic=0; ic<nPlotCategories; ic++){
     _hist[ic] = (TH1F*)file->Get(Form("histo%d",ic));
+    if(!_hist[ic]) continue;
     if(isRemoveBSM && ic == kPlotBSM) _hist[ic]->Scale(0);
     //for(int i=1; i<=_hist[ic]->GetNbinsX(); i++) if(_hist[ic]->GetSumOfWeights() > 0) printf("%10s(%2d): %.1f\n",plotBaseNames[ic].Data(),i,_hist[ic]->GetBinContent(i));
     for(int i=1; i<=_hist[ic]->GetNbinsX(); i++) if(_hist[ic]->GetBinContent(i)<0) _hist[ic]->SetBinContent(i,0);
@@ -205,6 +206,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   if(applyScaling == true) hBck->Scale(scale);
 
   for(int ic=0; ic<nPlotCategories; ic++){
+    if(!_hist[ic]) continue;
     if(isBlind == true && ic == kPlotData) continue;
     if(applyScaling == true && ic != kPlotData && ic != kPlotBSM) _hist[ic]->Scale(scale);
     if(_hist[ic]->GetSumOfWeights() > 0) myPlot.setMCHist(ic, _hist[ic]);
@@ -213,7 +215,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   TCanvas* c1 = new TCanvas("c1", "c1",5,5,500,500);
 
   double maxRatio = 0.0;
-  double minRatio = 0.0;
+  double minRatio = 1.0;
 
   if(show2D==false){
   if(isLogY == true) c1->SetLogy();
@@ -352,7 +354,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   Double_t dy = TMath::Max(TMath::Abs(hRatio->GetMaximum()),
                            TMath::Abs(hRatio->GetMinimum())) + theLines[1];
   if(showPulls) hBand->GetYaxis()->SetRangeUser(-dy, +dy);
-  else          hBand->GetYaxis()->SetRangeUser(TMath::Min(minRatio,0.301),TMath::Min( TMath::Max(maxRatio+0.1,1.699),4.999));
+  else          hBand->GetYaxis()->SetRangeUser(TMath::Min(minRatio,0.701),TMath::Min( TMath::Max(maxRatio+0.1,1.299),4.999));
   hRatio->GetYaxis()->CenterTitle();
   eraselabel(pad1,hData->GetXaxis()->GetLabelSize());
   }
