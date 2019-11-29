@@ -42,6 +42,7 @@ PandaAnalysis/T3/merging/merge.py --cfg leptonic DYJetsToLL_M-50_NLO
 #PandaAnalysis/T3/merging/merge.py --cfg leptonic ZtoNuNu_pt400to650
 #PandaAnalysis/T3/merging/merge.py --cfg leptonic ZtoNuNu_pt650toinf
 PandaAnalysis/T3/merging/merge.py --cfg leptonic WJets
+PandaAnalysis/T3/merging/merge.py --cfg leptonic WpWp_EWK_QCD
 PandaAnalysis/T3/merging/merge.py --cfg leptonic WpWp_EWK
 PandaAnalysis/T3/merging/merge.py --cfg leptonic WpWp_QCD
 #PandaAnalysis/T3/merging/merge.py --cfg leptonic DYJetsToEE_POWHEG_MINLO
