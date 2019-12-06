@@ -55,7 +55,7 @@ int year, int mH = 125
   TString effSFPath = Form("MitAnalysisRunII/data/90x/histoDY0EffSFStudy_%d.root",year);
   //TString npvPath = Form("MitAnalysisRunII/data/90x/npvWeights_%d.root",year);
   if(year == 2018) {
-    filesPath = Form("/local/bmaier/darkg/2018/vbfg_v_013_v9_puppi/");
+    filesPath = Form("/local/bmaier/darkg/2018/vbfg_v_013_v8_puppi/");
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
     photonSFPath = "MitAnalysisRunII/data/90x/2018_PhotonsMedium.root";
 
@@ -278,40 +278,44 @@ int year, int mH = 125
   delete ftrgSF;
 
   // (mjj<=X/>=X) 0: SR , 1: passLGSel, 2: passLSel, 3: passGJSel, 4: passLLGSel
-  //const int nBinMVA1D2016 = 8; Double_t xbins1D2016[nBinMVA1D2016+1] = {0,   30,   65,   100,  130,  160,  200,  250, 1000};
   const int nBinMVA1D2016 = 7; Double_t xbins1D2016[nBinMVA1D2016+1] = {0,   30,   65,   100,  170,  330,  530, 1000};
   const int nBinMVA1D2017 = 5; Double_t xbins1D2017[nBinMVA1D2017+1] = {0,   30,   65,   100,  200,  1000};
-  //const int nBinMVA1D2018 = 7; Double_t xbins1D2018[nBinMVA1D2018+1] = {0,   30,   65,   100,  130,  200,  250, 1000};
   const int nBinMVA1D2018 = 7; Double_t xbins1D2018[nBinMVA1D2018+1] = {0,   30,   65,   100,  170,  330,  530, 1000};
+  const int nBinMVA1DAdd2016 = 7; Double_t xbins1DAdd2016[nBinMVA1DAdd2016+1] = {1000,1100,2000,2100,3000,3100,4000,5000};
+  const int nBinMVA1DAdd2017 = 5; Double_t xbins1DAdd2017[nBinMVA1DAdd2017+1] = {1000,1100,2000,3000,4000,5000};
+  const int nBinMVA1DAdd2018 = 7; Double_t xbins1DAdd2018[nBinMVA1DAdd2018+1] = {1000,1100,2000,2100,3000,3100,4000,5000};
 
-  int nBinMVA1DAux = -1; Double_t xbins1DAux[TMath::Max(TMath::Max(nBinMVA1D2016,nBinMVA1D2017),nBinMVA1D2018)+1];
+  int nBinMVA1DAux = 0; Double_t xbins1DAux[TMath::Max(TMath::Max(nBinMVA1D2016,nBinMVA1D2017),nBinMVA1D2018)+1];
+  int nBinMVA1DAddAux = 0; Double_t xbins1DAddAux[TMath::Max(TMath::Max(nBinMVA1DAdd2016,nBinMVA1DAdd2017),nBinMVA1DAdd2018)+1];
   if     (year == 2016){
     nBinMVA1DAux = nBinMVA1D2016;
     for(int i=0; i<=nBinMVA1DAux; i++) xbins1DAux[i] = xbins1D2016[i];
+    nBinMVA1DAddAux = nBinMVA1DAdd2016;
+    for(int i=0; i<=nBinMVA1DAddAux; i++) xbins1DAddAux[i] = xbins1DAdd2016[i];
   }
   else if(year == 2017){
     nBinMVA1DAux = nBinMVA1D2017;
     for(int i=0; i<=nBinMVA1DAux; i++) xbins1DAux[i] = xbins1D2017[i];
+    nBinMVA1DAddAux = nBinMVA1DAdd2017;
+    for(int i=0; i<=nBinMVA1DAddAux; i++) xbins1DAddAux[i] = xbins1DAdd2017[i];
   }
   else if(year == 2018){
     nBinMVA1DAux = nBinMVA1D2018;
     for(int i=0; i<=nBinMVA1DAux; i++) xbins1DAux[i] = xbins1D2018[i];
+    nBinMVA1DAddAux = nBinMVA1DAdd2018;
+    for(int i=0; i<=nBinMVA1DAddAux; i++) xbins1DAddAux[i] = xbins1DAdd2018[i];
   }
   const int nBinMVA1D = nBinMVA1DAux; Double_t xbins1D[nBinMVA1D+1];
   for(int i=0; i<=nBinMVA1D; i++) xbins1D[i] = xbins1DAux[i];
+  const int nBinMVA1DAdd = nBinMVA1DAddAux; Double_t xbins1DAdd[nBinMVA1DAdd+1];
+  for(int i=0; i<=nBinMVA1DAdd; i++) xbins1DAdd[i] = xbins1DAddAux[i];
 
-  const int nBinMVA = 2*nBinMVA1D+2*2+2*2+1*2+1*2; Double_t xbins[nBinMVA+1];
-  for(int i=0; i<nBinMVA1D; i++) xbins[i+0*nBinMVA1D+0] = xbins1D[i];
-  xbins[1*nBinMVA1D+0] = 1000; xbins[1*nBinMVA1D+1] = 1100;
-  xbins[1*nBinMVA1D+2] = 2000; xbins[1*nBinMVA1D+3] = 2100;
-  xbins[1*nBinMVA1D+4] = 3000; 
-  xbins[1*nBinMVA1D+5] = 4000;
-  for(int i=0; i<nBinMVA1D; i++) xbins[i+1*nBinMVA1D+6] = xbins1D[i]+5000;
-  xbins[2*nBinMVA1D+6+0] = 6000; xbins[2*nBinMVA1D+6+1] = 6100;
-  xbins[2*nBinMVA1D+6+2] = 7000; xbins[2*nBinMVA1D+6+3] = 7100;
-  xbins[2*nBinMVA1D+6+4] = 8000;
-  xbins[2*nBinMVA1D+6+5] = 9000; 
-  xbins[2*nBinMVA1D+6+6] = 10000;
+  const int nBinMVA = 2*nBinMVA1D+2*nBinMVA1DAdd; Double_t xbins[nBinMVA+1];
+  for(int i=0; i<=nBinMVA1D;    i++) xbins[i+0*nBinMVA1D+0*nBinMVA1DAdd] = xbins1D   [i];
+  for(int i=0; i<=nBinMVA1DAdd; i++) xbins[i+1*nBinMVA1D+0*nBinMVA1DAdd] = xbins1DAdd[i];
+  for(int i=0; i<=nBinMVA1D;    i++) xbins[i+1*nBinMVA1D+1*nBinMVA1DAdd] = xbins1D   [i]+5000;
+  for(int i=0; i<=nBinMVA1DAdd; i++) xbins[i+2*nBinMVA1D+1*nBinMVA1DAdd] = xbins1DAdd[i]+5000;
+  xbins[nBinMVA] = 10000;
   for(int i=0; i<=nBinMVA; i++) printf("(%d,%.0f) ",i,xbins[i]); printf("\n");
   const int nBinMT1D = 7; Double_t xbinsMT1D[nBinMT1D+1] = {0, 25, 50, 75, 100, 190, 300, 1000};
 
@@ -659,7 +663,7 @@ int year, int mH = 125
       }
 
       double metCutVal = 100;
-      if(year == 2018) metCutVal = 80;
+      if(year == 2018) metCutVal = 100; // 80;
       bool passZMass = TMath::Abs(mLL-91.1876) < 15.0;
       bool passMET = vMet.Pt() > metCutVal; bool passMETUp = vMetUp.Pt() > metCutVal; bool passMETDown = vMetDown.Pt() > metCutVal;
 
@@ -721,7 +725,7 @@ int year, int mH = 125
 
       double dPhiJetCutVal = 1.0;
       if     (year == 2017) dPhiJetCutVal = 1.7;
-      else if(year == 2018) dPhiJetCutVal = 1.9;
+      else if(year == 2018) dPhiJetCutVal = 1.5; // 1.9;
       bool passDPhiJetMET     = dPhiJetMET     >= dPhiJetCutVal || theMinSelType == GJSEL;
       bool passDPhiJetMETUp   = dPhiJetMETUp   >= dPhiJetCutVal || theMinSelType == GJSEL;
       bool passDPhiJetMETDown = dPhiJetMETDown >= dPhiJetCutVal || theMinSelType == GJSEL;
@@ -1072,14 +1076,10 @@ int year, int mH = 125
   histo_WJNorm00Down->Add(histo_Baseline[kPlotWJ]);
   histo_WJNorm01Up  ->Add(histo_Baseline[kPlotWJ]);
   histo_WJNorm01Down->Add(histo_Baseline[kPlotWJ]);
-  //histo_WJNorm02Up  ->Add(histo_Baseline[kPlotWJ]);
-  //histo_WJNorm02Down->Add(histo_Baseline[kPlotWJ]);
   histo_WJNorm10Up  ->Add(histo_Baseline[kPlotWJ]);
   histo_WJNorm10Down->Add(histo_Baseline[kPlotWJ]);
   histo_WJNorm11Up  ->Add(histo_Baseline[kPlotWJ]);
   histo_WJNorm11Down->Add(histo_Baseline[kPlotWJ]);
-  //histo_WJNorm12Up  ->Add(histo_Baseline[kPlotWJ]);
-  //histo_WJNorm12Down->Add(histo_Baseline[kPlotWJ]);
   for(int i=1; i<=histo_Baseline[kPlotWJ]->GetNbinsX(); i++) {
     if     (histo_Baseline[kPlotWJ]->GetBinCenter(i) <= 100){
       histo_WJNorm00Up  ->SetBinContent(i,histo_WJNorm00Up  ->GetBinContent(i)*100.0);
@@ -1089,10 +1089,6 @@ int year, int mH = 125
       histo_WJNorm01Up  ->SetBinContent(i,histo_WJNorm01Up  ->GetBinContent(i)*100.0);
       histo_WJNorm01Down->SetBinContent(i,histo_WJNorm01Down->GetBinContent(i)/100.0);
     }
-    //else if(histo_Baseline[kPlotWJ]->GetBinCenter(i) <= 1000){
-    //  histo_WJNorm02Up  ->SetBinContent(i,histo_WJNorm02Up  ->GetBinContent(i)*100.0);
-    //  histo_WJNorm02Down->SetBinContent(i,histo_WJNorm02Down->GetBinContent(i)/100.0);
-    //}
     else if(histo_Baseline[kPlotWJ]->GetBinCenter(i) <= 1100){
       histo_WJNorm00Up  ->SetBinContent(i,histo_WJNorm00Up  ->GetBinContent(i)*100.0);
       histo_WJNorm00Down->SetBinContent(i,histo_WJNorm00Down->GetBinContent(i)/100.0);
@@ -1101,10 +1097,6 @@ int year, int mH = 125
       histo_WJNorm01Up  ->SetBinContent(i,histo_WJNorm01Up  ->GetBinContent(i)*100.0);
       histo_WJNorm01Down->SetBinContent(i,histo_WJNorm01Down->GetBinContent(i)/100.0);
     }
-    //else if(histo_Baseline[kPlotWJ]->GetBinCenter(i) <= 2000){
-    //  histo_WJNorm02Up  ->SetBinContent(i,histo_WJNorm02Up  ->GetBinContent(i)*100.0);
-    //  histo_WJNorm02Down->SetBinContent(i,histo_WJNorm02Down->GetBinContent(i)/100.0);
-    //}
     else if(histo_Baseline[kPlotWJ]->GetBinCenter(i) <= 5000){
     }
     else if(histo_Baseline[kPlotWJ]->GetBinCenter(i) <= 5100){
@@ -1115,10 +1107,6 @@ int year, int mH = 125
       histo_WJNorm11Up  ->SetBinContent(i,histo_WJNorm11Up  ->GetBinContent(i)*100.0);
       histo_WJNorm11Down->SetBinContent(i,histo_WJNorm11Down->GetBinContent(i)/100.0);
     }
-    //else if(histo_Baseline[kPlotWJ]->GetBinCenter(i) <= 6000){
-    //  histo_WJNorm12Up  ->SetBinContent(i,histo_WJNorm12Up  ->GetBinContent(i)*100.0);
-    //  histo_WJNorm12Down->SetBinContent(i,histo_WJNorm12Down->GetBinContent(i)/100.0);
-    //}
     else if(histo_Baseline[kPlotWJ]->GetBinCenter(i) <= 6100){
       histo_WJNorm10Up  ->SetBinContent(i,histo_WJNorm10Up  ->GetBinContent(i)*100.0);
       histo_WJNorm10Down->SetBinContent(i,histo_WJNorm10Down->GetBinContent(i)/100.0);
@@ -1127,10 +1115,6 @@ int year, int mH = 125
       histo_WJNorm11Up  ->SetBinContent(i,histo_WJNorm11Up  ->GetBinContent(i)*100.0);
       histo_WJNorm11Down->SetBinContent(i,histo_WJNorm11Down->GetBinContent(i)/100.0);
     }
-    //else if(histo_Baseline[kPlotWJ]->GetBinCenter(i) <= 7000){
-    //  histo_WJNorm12Up  ->SetBinContent(i,histo_WJNorm12Up  ->GetBinContent(i)*100.0);
-    //  histo_WJNorm12Down->SetBinContent(i,histo_WJNorm12Down->GetBinContent(i)/100.0);
-    //}
     else if(histo_Baseline[kPlotWJ]->GetBinCenter(i) <= 10000){
     }
   }
@@ -1543,14 +1527,10 @@ int year, int mH = 125
   histo_WJNorm00Down->Write();
   histo_WJNorm01Up  ->Write();
   histo_WJNorm01Down->Write();
-  //histo_WJNorm02Up  ->Write();
-  //histo_WJNorm02Down->Write();
   histo_WJNorm10Up  ->Write();
   histo_WJNorm10Down->Write();
   histo_WJNorm11Up  ->Write();
   histo_WJNorm11Down->Write();
-  //histo_WJNorm12Up  ->Write();
-  //histo_WJNorm12Down->Write();
   outFileLimits->Close();
 
 
@@ -1801,14 +1781,6 @@ int year, int mH = 125
   }
   newcardShape << Form("\n");
 
-  //newcardShape << Form("CMS_WJNorm02_%d    shape     ",year);
-  //for (int ic=0; ic<nPlotCategories; ic++){
-  //  if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-  //  if(ic == kPlotWJ) newcardShape << Form("1.0 ");
-  //  else              newcardShape << Form("- ");
-  //}
-  //newcardShape << Form("\n");
-
   newcardShape << Form("CMS_WJNorm10_%d    shape     ",year);
   for (int ic=0; ic<nPlotCategories; ic++){
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
@@ -1824,14 +1796,6 @@ int year, int mH = 125
     else              newcardShape << Form("- ");
   }
   newcardShape << Form("\n");
-
-  //newcardShape << Form("CMS_WJNorm12_%d    shape     ",year);
-  //for (int ic=0; ic<nPlotCategories; ic++){
-  //  if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-  //  if(ic == kPlotWJ) newcardShape << Form("1.0 ");
-  //  else              newcardShape << Form("- ");
-  //}
-  //newcardShape << Form("\n");
 
   newcardShape << Form("ch1 autoMCStats 0\n");
 

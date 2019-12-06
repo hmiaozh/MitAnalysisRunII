@@ -86,6 +86,7 @@ void skimmingAnalysis(int year, int specialMC = 0)
     infileName_.push_back(Form("DYNJetsToLL_NLO.root"));
     infileName_.push_back(Form("H125.root"));
     infileName_.push_back(Form("TT.root"));
+    infileName_.push_back(Form("TT1L.root"));
     infileName_.push_back(Form("TT2L.root"));
     infileName_.push_back(Form("TTV.root"));
     infileName_.push_back(Form("TTVV.root"));

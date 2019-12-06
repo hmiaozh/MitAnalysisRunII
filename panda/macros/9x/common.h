@@ -191,7 +191,7 @@ std::map<int, TString> plotNames={
     { kPlotEM	       , "Top quark/WW"},
     { kPlotBSM         , "BSM"},
     { kPlotSignal0     , "Signal 0"},
-    { kPlotSignal1     , "Signal 1"},
+    { kPlotSignal1     , "W_{X}W_{T}"},
     { kPlotSignal2     , "Signal 2"},
     { kPlotSignal3     , "Signal 3"},
     { kPlotEWKSSWW_dim8, "EWKSSWW_dim8"},

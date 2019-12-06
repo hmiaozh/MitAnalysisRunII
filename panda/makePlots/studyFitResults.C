@@ -63,22 +63,22 @@ void studyFitResults(int nsel = 0,  TString plotName = "done_ana/histoZHG_mH125_
     binToCount = kPlotEM;
   }
   else if(nsel == 10){ // SSWW SR
-    for(int i=32; i<53; i++) excludeBins[i] = i+1;
+    for(int i=32; i<58; i++) excludeBins[i] = i+1;
     binToCount = kPlotWZ;
   }
   else if(nsel == 11){ // btagged CR
     for(int i=0; i<32; i++) excludeBins[i] = i+1;
-    for(int i=40; i<53; i++) excludeBins[i] = i+1;
+    for(int i=40; i<58; i++) excludeBins[i] = i+1;
     binToCount = kPlotWZ;
   }
   else if(nsel == 12){ // ZZ CR
     for(int i=0; i<40; i++) excludeBins[i] = i+1;
-    for(int i=44; i<53; i++) excludeBins[i] = i+1;
+    for(int i=44; i<58; i++) excludeBins[i] = i+1;
     binToCount = kPlotWZ;
   }
   else if(nsel == 13){ // WZb CR
     for(int i=0; i<44; i++) excludeBins[i] = i+1;
-    for(int i=48; i<53; i++) excludeBins[i] = i+1;
+    for(int i=48; i<58; i++) excludeBins[i] = i+1;
     binToCount = kPlotWZ;
   }
   else if(nsel == 14){ // WZ CR
@@ -98,9 +98,9 @@ void studyFitResults(int nsel = 0,  TString plotName = "done_ana/histoZHG_mH125_
   for(int i=0; i<allExcludeBins; i++) if(excludeBins[i] != -1) printf(" %d",excludeBins[i]);
   printf("\n");
 
-  double totalSum[3]    = {0.0, 0.0, 0.0};
-  double totalSysUnc[3] = {0.0, 0.0, 0.0};
-  double totalStaUnc[3] = {0.0, 0.0, 0.0};
+  double totalSum[4]    = {0.0, 0.0, 0.0, 0.0};
+  double totalSysUnc[4] = {0.0, 0.0, 0.0, 0.0};
+  double totalStaUnc[4] = {0.0, 0.0, 0.0, 0.0};
 
   char outputLimitsCard[200];  					  
   sprintf(outputLimitsCard,"studyFitResults.txt");
@@ -145,6 +145,8 @@ void studyFitResults(int nsel = 0,  TString plotName = "done_ana/histoZHG_mH125_
 	  totalSysUnc[1] = totalSysUnc[1] + ((TH1F*)mlfit->Get(Form("shapes_fit_b/%s/total_background" ,channelName.Data())))->GetBinError  (i);
           totalSum[2]    = totalSum[2]    + ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/total_background" ,channelName.Data())))->GetBinContent(i);
 	  totalSysUnc[2] = totalSysUnc[2] + ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/total_background" ,channelName.Data())))->GetBinError  (i);
+          totalSum[3]    = totalSum[3]    + ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/total"            ,channelName.Data())))->GetBinContent(i);
+	  totalSysUnc[3] = totalSysUnc[3] + ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/total"            ,channelName.Data())))->GetBinError  (i);
         }
         SF_yieldB[ic]      = sum[2] / sum[0];
         SF_yieldB_unc[ic]  = sum[3] / sum[2];
@@ -170,11 +172,12 @@ void studyFitResults(int nsel = 0,  TString plotName = "done_ana/histoZHG_mH125_
       totalStaUnc[0] = totalStaUnc[0] + sum[1];
       totalStaUnc[1] = totalStaUnc[1] + sum[3];
       totalStaUnc[2] = totalStaUnc[2] + sum[5];
+      totalStaUnc[3] = totalStaUnc[3] + sum[5];
     }
     printf("Statistical[%s] (prefit/B/SB) = %.3f +/- %.3f | %.3f +/- %.3f | %.3f +/- %.3f\n",plotBaseNames[ic].Data(),sum[0],sqrt(sum[1]),sum[2],sqrt(sum[3]),sum[4],sqrt(sum[5]));
     newcardShape << Form("%f %f %f\n",sqrt(sum[1]),sqrt(sum[3]),sqrt(sum[5]));
   }
-  printf("Total background (prefit/B/SB) = %.3f +/- %.3f (%.3f) | %.3f +/- %.3f (%.3f) | %.3f +/- %.3f (%.3f)\n",totalSum[0],totalSysUnc[0],sqrt(totalStaUnc[0]),totalSum[1],totalSysUnc[1],sqrt(totalStaUnc[1]),totalSum[2],totalSysUnc[2],sqrt(totalStaUnc[2]));
+  printf("Total background (prefit/B/SB/all) = %.3f +/- %.3f (%.3f) | %.3f +/- %.3f (%.3f) | %.3f +/- %.3f (%.3f) | %.3f +/- %.3f (%.3f)\n",totalSum[0],totalSysUnc[0],sqrt(totalStaUnc[0]),totalSum[1],totalSysUnc[1],sqrt(totalStaUnc[1]),totalSum[2],totalSysUnc[2],sqrt(totalStaUnc[2]),totalSum[3],totalSysUnc[3],sqrt(totalStaUnc[3]));
   newcardShape << Form("Background %f %f %f %f %f %f %f %f %f\n",totalSum[0],totalSysUnc[0],sqrt(totalStaUnc[0]),totalSum[1],totalSysUnc[1],sqrt(totalStaUnc[1]),totalSum[2],totalSysUnc[2],sqrt(totalStaUnc[2]));
   newcardShape.close();
   char output[200];
