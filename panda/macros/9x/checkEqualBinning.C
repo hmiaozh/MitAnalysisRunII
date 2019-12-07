@@ -25,21 +25,23 @@ void checkEqualBinning(TString fileName = "", int numberOfBins = 8, bool debug =
   bool theCall[nBinBDT];
   for(int i=0; i<nBinBDT; i++) theCall[i] = false;
 
+  const double numberOfHistoBins = theHisto->GetNbinsX()/2.0;
+
   for(int nb=1; nb<=theHisto->GetNbinsX(); nb++){
     sum = sum +  theHisto->GetBinContent(nb) / theHisto->GetSumOfWeights();
     if(debug) printf("%5.3f\n",sum);
     for(int i=0; i<nBinBDT; i++) {
       if(theCall[i] == false && sum > theInterval[i]){
-        printf("%3d %5.2f %5.3f %d\n",nb,-1.0+nb/100.,sum,i);
+        printf("%3d %5.2f %5.3f %d\n",nb,-1.0+nb/numberOfHistoBins,sum,i);
 	theCall[i] = true;
-	toKeep[i] = -1.0+nb/100.;
+	toKeep[i] = -1.0+nb/numberOfHistoBins;
         break;
       }
     }
   }
 
   for(int i=0; i<nBinBDT; i++) {
-   if(theCall[i] == true) printf(",%5.2f",toKeep[i]);
+   if(theCall[i] == true) printf(",%6.3f",toKeep[i]);
   }
   printf("\n");
 }
