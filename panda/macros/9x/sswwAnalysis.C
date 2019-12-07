@@ -82,7 +82,9 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       infileName_.push_back(Form("%sWWjj_SS_lttt.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotSignal1);
       }
       else {
-      infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotEWKSSWW);
+      //infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotEWKSSWW);
+      infileName_.push_back(Form("%sWWjj_SS_long.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKSSWW);
+      infileName_.push_back(Form("%sWWjj_SS_lttt.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKSSWW);
       }
       infileName_.push_back(Form("%sWZ3l_MG_EWK.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
       if(fidAna == 4) {
@@ -127,7 +129,9 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       infileName_.push_back(Form("%sWWjj_SS_lttt.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotSignal1);
       }
       else {
-      infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotEWKSSWW);
+      //infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotEWKSSWW);
+      infileName_.push_back(Form("%sWWjj_SS_long.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKSSWW);
+      infileName_.push_back(Form("%sWWjj_SS_lttt.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKSSWW);
       }
       infileName_.push_back(Form("%sWZ3l_MG_EWK.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
       if(fidAna == 4) {
@@ -187,7 +191,9 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       infileName_.push_back(Form("%sWWjj_SS_lttt.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotSignal1);
       }
       else {
-      infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotEWKSSWW);
+      //infileName_.push_back(Form("%sWpWp_EWK.root" ,filesPath.Data())); 	  infileCat_.push_back(kPlotEWKSSWW);
+      infileName_.push_back(Form("%sWWjj_SS_long.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKSSWW);
+      infileName_.push_back(Form("%sWWjj_SS_lttt.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKSSWW);
       }
       infileName_.push_back(Form("%sWZ3l_MG_EWK.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotEWKWZ);
       if(fidAna == 4) {
@@ -300,7 +306,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   //const int nBinWWBDT = 8; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.00,-0.31,-0.05, 0.14, 0.29, 0.42, 0.54, 0.67,1.00}; // V1_v1
   //const int nBinWWBDT = 8; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.00,-0.31,-0.03, 0.17, 0.32, 0.45, 0.57, 0.68,1.00}; // V1_v2
   //const int nBinWWBDT = 8; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.00,-0.33,-0.05, 0.15, 0.31, 0.44, 0.56, 0.67,1.00}; // V1_v3
-  const int nBinWWBDT = 8; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.00,-0.28,-0.02, 0.18, 0.33, 0.46, 0.57, 0.68,1.00}; // V1_v6
+  const int nBinWWBDT = 8; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.00,-0.28,-0.01, 0.18, 0.33, 0.46, 0.57, 0.69,1.00}; // V1_v6
   //const int nBinWWBDT = 10; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.00,-0.35,-0.11, 0.07, 0.21, 0.33, 0.43, 0.53, 0.61, 0.71,1.00}; // V1_v6
   //const int nBinWWBDT = 8; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.00, 0.38, 0.51, 0.60, 0.67, 0.73, 0.79, 0.84,1.00}; // V1_v7
   //const int nBinMVA = 48+nBinWZBDT; Float_t xbins[nBinMVA+1];
@@ -885,9 +891,10 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       totSystem     = totSystem     + vJot1     + vJot2;     sumPtTot     = sumPtTot     + vJot1.Pt()     + vJot2.Pt();
       totSystemUp   = totSystemUp   + vJot1Up   + vJot2Up;   sumPtTotUp   = sumPtTotUp   + vJot1Up.Pt()   + vJot2Up.Pt();
       totSystemDown = totSystemDown + vJot1Down + vJot2Down; sumPtTotDown = sumPtTotDown + vJot1Down.Pt() + vJot2Down.Pt();
-      bool passZepMax     = thePandaFlat.nJot              >= 2 && maxLeptonZep     < 0.75;
-      bool passZepMaxUp   = thePandaFlat.nJot_JESTotalUp   >= 2 && maxLeptonZepUp   < 0.75;
-      bool passZepMaxDown = thePandaFlat.nJot_JESTotalDown >= 2 && maxLeptonZepDown < 0.75;
+      double maxLeptonZepCut = 0.75; if(fidAna == 5) maxLeptonZepCut = 1.0;
+      bool passZepMax     = thePandaFlat.nJot              >= 2 && maxLeptonZep     < maxLeptonZepCut;
+      bool passZepMaxUp   = thePandaFlat.nJot_JESTotalUp   >= 2 && maxLeptonZepUp   < maxLeptonZepCut;
+      bool passZepMaxDown = thePandaFlat.nJot_JESTotalDown >= 2 && maxLeptonZepDown < maxLeptonZepCut;
 
       double wzZep = 0; double wzZepUp = 0; double wzZepDown = 0;
       wzZep	= TMath::Abs(alllep.Eta()-(vJot1.Eta()+vJot2.Eta())/2.)/deltaEtaJJ;
@@ -1641,24 +1648,24 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 
           int whichBin = 0;
           if     (dataCardSel     == 0) MVAVar     = typeSelAux1[whichBin] + 4*bdtWWValueBin[whichBin];
-          else if(dataCardSel     == 1) MVAVar     = 40 + bdtWWValueBin[whichBin];
-          else if(dataCardSel     == 2) MVAVar     = 50 + typeSelAux1[whichBin];
-          else if(dataCardSel     == 3) MVAVar     = 54 + typeSelAux1[whichBin];
-          else if(dataCardSel     == 4) MVAVar     = 58 + typeSelAux1[whichBin] + 4*typeSelAux2[whichBin];
+          else if(dataCardSel     == 1) MVAVar     = 4*nBinWWBDT + bdtWWValueBin[whichBin];
+          else if(dataCardSel     == 2) MVAVar     = 5*nBinWWBDT + typeSelAux1[whichBin];
+          else if(dataCardSel     == 3) MVAVar     = 5*nBinWWBDT + 4 + typeSelAux1[whichBin];
+          else if(dataCardSel     == 4) MVAVar     = 5*nBinWWBDT + 8 + typeSelAux1[whichBin] + 4*typeSelAux2[whichBin];
 
           whichBin = 1;
           if     (dataCardSelUp   == 0) MVAVarUp   = typeSelAux1[whichBin] + 4*bdtWWValueBin[whichBin];
-          else if(dataCardSelUp   == 1) MVAVarUp   = 40 + bdtWWValueBin[whichBin];
-          else if(dataCardSelUp   == 2) MVAVarUp   = 50 + typeSelAux1[whichBin];
-          else if(dataCardSelUp   == 3) MVAVarUp   = 54 + typeSelAux1[whichBin];
-          else if(dataCardSelUp   == 4) MVAVarUp   = 58 + typeSelAux1[whichBin] + 4*typeSelAux2[whichBin];
+          else if(dataCardSelUp   == 1) MVAVarUp   = 4*nBinWWBDT + bdtWWValueBin[whichBin];
+          else if(dataCardSelUp   == 2) MVAVarUp   = 5*nBinWWBDT + typeSelAux1[whichBin];
+          else if(dataCardSelUp   == 3) MVAVarUp   = 5*nBinWWBDT + 4 + typeSelAux1[whichBin];
+          else if(dataCardSelUp   == 4) MVAVarUp   = 5*nBinWWBDT + 8 + typeSelAux1[whichBin] + 4*typeSelAux2[whichBin];
 
           whichBin = 2;
           if     (dataCardSelDown == 0) MVAVarDown = typeSelAux1[whichBin] + 4*bdtWWValueBin[whichBin];
-          else if(dataCardSelDown == 1) MVAVarDown = 40 + bdtWWValueBin[whichBin];
-          else if(dataCardSelDown == 2) MVAVarDown = 50 + typeSelAux1[whichBin];
-          else if(dataCardSelDown == 3) MVAVarDown = 54 + typeSelAux1[whichBin];
-          else if(dataCardSelDown == 4) MVAVarDown = 58 + typeSelAux1[whichBin] + 4*typeSelAux2[whichBin];
+          else if(dataCardSelDown == 1) MVAVarDown = 4*nBinWWBDT + bdtWWValueBin[whichBin];
+          else if(dataCardSelDown == 2) MVAVarDown = 5*nBinWWBDT + typeSelAux1[whichBin];
+          else if(dataCardSelDown == 3) MVAVarDown = 5*nBinWWBDT + 4 + typeSelAux1[whichBin];
+          else if(dataCardSelDown == 4) MVAVarDown = 5*nBinWWBDT + 8 + typeSelAux1[whichBin] + 4*typeSelAux2[whichBin];
         }
 
         // Avoid QCD scale weights that are anomalous high
