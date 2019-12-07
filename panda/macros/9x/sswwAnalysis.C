@@ -306,7 +306,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   //const int nBinWWBDT = 8; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.00,-0.31,-0.05, 0.14, 0.29, 0.42, 0.54, 0.67,1.00}; // V1_v1
   //const int nBinWWBDT = 8; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.00,-0.31,-0.03, 0.17, 0.32, 0.45, 0.57, 0.68,1.00}; // V1_v2
   //const int nBinWWBDT = 8; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.00,-0.33,-0.05, 0.15, 0.31, 0.44, 0.56, 0.67,1.00}; // V1_v3
-  const int nBinWWBDT = 8; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.00,-0.28,-0.01, 0.18, 0.33, 0.46, 0.57, 0.69,1.00}; // V1_v6
+  const int nBinWWBDT = 8; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.000,-0.288,-0.022, 0.173, 0.326, 0.454, 0.565, 0.679,1.000}; // V1_v6
   //const int nBinWWBDT = 10; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.00,-0.35,-0.11, 0.07, 0.21, 0.33, 0.43, 0.53, 0.61, 0.71,1.00}; // V1_v6
   //const int nBinWWBDT = 8; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.00, 0.38, 0.51, 0.60, 0.67, 0.73, 0.79, 0.84,1.00}; // V1_v7
   //const int nBinMVA = 48+nBinWZBDT; Float_t xbins[nBinMVA+1];
@@ -352,7 +352,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
     else if(thePlot >=  78 && thePlot <=  78) {nBinPlot = 20; xminPlot =  0.0; xmaxPlot = 1000;}
     else if(thePlot >=  79 && thePlot <=  79) {nBinPlot = 12; xminPlot = 200; xmaxPlot = 500.0;}
     else if(thePlot >=  80 && thePlot <=  80) {nBinPlot =  22; xminPlot =  2.5; xmaxPlot = 8.0;}
-    else if(thePlot >=  81 && thePlot <=  82) {nBinPlot = 200; xminPlot = -1.0; xmaxPlot = 1.0;}
+    else if(thePlot >=  81 && thePlot <=  82) {nBinPlot = 2000; xminPlot = -1.0; xmaxPlot = 1.0;}
     if     (thePlot == allPlots-1)            for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMVA, xbins);
     else if(thePlot >=   0 && thePlot <=   4) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMJJ, xbinsMJJ);
     else if(thePlot >=  66 && thePlot <=  67) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMLL, xbinsMLL);
@@ -891,7 +891,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       totSystem     = totSystem     + vJot1     + vJot2;     sumPtTot     = sumPtTot     + vJot1.Pt()     + vJot2.Pt();
       totSystemUp   = totSystemUp   + vJot1Up   + vJot2Up;   sumPtTotUp   = sumPtTotUp   + vJot1Up.Pt()   + vJot2Up.Pt();
       totSystemDown = totSystemDown + vJot1Down + vJot2Down; sumPtTotDown = sumPtTotDown + vJot1Down.Pt() + vJot2Down.Pt();
-      double maxLeptonZepCut = 0.75; if(fidAna == 5) maxLeptonZepCut = 1.0;
+      double maxLeptonZepCut = 0.75;
       bool passZepMax     = thePandaFlat.nJot              >= 2 && maxLeptonZep     < maxLeptonZepCut;
       bool passZepMaxUp   = thePandaFlat.nJot_JESTotalUp   >= 2 && maxLeptonZepUp   < maxLeptonZepCut;
       bool passZepMaxDown = thePandaFlat.nJot_JESTotalDown >= 2 && maxLeptonZepDown < maxLeptonZepCut;
