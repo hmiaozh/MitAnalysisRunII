@@ -32,9 +32,10 @@ void checkEqualBinning(TString fileName = "", int numberOfBins = 8, bool debug =
     if(debug) printf("%5.3f\n",sum);
     for(int i=0; i<nBinBDT; i++) {
       if(theCall[i] == false && sum > theInterval[i]){
-        printf("%3d %5.2f %5.3f %d\n",nb,-1.0+nb/numberOfHistoBins,sum,i);
+        double binHighEdge = theHisto->GetBinLowEdge(nb)+2*(theHisto->GetBinCenter(nb)-theHisto->GetBinLowEdge(nb));
+        printf("%3d %5.2f %5.3f %d\n",nb,binHighEdge,sum,i);
 	theCall[i] = true;
-	toKeep[i] = -1.0+nb/numberOfHistoBins;
+	toKeep[i] = binHighEdge;
         break;
       }
     }

@@ -6,6 +6,9 @@
 
 #./MitAnalysisRunII/panda/makePlots/mergeHistograms.sh;
 
+export NSEL=$1;
+
+if [ $NSEL == 'zh' ]; then
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh wz 1 2016;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh wz 1 2017;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh wz 1 2018;
@@ -21,21 +24,27 @@
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh zh 1 2018;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh zh 1 2019;
 
+elif [ $NSEL == 'zhg' ]; then
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh zhg 0 2016;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh zhg 0 2017;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh zhg 0 2018;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh zhg 0 2019;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh zhgpaper 0 2019;
 
+elif [ $NSEL == 'ssww' ]; then
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh ssww 0 2016;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh ssww 0 2017;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh ssww 0 2018;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh ssww 0 2019;
 
+elif [ $NSEL == 'z' ]; then
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh z 1 2016;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh z 1 2017;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh z 1 2018;
 
+elif [ $NSEL == 'ww' ]; then
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh ww 0 2016;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh ww 0 2017;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh ww 0 2018;
+
+fi

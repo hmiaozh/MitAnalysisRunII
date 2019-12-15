@@ -3,13 +3,15 @@
 
 const int nBinEtaCorr = 5; Float_t xbinsEtaCorr[nBinEtaCorr+1] = {0.0,0.5,1.0,1.5,2.0,2.5};
 TH1D* histoEtaCorr = new TH1D("histoEtaCorr", "histoEtaCorr", nBinEtaCorr, xbinsEtaCorr);
+const int nBinPtCorr = 5; Float_t xbinsPtCorr[nBinPtCorr+1] = {20,35,45,55,80,100};
+TH1D* histoPtCorr = new TH1D("histoPtCorr", "histoPtCorr", nBinPtCorr, xbinsPtCorr);
 
-double WSSF_2016[nBinEtaCorr]  = {1.449448,1.142210,0.937773,0.980529,0.977909};
-double WSSFE_2016[nBinEtaCorr] = {0.170724,0.076289,0.037524,0.016267,0.020325};
-double WSSF_2017[nBinEtaCorr]  = {1.996667,1.025836,1.571060,1.511802,1.457943};
-double WSSFE_2017[nBinEtaCorr] = {0.161212,0.096981,0.038027,0.021557,0.022487};
-double WSSF_2018[nBinEtaCorr]  = {1.664597,2.193864,1.389819,1.391175,1.275108};
-double WSSFE_2018[nBinEtaCorr] = {0.155949,0.073690,0.035919,0.016743,0.016865};
+double WSSF_2016[nBinEtaCorr]  = {1.442823,1.140789,0.937390,0.980470,0.977845};
+double WSSFE_2016[nBinEtaCorr] = {0.171508,0.076384,0.037540,0.016268,0.020326};
+double WSSF_2017[nBinEtaCorr]  = {1.991688,1.023561,1.570127,1.511758,1.457862};
+double WSSFE_2017[nBinEtaCorr] = {0.161615,0.097197,0.038049,0.021558,0.022489};
+double WSSF_2018[nBinEtaCorr]  = {1.664706,2.191345,1.389267,1.391095,1.275033};
+double WSSFE_2018[nBinEtaCorr] = {0.153979,0.073704,0.035930,0.016744,0.016866};
 
 double muScaleCorr_2016[nBinEtaCorr] = {1.000357,0.999957,1.000507,0.999696,1.000437};
 double elScaleCorr_2016[nBinEtaCorr] = {1.000266,0.998870,0.998902,0.998738,0.998196};
@@ -90,30 +92,32 @@ enum TriggerBits {
 };
 
 enum plotCategory {
-  kPlotData        , // 0 
-  kPlotqqWW        , // 1  
-  kPlotggWW        , // 2  
-  kPlotTop         , // 3  
-  kPlotDY          , // 4  
-  kPlotZZ          , // 5  
-  kPlotWZ          , // 6  
-  kPlotEWKWZ       , // 7  
-  kPlotVVV         , // 8  
-  kPlotVG          , // 9  
-  kPlotNonPrompt   , //10  
-  kPlotHiggs       , //11  
-  kPlotEWKSSWW     , //12   
-  kPlotQCDSSWW     , //13   
-  kPlotDPSWW       , //14   
-  kPlotWS          , //15   
-  kPlotEM          , //16   
-  kPlotBSM         , //17 
-  kPlotSignal0     , //18
-  kPlotSignal1     , //19
-  kPlotSignal2     , //20
-  kPlotSignal3     , //21
-  kPlotEWKSSWW_dim8, //22
-  kPlotEWKWZ_dim8  , //23
+  kPlotData        , // 0
+  kPlotqqWW        , // 1
+  kPlotggWW        , // 2
+  kPlotTop         , // 3
+  kPlotDY          , // 4
+  kPlotEWKSSWW     , // 5
+  kPlotQCDSSWW     , // 6
+  kPlotEWKWZ       , // 7
+  kPlotWZ          , // 8
+  kPlotZZ          , // 9
+  kPlotNonPrompt   , //10
+  kPlotVVV         , //11
+  kPlotTVX         , //12
+  kPlotVG          , //13
+  kPlotHiggs       , //14
+  kPlotDPSWW       , //15
+  kPlotWS          , //16
+  kPlotEM          , //17
+  kPlotOther        ,//18
+  kPlotBSM         , //19
+  kPlotSignal0     , //20
+  kPlotSignal1     , //21
+  kPlotSignal2     , //22
+  kPlotSignal3     , //23
+  kPlotEWKSSWW_dim8, //24
+  kPlotEWKWZ_dim8  , //25
   nPlotCategories
 };
 
@@ -123,18 +127,20 @@ std::map<int, TString> plotBaseNames={
   { kPlotggWW	     , "ggWW" },
   { kPlotTop	     , "Top" },
   { kPlotDY	     , "DY" },
-  { kPlotZZ	     , "ZZ" },
-  { kPlotWZ	     , "WZ" },
-  { kPlotEWKWZ	     , "EWKWZ" },
-  { kPlotVVV	     , "VVV" },
-  { kPlotVG	     , "VG" },
-  { kPlotNonPrompt   , "NonPrompt" },
-  { kPlotHiggs       , "Higgs" },
   { kPlotEWKSSWW     , "EWKSSWW" },
   { kPlotQCDSSWW     , "QCDSSWW" },
+  { kPlotEWKWZ	     , "EWKWZ" },
+  { kPlotWZ	     , "WZ" },
+  { kPlotZZ	     , "ZZ" },
+  { kPlotNonPrompt   , "NonPrompt" },
+  { kPlotVVV	     , "VVV" },
+  { kPlotTVX	     , "TVX" },
+  { kPlotVG	     , "VG" },
+  { kPlotHiggs       , "Higgs" },
   { kPlotDPSWW       , "DPSWW" },
   { kPlotWS	     , "WS" },
   { kPlotEM	     , "EM" },
+  { kPlotOther       , "Other" },
   { kPlotBSM	     , "BSM" },
   { kPlotSignal0     , "Signal0" },
   { kPlotSignal1     , "Signal1" },
@@ -145,30 +151,31 @@ std::map<int, TString> plotBaseNames={
 }; 
 
 std::map<int, int> plotColors={
-  { kPlotData	     , kBlack},
   { kPlotqqWW	     , kAzure-9},
   { kPlotggWW	     , 901},
   { kPlotTop	     , kYellow},
   { kPlotDY	     , kAzure-2},
-  { kPlotZZ	     , TColor::GetColor(155,152,204)},
-  { kPlotWZ	     , kViolet-9},
+  { kPlotEWKSSWW     , TColor::GetColor(248,206,104)},
+  { kPlotQCDSSWW     , TColor::GetColor(250,202,255)},
   { kPlotEWKWZ       , kCyan+3},
+  { kPlotWZ	     , TColor::GetColor(222,90,106)},
+  { kPlotZZ	     , kAzure-9},
+  { kPlotNonPrompt   , TColor::GetColor(155,152,204)},
   { kPlotVVV	     , 809},
+  { kPlotTVX	     , kViolet+6},
   { kPlotVG	     , 419},
-  { kPlotNonPrompt   , kAzure-9},
   { kPlotHiggs       , 842},
-  { kPlotEWKSSWW     , 832},
-  { kPlotQCDSSWW     , 798},
-  { kPlotDPSWW       , TColor::GetColor(248,206,104)},
+  { kPlotDPSWW       , kGreen},
   { kPlotWS	     , kAzure+10},
   { kPlotEM	     , kGreen-5},
+  { kPlotOther       , kGreen-5},
   { kPlotBSM	     , kGreen},
-  { kPlotSignal0     , kMagenta+1},
-  { kPlotSignal1     , kMagenta+2},
-  { kPlotSignal2     , kMagenta+3},
-  { kPlotSignal3     , kMagenta+4},
-  { kPlotEWKSSWW_dim8, kMagenta+5},
-  { kPlotEWKWZ_dim8  , kMagenta+6}
+  { kPlotSignal0     , TColor::GetColor(248,206,104)},
+  { kPlotSignal1     , kMagenta+1},
+  { kPlotSignal2     , kMagenta+2},
+  { kPlotSignal3     , kMagenta+3},
+  { kPlotEWKSSWW_dim8, kMagenta+4},
+  { kPlotEWKWZ_dim8  , kMagenta+5}
 }; 
 
 std::map<int, TString> plotNames={
@@ -177,18 +184,20 @@ std::map<int, TString> plotNames={
     { kPlotggWW        , "gg #rightarrow WW"},
     { kPlotTop         , "Top quark"},
     { kPlotDY	       , "Drell-Yan"},
-    { kPlotZZ	       , "ZZ"},
-    { kPlotWZ	       , "WZ"},
-    { kPlotEWKWZ       , "EWK WZ"},
-    { kPlotVVV         , "VVV/t#bar{t}V"},
-    { kPlotVG	       , "V#gamma" },
-    { kPlotNonPrompt   , "Nonprompt"},
-    { kPlotHiggs       , "Higgs"},
     { kPlotEWKSSWW     , "EWK W^{#pm}W^{#pm}"},
     { kPlotQCDSSWW     , "QCD W^{#pm}W^{#pm}"},
+    { kPlotEWKWZ       , "EWK WZ"},
+    { kPlotWZ	       , "WZ"},
+    { kPlotZZ	       , "ZZ"},
+    { kPlotNonPrompt   , "Nonprompt"},
+    { kPlotVVV         , "VVV"},
+    { kPlotTVX         , "tVx"},
+    { kPlotVG	       , "V#gamma" },
+    { kPlotHiggs       , "Higgs"},
     { kPlotDPSWW       , "DPS W^{#pm}W^{#pm}"},
     { kPlotWS	       , "Wrong sign"},
     { kPlotEM	       , "Top quark/WW"},
+    { kPlotOther       , "Other bkg."},
     { kPlotBSM         , "BSM"},
     { kPlotSignal0     , "Signal 0"},
     { kPlotSignal1     , "W_{X}W_{T}"},
@@ -197,7 +206,7 @@ std::map<int, TString> plotNames={
     { kPlotEWKSSWW_dim8, "EWKSSWW_dim8"},
     { kPlotEWKWZ_dim8  , "EWKWZ_dim8"}
 };
-
+ 
 const double mass_el = 0.000510998928;
 const double mass_mu = 0.10566;
 

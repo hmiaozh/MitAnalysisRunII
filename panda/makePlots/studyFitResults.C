@@ -63,26 +63,26 @@ void studyFitResults(int nsel = 0,  TString plotName = "done_ana/histoZHG_mH125_
     binToCount = kPlotEM;
   }
   else if(nsel == 10){ // SSWW SR
-    for(int i=32; i<58; i++) excludeBins[i] = i+1;
+    for(int i=32; i<52; i++) excludeBins[i] = i+1;
     binToCount = kPlotWZ;
   }
   else if(nsel == 11){ // btagged CR
     for(int i=0; i<32; i++) excludeBins[i] = i+1;
-    for(int i=40; i<58; i++) excludeBins[i] = i+1;
+    for(int i=36; i<52; i++) excludeBins[i] = i+1;
     binToCount = kPlotWZ;
   }
   else if(nsel == 12){ // ZZ CR
-    for(int i=0; i<40; i++) excludeBins[i] = i+1;
-    for(int i=44; i<58; i++) excludeBins[i] = i+1;
+    for(int i=0; i<36; i++) excludeBins[i] = i+1;
+    for(int i=40; i<52; i++) excludeBins[i] = i+1;
     binToCount = kPlotWZ;
   }
   else if(nsel == 13){ // WZb CR
-    for(int i=0; i<44; i++) excludeBins[i] = i+1;
-    for(int i=48; i<58; i++) excludeBins[i] = i+1;
+    for(int i=0; i<40; i++) excludeBins[i] = i+1;
+    for(int i=44; i<52; i++) excludeBins[i] = i+1;
     binToCount = kPlotWZ;
   }
   else if(nsel == 14){ // WZ CR
-    for(int i=0; i<48; i++) excludeBins[i] = i+1;
+    for(int i=0; i<44; i++) excludeBins[i] = i+1;
     binToCount = kPlotWZ;
   }
   else if(nsel == 21){ // ZH SR 0j

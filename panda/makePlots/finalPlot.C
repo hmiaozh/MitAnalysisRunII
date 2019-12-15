@@ -80,6 +80,8 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
   if(units.Contains("Stack")) {isSignalStack = true; units = units.ReplaceAll("Stack","");}
   bool isRemoveBSM = false;
   if(units.Contains("NoBSM")) {isRemoveBSM = true; units = units.ReplaceAll("NoBSM","");}
+  bool doApplyBinWidth = false;
+  if(units.Contains("BinWidth")) {doApplyBinWidth = true; units = units.ReplaceAll("BinWidth","");}
 
   //gInterpreter->ExecuteMacro("MitAnalysisRunII/panda/makePlots/GoodStyle.C");
   GoodStyle();
@@ -88,6 +90,7 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
 
   TH1F* _hist[nPlotCategories];
   StandardPlot myPlot;
+  myPlot.setDoApplyBinWidth(doApplyBinWidth);
   myPlot.setLumi(lumi);
   myPlot.setLabel(XTitle);
   myPlot.addLabel(extraLabel.Data());

@@ -133,15 +133,6 @@ void makeSSWWDataCards(TString outputLimits = "ssww_comb_input.root", int fidAna
   }
   newcardShape << Form("\n");
 
-  newcardShape << Form("EWKCorrVV%s    shape     ",plotBaseNames[kPlotWZ].Data());
-  for (int ic=0; ic<nPlotCategories; ic++){
-    if(!histo_Baseline[ic]) continue;
-    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic != kPlotWZ) newcardShape << Form("- ");
-    else              newcardShape << Form("1.0 ");
-  }
-  newcardShape << Form("\n");
-
   newcardShape << Form("EWKCorrVV%s    shape     ",plotBaseNames[kPlotEWKSSWW].Data());
   for (int ic=0; ic<nPlotCategories; ic++){
     if(!histo_Baseline[ic]) continue;
@@ -151,32 +142,41 @@ void makeSSWWDataCards(TString outputLimits = "ssww_comb_input.root", int fidAna
   }
   newcardShape << Form("\n");
 
-  newcardShape << Form("EWKCorrVV%s    shape     ",plotBaseNames[kPlotEWKWZ].Data());
+  newcardShape << Form("EWKCorrVV%s    shape	 ",plotBaseNames[kPlotEWKWZ].Data());
   for (int ic=0; ic<nPlotCategories; ic++){
     if(!histo_Baseline[ic]) continue;
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
     if(ic != kPlotEWKWZ) newcardShape << Form("- ");
-    else                 newcardShape << Form("1.0 ");
+    else		 newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
-  newcardShape << Form("EWKqqZZCorr    shape     ");
-  for (int ic=0; ic<nPlotCategories; ic++){
-    if(!histo_Baseline[ic]) continue;
-    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic != kPlotZZ) newcardShape << Form("- ");
-    else              newcardShape << Form("1.0 ");
-  }
-  newcardShape << Form("\n");
+  //newcardShape << Form("EWKCorrVV%s	 shape     ",plotBaseNames[kPlotWZ].Data());
+  //for (int ic=0; ic<nPlotCategories; ic++){
+  //  if(!histo_Baseline[ic]) continue;
+  //  if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+  //  if(ic != kPlotWZ) newcardShape << Form("- ");
+  //  else		newcardShape << Form("1.0 ");
+  //}
+  //newcardShape << Form("\n");
 
-  newcardShape << Form("ggZZCorr    shape     ");
-  for (int ic=0; ic<nPlotCategories; ic++){
-    if(!histo_Baseline[ic]) continue;
-    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic != kPlotZZ) newcardShape << Form("- ");
-    else              newcardShape << Form("1.0 ");
-  }
-  newcardShape << Form("\n");
+  //newcardShape << Form("EWKqqZZCorr    shape     ");
+  //for (int ic=0; ic<nPlotCategories; ic++){
+  //  if(!histo_Baseline[ic]) continue;
+  //  if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+  //  if(ic != kPlotZZ) newcardShape << Form("- ");
+  //  else              newcardShape << Form("1.0 ");
+  //}
+  //newcardShape << Form("\n");
+
+  //newcardShape << Form("ggZZCorr    shape     ");
+  //for (int ic=0; ic<nPlotCategories; ic++){
+  //  if(!histo_Baseline[ic]) continue;
+  //  if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+  //  if(ic != kPlotZZ) newcardShape << Form("- ");
+  //  else              newcardShape << Form("1.0 ");
+  //}
+  //newcardShape << Form("\n");
 
   newcardShape << Form("WZ_lep    lnN     ");
   for (int ic=0; ic<nPlotCategories; ic++){
@@ -292,7 +292,7 @@ void makeSSWWDataCards(TString outputLimits = "ssww_comb_input.root", int fidAna
      newcardShape << Form("\n");
   }
 
-  newcardShape << Form("CMS_ssww_vvvnorm rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotVVV].Data());
+  newcardShape << Form("CMS_ssww_tvxnorm rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotTVX].Data());
   newcardShape << Form("CMS_ssww_zznorm  rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotZZ].Data());
 
   newcardShape << Form("ch1 autoMCStats 0\n");

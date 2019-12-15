@@ -134,7 +134,7 @@ double mcCorrection(int type, int year, int infileCat, double mjj, double mtg){
     else if(year == 2017 && infileCat == kPlotWG) totalWeight = totalWeight * 1.00;
     else if(year == 2018 && infileCat == kPlotWG) totalWeight = totalWeight * 1.00;
 
-
+/*
     else if(year == 2016 && infileCat == kPlotWJ && mjj <  1500 && mtg <  100) totalWeight = totalWeight * 1.872004;// * 1.95 * 0.96;
     else if(year == 2016 && infileCat == kPlotWJ && mjj <  1500              ) totalWeight = totalWeight * 3.216278;// * 1.95 * 1.65;
     else if(year == 2016 && infileCat == kPlotWJ && mjj >= 1500 && mtg <  100) totalWeight = totalWeight * 1.329084;// * 1.95 * 0.68;
@@ -159,7 +159,7 @@ double mcCorrection(int type, int year, int infileCat, double mjj, double mtg){
 
     else if(year == 2018 && infileCat == kPlotGJ && mjj < 1500) totalWeight = totalWeight * 3.969444;// * 3.75 * 1.06;
     else if(year == 2018 && infileCat == kPlotGJ              ) totalWeight = totalWeight * 2.670423;// * 3.75 * 0.64;
-
+*/
  }
 
   return totalWeight;

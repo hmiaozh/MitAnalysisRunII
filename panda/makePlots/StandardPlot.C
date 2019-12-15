@@ -24,13 +24,12 @@ const Float_t _tsize   = 0.035;
 const Float_t _xoffset = 0.200;
 const Float_t _yoffset = 0.051;
 
-const bool doApplyBinWidth = false;
 const double SFBinWidth = 1;
 
 //------------------------------------------------------------------------------
 // GetMaximumIncludingErrors
 //------------------------------------------------------------------------------
-Float_t GetMaximumIncludingErrors(TH1F* h)
+Float_t GetMaximumIncludingErrors(TH1F* h, bool doApplyBinWidth)
 {
     Float_t maxWithErrors = 0;
 
@@ -49,7 +48,7 @@ Float_t GetMaximumIncludingErrors(TH1F* h)
 //------------------------------------------------------------------------------
 // GetMinimumIncludingErrors
 //------------------------------------------------------------------------------
-Float_t GetMinimumIncludingErrors(TH1F* h)
+Float_t GetMinimumIncludingErrors(TH1F* h, bool doApplyBinWidth)
 {
     Float_t minWithErrors = 100000000000;
 
@@ -71,7 +70,8 @@ Float_t GetMinimumIncludingErrors(TH1F* h)
 //------------------------------------------------------------------------------
 void AxisFonts(TAxis*  axis,
         TString coordinate,
-        TString title)
+        TString title,
+	bool doApplyBinWidth)
 {
     axis->SetLabelFont  (   42);
     axis->SetLabelOffset(0.010);
@@ -92,14 +92,15 @@ void AxisFonts(TAxis*  axis,
 //------------------------------------------------------------------------------
 void THStackAxisFonts(THStack* h,
         TString  coordinate,
-        TString  title)
+        TString  title,
+	bool doApplyBinWidth)
 {
     TAxis* axis = NULL;
 
     if (coordinate.Contains("x")) axis = h->GetHistogram()->GetXaxis();
     if (coordinate.Contains("y")) axis = h->GetHistogram()->GetYaxis();
 
-    AxisFonts(axis, coordinate, title);
+    AxisFonts(axis, coordinate, title, doApplyBinWidth);
 }
 
 //------------------------------------------------------------------------------
@@ -152,7 +153,7 @@ void DrawLegendTG(Float_t x1,
 class StandardPlot {
 
     public: 
-        StandardPlot() { _hist.resize(nPlotCategories,0); _hist[kPlotData] = 0; _breakdown = false; _HiggsLabel = ""; _Higgs2Label = "";_labelEM = " Nonprompt";_labelVVV = " VVV";}
+        StandardPlot() { _doApplyBinWidth = false; _hist.resize(nPlotCategories,0); _hist[kPlotData] = 0; _breakdown = false; _HiggsLabel = ""; _Higgs2Label = "";_labelEM = " Nonprompt";_labelVVV = " VVV";}
         void setMCHist   (int s, TH1F * h)  { _hist[s] = h;} 
         void setOverlaid  (bool b)   { isBSMOverlaid = b;   }
         void setLabelEM   (TString s){ _labelEM  = s.Data();}
@@ -197,7 +198,7 @@ class StandardPlot {
                 _hist[ic]->SetLineColor(plotColors[ic]);
 	       //for(int i=1; i<=_hist[ic]->GetNbinsX(); i++) if(_hist[ic]->GetBinContent(i)<0) _hist[ic]->SetBinContent(i,0);
 
-                if(doApplyBinWidth == true){
+                if(_doApplyBinWidth == true){
                   _hist[ic]->Scale(1,"width");
                 }
 
@@ -278,7 +279,7 @@ class StandardPlot {
                   //  g->SetPointEYhigh(i, U-double(N)+0.1);
                   //}
   		}
-		if(doApplyBinWidth == true){
+		if(_doApplyBinWidth == true){
  		  for (int i = 0; i < g->GetN(); ++i) {
                     g->SetPointEYlow (i, g->GetErrorYlow(i) /_hist[kPlotData]->GetBinWidth(i+1)*SFBinWidth);
                     g->SetPointEYhigh(i, g->GetErrorYhigh(i)/_hist[kPlotData]->GetBinWidth(i+1)*SFBinWidth);
@@ -289,7 +290,7 @@ class StandardPlot {
   		}
 	      }
 	      else {
-                if(doApplyBinWidth == true){
+                if(_doApplyBinWidth == true){
                   for(int nb=1; nb<=_hist[kPlotData]->GetNbinsX(); nb++){
 		    _hist[kPlotData]->SetBinContent(nb, _hist[kPlotData]->GetBinContent(nb)/_hist[kPlotData]->GetBinWidth(nb)*SFBinWidth);
 		    _hist[kPlotData]->SetBinError  (nb, _hist[kPlotData]->GetBinError(nb)  /_hist[kPlotData]->GetBinWidth(nb)*SFBinWidth);
@@ -321,10 +322,10 @@ class StandardPlot {
 
             if (_hist[kPlotData]) {
 
-                Float_t dataMax = GetMaximumIncludingErrors(_hist[kPlotData]);
+                Float_t dataMax = GetMaximumIncludingErrors(_hist[kPlotData],_doApplyBinWidth);
                 if (dataMax > theMax) theMax = dataMax;
 
-                Float_t dataMin = GetMinimumIncludingErrors(_hist[kPlotData]);
+                Float_t dataMin = GetMinimumIncludingErrors(_hist[kPlotData],_doApplyBinWidth);
                 if (dataMin < theMin) theMin = dataMin;
             }
 
@@ -336,24 +337,24 @@ class StandardPlot {
             }
 
             if(_breakdown) {
-                THStackAxisFonts(hstack, "y", "Events / bin");
+                THStackAxisFonts(hstack, "y", "Events / bin", _doApplyBinWidth);
                 hstack->GetHistogram()->LabelsOption("v");
             } else {
                 if(_units.Sizeof() == 1) {
-                    THStackAxisFonts(hstack, "x", _xLabel.Data());
-                    if     (doApplyBinWidth == true && SFBinWidth == 1) THStackAxisFonts(hstack, "y", "Events / GeV");
-                    else if(doApplyBinWidth == true)                    THStackAxisFonts(hstack, "y", Form("Events / %.2f",SFBinWidth));
-                    else                                                THStackAxisFonts(hstack, "y", "Events / bin");
+                    THStackAxisFonts(hstack, "x", _xLabel.Data(), _doApplyBinWidth);
+                    if     (_doApplyBinWidth == true && SFBinWidth == 1) THStackAxisFonts(hstack, "y", "Events / GeV", _doApplyBinWidth);
+                    else if(_doApplyBinWidth == true)                    THStackAxisFonts(hstack, "y", Form("Events / %.2f",SFBinWidth), _doApplyBinWidth);
+                    else                                                 THStackAxisFonts(hstack, "y", "Events / bin", _doApplyBinWidth);
                 } else {
 		    if(_units.EndsWith("BIN") == false){
-                      THStackAxisFonts(hstack, "x", TString::Format("%s [%s]",_xLabel.Data(),_units.Data()));
-                      if(hSum->GetBinWidth(0) < 1) THStackAxisFonts(hstack, "y", TString::Format("Events / %.1f %s",hSum->GetBinWidth(0),_units.Data()));
-		      else                         THStackAxisFonts(hstack, "y", TString::Format("Events / %.0f %s",hSum->GetBinWidth(0),_units.Data()));
+                      THStackAxisFonts(hstack, "x", TString::Format("%s [%s]",_xLabel.Data(),_units.Data()), _doApplyBinWidth);
+                      if(hSum->GetBinWidth(0) < 1) THStackAxisFonts(hstack, "y", TString::Format("Events / %.1f %s",hSum->GetBinWidth(0),_units.Data()), _doApplyBinWidth);
+		      else                         THStackAxisFonts(hstack, "y", TString::Format("Events / %.0f %s",hSum->GetBinWidth(0),_units.Data()), _doApplyBinWidth);
                     }
 		    else {
 		      _units = _units.ReplaceAll("BIN","");
-                      THStackAxisFonts(hstack, "x", TString::Format("%s [%s]",_xLabel.Data(),_units.Data()));
-                      THStackAxisFonts(hstack, "y", TString::Format("Events / bin"));
+                      THStackAxisFonts(hstack, "x", TString::Format("%s [%s]",_xLabel.Data(),_units.Data()), _doApplyBinWidth);
+                      THStackAxisFonts(hstack, "y", TString::Format("Events / bin"), _doApplyBinWidth);
 		    }
                 }
             }
@@ -393,6 +394,7 @@ class StandardPlot {
 
             return hstack->GetHistogram();
         }
+        void setDoApplyBinWidth(const bool &b) {_doApplyBinWidth = b; }
         void setLumi(const float &l) { _lumi = l; }
         void setLabel(const TString &s) { _xLabel = s; }
         void setUnits(const TString &s) { _units = s; }
@@ -418,5 +420,6 @@ class StandardPlot {
         TString  _Higgs2Label;
         TString  _labelEM;
         TString  _labelVVV;
+	bool     _doApplyBinWidth;
 
 };

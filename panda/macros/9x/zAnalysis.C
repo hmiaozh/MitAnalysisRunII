@@ -286,15 +286,30 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
   for(int i=0; i<nPlotCategories; i++) histoMGStudy[0][i] = new TH1D(Form("histoMGStudy_%d_%d",0,i), Form("histoMGStudy_%d_%d",0,i), 120, 91.1876-15, 91.1876+15);
   for(int i=0; i<nPlotCategories; i++) histoMGStudy[1][i] = new TH1D(Form("histoMGStudy_%d_%d",1,i), Form("histoMGStudy_%d_%d",1,i), 100, 0, 200);
  
-  const int nWSBins = 5;
-  TH1D* histoWSStudy[nWSBins][nWSBins][4]; nBinPlot = 120; xminPlot = 91.1876-15; xmaxPlot = 91.1876+15;
-  for(int i=0; i<nWSBins; i++){
-    for(int j=0; j<nWSBins; j++){
+  const int nWSEtaBins = 5;
+  TH1D* histoWSEtaStudy[nWSEtaBins][nWSEtaBins][4]; nBinPlot = 120; xminPlot = 91.1876-15; xmaxPlot = 91.1876+15;
+  for(int i=0; i<nWSEtaBins; i++){
+    for(int j=0; j<nWSEtaBins; j++){
       for(int np=0; np<4; np++){
-        histoWSStudy[i][j][np] = new TH1D(Form("histoWSStudy_%d_%d_%d",i,j,np), Form("histoWSStudy_%d_%d_%d",i,j,np), nBinPlot, xminPlot, xmaxPlot);
-        histoWSStudy[i][j][np]->Sumw2();
+        histoWSEtaStudy[i][j][np] = new TH1D(Form("histoWSEtaStudy_%d_%d_%d",i,j,np), Form("histoWSEtaStudy_%d_%d_%d",i,j,np), nBinPlot, xminPlot, xmaxPlot);
+        histoWSEtaStudy[i][j][np]->Sumw2();
       }
     }
+  }
+  const int nWSPtBins = 5;
+  TH1D* histoWSPtStudy[nWSPtBins][nWSPtBins][4]; nBinPlot = 120; xminPlot = 91.1876-15; xmaxPlot = 91.1876+15;
+  for(int i=0; i<nWSPtBins; i++){
+    for(int j=0; j<nWSPtBins; j++){
+      for(int np=0; np<4; np++){
+        histoWSPtStudy[i][j][np] = new TH1D(Form("histoWSPtStudy_%d_%d_%d",i,j,np), Form("histoWSPtStudy_%d_%d_%d",i,j,np), nBinPlot, xminPlot, xmaxPlot);
+        histoWSPtStudy[i][j][np]->Sumw2();
+      }
+    }
+  }
+  TH2D* histoWSEff[2];
+  for(int np=0; np<2; np++){
+    histoWSEff[np] = new TH2D(Form("histoWSEff_%d",np), Form("histoWSEff_%d",np), nBinEtaCorr, xbinsEtaCorr, nBinPtCorr, xbinsPtCorr);
+    histoWSEff[np]->Sumw2();
   }
 
   const int nEffBinEta = 10; Float_t xEffBinEta[nEffBinEta+1] = {-2.5,-2.0,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.0,2.5};
@@ -721,13 +736,19 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
 	if     (theCategory == kPlotData) {}
 	else if(theCategory == kPlotDY)   {theWSStudyCategory = 1;}
 	else                              {totalWSStudyWeight = -1.0 * totalWSStudyWeight;};
-	int nEta[2];
+	int nEta[2],nPt[2];
 	for(int i=0; i<2; i++){
 	  nEta[i] = histoEtaCorr->GetXaxis()->FindBin(TMath::Min(TMath::Abs(vLoose[i].Eta()),2.4999))-1;
+	  nPt[i]  = histoPtCorr ->GetXaxis()->FindBin(TMath::Min(vLoose[i].Pt(),99.999))-1;
         }
         if(passSSWWLepId){
-	  if(nEta[0] >= nEta[1]) histoWSStudy[nEta[0]][nEta[1]][(qTot!=0)+2*theWSStudyCategory]->Fill(dilep.M(),totalWSStudyWeight);
-	  else                   histoWSStudy[nEta[1]][nEta[0]][(qTot!=0)+2*theWSStudyCategory]->Fill(dilep.M(),totalWSStudyWeight);
+	  if(nEta[0] >= nEta[1]) histoWSEtaStudy[nEta[0]][nEta[1]][(qTot!=0)+2*theWSStudyCategory]->Fill(dilep.M(),totalWSStudyWeight);
+	  else                   histoWSEtaStudy[nEta[1]][nEta[0]][(qTot!=0)+2*theWSStudyCategory]->Fill(dilep.M(),totalWSStudyWeight);
+	  if(nPt[0] >= nPt[1])   histoWSPtStudy [nPt[0] ][nPt[1] ][(qTot!=0)+2*theWSStudyCategory]->Fill(dilep.M(),totalWSStudyWeight*sfWS);
+	  else                   histoWSPtStudy [nPt[1] ][nPt[0] ][(qTot!=0)+2*theWSStudyCategory]->Fill(dilep.M(),totalWSStudyWeight*sfWS);
+	  for(int i=0; i<2; i++){
+	    if(theCategory == kPlotDY) histoWSEff[(qTot!=0)]->Fill(TMath::Min(TMath::Abs(vLoose[i].Eta()),2.4999),TMath::Min(vLoose[i].Pt(),99.999),totalWSStudyWeight);
+	  }
 	}
       }
 
@@ -1091,15 +1112,45 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
 
   { // Wrong Sign study
     printf("---------------Wrong Sign Study---------------\n");
+    TH2D *histoWSEffMC = (TH2D*) histoWSEff[0]->Clone(Form("histoWSEffMC"));
+    for(int i=1; i<=histoWSEffMC->GetNbinsX(); i++){
+      for(int j=1; j<=histoWSEffMC->GetNbinsX(); j++){
+        double eff = 0; double unc = 0.0;
+        if(histoWSEff[0]->GetBinContent(i,j) > 0) {
+          eff = histoWSEff[1]->GetBinContent(i,j)/histoWSEff[0]->GetBinContent(i,j);
+          unc = sqrt(eff*(1-eff)/histoWSEff[0]->GetBinContent(i,j));
+          if(eff == 0 || eff == 1) unc = 1./sqrt(histoWSEff[0]->GetBinContent(i,j));
+        }
+        histoWSEffMC->SetBinContent(i,j,eff);
+        histoWSEffMC->SetBinError  (i,j,unc);
+      }
+    }
+
     int iterWS = 0;
-    for(int i=0; i<nWSBins; i++){
-      for(int j=0; j<nWSBins; j++){
+    for(int i=0; i<nWSEtaBins; i++){
+      for(int j=0; j<nWSEtaBins; j++){
         if(j>i) continue;
-        double eff[2]  = {histoWSStudy[i][j][1]->GetSumOfWeights()/histoWSStudy[i][j][0]->GetSumOfWeights(),
-	                  histoWSStudy[i][j][3]->GetSumOfWeights()/histoWSStudy[i][j][2]->GetSumOfWeights()
+        double eff[2]  = {histoWSEtaStudy[i][j][1]->GetSumOfWeights()/histoWSEtaStudy[i][j][0]->GetSumOfWeights(),
+	                  histoWSEtaStudy[i][j][3]->GetSumOfWeights()/histoWSEtaStudy[i][j][2]->GetSumOfWeights()
 			 };
-        double effE[2] = {sqrt((1-eff[0])*eff[0]/histoWSStudy[i][j][0]->GetSumOfWeights()),
-	                  sqrt((1-eff[1])*eff[1]/histoWSStudy[i][j][2]->GetSumOfWeights())
+        double effE[2] = {sqrt((1-eff[0])*eff[0]/histoWSEtaStudy[i][j][0]->GetSumOfWeights()),
+	                  sqrt((1-eff[1])*eff[1]/histoWSEtaStudy[i][j][2]->GetSumOfWeights())
+			 };
+        //printf("(%d,%d): %.7f+/-%.7f/%.7f+/-%.7f = %.7f+/-%.7f\n",i,j,eff[0],effE[0],eff[1],effE[1],eff[0]/eff[1],eff[0]/eff[1]*sqrt(effE[0]/eff[0]*effE[0]/eff[0]+effE[1]/eff[1]*effE[1]/eff[1]));
+        printf("zA[%2d]=%.7f;errorzA[%2d]=%.7f;zB[%2d]=%.7f;errorzB[%2d]=%.7f;\n",iterWS,eff[0],iterWS,effE[0],iterWS,eff[1],iterWS,effE[1]);
+	iterWS++;
+      }
+    }
+
+    iterWS = 0;
+    for(int i=0; i<nWSPtBins; i++){
+      for(int j=0; j<nWSPtBins; j++){
+        if(j>i) continue;
+        double eff[2]  = {histoWSPtStudy[i][j][1]->GetSumOfWeights()/histoWSPtStudy[i][j][0]->GetSumOfWeights(),
+	                  histoWSPtStudy[i][j][3]->GetSumOfWeights()/histoWSPtStudy[i][j][2]->GetSumOfWeights()
+			 };
+        double effE[2] = {sqrt((1-eff[0])*eff[0]/histoWSPtStudy[i][j][0]->GetSumOfWeights()),
+	                  sqrt((1-eff[1])*eff[1]/histoWSPtStudy[i][j][2]->GetSumOfWeights())
 			 };
         //printf("(%d,%d): %.7f+/-%.7f/%.7f+/-%.7f = %.7f+/-%.7f\n",i,j,eff[0],effE[0],eff[1],effE[1],eff[0]/eff[1],eff[0]/eff[1]*sqrt(effE[0]/eff[0]*effE[0]/eff[0]+effE[1]/eff[1]*effE[1]/eff[1]));
         printf("zA[%2d]=%.7f;errorzA[%2d]=%.7f;zB[%2d]=%.7f;errorzB[%2d]=%.7f;\n",iterWS,eff[0],iterWS,effE[0],iterWS,eff[1],iterWS,effE[1]);
@@ -1110,11 +1161,20 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
     sprintf(output,"histoDY%dWSStudy_%d%s.root",whichDY,year,addSuffix.Data());	
     TFile* outFilePlotsNote = new TFile(output,"recreate");
     outFilePlotsNote->cd();
-    for(int i=0; i<nWSBins; i++){
-      for(int j=0; j<nWSBins; j++){
+    histoWSEffMC->Write();
+    for(int i=0; i<nWSEtaBins; i++){
+      for(int j=0; j<nWSEtaBins; j++){
         if(j>i) continue;
         for(int np=0; np<4; np++){
-          histoWSStudy[i][j][np]->Write();
+          histoWSEtaStudy[i][j][np]->Write();
+        }
+      }
+    }
+    for(int i=0; i<nWSPtBins; i++){
+      for(int j=0; j<nWSPtBins; j++){
+        if(j>i) continue;
+        for(int np=0; np<4; np++){
+          histoWSPtStudy[i][j][np]->Write();
         }
       }
     }

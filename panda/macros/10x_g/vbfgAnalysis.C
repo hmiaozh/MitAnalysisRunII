@@ -16,7 +16,7 @@
 #include "MitAnalysisRunII/panda/macros/9x/applyCorrections.h"
 
 const bool isSingleLeptonAna = false;
-const bool isDEBUG = false;
+const int debug = 0;
 const bool showSyst = true;
 const unsigned int period = 0;
 const double mcPrescale = 1;
@@ -55,7 +55,10 @@ int year, int mH = 125
   TString effSFPath = Form("MitAnalysisRunII/data/90x/histoDY0EffSFStudy_%d.root",year);
   //TString npvPath = Form("MitAnalysisRunII/data/90x/npvWeights_%d.root",year);
   if(year == 2018) {
-    filesPath = Form("/local/bmaier/darkg/2018/vbfg_v_013_v8_puppi/");
+    //filesPath = Form("/local/bmaier/darkg/2018/vbfg_v_013_v8_puppi/");
+    //filesPath = Form("/local/bmaier/darkg/2018/vbfg_v_013_v12_puppi/");
+    //filesPath = Form("/local/bmaier/darkg/2018/vbfg_v_013_v7/");
+    filesPath = Form("/local/bmaier/darkg/2018/vbfg_v_013_v12/");
     puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
     photonSFPath = "MitAnalysisRunII/data/90x/2018_PhotonsMedium.root";
 
@@ -105,7 +108,7 @@ int year, int mH = 125
     infileName_.push_back(Form("%sZGToNuNuG_nlo.root" ,filesPath.Data())); 	      infileCat_.push_back(kPlotZG);
     infileName_.push_back(Form("%sZGTo2LG_nlo.root" ,filesPath.Data())); 	      infileCat_.push_back(kPlotZG);
 
-    //infileName_.push_back(Form("%sGJets_ht100to200_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
+    infileName_.push_back(Form("%sGJets_ht100to200_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
     infileName_.push_back(Form("%sGJets_ht200to400_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
     infileName_.push_back(Form("%sGJets_ht400to600_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
     infileName_.push_back(Form("%sGJets_ht600toinf_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
@@ -163,7 +166,7 @@ int year, int mH = 125
     infileName_.push_back(Form("%sZGToNuNuG_nlo.root" ,filesPath.Data()));            infileCat_.push_back(kPlotZG);
     infileName_.push_back(Form("%sZGTo2LG_nlo.root" ,filesPath.Data())); 	      infileCat_.push_back(kPlotZG);
 
-    //infileName_.push_back(Form("%sGJets_ht100to200_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
+    infileName_.push_back(Form("%sGJets_ht100to200_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
     infileName_.push_back(Form("%sGJets_ht200to400_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
     infileName_.push_back(Form("%sGJets_ht400to600_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
     infileName_.push_back(Form("%sGJets_ht600toinf_CP5.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
@@ -221,7 +224,7 @@ int year, int mH = 125
     infileName_.push_back(Form("%sZGToNuNuG_nlo.root" ,filesPath.Data()));        infileCat_.push_back(kPlotZG);
     infileName_.push_back(Form("%sZGTo2LG_nlo.root" ,filesPath.Data()));          infileCat_.push_back(kPlotZG);
 
-    //infileName_.push_back(Form("%sGJets_ht100to200.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
+    infileName_.push_back(Form("%sGJets_ht100to200.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
     infileName_.push_back(Form("%sGJets_ht200to400.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
     infileName_.push_back(Form("%sGJets_ht400to600.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
     infileName_.push_back(Form("%sGJets_ht600toinf.root" ,filesPath.Data()));     infileCat_.push_back(kPlotGJ);
@@ -483,30 +486,57 @@ int year, int mH = 125
       if (jentry%1000000 == 0) printf("--- reading event %8lld (%8lld) of %8lld\n",jentry,ientry,nentries);
       if (infileCat_[ifile] != 0 && jentry%(int)theMCPrescale != 0) continue;
 
+/*bool thePass =
+(thePandaFlat.lumiNumber==31395009&&thePandaFlat.eventNumber==332)||
+(thePandaFlat.lumiNumber==31395074&&thePandaFlat.eventNumber==421)||
+(thePandaFlat.lumiNumber==31395092&&thePandaFlat.eventNumber==42)||
+(thePandaFlat.lumiNumber==31395145&&thePandaFlat.eventNumber==516)||
+(thePandaFlat.lumiNumber==31395153&&thePandaFlat.eventNumber==31)||
+(thePandaFlat.lumiNumber==31395220&&thePandaFlat.eventNumber==452)||
+(thePandaFlat.lumiNumber==31395238&&thePandaFlat.eventNumber==325)||
+(thePandaFlat.lumiNumber==31395306&&thePandaFlat.eventNumber==98)||
+(thePandaFlat.lumiNumber==31395487&&thePandaFlat.eventNumber==194)||
+(thePandaFlat.lumiNumber==31395509&&thePandaFlat.eventNumber==404)||
+(thePandaFlat.lumiNumber==31395582&&thePandaFlat.eventNumber==305)||
+(thePandaFlat.lumiNumber==31395637&&thePandaFlat.eventNumber==330)||
+(thePandaFlat.lumiNumber==31395709&&thePandaFlat.eventNumber==517)||
+(thePandaFlat.lumiNumber==31395766&&thePandaFlat.eventNumber==502)||
+(thePandaFlat.lumiNumber==31395854&&thePandaFlat.eventNumber==43)||
+(thePandaFlat.lumiNumber==31395882&&thePandaFlat.eventNumber==480)||
+(thePandaFlat.lumiNumber==31395921&&thePandaFlat.eventNumber==486)||
+(thePandaFlat.lumiNumber==31395936&&thePandaFlat.eventNumber==178);
+      if(thePass == false) continue;*/
+
       bool passTrigger = (thePandaFlat.trigger & (1<<kVBFPhoTrig)) != 0;
+      if(year == 2018 && infileCat_[ifile] != kPlotData && infileCat_[ifile] != kPlotBSM) passTrigger = true;
       if(passTrigger == false) continue;
       if(thePandaFlat.metFilter == 0) continue;
+
+      if(debug == 3) printf("DEBUG%d STEP1 %d %d %llu\n",ifile,thePandaFlat.runNumber,thePandaFlat.lumiNumber,thePandaFlat.eventNumber);
 
       //if(infileCat_[ifile] == kPlotData && thePandaFlat.runNumber >= 319077) continue;
 
       if(thePandaFlat.nLooseLep > 2) continue;
 
+      double etaPhotonCut = 1.47;
+      if(year == 2017) etaPhotonCut = 2.5;
+
       TLorentzVector vFakePhoton,vPhoton,vPhotonUp,vPhotonDown;
       int passPhoSel = 0;
       if(thePandaFlat.loosePho1Pt > ptMin
-         && TMath::Abs(thePandaFlat.loosePho1Eta) < 2.5
+         && TMath::Abs(thePandaFlat.loosePho1Eta) < etaPhotonCut
          && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium
 	 && (thePandaFlat.loosePho1SelBit & pCsafeVeto) == pCsafeVeto
 	 && (thePandaFlat.loosePho1SelBit & pPixelVeto) == pPixelVeto) passPhoSel = 1;
       if(passPhoSel == 0
          && thePandaFlat.alterPho1Pt > ptMin
-         && TMath::Abs(thePandaFlat.alterPho1Eta) < 2.5
+         && TMath::Abs(thePandaFlat.alterPho1Eta) < etaPhotonCut
          && (thePandaFlat.alterPho1SelBit & pMediumNM1) == pMediumNM1
 	 && (thePandaFlat.alterPho1SelBit & pCsafeVeto) == pCsafeVeto
 	 && (thePandaFlat.alterPho1SelBit & pPixelVeto) == pPixelVeto) passPhoSel = 2;
       if(passPhoSel == 0
          && thePandaFlat.loosePho1Pt > ptMin
-         && TMath::Abs(thePandaFlat.loosePho1Eta) < 2.5
+         && TMath::Abs(thePandaFlat.loosePho1Eta) < etaPhotonCut
          && (thePandaFlat.loosePho1SelBit & pMedium) == pMedium
 	 &&!((thePandaFlat.loosePho1SelBit & pCsafeVeto) == pCsafeVeto
 	 &&  (thePandaFlat.loosePho1SelBit & pPixelVeto) == pPixelVeto)) passPhoSel = 3;
@@ -585,7 +615,7 @@ int year, int mH = 125
 
       TLorentzVector vMet,vMetUp,vMetDown;
       double dPhiJetMET, dPhiJetMETUp, dPhiJetMETDown;
-      if(year == 2016){
+      if(year == 2016 || year == 2018){
         vMet    .SetPtEtaPhiM(thePandaFlat.pfmet,             0.0,thePandaFlat.pfmetphi,             0.0);
         vMetUp  .SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalUp,  0.0,thePandaFlat.pfmetphi_JESTotalUp,  0.0);
         vMetDown.SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalDown,0.0,thePandaFlat.pfmetphi_JESTotalDown,0.0);
@@ -626,7 +656,7 @@ int year, int mH = 125
 	vMetDown = vMetDown + vLoose[0] + vLoose[1];
 	mLL = (vLoose[0]+vLoose[1]).M();
       }
-      else if(passPhoSel == 3){ // electron faking gamma + 0 lepton
+      else if(passPhoSel == 3 && vLoose.size() == 0){ // electron faking gamma + 0 lepton
         theMinSelType = LSEL;
         theG = vPhoton;
       }
@@ -663,11 +693,16 @@ int year, int mH = 125
       }
 
       double metCutVal = 100;
-      if(year == 2018) metCutVal = 100; // 80;
+      if(year == 2018) metCutVal = 140; // 80;
       bool passZMass = TMath::Abs(mLL-91.1876) < 15.0;
       bool passMET = vMet.Pt() > metCutVal; bool passMETUp = vMetUp.Pt() > metCutVal; bool passMETDown = vMetDown.Pt() > metCutVal;
+      if(theMinSelType == LGSEL){
+        passMET     = thePandaFlat.pfUWmag              > metCutVal; 
+	passMETUp   = thePandaFlat.pfUWmag_JESTotalUp   > metCutVal;
+	passMETDown = thePandaFlat.pfUWmag_JESTotalDown > metCutVal;
+      }
 
-      if(isDEBUG && dPhiGMET < 0.1) printf("%d %f %f %f %f %f %f\n",theMinSelType,mTGMET,dPhiGMET,theG.Phi(),vMet.Phi(),theG.Pt(),vMet.Pt());
+      if(debug == 1 && dPhiGMET < 0.1) printf("%d %f %f %f %f %f %f\n",theMinSelType,mTGMET,dPhiGMET,theG.Phi(),vMet.Phi(),theG.Pt(),vMet.Pt());
 
       bool passNjets     = thePandaFlat.nJot              >= 2 && thePandaFlat.jotPt[0] > 50 && thePandaFlat.jotPt[1] > 50;
       bool passNjetsUp   = thePandaFlat.nJot_JESTotalUp   >= 2 && thePandaFlat.jotPt_JESTotalUp[0] > 50 && thePandaFlat.jotPt_JESTotalUp[1] > 50;
@@ -725,17 +760,22 @@ int year, int mH = 125
 
       double dPhiJetCutVal = 1.0;
       if     (year == 2017) dPhiJetCutVal = 1.7;
-      else if(year == 2018) dPhiJetCutVal = 1.5; // 1.9;
+      else if(year == 2018) dPhiJetCutVal = 1.0; // 1.5; // 1.9;
       bool passDPhiJetMET     = dPhiJetMET     >= dPhiJetCutVal || theMinSelType == GJSEL;
       bool passDPhiJetMETUp   = dPhiJetMETUp   >= dPhiJetCutVal || theMinSelType == GJSEL;
       bool passDPhiJetMETDown = dPhiJetMETDown >= dPhiJetCutVal || theMinSelType == GJSEL;
+      if(theMinSelType == LGSEL){
+        passDPhiJetMET     = thePandaFlat.dphipfUW              >= dPhiJetCutVal;
+        passDPhiJetMETUp   = thePandaFlat.dphipfUW_JESTotalUp   >= dPhiJetCutVal;
+        passDPhiJetMETDown = thePandaFlat.dphipfUW_JESTotalDown >= dPhiJetCutVal;
+      }
 
       const int numberOfCuts = 8;
       //                                                 0                      1         2       3              4       5          6        7
       bool passCutEvol[numberOfCuts] = {theMinSelType >= 0,passZMass && passPtTot,passNjets,passMET,passDPhiJetMET,passMJJ,passDEtaJJ,passgZep};
       bool passCutEvolAll = true;
 
-      if(isDEBUG && theMinSelType >= 0) printf("DEBUG %d %d %d %d %d %d %d %d\n",theMinSelType,passZMass,passPtTot,passMET,passNjets,passDPhiJetMET,passMJJ,passDEtaJJ);
+      if(debug == 1 && theMinSelType >= 0) printf("DEBUG %d %d %d %d %d %d %d %d\n",theMinSelType,passZMass,passPtTot,passMET,passNjets,passDPhiJetMET,passMJJ,passDEtaJJ);
 
       bool passAllCuts[nSelTypes] = {                   
      theMinSelType == VBFGSEL && passZMass && passMET && passNjets && passDPhiJetMET && passMJJ && passDEtaJJ && passgZep && passPtTot,
@@ -800,6 +840,7 @@ int year, int mH = 125
       double photonSFUnc[3] = {1.0, 1.0, 1.0};
       double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0; double sf_l1PrefireE = 1.0;
       double triggerWeights[2] = {1.0, 0.0};
+      double photonSF = 1.0, effSFLoose = 1.0, effSFTight = 1.0;
       if(theCategory != kPlotData){
 	puWeight     = nPUScaleFactor(fhDPU,    thePandaFlat.pu);
         puWeightUp   = nPUScaleFactor(fhDPUUp,  thePandaFlat.pu);
@@ -817,17 +858,28 @@ int year, int mH = 125
 
         totalWeight = thePandaFlat.normalizedWeight * lumiV[whichYear] * 1000 * puWeight * thePandaFlat.sf_l1Prefire * triggerWeights[0] * theMCPrescale;
 
-        for(unsigned int nl=0; nl<idLep.size(); nl++) totalWeight = totalWeight * looseLepSF[nl];
+        if(theMinSelType != LSEL){
+          for(unsigned int nl=0; nl<idLep.size(); nl++) effSFLoose = effSFLoose * looseLepSF[nl];
+        }
 
         if     (infileCat_[ifile] == kPlotWZ)                                                totalWeight = totalWeight * thePandaFlat.sf_wz;
 	else if(infileCat_[ifile] == kPlotZZ && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;
+
+        // NLO QCD K-factors
+	if     (infileCat_[ifile] == kPlotWJ) totalWeight = totalWeight * (1.166790*TMath::Exp(-0.001606*thePandaFlat.trueGenBosonPt)+0.466154);
+	else if(infileCat_[ifile] == kPlotDY) totalWeight = totalWeight * (1.539043*TMath::Exp(-0.001721*thePandaFlat.trueGenBosonPt)+0.391421);
+	else if(infileCat_[ifile] == kPlotGJ) totalWeight = totalWeight * (1.7169-0.001221*thePandaFlat.trueGenBosonPt);
+
+        // EWK K-factors
+	if     (infileCat_[ifile] == kPlotWJ) totalWeight = totalWeight * thePandaFlat.sf_ewkV;
+	else if(infileCat_[ifile] == kPlotDY) totalWeight = totalWeight * thePandaFlat.sf_ewkV;
+	else if(infileCat_[ifile] == kPlotGJ) totalWeight = totalWeight * thePandaFlat.sf_ewkV;
 
         if(theCategory != kPlotData && infileName_[ifile].Contains("VBF_HinvG") == false){
           totalWeight = totalWeight * mcCorrection(0, year, infileCat_[ifile], massJJ, mTGMET);
         }
 
 	if(passPhoSel == 1 || passPhoSel == 2) {
-          double photonSF = 1.0;
           if     (thePandaFlat.looseGenPho1PdgId == 1) {
 	    int nxbin = fhDElePhoSF->GetXaxis()->FindBin(TMath::Abs(vPhoton.Eta()));
 	    int nybin = fhDElePhoSF->GetYaxis()->FindBin(TMath::Min((double)vPhoton.Pt(), 124.999));
@@ -846,14 +898,15 @@ int year, int mH = 125
 	  totalWeight = totalWeight * photonSF;
 	}
 
-        double effSF = 1.0;
-        for(unsigned int nl=0; nl<idLep.size(); nl++){
-          if(idLep[nl] == 0) continue;
-          bool applyTight = false;
-          effSF = effSF * lepScaleFactor(vLoose[nl].Pt(),vLoose[nl].Eta(),TMath::Abs(looseLepPdgId[nl]),applyTight,histoLepEffSelMediumEtaPt_m,histoLepEffSelMediumEtaPt_e,histoLepEffSelTightEtaPt_m,histoLepEffSelTightEtaPt_e);
-          if(effSF == 0){printf("effSF == 0!: %f %f %d \n",vLoose[nl].Pt(),vLoose[nl].Eta(),TMath::Abs(looseLepPdgId[nl])); return;}
-        }
-        totalWeight = totalWeight * effSF;
+        if(theMinSelType != LSEL){
+          for(unsigned int nl=0; nl<idLep.size(); nl++){
+            if(idLep[nl] == 0) continue;
+            bool applyTight = false;
+            effSFTight = effSFTight * lepScaleFactor(vLoose[nl].Pt(),vLoose[nl].Eta(),TMath::Abs(looseLepPdgId[nl]),applyTight,histoLepEffSelMediumEtaPt_m,histoLepEffSelMediumEtaPt_e,histoLepEffSelTightEtaPt_m,histoLepEffSelTightEtaPt_e);
+            if(effSFTight == 0){printf("effSFTight == 0!: %f %f %d \n",vLoose[nl].Pt(),vLoose[nl].Eta(),TMath::Abs(looseLepPdgId[nl])); return;}
+          }
+	}
+        totalWeight = totalWeight * effSFLoose * effSFTight;
       }
 
       if(usePureMC == false && countLeptonTight != idLep.size()){
@@ -931,6 +984,7 @@ int year, int mH = 125
       if(dataCardSel >= 0) histo[ 95+theMinSelType][theCategory]->Fill(vMet.Phi(),totalWeight);
 
       if(theMinSelType != LLGSEL){ // Begin datacard making
+        if(debug == 2 && dataCardSel >= 0) printf("DEBUG%d %d %d %llu %d %f %f %f %f %f %f %f %f\n",ifile,thePandaFlat.runNumber,thePandaFlat.lumiNumber,thePandaFlat.eventNumber,dataCardSel,totalWeight,thePandaFlat.normalizedWeight*lumiV[whichYear]*1000,puWeight,thePandaFlat.sf_l1Prefire,triggerWeights[0],photonSF,effSFLoose,effSFTight);
         double MVAVar     = TMath::Min(mTGMET    ,999.999);
         double MVAVarUp   = TMath::Min(mTGMETUp  ,999.999);
         double MVAVarDown = TMath::Min(mTGMETDown,999.999);
