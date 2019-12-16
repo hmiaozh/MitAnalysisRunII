@@ -735,7 +735,7 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
         int theWSStudyCategory = 0; double totalWSStudyWeight = totalWeight;
 	if     (theCategory == kPlotData) {}
 	else if(theCategory == kPlotDY)   {theWSStudyCategory = 1;}
-	else                              {totalWSStudyWeight = -1.0 * totalWSStudyWeight;};
+	else                              {totalWSStudyWeight = 0;}//-1.0 * totalWSStudyWeight;};
 	int nEta[2],nPt[2];
 	for(int i=0; i<2; i++){
 	  nEta[i] = histoEtaCorr->GetXaxis()->FindBin(TMath::Min(TMath::Abs(vLoose[i].Eta()),2.4999))-1;

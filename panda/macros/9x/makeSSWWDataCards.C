@@ -178,21 +178,21 @@ void makeSSWWDataCards(TString outputLimits = "ssww_comb_input.root", int fidAna
   //}
   //newcardShape << Form("\n");
 
-  newcardShape << Form("WZ_lep    lnN     ");
+  newcardShape << Form("WZTauH    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(!histo_Baseline[ic]) continue;
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
     if(ic != kPlotWZ && ic != kPlotEWKWZ) newcardShape << Form("- ");
-    else                                  newcardShape << Form("%f ",syst_WZl[0]);
+    else	                          newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
-  newcardShape << Form("WZ_tau    lnN     ");
+  newcardShape << Form("WZTauL    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(!histo_Baseline[ic]) continue;
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
     if(ic != kPlotWZ && ic != kPlotEWKWZ) newcardShape << Form("- ");
-    else                                  newcardShape << Form("%f ",syst_WZl[1]);
+    else	                          newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 

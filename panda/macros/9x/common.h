@@ -3,8 +3,12 @@
 
 const int nBinEtaCorr = 5; Float_t xbinsEtaCorr[nBinEtaCorr+1] = {0.0,0.5,1.0,1.5,2.0,2.5};
 TH1D* histoEtaCorr = new TH1D("histoEtaCorr", "histoEtaCorr", nBinEtaCorr, xbinsEtaCorr);
-const int nBinPtCorr = 5; Float_t xbinsPtCorr[nBinPtCorr+1] = {20,35,45,55,80,100};
+const int nBinPtCorr = 5; Float_t xbinsPtCorr[nBinPtCorr+1] = {20,35,50,70,90,100};
 TH1D* histoPtCorr = new TH1D("histoPtCorr", "histoPtCorr", nBinPtCorr, xbinsPtCorr);
+
+const int nBinEtaJERCorr = 13; Float_t xbinsEtaJERCorr[nBinEtaJERCorr+1] = {0.000,0.522,0.783,1.131,1.305,1.740,1.930,2.043,2.322,2.500,2.853,2.964,3.139,5.191};
+TH1D* histoEtaJERCorr = new TH1D("histoEtaJERCorr", "histoEtaJERCorr", nBinEtaJERCorr, xbinsEtaJERCorr);
+double JERSF[nBinEtaJERCorr] = {0.0222,0.0484,0.0456,0.1397,0.1470,0.0976,0.1909,0.1501,0.2020,0.5684,0.3743,0.1089,0.1524};
 
 double WSSF_2016[nBinEtaCorr]  = {1.442823,1.140789,0.937390,0.980470,0.977845};
 double WSSFE_2016[nBinEtaCorr] = {0.171508,0.076384,0.037540,0.016268,0.020326};

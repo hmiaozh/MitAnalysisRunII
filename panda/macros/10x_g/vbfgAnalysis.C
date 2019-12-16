@@ -871,9 +871,9 @@ int year, int mH = 125
 	else if(infileCat_[ifile] == kPlotGJ) totalWeight = totalWeight * (1.7169-0.001221*thePandaFlat.trueGenBosonPt);
 
         // EWK K-factors
-	if     (infileCat_[ifile] == kPlotWJ) totalWeight = totalWeight * thePandaFlat.sf_ewkV;
-	else if(infileCat_[ifile] == kPlotDY) totalWeight = totalWeight * thePandaFlat.sf_ewkV;
-	else if(infileCat_[ifile] == kPlotGJ) totalWeight = totalWeight * thePandaFlat.sf_ewkV;
+	//if     (infileCat_[ifile] == kPlotWJ) totalWeight = totalWeight * thePandaFlat.sf_ewkV;
+	//else if(infileCat_[ifile] == kPlotDY) totalWeight = totalWeight * thePandaFlat.sf_ewkV;
+	//else if(infileCat_[ifile] == kPlotGJ) totalWeight = totalWeight * thePandaFlat.sf_ewkV;
 
         if(theCategory != kPlotData && infileName_[ifile].Contains("VBF_HinvG") == false){
           totalWeight = totalWeight * mcCorrection(0, year, infileCat_[ifile], massJJ, mTGMET);
