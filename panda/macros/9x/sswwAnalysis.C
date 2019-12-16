@@ -872,8 +872,8 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
         if(theBinEtaJERCorr[0] < 0 || theBinEtaJERCorr[0] > nBinEtaJERCorr+1 ||
 	   theBinEtaJERCorr[1] < 0 || theBinEtaJERCorr[1] > nBinEtaJERCorr+1) printf("PROBLEM with theBinEtaJERCorr\n");
 
-        theEtaJERCorr[0] = 1.0 + gRandom->Gaus(0.0,0.10)*sqrt(JERSF[theBinEtaJERCorr[0]]*JERSF[theBinEtaJERCorr[0]]);
-        theEtaJERCorr[1] = 1.0 + gRandom->Gaus(0.0,0.10)*sqrt(JERSF[theBinEtaJERCorr[1]]*JERSF[theBinEtaJERCorr[1]]);
+        theEtaJERCorr[0] = 1.0 + gRandom->Gaus(0.0,0.10)*JERSF[theBinEtaJERCorr[0]];
+        theEtaJERCorr[1] = 1.0 + gRandom->Gaus(0.0,0.10)*JERSF[theBinEtaJERCorr[1]];
       }
 
       TLorentzVector vJot1;        vJot1.SetPtEtaPhiM       (thePandaFlat.jotPt[0]                 ,thePandaFlat.jotEta[0],thePandaFlat.jotPhi[0],0.0);
