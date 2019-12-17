@@ -1224,7 +1224,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
             else if(TMath::Abs(vLoose[theWSLepton].Eta()) < 2.0) nEta = 3;
             else                                                 nEta = 4;
 	    totalWeight = totalWeight * WSSF[nEta];
-	    effWSUnc = 1.0 + WSSFE[nEta];
+	    effWSUnc = 1.0 + (WSSFE[nEta]+0.15);
 	  }
 	}
       }

@@ -3,19 +3,19 @@
 
 const int nBinEtaCorr = 5; Float_t xbinsEtaCorr[nBinEtaCorr+1] = {0.0,0.5,1.0,1.5,2.0,2.5};
 TH1D* histoEtaCorr = new TH1D("histoEtaCorr", "histoEtaCorr", nBinEtaCorr, xbinsEtaCorr);
-const int nBinPtCorr = 5; Float_t xbinsPtCorr[nBinPtCorr+1] = {20,35,50,70,90,100};
+const int nBinPtCorr = 5; Float_t xbinsPtCorr[nBinPtCorr+1] = {20,35,50,65,80,100};
 TH1D* histoPtCorr = new TH1D("histoPtCorr", "histoPtCorr", nBinPtCorr, xbinsPtCorr);
 
 const int nBinEtaJERCorr = 13; Float_t xbinsEtaJERCorr[nBinEtaJERCorr+1] = {0.000,0.522,0.783,1.131,1.305,1.740,1.930,2.043,2.322,2.500,2.853,2.964,3.139,5.191};
 TH1D* histoEtaJERCorr = new TH1D("histoEtaJERCorr", "histoEtaJERCorr", nBinEtaJERCorr, xbinsEtaJERCorr);
 double JERSF[nBinEtaJERCorr] = {0.0222,0.0484,0.0456,0.1397,0.1470,0.0976,0.1909,0.1501,0.2020,0.5684,0.3743,0.1089,0.1524};
 
-double WSSF_2016[nBinEtaCorr]  = {1.442823,1.140789,0.937390,0.980470,0.977845};
-double WSSFE_2016[nBinEtaCorr] = {0.171508,0.076384,0.037540,0.016268,0.020326};
-double WSSF_2017[nBinEtaCorr]  = {1.991688,1.023561,1.570127,1.511758,1.457862};
-double WSSFE_2017[nBinEtaCorr] = {0.161615,0.097197,0.038049,0.021558,0.022489};
-double WSSF_2018[nBinEtaCorr]  = {1.664706,2.191345,1.389267,1.391095,1.275033};
-double WSSFE_2018[nBinEtaCorr] = {0.153979,0.073704,0.035930,0.016744,0.016866};
+double WSSF_2016[nBinEtaCorr]  = {1.796753,1.258873,0.968772,0.988114,0.986292};
+double WSSFE_2016[nBinEtaCorr] = {0.261623,0.106941,0.049665,0.021699,0.027089};
+double WSSF_2017[nBinEtaCorr]  = {2.427657,1.166844,1.630284,1.533414,1.476069};
+double WSSFE_2017[nBinEtaCorr] = {0.275568,0.125484,0.058017,0.031834,0.032471};
+double WSSF_2018[nBinEtaCorr]  = {2.208704,2.461981,1.453823,1.404458,1.287895};
+double WSSFE_2018[nBinEtaCorr] = {0.231407,0.127919,0.052159,0.024460,0.024132};
 
 double muScaleCorr_2016[nBinEtaCorr] = {1.000357,0.999957,1.000507,0.999696,1.000437};
 double elScaleCorr_2016[nBinEtaCorr] = {1.000266,0.998870,0.998902,0.998738,0.998196};
