@@ -1,28 +1,30 @@
 #include "TH1D.h"
 #include "TH2D.h"
 
-const int nBinEtaCorr = 5; Float_t xbinsEtaCorr[nBinEtaCorr+1] = {0.0,0.5,1.0,1.5,2.0,2.5};
-TH1D* histoEtaCorr = new TH1D("histoEtaCorr", "histoEtaCorr", nBinEtaCorr, xbinsEtaCorr);
-const int nBinPtCorr = 5; Float_t xbinsPtCorr[nBinPtCorr+1] = {20,35,50,65,80,100};
-TH1D* histoPtCorr = new TH1D("histoPtCorr", "histoPtCorr", nBinPtCorr, xbinsPtCorr);
+const int nBinWSEtaCorr = 4; Float_t xbinsWSEtaCorr[nBinWSEtaCorr+1] = {0.0,1.0,1.5,2.0,2.5};
+TH1D* histoWSEtaCorr = new TH1D("histoWSEtaCorr", "histoWSEtaCorr", nBinWSEtaCorr, xbinsWSEtaCorr);
+const int nBinWSPtCorr = 4; Float_t xbinsWSPtCorr[nBinWSPtCorr+1] = {20,35,50,75,100};
+TH1D* histoWSPtCorr = new TH1D("histoWSPtCorr", "histoWSPtCorr", nBinWSPtCorr, xbinsWSPtCorr);
 
 const int nBinEtaJERCorr = 13; Float_t xbinsEtaJERCorr[nBinEtaJERCorr+1] = {0.000,0.522,0.783,1.131,1.305,1.740,1.930,2.043,2.322,2.500,2.853,2.964,3.139,5.191};
 TH1D* histoEtaJERCorr = new TH1D("histoEtaJERCorr", "histoEtaJERCorr", nBinEtaJERCorr, xbinsEtaJERCorr);
 double JERSF[nBinEtaJERCorr] = {0.0222,0.0484,0.0456,0.1397,0.1470,0.0976,0.1909,0.1501,0.2020,0.5684,0.3743,0.1089,0.1524};
 
-double WSSF_2016[nBinEtaCorr]  = {1.796753,1.258873,0.968772,0.988114,0.986292};
-double WSSFE_2016[nBinEtaCorr] = {0.261623,0.106941,0.049665,0.021699,0.027089};
-double WSSF_2017[nBinEtaCorr]  = {2.427657,1.166844,1.630284,1.533414,1.476069};
-double WSSFE_2017[nBinEtaCorr] = {0.275568,0.125484,0.058017,0.031834,0.032471};
-double WSSF_2018[nBinEtaCorr]  = {2.208704,2.461981,1.453823,1.404458,1.287895};
-double WSSFE_2018[nBinEtaCorr] = {0.231407,0.127919,0.052159,0.024460,0.024132};
+double WSSF_2016[nBinWSEtaCorr]  = {1.344544,0.969373,0.980854,0.989034};
+double WSSFE_2016[nBinWSEtaCorr] = {0.086280,0.049862,0.021642,0.027081};
+double WSSF_2017[nBinWSEtaCorr]  = {2.120786,1.705631,1.341985,1.431982};
+double WSSFE_2017[nBinWSEtaCorr] = {0.102489,0.062974,0.026880,0.029367};
+double WSSF_2018[nBinWSEtaCorr]  = {2.414048,1.445222,1.400950,1.293209};
+double WSSFE_2018[nBinWSEtaCorr] = {0.097769,0.052131,0.024445,0.024108};
 
-double muScaleCorr_2016[nBinEtaCorr] = {1.000357,0.999957,1.000507,0.999696,1.000437};
-double elScaleCorr_2016[nBinEtaCorr] = {1.000266,0.998870,0.998902,0.998738,0.998196};
-double muScaleCorr_2017[nBinEtaCorr] = {0.999975,1.000012,1.000195,0.999833,1.000353};
-double elScaleCorr_2017[nBinEtaCorr] = {0.999903,0.998566,0.999513,1.000157,1.000000};
-double muScaleCorr_2018[nBinEtaCorr] = {0.999928,0.999837,0.999989,0.999455,0.999739};
-double elScaleCorr_2018[nBinEtaCorr] = {1.002245,1.003784,0.997714,0.990361,1.010238};
+const int nBinLepEtaCorr = 5; Float_t xbinsLepEtaCorr[nBinLepEtaCorr+1] = {0.0,0.5,1.0,1.5,2.0,2.5};
+TH1D* histoLepEtaCorr = new TH1D("histoLepEtaCorr", "histoLepEtaCorr", nBinLepEtaCorr, xbinsLepEtaCorr);
+double muScaleCorr_2016[nBinLepEtaCorr] = {1.000357,0.999957,1.000507,0.999696,1.000437};
+double elScaleCorr_2016[nBinLepEtaCorr] = {1.000266,0.998870,0.998902,0.998738,0.998196};
+double muScaleCorr_2017[nBinLepEtaCorr] = {0.999975,1.000012,1.000195,0.999833,1.000353};
+double elScaleCorr_2017[nBinLepEtaCorr] = {0.999903,0.998566,0.999513,1.000157,1.000000};
+double muScaleCorr_2018[nBinLepEtaCorr] = {0.999928,0.999837,0.999989,0.999455,0.999739};
+double elScaleCorr_2018[nBinLepEtaCorr] = {1.002245,1.003784,0.997714,0.990361,1.010238};
 
 const bool useZZWZEWKUnc = true;
 
@@ -217,12 +219,13 @@ const double mass_mu = 0.10566;
 double mcCorrection(int type, int year, int jetNMBtags, int jetNBtags, int nJot, double dphillmet, int infileCat){
   double totalWeight = 1.0;
 
-  if     (type == 0){ // SSWW
-    if     (year == 2017 && jetNMBtags > 0) totalWeight = totalWeight * 0.70;
-    else if(year == 2017 && jetNBtags  > 0) totalWeight = totalWeight * 0.95;
+  if     (type == 0 &&
+         (infileCat == kPlotNonPrompt || infileCat == kPlotTVX || infileCat == kPlotWS)){ // SSWW
+    if     (year == 2017 && jetNMBtags > 0) totalWeight = totalWeight * 0.95;
+    else if(year == 2017 && jetNBtags  > 0) totalWeight = totalWeight * 0.58;
 
-    if     (year == 2018 && jetNMBtags > 0) totalWeight = totalWeight * 0.70;
-    else if(year == 2018 && jetNBtags  > 0) totalWeight = totalWeight * 1.00;
+    else if(year == 2018 && jetNMBtags > 0) totalWeight = totalWeight * 0.75;
+    else if(year == 2018 && jetNBtags  > 0) totalWeight = totalWeight * 0.96;
   }
   else if(type == 1){ // ZH
     if     (year == 2016 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 1.40;

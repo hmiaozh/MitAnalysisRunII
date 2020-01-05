@@ -36,7 +36,7 @@ int year, int mH = 125
   double ptMin = 200;
   int whichYear = -1;
   if     (year == 2016) {whichYear = Y2016; ptMin = 80.;}
-  else if(year == 2017) {whichYear = Y2017; ptMin = 200.;}
+  else if(year == 2017) {whichYear = Y2017; ptMin = 80.;}
   else if(year == 2018) {whichYear = Y2018; ptMin = 80.;}
   else {printf("Wrong year (%d)!\n",year); return;}
 
@@ -47,20 +47,20 @@ int year, int mH = 125
   vector<int> infileCat_;
 
   TString filesPath;
-  TString fLepton_FakesName = Form("MitAnalysisRunII/data/90x/histoFakeEtaPt_%d.root",year);
+  TString fLepton_FakesName = Form("MitAnalysisRunII/data/90x/fakes/histoFakeEtaPt_%d.root",year);
   TString puPath;
   TString photonSFPath;
-  TString elephoSFPath = Form("MitAnalysisRunII/data/90x/histoDY0LGSF_%d.root",year);
+  TString elephoSFPath = Form("MitAnalysisRunII/data/90x/eff/histoDY0LGSF_%d.root",year);
   TString trgSFPath = Form("MitAnalysisRunII/data/10x_g/histoTriggerSFVBFG_%d.root",year);
-  TString effSFPath = Form("MitAnalysisRunII/data/90x/histoDY0EffSFStudy_%d.root",year);
-  //TString npvPath = Form("MitAnalysisRunII/data/90x/npvWeights_%d.root",year);
+  TString effSFPath = Form("MitAnalysisRunII/data/90x/eff/histoDY0EffSFStudy_%d.root",year);
+  //TString npvPath = Form("MitAnalysisRunII/data/90x/pu/npvWeights_%d.root",year);
   if(year == 2018) {
     //filesPath = Form("/local/bmaier/darkg/2018/vbfg_v_013_v8_puppi/");
     //filesPath = Form("/local/bmaier/darkg/2018/vbfg_v_013_v12_puppi/");
     //filesPath = Form("/local/bmaier/darkg/2018/vbfg_v_013_v7/");
     filesPath = Form("/local/bmaier/darkg/2018/vbfg_v_013_v12/");
-    puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
-    photonSFPath = "MitAnalysisRunII/data/90x/2018_PhotonsMedium.root";
+    puPath = "MitAnalysisRunII/data/90x/pu/puWeights_90x_2018.root";
+    photonSFPath = "MitAnalysisRunII/data/90x/eff/photon_scalefactors_2018.root";
 
     //infileName_.push_back(Form("%sdata.root","/data/t3home000/ceballos/panda/v_vbfg_2018_0/")); infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sEGamma.root" ,filesPath.Data()));                   infileCat_.push_back(kPlotData);
@@ -116,12 +116,13 @@ int year, int mH = 125
     infileName_.push_back(Form("%sDarkPhotonVBFHM%d.root" ,filesPath.Data(),mH));     infileCat_.push_back(kPlotBSM);
   }
   else if(year == 2017) {
-    filesPath = Form("/local/bmaier/darkg/2017/vbfg_v_012_v9_puppi/");
-    puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
-    photonSFPath = "MitAnalysisRunII/data/90x/egammaEffi.txt_EGM2D_runBCDEF_passingMedium94X.root";
+    //filesPath = Form("/local/bmaier/darkg/2017/vbfg_v_012_v9_puppi/");
+    filesPath = Form("/local/bmaier/darkg/2017/vbfg_v_012_v12/");
+    puPath = "MitAnalysisRunII/data/90x/pu/puWeights_90x_2017.root";
+    photonSFPath = "MitAnalysisRunII/data/90x/eff/photon_scalefactors_2017.root";
 
-    infileName_.push_back(Form("%sdata.root","/data/t3home000/ceballos/panda/v_vbfg_2017_0/")); infileCat_.push_back(kPlotData);
-    //infileName_.push_back(Form("%sSinglePhoton.root" ,filesPath.Data()));             infileCat_.push_back(kPlotData);
+    //infileName_.push_back(Form("%sdata.root","/data/t3home000/ceballos/panda/v_vbfg_2017_0/")); infileCat_.push_back(kPlotData);
+    infileName_.push_back(Form("%sData.root" ,filesPath.Data()));             infileCat_.push_back(kPlotData);
 
     infileName_.push_back(Form("%sDiboson_ww_CP5.root" ,filesPath.Data()));           infileCat_.push_back(kPlotWW);
 
@@ -176,8 +177,8 @@ int year, int mH = 125
   else if(year == 2016) {
     //filesPath = Form("/local/bmaier/darkg/2016/vbfg_v_009_v9_puppi/");
     filesPath = Form("/local/bmaier/darkg/2016/vbfg_v_009_v6/");
-    puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
-    photonSFPath = "MitAnalysisRunII/data/80x/photon_scalefactors_37ifb.root";
+    puPath = "MitAnalysisRunII/data/90x/pu/puWeights_90x_2016.root";
+    photonSFPath = "MitAnalysisRunII/data/90x/eff/photon_scalefactors_2016.root";
 
     infileName_.push_back(Form("%sSinglePhoton.root" ,filesPath.Data()));         infileCat_.push_back(kPlotData);
 
@@ -508,7 +509,9 @@ int year, int mH = 125
       if(thePass == false) continue;*/
 
       bool passTrigger = (thePandaFlat.trigger & (1<<kVBFPhoTrig)) != 0;
+      if(year == 2017) passTrigger = (thePandaFlat.trigger & (1<<kMETTrig)) != 0;
       if(year == 2018 && infileCat_[ifile] != kPlotData && infileCat_[ifile] != kPlotBSM) passTrigger = true;
+      if(year == 2017 && infileCat_[ifile] != kPlotData && infileCat_[ifile] != kPlotBSM) passTrigger = true;
       if(passTrigger == false) continue;
       if(thePandaFlat.metFilter == 0) continue;
 
@@ -615,7 +618,7 @@ int year, int mH = 125
 
       TLorentzVector vMet,vMetUp,vMetDown;
       double dPhiJetMET, dPhiJetMETUp, dPhiJetMETDown;
-      if(year == 2016 || year == 2018){
+      if(year == 2016 || year == 2018 || year == 2017){
         vMet    .SetPtEtaPhiM(thePandaFlat.pfmet,             0.0,thePandaFlat.pfmetphi,             0.0);
         vMetUp  .SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalUp,  0.0,thePandaFlat.pfmetphi_JESTotalUp,  0.0);
         vMetDown.SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalDown,0.0,thePandaFlat.pfmetphi_JESTotalDown,0.0);
@@ -640,7 +643,7 @@ int year, int mH = 125
         theMinSelType = VBFGSEL;
         theG = vPhoton;
       }
-      else if((passPhoSel == 1 || passPhoSel == 2) && vLoose.size() == 1 && TMath::Abs(vPhoton.DeltaR(vLoose[0])) > 0.3){ // gamma + 1 lepton
+      else if((passPhoSel == 1 || passPhoSel == 2) && vLoose.size() == 1 && thePandaFlat.nLooseMuon == 1 && TMath::Abs(vPhoton.DeltaR(vLoose[0])) > 0.3){ // gamma + 1 lepton
         theMinSelType = LGSEL;
         theG = vPhoton;
 	vMet	 = vMet     + vLoose[0];
@@ -693,7 +696,7 @@ int year, int mH = 125
       }
 
       double metCutVal = 100;
-      if(year == 2018) metCutVal = 140; // 80;
+      if(year == 2018 || year == 2017) metCutVal = 140; // 80;
       bool passZMass = TMath::Abs(mLL-91.1876) < 15.0;
       bool passMET = vMet.Pt() > metCutVal; bool passMETUp = vMetUp.Pt() > metCutVal; bool passMETDown = vMetDown.Pt() > metCutVal;
       if(theMinSelType == LGSEL){
@@ -745,11 +748,6 @@ int year, int mH = 125
       bool passPtTotUp   = totSystemUp.Pt()   < 150;
       bool passPtTotDown = totSystemDown.Pt() < 150;
 
-      //bool passBtagVeto     = thePandaFlat.jetNMBtags == 0; 
-      //bool passBtagVetoUp   = thePandaFlat.jetNMBtags_JESTotalUp == 0; 
-      //bool passBtagVetoDown = thePandaFlat.jetNMBtags_JESTotalDown == 0;
-      //bool passTauVeto = thePandaFlat.nTau == 0;
-
       bool passHEM1516 = true;
       if(year == 2018 && thePandaFlat.nJot >= 2){
         passHEM1516 = 
@@ -759,7 +757,7 @@ int year, int mH = 125
       if(passHEM1516 == false) continue;
 
       double dPhiJetCutVal = 1.0;
-      if     (year == 2017) dPhiJetCutVal = 1.7;
+      if     (year == 2017) dPhiJetCutVal = 1.0;
       else if(year == 2018) dPhiJetCutVal = 1.0; // 1.5; // 1.9;
       bool passDPhiJetMET     = dPhiJetMET     >= dPhiJetCutVal || theMinSelType == GJSEL;
       bool passDPhiJetMETUp   = dPhiJetMETUp   >= dPhiJetCutVal || theMinSelType == GJSEL;
@@ -850,11 +848,11 @@ int year, int mH = 125
 
 	//double npvWeight = nPUScaleFactor(fhDNPV, thePandaFlat.npv);
 
-	if(passPhoSel > 0 && year == 2017) {
+	/*if(passPhoSel > 0 && year == 2017) {
 	  int nphbin = trgSF->GetXaxis()->FindBin(TMath::Min((double)vPhoton.Pt(), 399.99));
           triggerWeights[0] = trgSF->GetBinContent(nphbin);
           triggerWeights[1] = trgSF->GetBinError(nphbin)/triggerWeights[0];
-        }
+        }*/
 
         totalWeight = thePandaFlat.normalizedWeight * lumiV[whichYear] * 1000 * puWeight * thePandaFlat.sf_l1Prefire * triggerWeights[0] * theMCPrescale;
 
@@ -973,7 +971,7 @@ int year, int mH = 125
       if(passNMinusOne[5]) histo[35+theMinSelType][theCategory]->Fill(gZep,totalWeight);
       if(passNMinusOne[6]) histo[40+theMinSelType][theCategory]->Fill(TMath::Min(totSystem.Pt(),199.999),totalWeight);
       for(int i=0; i<numberOfCuts; i++) {passCutEvolAll = passCutEvolAll && passCutEvol[i]; if(passCutEvolAll) histo[45+theMinSelType][theCategory]->Fill((double)i,totalWeight);}
-      if(dataCardSel >= 0) histo[ 50+theMinSelType][theCategory]->Fill(TMath::Min((double)thePandaFlat.jetNMBtags,3.499),totalWeight);
+      if(dataCardSel >= 0) histo[ 50+theMinSelType][theCategory]->Fill(TMath::Min((double)thePandaFlat.nJot,3.499),totalWeight);
       if(dataCardSel >= 0) histo[ 55+theMinSelType][theCategory]->Fill(TMath::Abs(theG.Eta()),totalWeight);
       if(dataCardSel >= 0) histo[ 60+theMinSelType][theCategory]->Fill(TMath::Min(theG.Pt(),479.999),totalWeight);
       if(dataCardSel >= 0) histo[ 65+theMinSelType][theCategory]->Fill(TMath::Min(dPhiJetG,2.999),totalWeight);
@@ -1032,10 +1030,10 @@ int year, int mH = 125
             histo_PUBoundingDown[theCategory]->Fill(MVAVar,totalWeight*puWeightDown/puWeight);
 	    for(int ny=0; ny<nYears; ny++){
 	      if(ny == whichYear) {
-                histo_BTAGBBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0BUp  /thePandaFlat.sf_btag0);
-                histo_BTAGBBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0BDown/thePandaFlat.sf_btag0);
-                histo_BTAGLBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MUp  /thePandaFlat.sf_btag0);
-                histo_BTAGLBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MDown/thePandaFlat.sf_btag0);
+                histo_BTAGBBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight);
+                histo_BTAGBBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight);
+                histo_BTAGLBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight);
+                histo_BTAGLBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight);
                 histo_PreFireBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight*sf_l1PrefireE);
                 histo_PreFireBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight/sf_l1PrefireE);
                 histo_TriggerBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight*(1+triggerWeights[1]));

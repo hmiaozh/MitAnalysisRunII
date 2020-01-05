@@ -10,7 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include "TLorentzVector.h"
-void studyLeptonSel(TString fileName = "MitAnalysisRunII/data/90x/histoDY0EffSFStudy_2016.root", int type = 0){
+void studyLeptonSel(TString fileName = "MitAnalysisRunII/data/90x/eff/histoDY0EffSFStudy_2016.root", int type = 0){
 
   const int nLepSel = 16; const int nBaseSel[2] {0, 0};
   TFile *_file0 = TFile::Open(fileName.Data());

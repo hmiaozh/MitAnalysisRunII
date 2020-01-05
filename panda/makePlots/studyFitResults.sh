@@ -64,7 +64,7 @@ rm -f studyFitResults*.txt;
 rm -f histoDatacard_?.root
 
 elif [ $NSEL == 'ssww' ]; then
-echo "***************SSWW SR*****"
+echo "***************SSWW WW SR*****"
 root -l -q -b MitAnalysisRunII/panda/makePlots/studyFitResults.C+'(10, "done_ana/histossww_2016_0.root", "ana_ssww/fitDiagnosticsssww_comb_wwwz_obs.root", "SSWW_2016")';
 mv studyFitResults.txt studyFitResults_2016.txt;
 mv histoDatacard_10.root histoDatacard_ssww_wwsr_2016.root
@@ -138,7 +138,7 @@ hadd -f histoDatacard_ssww_wzb_2019.root histoDatacard_ssww_wzb_201[6-8].root
 python MitAnalysisRunII/panda/makePlots/studyFitResults.py;
 rm -f studyFitResults*.txt;
 
-echo "***************SSWW WZ CR*****"
+echo "***************SSWW WZ SR*****"
 root -l -q -b MitAnalysisRunII/panda/makePlots/studyFitResults.C+'(14, "done_ana/histossww_2016_77.root", "ana_ssww/fitDiagnosticsssww_comb_wwwz_obs.root", "SSWW_2016")';
 mv studyFitResults.txt studyFitResults_2016.txt;
 mv histoDatacard_14.root histoDatacard_ssww_wz_2016.root

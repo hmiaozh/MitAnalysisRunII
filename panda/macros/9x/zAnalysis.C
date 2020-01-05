@@ -30,35 +30,38 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
   //*******************************************************
   //Inputs
   //*******************************************************
-  double WSSF[nBinEtaCorr],WSSFE[nBinEtaCorr];
-  double muScaleCorr[nBinEtaCorr],elScaleCorr[nBinEtaCorr];
+  double WSSF[nBinWSEtaCorr],WSSFE[nBinWSEtaCorr];
+  double muScaleCorr[nBinLepEtaCorr],elScaleCorr[nBinLepEtaCorr];
   if     (year == 2016){
-    for(int i=0; i<nBinEtaCorr; i++) {WSSF[i] = WSSF_2016[i]; WSSFE[i] = WSSFE_2016[i]; muScaleCorr[i] = muScaleCorr_2016[i]; elScaleCorr[i] = elScaleCorr_2016[i];}
+    for(int i=0; i<nBinWSEtaCorr; i++) {WSSF[i] = WSSF_2016[i]; WSSFE[i] = WSSFE_2016[i];} 
+    for(int i=0; i<nBinLepEtaCorr; i++) {muScaleCorr[i] = muScaleCorr_2016[i]; elScaleCorr[i] = elScaleCorr_2016[i];}
   }
   else if(year == 2017){
-    for(int i=0; i<nBinEtaCorr; i++) {WSSF[i] = WSSF_2017[i]; WSSFE[i] = WSSFE_2017[i]; muScaleCorr[i] = muScaleCorr_2017[i]; elScaleCorr[i] = elScaleCorr_2017[i];}
+    for(int i=0; i<nBinWSEtaCorr; i++) {WSSF[i] = WSSF_2017[i]; WSSFE[i] = WSSFE_2017[i];}
+    for(int i=0; i<nBinLepEtaCorr; i++) {muScaleCorr[i] = muScaleCorr_2017[i]; elScaleCorr[i] = elScaleCorr_2017[i];}
   }
   else if(year == 2018){
-    for(int i=0; i<nBinEtaCorr; i++) {WSSF[i] = WSSF_2018[i]; WSSFE[i] = WSSFE_2018[i]; muScaleCorr[i] = muScaleCorr_2018[i]; elScaleCorr[i] = elScaleCorr_2018[i];}
+    for(int i=0; i<nBinWSEtaCorr; i++) {WSSF[i] = WSSF_2018[i]; WSSFE[i] = WSSFE_2018[i];}
+    for(int i=0; i<nBinLepEtaCorr; i++) {muScaleCorr[i] = muScaleCorr_2018[i]; elScaleCorr[i] = elScaleCorr_2018[i];}
   }
 
-  printf("muScale:\n");for(int i=0; i<nBinEtaCorr; i++) printf("%f,",muScaleCorr[i]); printf("\n");
-  printf("elScale:\n");for(int i=0; i<nBinEtaCorr; i++) printf("%f,",elScaleCorr[i]); printf("\n");
+  printf("muScale:\n");for(int i=0; i<nBinLepEtaCorr; i++) printf("%f,",muScaleCorr[i]); printf("\n");
+  printf("elScale:\n");for(int i=0; i<nBinLepEtaCorr; i++) printf("%f,",elScaleCorr[i]); printf("\n");
 
   vector<TString> infileName_;
   vector<int> infileCat_;
 
   TString filesPath;
-  TString fLepton_FakesName = Form("MitAnalysisRunII/data/90x/histoFakeEtaPt_%d.root",year);
+  TString fLepton_FakesName = Form("MitAnalysisRunII/data/90x/fakes/histoFakeEtaPt_%d.root",year);
   TString puPath;
-  TString npvPath = Form("MitAnalysisRunII/data/90x/npvWeights_%d.root",year);
+  TString npvPath = Form("MitAnalysisRunII/data/90x/pu/npvWeights_%d.root",year);
   TString photonSFPath;
-  TString elephoSFPath = Form("MitAnalysisRunII/data/90x/histoDY0LGSF_%d.root",year);
-  TString trgSFPath = Form("MitAnalysisRunII/data/90x/histo_triggerEff_sel0_%d.root",year);
+  TString elephoSFPath = Form("MitAnalysisRunII/data/90x/eff/histoDY0LGSF_%d.root",year);
+  TString trgSFPath = Form("MitAnalysisRunII/data/90x/trigger/histo_triggerEff_sel0_%d.root",year);
   if     (year == 2018){
     filesPath = "/data/t3home000/ceballos/panda/v_006_0/";
-    puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
-    photonSFPath = "MitAnalysisRunII/data/90x/2018_PhotonsMedium.root";
+    puPath = "MitAnalysisRunII/data/90x/pu/puWeights_90x_2018.root";
+    photonSFPath = "MitAnalysisRunII/data/90x/eff/photon_scalefactors_2018.root";
 
     infileName_.push_back(Form("%sdata.root", filesPath.Data()));                infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	           infileCat_.push_back(kPlotqqWW);
@@ -89,8 +92,8 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
   }
   else if(year == 2017) {
     filesPath = "/data/t3home000/ceballos/panda/v_004_0/";
-    puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
-    photonSFPath = "MitAnalysisRunII/data/90x/egammaEffi.txt_EGM2D_runBCDEF_passingMedium94X.root";
+    puPath = "MitAnalysisRunII/data/90x/pu/puWeights_90x_2017.root";
+    photonSFPath = "MitAnalysisRunII/data/90x/eff/photon_scalefactors_2017.root";
 
     infileName_.push_back(Form("%sdata.root", filesPath.Data()));                infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotqqWW);
@@ -121,8 +124,8 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
   }
   else if(year == 2016) {
     filesPath = "/data/t3home000/ceballos/panda/v_002_0/";
-    puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
-    photonSFPath = "MitAnalysisRunII/data/80x/photon_scalefactors_37ifb.root";
+    puPath = "MitAnalysisRunII/data/90x/pu/puWeights_90x_2016.root";
+    photonSFPath = "MitAnalysisRunII/data/90x/eff/photon_scalefactors_2016.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));                  infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotqqWW);
@@ -202,7 +205,7 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
   TH2D *trgSFEMEE = (TH2D*)(ftrgSF->Get("trgSFEMEE")); assert(trgSFEMEE); trgSFEMEE->SetDirectory(0);
   delete ftrgSF;
 
-  TFile *fSingleTrgSF = TFile::Open(Form("MitAnalysisRunII/data/90x/histoDY0TriggerSFStudy_%d.root",year));
+  TFile *fSingleTrgSF = TFile::Open(Form("MitAnalysisRunII/data/90x/trigger_singlelep/histoDY0TriggerSFStudy_%d.root",year));
   TH2D *muTrgEffSF = (TH2D*)(fSingleTrgSF->Get("histoTrgEffStudy_1_0")); assert(muTrgEffSF); muTrgEffSF->SetDirectory(0);
   TH2D *elTrgEffSF = (TH2D*)(fSingleTrgSF->Get("histoTrgEffStudy_3_0")); assert(elTrgEffSF); elTrgEffSF->SetDirectory(0);
   delete fSingleTrgSF;
@@ -286,20 +289,18 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
   for(int i=0; i<nPlotCategories; i++) histoMGStudy[0][i] = new TH1D(Form("histoMGStudy_%d_%d",0,i), Form("histoMGStudy_%d_%d",0,i), 120, 91.1876-15, 91.1876+15);
   for(int i=0; i<nPlotCategories; i++) histoMGStudy[1][i] = new TH1D(Form("histoMGStudy_%d_%d",1,i), Form("histoMGStudy_%d_%d",1,i), 100, 0, 200);
  
-  const int nWSEtaBins = 5;
-  TH1D* histoWSEtaStudy[nWSEtaBins][nWSEtaBins][4]; nBinPlot = 120; xminPlot = 91.1876-15; xmaxPlot = 91.1876+15;
-  for(int i=0; i<nWSEtaBins; i++){
-    for(int j=0; j<nWSEtaBins; j++){
+  TH1D* histoWSEtaStudy[nBinWSEtaCorr][nBinWSEtaCorr][4]; nBinPlot = 120; xminPlot = 91.1876-15; xmaxPlot = 91.1876+15;
+  for(int i=0; i<nBinWSEtaCorr; i++){
+    for(int j=0; j<nBinWSEtaCorr; j++){
       for(int np=0; np<4; np++){
         histoWSEtaStudy[i][j][np] = new TH1D(Form("histoWSEtaStudy_%d_%d_%d",i,j,np), Form("histoWSEtaStudy_%d_%d_%d",i,j,np), nBinPlot, xminPlot, xmaxPlot);
         histoWSEtaStudy[i][j][np]->Sumw2();
       }
     }
   }
-  const int nWSPtBins = 5;
-  TH1D* histoWSPtStudy[nWSPtBins][nWSPtBins][4]; nBinPlot = 120; xminPlot = 91.1876-15; xmaxPlot = 91.1876+15;
-  for(int i=0; i<nWSPtBins; i++){
-    for(int j=0; j<nWSPtBins; j++){
+  TH1D* histoWSPtStudy[nBinWSPtCorr][nBinWSPtCorr][4]; nBinPlot = 120; xminPlot = 91.1876-15; xmaxPlot = 91.1876+15;
+  for(int i=0; i<nBinWSPtCorr; i++){
+    for(int j=0; j<nBinWSPtCorr; j++){
       for(int np=0; np<4; np++){
         histoWSPtStudy[i][j][np] = new TH1D(Form("histoWSPtStudy_%d_%d_%d",i,j,np), Form("histoWSPtStudy_%d_%d_%d",i,j,np), nBinPlot, xminPlot, xmaxPlot);
         histoWSPtStudy[i][j][np]->Sumw2();
@@ -308,7 +309,7 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
   }
   TH2D* histoWSEff[2];
   for(int np=0; np<2; np++){
-    histoWSEff[np] = new TH2D(Form("histoWSEff_%d",np), Form("histoWSEff_%d",np), nBinEtaCorr, xbinsEtaCorr, nBinPtCorr, xbinsPtCorr);
+    histoWSEff[np] = new TH2D(Form("histoWSEff_%d",np), Form("histoWSEff_%d",np), nBinWSEtaCorr, xbinsWSEtaCorr, nBinWSPtCorr, xbinsWSPtCorr);
     histoWSEff[np]->Sumw2();
   }
 
@@ -406,11 +407,11 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
       vector<int> looseLepSelBit,looseLepPdgId,looseLepTripleCharge,looseLepMissingHits;
       int ptSelCuts[3] = {0,0,0};
       for(int i=0; i<thePandaFlat.nLooseMuon; i++){
-        int nBinEtaCorr = histoEtaCorr->GetXaxis()->FindBin(TMath::Min((double)TMath::Abs(thePandaFlat.muonEta[i]),2.4999))-1;
+        int nBinLepEtaCorr = histoLepEtaCorr->GetXaxis()->FindBin(TMath::Min((double)TMath::Abs(thePandaFlat.muonEta[i]),2.4999))-1;
         if(infileCat_[ifile]==kPlotData)
         looseLepPt.push_back(thePandaFlat.muonPt[i]);
         else
-        looseLepPt.push_back(thePandaFlat.muonPt[i] * muScaleCorr[nBinEtaCorr]);
+        looseLepPt.push_back(thePandaFlat.muonPt[i] * muScaleCorr[nBinLepEtaCorr]);
         looseLepEta.push_back(thePandaFlat.muonEta[i]);
         looseLepPhi.push_back(thePandaFlat.muonPhi[i]);
         looseLepSF.push_back(thePandaFlat.muonSfReco[i] * thePandaFlat.muonSfTight[i]);
@@ -424,11 +425,11 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
 	if(looseLepPt[looseLepPt.size()-1] > 10) ptSelCuts[2]++;
       }
       for(int i=0; i<thePandaFlat.nLooseElectron; i++){
-        int nBinEtaCorr = histoEtaCorr->GetXaxis()->FindBin(TMath::Min((double)TMath::Abs(thePandaFlat.electronEta[i]),2.4999))-1;
+        int nBinLepEtaCorr = histoLepEtaCorr->GetXaxis()->FindBin(TMath::Min((double)TMath::Abs(thePandaFlat.electronEta[i]),2.4999))-1;
         if(infileCat_[ifile]==kPlotData)
         looseLepPt.push_back(thePandaFlat.electronPt[i]);
         else
-        looseLepPt.push_back(thePandaFlat.electronPt[i] * elScaleCorr[nBinEtaCorr]);
+        looseLepPt.push_back(thePandaFlat.electronPt[i] * elScaleCorr[nBinLepEtaCorr]);
         looseLepEta.push_back(thePandaFlat.electronEta[i]);
         looseLepPhi.push_back(thePandaFlat.electronPhi[i]);
         looseLepSelBit.push_back(thePandaFlat.electronSelBit[i]);
@@ -716,21 +717,23 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
 	  else if(thePandaFlat.nLooseLep >= 3 && abs(looseLepPdgId[2]) == 11 && thePandaFlat.looseGenLep3PdgId < 0) theWSLepton = 2;
 	  else if(thePandaFlat.nLooseLep >= 4 && abs(looseLepPdgId[3]) == 11 && thePandaFlat.looseGenLep4PdgId < 0) theWSLepton = 3;
           if(theWSLepton >= 0){
-	    sfWS = WSSF[histoEtaCorr->GetXaxis()->FindBin(TMath::Min(TMath::Abs(vLoose[theWSLepton].Eta()),2.4999))-1];
+	    int nEta = histoWSEtaCorr->GetXaxis()->FindBin(TMath::Min(TMath::Abs(vLoose[theWSLepton].Eta()),2.4999))-1;
+	    if(nEta >= nBinWSEtaCorr) printf("Problem with WSSF\n");
+	    sfWS = WSSF[nEta];
 	  }
 	}
       }
 
       // Wrong-sign study
       bool passSSWWLepId = false;
-      if     (year == 2016 || year == 2018) {
+      if     (year == 2016 || year == 2017 || year == 2018) {
         passSSWWLepId = (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kEleMvaWP80) == kEleMvaWP80 && looseLepTripleCharge[0] == 1 &&
          	        (looseLepSelBit[1] & kFake) == kFake && (looseLepSelBit[1] & kEleMvaWP80) == kEleMvaWP80 && looseLepTripleCharge[1] == 1;
       }
-      else if(year == 2017){
-        passSSWWLepId = (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kTight) == kTight && (looseLepSelBit[0] & kDxyz) == kDxyz && looseLepMissingHits[0] == 0 && looseLepTripleCharge[0] == 1 &&
-           		(looseLepSelBit[1] & kFake) == kFake && (looseLepSelBit[1] & kTight) == kTight && (looseLepSelBit[1] & kDxyz) == kDxyz && looseLepMissingHits[1] == 0 && looseLepTripleCharge[1] == 1;
-      }
+      //else if(year == 2017){
+      //  passSSWWLepId = (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kTight) == kTight && (looseLepSelBit[0] & kDxyz) == kDxyz && looseLepMissingHits[0] == 0 && looseLepTripleCharge[0] == 1 &&
+      //     		(looseLepSelBit[1] & kFake) == kFake && (looseLepSelBit[1] & kTight) == kTight && (looseLepSelBit[1] & kDxyz) == kDxyz && looseLepMissingHits[1] == 0 && looseLepTripleCharge[1] == 1;
+      //}
       if(passSSWWLepId && lepType == 1) {
         int theWSStudyCategory = 0; double totalWSStudyWeight = totalWeight;
 	if     (theCategory == kPlotData) {}
@@ -738,8 +741,8 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
 	else                              {totalWSStudyWeight = 0;}//-1.0 * totalWSStudyWeight;};
 	int nEta[2],nPt[2];
 	for(int i=0; i<2; i++){
-	  nEta[i] = histoEtaCorr->GetXaxis()->FindBin(TMath::Min(TMath::Abs(vLoose[i].Eta()),2.4999))-1;
-	  nPt[i]  = histoPtCorr ->GetXaxis()->FindBin(TMath::Min(vLoose[i].Pt(),99.999))-1;
+	  nEta[i] = histoWSEtaCorr->GetXaxis()->FindBin(TMath::Min(TMath::Abs(vLoose[i].Eta()),2.4999))-1;
+	  nPt[i]  = histoWSPtCorr ->GetXaxis()->FindBin(TMath::Min(vLoose[i].Pt(),99.999))-1;
         }
         if(passSSWWLepId){
 	  if(nEta[0] >= nEta[1]) histoWSEtaStudy[nEta[0]][nEta[1]][(qTot!=0)+2*theWSStudyCategory]->Fill(dilep.M(),totalWSStudyWeight);
@@ -1127,8 +1130,8 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
     }
 
     int iterWS = 0;
-    for(int i=0; i<nWSEtaBins; i++){
-      for(int j=0; j<nWSEtaBins; j++){
+    for(int i=0; i<nBinWSEtaCorr; i++){
+      for(int j=0; j<nBinWSEtaCorr; j++){
         if(j>i) continue;
         double eff[2]  = {histoWSEtaStudy[i][j][1]->GetSumOfWeights()/histoWSEtaStudy[i][j][0]->GetSumOfWeights(),
 	                  histoWSEtaStudy[i][j][3]->GetSumOfWeights()/histoWSEtaStudy[i][j][2]->GetSumOfWeights()
@@ -1143,8 +1146,8 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
     }
 
     iterWS = 0;
-    for(int i=0; i<nWSPtBins; i++){
-      for(int j=0; j<nWSPtBins; j++){
+    for(int i=0; i<nBinWSPtCorr; i++){
+      for(int j=0; j<nBinWSPtCorr; j++){
         if(j>i) continue;
         double eff[2]  = {histoWSPtStudy[i][j][1]->GetSumOfWeights()/histoWSPtStudy[i][j][0]->GetSumOfWeights(),
 	                  histoWSPtStudy[i][j][3]->GetSumOfWeights()/histoWSPtStudy[i][j][2]->GetSumOfWeights()
@@ -1162,16 +1165,16 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
     TFile* outFilePlotsNote = new TFile(output,"recreate");
     outFilePlotsNote->cd();
     histoWSEffMC->Write();
-    for(int i=0; i<nWSEtaBins; i++){
-      for(int j=0; j<nWSEtaBins; j++){
+    for(int i=0; i<nBinWSEtaCorr; i++){
+      for(int j=0; j<nBinWSEtaCorr; j++){
         if(j>i) continue;
         for(int np=0; np<4; np++){
           histoWSEtaStudy[i][j][np]->Write();
         }
       }
     }
-    for(int i=0; i<nWSPtBins; i++){
-      for(int j=0; j<nWSPtBins; j++){
+    for(int i=0; i<nBinWSPtCorr; i++){
+      for(int j=0; j<nBinWSPtCorr; j++){
         if(j>i) continue;
         for(int np=0; np<4; np++){
           histoWSPtStudy[i][j][np]->Write();

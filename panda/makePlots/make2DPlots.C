@@ -41,19 +41,19 @@ void atributes(TH2D *histo, TString xtitle, TString ytitle, TString title){
 
 void make2DPlots(int year, TString format = "png"){
   int nTypeLepSel[2] = {-1, -1};
-  if     (year == 2016) {nTypeLepSel[0] =  2; nTypeLepSel[1] = 6;}
-  else if(year == 2017) {nTypeLepSel[0] = 13; nTypeLepSel[1] = 6;}
-  else if(year == 2018) {nTypeLepSel[0] = 15; nTypeLepSel[1] = 6;}
+  if     (year == 2016) {nTypeLepSel[0] =  2; nTypeLepSel[1] = 7;}
+  else if(year == 2017) {nTypeLepSel[0] = 13; nTypeLepSel[1] = 7;}
+  else if(year == 2018) {nTypeLepSel[0] = 15; nTypeLepSel[1] = 7;}
   else {printf("Wrong year (%d)!\n",year); return;}
 
   gStyle->SetOptStat(0);
   gStyle->SetPaintTextFormat(".3f");
   gStyle->SetPalette(1);
  
-  TString fLepton_FakesName = Form("MitAnalysisRunII/data/90x/histoFakeEtaPt_%d.root",year);
-  TString elephoSFPath = Form("MitAnalysisRunII/data/90x/histoDY0LGSF_%d.root",year);
-  TString trgSFPath = Form("MitAnalysisRunII/data/90x/histo_triggerEff_sel0_%d.root",year);
-  TString effSFPath = Form("MitAnalysisRunII/data/90x/histoDY0EffSFStudy_%d.root",year);
+  TString fLepton_FakesName = Form("MitAnalysisRunII/data/90x/fakes/histoFakeEtaPt_%d.root",year);
+  TString elephoSFPath = Form("MitAnalysisRunII/data/90x/eff/histoDY0LGSF_%d.root",year);
+  TString trgSFPath = Form("MitAnalysisRunII/data/90x/trigger/histo_triggerEff_sel0_%d.root",year);
+  TString effSFPath = Form("MitAnalysisRunII/data/90x/eff/histoDY0EffSFStudy_%d.root",year);
 
   TFile *fLepton_Fakes = TFile::Open(fLepton_FakesName.Data());
   TH2D* histoFakeEffSelTightEtaPt_m  = (TH2D*)fLepton_Fakes->Get(Form("histoFakeEffSelEtaPt_%d_0",nTypeLepSel[0])); histoFakeEffSelTightEtaPt_m ->SetDirectory(0);	
