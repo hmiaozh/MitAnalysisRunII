@@ -20,7 +20,7 @@ void triggerMCStudy()
 {
   double lumi = 40.0;
   TString filesPath    = "/data/t3home000/ceballos/panda/v_004_0/";
-  TString pileUpName = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
+  TString pileUpName = "MitAnalysisRunII/data/90x/pu/puWeights_90x_2017.root";
 
   //*******************************************************
   //Input Files

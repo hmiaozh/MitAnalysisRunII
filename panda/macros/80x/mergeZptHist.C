@@ -1,3 +1,6 @@
+// v_001_0 --> useDressedLeptons = true; minGenPhotonPt = 0.0
+// v_001_1 --> useDressedLeptons = false;
+
 void mergeZptHist(int nsel = 0) {
 TString inputFolder = "/data/t3home000/ceballos/panda/v_001_0";
 

@@ -35,6 +35,11 @@ PandaAnalysis/T3/merging/merge_Leptonic.py DYJetsToEE_POWHEG
 PandaAnalysis/T3/merging/merge_Leptonic.py WJets
 PandaAnalysis/T3/merging/merge_Leptonic.py WpWp_EWK
 PandaAnalysis/T3/merging/merge_Leptonic.py WpWp_QCD
+PandaAnalysis/T3/merging/merge_Leptonic.py WZ3l_MG_EWK
+PandaAnalysis/T3/merging/merge_Leptonic.py WZ3l_0Jets_MG_QCD
+PandaAnalysis/T3/merging/merge_Leptonic.py WZ3l_1Jets_MG_QCD
+PandaAnalysis/T3/merging/merge_Leptonic.py WZ3l_2Jets_MG_QCD
+PandaAnalysis/T3/merging/merge_Leptonic.py WZ3l_3Jets_MG_QCD
 PandaAnalysis/T3/merging/merge_Leptonic.py DYJetsToEE_POWHEG_MINLO
 ###PandaAnalysis/T3/merging/merge_Leptonic.py MET
 #PandaAnalysis/T3/merging/merge_Leptonic.py SingleMuon           

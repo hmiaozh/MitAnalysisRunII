@@ -135,10 +135,10 @@ void trigger_sf(double trgRes[2], int nlep,
 double metPhiCorr(int year, int npv, bool isData, int metCoord){
   double corr = 1.0;
   if     (year == 2016 && isData == true && metCoord == 0){
-    corr = 1.003056+0.143124*npv;
+    corr = 1.002860+0.143145*npv;
   }
   else if(year == 2016 && isData == true && metCoord == 1){
-    corr = 0.289329+0.046554*npv;
+    corr = 0.289486+0.046551*npv;
   }
   else if(year == 2016 && isData == false && metCoord == 0){
     corr = -0.111478-0.219850*npv;
@@ -147,28 +147,28 @@ double metPhiCorr(int year, int npv, bool isData, int metCoord){
     corr = 0.803057-0.038977*npv;
   }
   else if(year == 2017 && isData == true && metCoord == 0){
-    corr = 0.315233-0.177541*npv;
+    corr = 0.313538-0.177466*npv;
   }
   else if(year == 2017 && isData == true && metCoord == 1){
-    corr = 0.449429+0.235785*npv;
+    corr = 0.449958+0.235786*npv;
   }
   else if(year == 2017 && isData == false && metCoord == 0){
-    corr = 0.368400-0.230686*npv;
+    corr = 0.361372-0.230345*npv;
   }
   else if(year == 2017 && isData == false && metCoord == 1){
-    corr = -0.210643+0.182399*npv;
+    corr = -0.208768+0.182185*npv;
   }
   else if(year == 2018 && isData == true && metCoord == 0){
-    corr = 1.230829+0.417271*npv;
+    corr = 1.239585+0.415796*npv;
   }
   else if(year == 2018 && isData == true && metCoord == 1){
-    corr = -1.114256+0.103044*npv;
+    corr = -1.086577+0.102581*npv;
   }
   else if(year == 2018 && isData == false && metCoord == 0){
-    corr = -0.117858+0.339384*npv;
+    corr = -0.117855+0.339384*npv;
   }
   else if(year == 2018 && isData == false && metCoord == 1){
-    corr = 0.235414+0.135433*npv;
+    corr = 0.235412+0.135433*npv;
   }
   else {
     printf("WRONG CHOICE!\n");

@@ -29,7 +29,7 @@ int whichLepSel = 0
 
   if     (year == 2018){
     filesPath = "/data/t3home000/ceballos/panda/v_006_0/";
-    puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
+    puPath = "MitAnalysisRunII/data/90x/pu/puWeights_90x_2018.root";
     infileName_.push_back(Form("%sMET.root",filesPath.Data()));                   infileCat_.push_back(0);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));                 infileCat_.push_back(1);
     infileName_.push_back(Form("%sggWW.root" ,filesPath.Data()));                 infileCat_.push_back(1);
@@ -48,7 +48,7 @@ int whichLepSel = 0
   }
   else if(year == 2017){
     filesPath = "/data/t3home000/ceballos/panda/v_004_0/";
-    puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
+    puPath = "MitAnalysisRunII/data/90x/pu/puWeights_90x_2017.root";
     infileName_.push_back(Form("%sMET.root",filesPath.Data()));                   infileCat_.push_back(0);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));		  infileCat_.push_back(1);
     infileName_.push_back(Form("%sggWW.root" ,filesPath.Data()));		  infileCat_.push_back(1);
@@ -66,7 +66,7 @@ int whichLepSel = 0
   }
   else if(year == 2016){
     filesPath = "/data/t3home000/ceballos/panda/v_002_0/";
-    puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
+    puPath = "MitAnalysisRunII/data/90x/pu/puWeights_90x_2016.root";
     infileName_.push_back(Form("%sMET.root",filesPath.Data()));		          infileCat_.push_back(0);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	          infileCat_.push_back(1);
     infileName_.push_back(Form("%sggWW.root" ,filesPath.Data())); 	          infileCat_.push_back(1);
@@ -81,9 +81,9 @@ int whichLepSel = 0
     infileName_.push_back(Form("%sTT2L.root" ,filesPath.Data()));                 infileCat_.push_back(1);
     infileName_.push_back(Form("%sTW.root" ,filesPath.Data()));                   infileCat_.push_back(1);
     infileName_.push_back(Form("%sH125.root" ,filesPath.Data())); 	          infileCat_.push_back(1);
-    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M125.root",filesPath.Data()));infileCat_.push_back(1);
-    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M200.root",filesPath.Data()));infileCat_.push_back(1);
-    infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M300.root",filesPath.Data()));infileCat_.push_back(1);
+    //infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M125.root",filesPath.Data()));infileCat_.push_back(1);
+    //infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M200.root",filesPath.Data()));infileCat_.push_back(1);
+    //infileName_.push_back(Form("%sZH_ZToLL_HToGDarkG_M300.root",filesPath.Data()));infileCat_.push_back(1);
     infileName_.push_back(Form("%sqqZH125inv.root" ,filesPath.Data()));           infileCat_.push_back(1);
     infileName_.push_back(Form("%sggZH125inv.root" ,filesPath.Data()));           infileCat_.push_back(1);
   }

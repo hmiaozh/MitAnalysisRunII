@@ -15,7 +15,7 @@
 #include "MitAnalysisRunII/panda/macros/9x/common.h"
 #include "MitAnalysisRunII/panda/macros/9x/applyCorrections.h"
 
-void skimmingAnalysis(int year, bool specialMC = false)
+void skimmingAnalysis(int year, int specialMC = 0)
 {
 
   vector<TString> infileName_;
@@ -37,7 +37,7 @@ void skimmingAnalysis(int year, bool specialMC = false)
     return;
   }
 
-  if(specialMC == false){
+  if     (specialMC == 0){
     infileName_.push_back(Form("Unpart_ZToLL_SU-0_dU-1p01.root"));
     infileName_.push_back(Form("Unpart_ZToLL_SU-0_dU-1p02.root"));
     infileName_.push_back(Form("Unpart_ZToLL_SU-0_dU-1p04.root"));
@@ -86,6 +86,7 @@ void skimmingAnalysis(int year, bool specialMC = false)
     infileName_.push_back(Form("DYNJetsToLL_NLO.root"));
     infileName_.push_back(Form("H125.root"));
     infileName_.push_back(Form("TT.root"));
+    infileName_.push_back(Form("TT1L.root"));
     infileName_.push_back(Form("TT2L.root"));
     infileName_.push_back(Form("TTV.root"));
     infileName_.push_back(Form("TTVV.root"));
@@ -124,12 +125,17 @@ void skimmingAnalysis(int year, bool specialMC = false)
     infileName_.push_back(Form("qqZH600inv.root"));
     infileName_.push_back(Form("qqZH800inv.root"));
     infileName_.push_back(Form("qqZH1000inv.root"));
-  } else {
+  } 
+  else if(specialMC == 1){
     infileName_.push_back(Form("ZH_ZToLL_HToGDarkG_M125.root"));
     infileName_.push_back(Form("ZH_ZToLL_HToGDarkG_M200.root"));
     infileName_.push_back(Form("ZH_ZToLL_HToGDarkG_M300.root"));
+  }
+  else if(specialMC == 2){
     infileName_.push_back(Form("WWjj_SS_dim8_ewk.root"));
     infileName_.push_back(Form("WZjj_dim8_ewk.root"));
+    infileName_.push_back(Form("WWjj_SS_lttt.root"));
+    infileName_.push_back(Form("WWjj_SS_long.root"));
   }
 
   for(UInt_t ifile=0; ifile<infileName_.size(); ifile++) {

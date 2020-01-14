@@ -40,33 +40,36 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
   //*******************************************************
   //Inputs
   //*******************************************************
-  double WSSF[nBinEtaCorr],WSSFE[nBinEtaCorr];
-  double muScaleCorr[nBinEtaCorr],elScaleCorr[nBinEtaCorr];
+  double WSSF[nBinWSEtaCorr],WSSFE[nBinWSEtaCorr];
+  double muScaleCorr[nBinLepEtaCorr],elScaleCorr[nBinLepEtaCorr];
   if     (year == 2016){
-    for(int i=0; i<nBinEtaCorr; i++) {WSSF[i] = WSSF_2016[i]; WSSFE[i] = WSSFE_2016[i]; muScaleCorr[i] = muScaleCorr_2016[i]; elScaleCorr[i] = elScaleCorr_2016[i];}
+    for(int i=0; i<nBinWSEtaCorr; i++) {WSSF[i] = WSSF_2016[i]; WSSFE[i] = WSSFE_2016[i];} 
+    for(int i=0; i<nBinLepEtaCorr; i++) {muScaleCorr[i] = muScaleCorr_2016[i]; elScaleCorr[i] = elScaleCorr_2016[i];}
   }
   else if(year == 2017){
-    for(int i=0; i<nBinEtaCorr; i++) {WSSF[i] = WSSF_2017[i]; WSSFE[i] = WSSFE_2017[i]; muScaleCorr[i] = muScaleCorr_2017[i]; elScaleCorr[i] = elScaleCorr_2017[i];}
+    for(int i=0; i<nBinWSEtaCorr; i++) {WSSF[i] = WSSF_2017[i]; WSSFE[i] = WSSFE_2017[i];}
+    for(int i=0; i<nBinLepEtaCorr; i++) {muScaleCorr[i] = muScaleCorr_2017[i]; elScaleCorr[i] = elScaleCorr_2017[i];}
   }
   else if(year == 2018){
-    for(int i=0; i<nBinEtaCorr; i++) {WSSF[i] = WSSF_2018[i]; WSSFE[i] = WSSFE_2018[i]; muScaleCorr[i] = muScaleCorr_2018[i]; elScaleCorr[i] = elScaleCorr_2018[i];}
+    for(int i=0; i<nBinWSEtaCorr; i++) {WSSF[i] = WSSF_2018[i]; WSSFE[i] = WSSFE_2018[i];}
+    for(int i=0; i<nBinLepEtaCorr; i++) {muScaleCorr[i] = muScaleCorr_2018[i]; elScaleCorr[i] = elScaleCorr_2018[i];}
   }
 
-  printf("muScale:\n");for(int i=0; i<nBinEtaCorr; i++) printf("%f,",muScaleCorr[i]); printf("\n");
-  printf("elScale:\n");for(int i=0; i<nBinEtaCorr; i++) printf("%f,",elScaleCorr[i]); printf("\n");
+  printf("muScale:\n");for(int i=0; i<nBinLepEtaCorr; i++) printf("%f,",muScaleCorr[i]); printf("\n");
+  printf("elScale:\n");for(int i=0; i<nBinLepEtaCorr; i++) printf("%f,",elScaleCorr[i]); printf("\n");
 
   vector<TString> infileName_;
   vector<int> infileCat_;
 
   TString filesPath;
-  TString fLepton_FakesName = Form("MitAnalysisRunII/data/90x/histoFakeEtaPt_%d.root",year);
+  TString fLepton_FakesName = Form("MitAnalysisRunII/data/90x/fakes/histoFakeEtaPt_%d.root",year);
   TString puPath;
-  TString npvPath = Form("MitAnalysisRunII/data/90x/npvWeights_%d.root",year);
-  TString trgSFPath = Form("MitAnalysisRunII/data/90x/histo_triggerEff_sel0_%d.root",year);
-  TString effSFPath = Form("MitAnalysisRunII/data/90x/histoDY0EffSFStudy_%d.root",year);
+  TString npvPath = Form("MitAnalysisRunII/data/90x/pu/npvWeights_%d.root",year);
+  TString trgSFPath = Form("MitAnalysisRunII/data/90x/trigger/histo_triggerEff_sel0_%d.root",year);
+  TString effSFPath = Form("MitAnalysisRunII/data/90x/eff/histoDY0EffSFStudy_%d.root",year);
   if     (year == 2018) {
     filesPath = Form("%s/ceballos/panda/v_006_1/",inputFolder.Data());
-    puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
+    puPath = "MitAnalysisRunII/data/90x/pu/puWeights_90x_2018.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data()));                infileCat_.push_back(kPlotEM);
@@ -92,7 +95,7 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
   }
   else if(year == 2017) {
     filesPath = Form("%s/ceballos/panda/v_004_1/",inputFolder.Data());
-    puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
+    puPath = "MitAnalysisRunII/data/90x/pu/puWeights_90x_2017.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	         infileCat_.push_back(kPlotEM);
@@ -120,7 +123,7 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
   }
   else if(year == 2016) {
     filesPath = Form("%s/ceballos/panda/v_002_1/",inputFolder.Data());
-    puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
+    puPath = "MitAnalysisRunII/data/90x/pu/puWeights_90x_2016.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	          infileCat_.push_back(kPlotData);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotEM);
@@ -200,10 +203,12 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
   TH2D *trgSFEMEE = (TH2D*)(ftrgSF->Get("trgSFEMEE")); assert(trgSFEMEE); trgSFEMEE->SetDirectory(0);
   delete ftrgSF;
 
-  const int nBinMVA = 36; Float_t xbins[nBinMVA+1] = {0,  80, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600,1000,
-  						        1080,1100,1125,1150,1175,1200,1250,1300,1350,1400,1500,1600,2000,
-  						        2100,2125,2150,2200,3000,
-  						        3100,3125,3150,3200,4000};
+  //const int nBinMVA = 36; Float_t xbins[nBinMVA+1] = {0,  80, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600,1000,
+  //						        1080,1100,1125,1150,1175,1200,1250,1300,1350,1400,1500,1600,2000,
+  //						        2100,2125,2150,2200,3000,
+  //						        3100,3125,3150,3200,4000};
+  const int nBinMVA = 26; Float_t xbins[nBinMVA+1] = {0,  80, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600,1000,
+  						        1080,1100,1125,1150,1175,1200,1250,1300,1350,1400,1500,1600,2000};
   const int nBin1DMET = 12; Float_t xbins1DMET[nBin1DMET+1] = {80, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600, 1000};
 
   const double metMax = 999.999;
@@ -366,11 +371,11 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
       vector<int> looseLepSelBit,looseLepPdgId,looseLepTripleCharge,looseLepMissingHits;
       int ptSelCuts[3] = {0,0,0};
       for(int i=0; i<thePandaFlat.nLooseMuon; i++){
-        int nBinEtaCorr = histoEtaCorr->GetXaxis()->FindBin(TMath::Min((double)TMath::Abs(thePandaFlat.muonEta[i]),2.4999))-1;
+        int nBinLepEtaCorr = histoLepEtaCorr->GetXaxis()->FindBin(TMath::Min((double)TMath::Abs(thePandaFlat.muonEta[i]),2.4999))-1;
         if(infileCat_[ifile]==kPlotData)
         looseLepPt.push_back(thePandaFlat.muonPt[i]);
         else
-        looseLepPt.push_back(thePandaFlat.muonPt[i] * muScaleCorr[nBinEtaCorr]);
+        looseLepPt.push_back(thePandaFlat.muonPt[i] * muScaleCorr[nBinLepEtaCorr]);
         looseLepEta.push_back(thePandaFlat.muonEta[i]);
         looseLepPhi.push_back(thePandaFlat.muonPhi[i]);
         looseLepSF.push_back(thePandaFlat.muonSfReco[i] * thePandaFlat.muonSfTight[i]);
@@ -384,11 +389,11 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
 	if(looseLepPt[looseLepPt.size()-1] > 10) ptSelCuts[2]++;
       }
       for(int i=0; i<thePandaFlat.nLooseElectron; i++){
-        int nBinEtaCorr = histoEtaCorr->GetXaxis()->FindBin(TMath::Min((double)TMath::Abs(thePandaFlat.electronEta[i]),2.4999))-1;
+        int nBinLepEtaCorr = histoLepEtaCorr->GetXaxis()->FindBin(TMath::Min((double)TMath::Abs(thePandaFlat.electronEta[i]),2.4999))-1;
         if(infileCat_[ifile]==kPlotData)
         looseLepPt.push_back(thePandaFlat.electronPt[i]);
         else
-        looseLepPt.push_back(thePandaFlat.electronPt[i] * elScaleCorr[nBinEtaCorr]);
+        looseLepPt.push_back(thePandaFlat.electronPt[i] * elScaleCorr[nBinLepEtaCorr]);
         looseLepEta.push_back(thePandaFlat.electronEta[i]);
         looseLepPhi.push_back(thePandaFlat.electronPhi[i]);
         looseLepSelBit.push_back(thePandaFlat.electronSelBit[i]);
@@ -442,16 +447,9 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
 
       TLorentzVector vMet,vTrkMet,vMetUp,vMetDown;
       vTrkMet.SetPtEtaPhiM(thePandaFlat.trkmet,0.0,thePandaFlat.trkmetphi,0.0);
-      if     (year == 2016 || year == 2018) {
-        vMet    .SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
-        vMetUp  .SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalUp  ,0.0,thePandaFlat.pfmetphi_JESTotalUp  ,0.0);
-        vMetDown.SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalDown,0.0,thePandaFlat.pfmetphi_JESTotalDown,0.0);
-      } 
-      else if(year == 2017){
-        vMet    .SetPtEtaPhiM(thePandaFlat.puppimet,0.0,thePandaFlat.puppimetphi,0.0);
-        vMetUp  .SetPtEtaPhiM(thePandaFlat.puppimet_JESTotalUp  ,0.0,thePandaFlat.puppimetphi_JESTotalUp  ,0.0);
-        vMetDown.SetPtEtaPhiM(thePandaFlat.puppimet_JESTotalDown,0.0,thePandaFlat.puppimetphi_JESTotalDown,0.0);
-      }
+      vMet    .SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
+      vMetUp  .SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalUp  ,0.0,thePandaFlat.pfmetphi_JESTotalUp  ,0.0);
+      vMetDown.SetPtEtaPhiM(thePandaFlat.pfmet_JESTotalDown,0.0,thePandaFlat.pfmetphi_JESTotalDown,0.0);
       vMet    .SetPx(vMet    .Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
       vMet    .SetPy(vMet    .Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
       vMetUp  .SetPx(vMetUp  .Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
@@ -520,9 +518,9 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
       bool passPTFrac     = ptFrac     < 0.4;
       bool passPTFracUp   = ptFracUp   < 0.4;
       bool passPTFracDown = ptFracDown < 0.4;
-      bool passDPhiZMET     = dPhiDiLepMET > 1.5 && (dPhiDiLepMET     > 2.6 || vMet.Pt()     > 100);
-      bool passDPhiZMETUp   = dPhiDiLepMET > 1.5 && (dPhiDiLepMETUp   > 2.6 || vMetUp.Pt()   > 100) ;
-      bool passDPhiZMETDown = dPhiDiLepMET > 1.5 && (dPhiDiLepMETDown > 2.6 || vMetDown.Pt() > 100) ;
+      bool passDPhiZMET     = dPhiDiLepMET     > 2.6;
+      bool passDPhiZMETUp   = dPhiDiLepMETUp   > 2.6;
+      bool passDPhiZMETDown = dPhiDiLepMETDown > 2.6;
       bool passDPhiZMETTight = dPhiDiLepMET > 2.6;
       bool passNjets     = thePandaFlat.nJot              <= 1;
       bool passNjetsUp   = thePandaFlat.nJot_JESTotalUp   <= 1;
@@ -731,9 +729,9 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
       if(thePandaFlat.nJot              == 1) MVAVar     = MVAVar     + 1000;
       if(thePandaFlat.nJot_JESTotalUp   == 1) MVAVarUp   = MVAVarUp   + 1000;
       if(thePandaFlat.nJot_JESTotalDown == 1) MVAVarDown = MVAVarDown + 1000;
-      if(dPhiDiLepMET     <= 2.6) MVAVar     = MVAVar     + 2000;
-      if(dPhiDiLepMETUp   <= 2.6) MVAVarUp   = MVAVarUp   + 2000;
-      if(dPhiDiLepMETDown <= 2.6) MVAVarDown = MVAVarDown + 2000;
+      //if(dPhiDiLepMET     <= 2.6) MVAVar     = MVAVar     + 2000;
+      //if(dPhiDiLepMETUp   <= 2.6) MVAVarUp   = MVAVarUp   + 2000;
+      //if(dPhiDiLepMETDown <= 2.6) MVAVarDown = MVAVarDown + 2000;
       //else if(lepType == 1) {
       //  if(MVAVar     >= 100) MVAVar	 = MVAVar     + 1000;
       //  if(MVAVarUp   >= 100) MVAVarUp   = MVAVarUp   + 1000;
@@ -822,6 +820,7 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
   for(int ic=0; ic<nPlotCategories; ic++) histo[allPlots-1][ic]->Add(histo_Baseline[ic]);
 
   double qcdScaleTotal[2] = {0.0345, 0.2200}; // use sigma(ZH) (0.0345) instead of sigma(qq->ZZ) (0.0055) and sigma(gg->ZH) (0.2200)
+  if(whichBSMName != "") {qcdScaleTotal[0] = 0.0; qcdScaleTotal[1] = 0.0;}
   double pdfTotal[2] = {0.016, 0.051};
   double syst_WZl[2] = {1.010, 1.012};
 
@@ -849,43 +848,46 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
       histo_QCDScaleUp  [ic]->SetBinContent(nb, histo_Baseline[ic]->GetBinContent(nb)*systQCDScale);
       histo_QCDScaleDown[ic]->SetBinContent(nb, histo_Baseline[ic]->GetBinContent(nb)/systQCDScale);
 
-      histo_Baseline              [ic]->SetBinContent(nb, TMath::Max((float)histo_Baseline		[ic]->GetBinContent(nb),1e-7f));
-      histo_QCDScaleUp  	  [ic]->SetBinContent(nb, TMath::Max((float)histo_QCDScaleUp		[ic]->GetBinContent(nb),1e-7f));
-      histo_QCDScaleDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_QCDScaleDown  	[ic]->GetBinContent(nb),1e-7f));
-      histo_PDFBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PDFBoundingUp 	[ic]->GetBinContent(nb),1e-7f));
-      histo_PDFBoundingDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PDFBoundingDown	[ic]->GetBinContent(nb),1e-7f));
-      histo_LepEffMBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffMBoundingUp	[ic]->GetBinContent(nb),1e-7f));
-      histo_LepEffMBoundingDown   [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffMBoundingDown	[ic]->GetBinContent(nb),1e-7f));
-      histo_LepEffEBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffEBoundingUp	[ic]->GetBinContent(nb),1e-7f));
-      histo_LepEffEBoundingDown   [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffEBoundingDown	[ic]->GetBinContent(nb),1e-7f));
-      histo_PUBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PUBoundingUp  	[ic]->GetBinContent(nb),1e-7f));
-      histo_PUBoundingDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PUBoundingDown	[ic]->GetBinContent(nb),1e-7f));
+      histo_Baseline              [ic]->SetBinContent(nb, TMath::Max((float)histo_Baseline		[ic]->GetBinContent(nb),0.0f));
+      histo_QCDScaleUp  	  [ic]->SetBinContent(nb, TMath::Max((float)histo_QCDScaleUp		[ic]->GetBinContent(nb),0.0f));
+      histo_QCDScaleDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_QCDScaleDown  	[ic]->GetBinContent(nb),0.0f));
+      histo_PDFBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PDFBoundingUp 	[ic]->GetBinContent(nb),0.0f));
+      histo_PDFBoundingDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PDFBoundingDown	[ic]->GetBinContent(nb),0.0f));
+      histo_LepEffMBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffMBoundingUp	[ic]->GetBinContent(nb),0.0f));
+      histo_LepEffMBoundingDown   [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffMBoundingDown	[ic]->GetBinContent(nb),0.0f));
+      histo_LepEffEBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffEBoundingUp	[ic]->GetBinContent(nb),0.0f));
+      histo_LepEffEBoundingDown   [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffEBoundingDown	[ic]->GetBinContent(nb),0.0f));
+      histo_PUBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PUBoundingUp  	[ic]->GetBinContent(nb),0.0f));
+      histo_PUBoundingDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PUBoundingDown	[ic]->GetBinContent(nb),0.0f));
       for(int ny=0; ny<nYears; ny++){
-      histo_BTAGBBoundingUp    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGBBoundingUp    [ny][ic]->GetBinContent(nb),1e-7f));
-      histo_BTAGBBoundingDown  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGBBoundingDown  [ny][ic]->GetBinContent(nb),1e-7f));
-      histo_BTAGLBoundingUp    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGLBoundingUp    [ny][ic]->GetBinContent(nb),1e-7f));
-      histo_BTAGLBoundingDown  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGLBoundingDown  [ny][ic]->GetBinContent(nb),1e-7f));
-      histo_JESBoundingUp      [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingUp      [ny][ic]->GetBinContent(nb),1e-7f));
-      histo_JESBoundingDown    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingDown    [ny][ic]->GetBinContent(nb),1e-7f));
-      histo_PreFireBoundingUp  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingUp  [ny][ic]->GetBinContent(nb),1e-7f));
-      histo_PreFireBoundingDown[ny][ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingDown[ny][ic]->GetBinContent(nb),1e-7f));
-      histo_TriggerBoundingUp  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_TriggerBoundingUp  [ny][ic]->GetBinContent(nb),1e-7f));
-      histo_TriggerBoundingDown[ny][ic]->SetBinContent(nb, TMath::Max((float)histo_TriggerBoundingDown[ny][ic]->GetBinContent(nb),1e-7f));
+      histo_BTAGBBoundingUp    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGBBoundingUp    [ny][ic]->GetBinContent(nb),0.0f));
+      histo_BTAGBBoundingDown  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGBBoundingDown  [ny][ic]->GetBinContent(nb),0.0f));
+      histo_BTAGLBoundingUp    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGLBoundingUp    [ny][ic]->GetBinContent(nb),0.0f));
+      histo_BTAGLBoundingDown  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGLBoundingDown  [ny][ic]->GetBinContent(nb),0.0f));
+      histo_JESBoundingUp      [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingUp      [ny][ic]->GetBinContent(nb),0.0f));
+      histo_JESBoundingDown    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingDown    [ny][ic]->GetBinContent(nb),0.0f));
+      histo_PreFireBoundingUp  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingUp  [ny][ic]->GetBinContent(nb),0.0f));
+      histo_PreFireBoundingDown[ny][ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingDown[ny][ic]->GetBinContent(nb),0.0f));
+      histo_TriggerBoundingUp  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_TriggerBoundingUp  [ny][ic]->GetBinContent(nb),0.0f));
+      histo_TriggerBoundingDown[ny][ic]->SetBinContent(nb, TMath::Max((float)histo_TriggerBoundingDown[ny][ic]->GetBinContent(nb),0.0f));
       }
-      histo_EWKCorrWZUp 	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKCorrWZUp		[ic]->GetBinContent(nb),1e-7f));
-      histo_EWKCorrWZDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKCorrWZDown 	[ic]->GetBinContent(nb),1e-7f));
-      histo_EWKqqZZCorrUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKqqZZCorrUp 	[ic]->GetBinContent(nb),1e-7f));
-      histo_EWKqqZZCorrDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKqqZZCorrDown	[ic]->GetBinContent(nb),1e-7f));
-      histo_ggZZCorrUp  	  [ic]->SetBinContent(nb, TMath::Max((float)histo_ggZZCorrUp		[ic]->GetBinContent(nb),1e-7f));
-      histo_ggZZCorrDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_ggZZCorrDown  	[ic]->GetBinContent(nb),1e-7f));
-      histo_CorrWZZZUp  	  [ic]->SetBinContent(nb, TMath::Max((float)histo_CorrWZZZUp		[ic]->GetBinContent(nb),1e-7f));
-      histo_CorrWZZZDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_CorrWZZZDown  	[ic]->GetBinContent(nb),1e-7f));
-      histo_EWKCorrZHUp 	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKCorrZHUp		[ic]->GetBinContent(nb),1e-7f));
-      histo_EWKCorrZHDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKCorrZHDown 	[ic]->GetBinContent(nb),1e-7f));
+      histo_EWKCorrWZUp 	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKCorrWZUp		[ic]->GetBinContent(nb),0.0f));
+      histo_EWKCorrWZDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKCorrWZDown 	[ic]->GetBinContent(nb),0.0f));
+      histo_EWKqqZZCorrUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKqqZZCorrUp 	[ic]->GetBinContent(nb),0.0f));
+      histo_EWKqqZZCorrDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKqqZZCorrDown	[ic]->GetBinContent(nb),0.0f));
+      histo_ggZZCorrUp  	  [ic]->SetBinContent(nb, TMath::Max((float)histo_ggZZCorrUp		[ic]->GetBinContent(nb),0.0f));
+      histo_ggZZCorrDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_ggZZCorrDown  	[ic]->GetBinContent(nb),0.0f));
+      histo_CorrWZZZUp  	  [ic]->SetBinContent(nb, TMath::Max((float)histo_CorrWZZZUp		[ic]->GetBinContent(nb),0.0f));
+      histo_CorrWZZZDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_CorrWZZZDown  	[ic]->GetBinContent(nb),0.0f));
+      histo_EWKCorrZHUp 	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKCorrZHUp		[ic]->GetBinContent(nb),0.0f));
+      histo_EWKCorrZHDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_EWKCorrZHDown 	[ic]->GetBinContent(nb),0.0f));
     }
     histo_PUBoundingUp	[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_PUBoundingUp  [ic]->GetSumOfWeights());
     histo_PUBoundingDown[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_PUBoundingDown[ic]->GetSumOfWeights());
-    if(ic == kPlotWZ || ic == kPlotZZ || ic == kPlotBSM || ic == kPlotEM || ic == kPlotDY) {
+    if     (ic == kPlotBSM && whichBSMName != "") {
+      // Do nothing
+    }
+    else if(ic == kPlotWZ || ic == kPlotZZ || ic == kPlotBSM || ic == kPlotEM || ic == kPlotDY) {
       histo_QCDScaleUp  [ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_QCDScaleUp  [ic]->GetSumOfWeights());
       histo_QCDScaleDown[ic]->Scale(histo_Baseline[ic]->GetSumOfWeights()/histo_QCDScaleDown[ic]->GetSumOfWeights());
     }
@@ -894,22 +896,22 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
   // 0 jet
   histo_DYNorm0jetUp  ->Add(histo_Baseline[kPlotDY]);
   histo_DYNorm0jetDown->Add(histo_Baseline[kPlotDY]);
-  for(int i=1; i<=12; i++) {
+  for(int i=1; i<=13; i++) {
     histo_DYNorm0jetUp  ->SetBinContent(i,histo_DYNorm0jetUp  ->GetBinContent(i)*10.0);
     histo_DYNorm0jetDown->SetBinContent(i,histo_DYNorm0jetDown->GetBinContent(i)/10.0);
   }
-  for(int i=25; i<=31; i++) {
+  for(int i=27; i<=31; i++) {
     histo_DYNorm0jetUp  ->SetBinContent(i,histo_DYNorm0jetUp  ->GetBinContent(i)*10.0);
     histo_DYNorm0jetDown->SetBinContent(i,histo_DYNorm0jetDown->GetBinContent(i)/10.0);
   }
   // 1 jet
   histo_DYNorm1jetUp  ->Add(histo_Baseline[kPlotDY]);
   histo_DYNorm1jetDown->Add(histo_Baseline[kPlotDY]);
-  for(int i=13; i<=24; i++) {
+  for(int i=14; i<=26; i++) {
     histo_DYNorm1jetUp  ->SetBinContent(i,histo_DYNorm1jetUp  ->GetBinContent(i)*10.0);
     histo_DYNorm1jetDown->SetBinContent(i,histo_DYNorm1jetDown->GetBinContent(i)/10.0);
   }
-  for(int i=32; i<=38; i++) {
+  for(int i=32; i<=36; i++) {
     histo_DYNorm1jetUp  ->SetBinContent(i,histo_DYNorm1jetUp  ->GetBinContent(i)*10.0);
     histo_DYNorm1jetDown->SetBinContent(i,histo_DYNorm1jetDown->GetBinContent(i)/10.0);
   }
@@ -1406,6 +1408,10 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
   if(useZZWZEWKUnc == true){
     newcardShape << Form("CMS_hinv_vvnorm_bin_%d  rateParam * %s 1 [0.1,10]\n",year,plotBaseNames[kPlotZZ].Data());
     newcardShape << Form("CMS_hinv_vvnorm_bin_%d  rateParam * %s 1 [0.1,10]\n",year,plotBaseNames[kPlotWZ].Data());
+  }
+  else {
+    newcardShape << Form("CMS_hinv_zznorm_bin_%d  rateParam * %s 1 [0.1,10]\n",year,plotBaseNames[kPlotZZ].Data());
+    newcardShape << Form("CMS_hinv_wznorm_bin_%d  rateParam * %s 1 [0.1,10]\n",year,plotBaseNames[kPlotWZ].Data());
   }
   newcardShape << Form("CMS_hinv_emnorm_bin_%d  rateParam * %s 1 [0.1,10]\n",year,plotBaseNames[kPlotEM].Data());
 

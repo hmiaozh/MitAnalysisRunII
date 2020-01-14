@@ -36,11 +36,11 @@ int year, int nbjets = 0
   vector<int> infileCat_;
 
   TString filesPath;
-  TString fnpvWeightsFileName = Form("MitAnalysisRunII/data/90x/npvWeights_%d_FakeTriggers.root",year);
+  TString fnpvWeightsFileName = Form("MitAnalysisRunII/data/90x/pu/npvWeights_%d_FakeTriggers.root",year);
   TString puPath;
   if     (year == 2018) {
     filesPath = "/data/t3home000/ceballos/panda/v_007_0/";
-    puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2018.root";
+    puPath = "MitAnalysisRunII/data/90x/pu/puWeights_90x_2018.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(0);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	           infileCat_.push_back(1);
@@ -63,7 +63,7 @@ int year, int nbjets = 0
   }
   else if(year == 2017) {
     filesPath = "/data/t3home000/ceballos/panda/v_005_0/";
-    puPath = "MitAnalysisRunII/data/90x/puWeights_90x_2017.root";
+    puPath = "MitAnalysisRunII/data/90x/pu/puWeights_90x_2017.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(0);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
@@ -86,7 +86,7 @@ int year, int nbjets = 0
   }
   else if(year == 2016) {
     filesPath = "/data/t3home000/ceballos/panda/v_003_0/";
-    puPath = "MitAnalysisRunII/data/80x/puWeights_80x_37ifb.root";
+    puPath = "MitAnalysisRunII/data/90x/pu/puWeights_90x_2016.root";
 
     infileName_.push_back(Form("%sdata.root",filesPath.Data()));  	         infileCat_.push_back(0);
     infileName_.push_back(Form("%sqqWW.root" ,filesPath.Data())); 	         infileCat_.push_back(1);
@@ -238,12 +238,7 @@ int year, int nbjets = 0
 
       bool passMllSel = false;
       TLorentzVector vMet;
-      if     (year == 2016 || year == 2018) {
-        vMet    .SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
-      } 
-      else if(year == 2017){
-        vMet    .SetPtEtaPhiM(thePandaFlat.puppimet,0.0,thePandaFlat.puppimetphi,0.0);
-      }
+      vMet    .SetPtEtaPhiM(thePandaFlat.pfmet,0.0,thePandaFlat.pfmetphi,0.0);
       //vMet    .SetPx(vMet    .Px()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 0));
       //vMet    .SetPy(vMet    .Py()-metPhiCorr(year, thePandaFlat.npv, (infileCat_[ifile]==kPlotData), 1));
 

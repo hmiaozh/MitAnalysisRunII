@@ -42,6 +42,7 @@ PandaAnalysis/T3/merging/merge.py --cfg leptonic DYJetsToLL_M-50_NLO
 #PandaAnalysis/T3/merging/merge.py --cfg leptonic ZtoNuNu_pt400to650
 #PandaAnalysis/T3/merging/merge.py --cfg leptonic ZtoNuNu_pt650toinf
 PandaAnalysis/T3/merging/merge.py --cfg leptonic WJets
+PandaAnalysis/T3/merging/merge.py --cfg leptonic WpWp_EWK_QCD
 PandaAnalysis/T3/merging/merge.py --cfg leptonic WpWp_EWK
 PandaAnalysis/T3/merging/merge.py --cfg leptonic WpWp_QCD
 #PandaAnalysis/T3/merging/merge.py --cfg leptonic DYJetsToEE_POWHEG_MINLO
@@ -105,6 +106,8 @@ PandaAnalysis/T3/merging/merge.py --cfg leptonic ZH_ZToLL_HToGDarkG_M300
 elif [ $NSEL == 'dim8' ]; then
 PandaAnalysis/T3/merging/merge.py --cfg leptonic WWjj_SS_dim8_ewk
 PandaAnalysis/T3/merging/merge.py --cfg leptonic WZjj_dim8_ewk
+PandaAnalysis/T3/merging/merge.py --cfg leptonic WWjj_SS_long
+PandaAnalysis/T3/merging/merge.py --cfg leptonic WWjj_SS_lttt
 
 elif [ $NSEL == 'da' ]; then
 PandaAnalysis/T3/merging/merge.py --cfg leptonic data_overlaps

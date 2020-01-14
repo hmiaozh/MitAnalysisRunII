@@ -34,7 +34,7 @@ DoubleScattering WZTo3LNu_0Jets WZTo3LNu_1Jets WZTo3LNu_2Jets WZTo3LNu_3Jets ZZJ
 PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$USER/catalog/test.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/012 \
 --include SingleElectron SingleMuon DoubleEG DoubleMuon MuonEG EGamma Unpart_Z ADDMonoZ ZZ WZ WW JetsToLL_M-50 DYJetsToLL_M-10to50_Tune tZq GluGluH VBFH VBF_H ttHToNonbb VHToNonbb \
 TTG TTZ TTW ST_tW TT WGstarTo WGToLNuG ZGTo2LG ZGToLLG JetsToLL DYJetsToTauTau NNPDF30_13TeV-powheg MET WJetsToLNu WpWpJJ WLLJJ JJ_EWK_M HToInvisible HToInv_ZToLL \
---exclude ZpWW_med JetsToLL_M-50_HT NNPDF30_13TeV-powheg DYJetsToLL_Zpt-100to200 DYJetsToLL_Zpt-200toInf WW_TuneCP5_13TeV-pythia8 ZZ_TuneCP5_13TeV-pythia8 WZ_TuneCP5_13TeV-pythia8 TTToSemiLeptonic TTTo2L2Nu_TuneCP5_13TeV
+--exclude ZpWW_med JetsToLL_M-50_HT NNPDF30_13TeV-powheg DYJetsToLL_Zpt-100to200 DYJetsToLL_Zpt-200toInf WW_TuneCP5_13TeV-pythia8 ZZ_TuneCP5_13TeV-pythia8 WZ_TuneCP5_13TeV-pythia8 TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8 TTTo2L2Nu_TuneCP5_13TeV
 
 # fakes 2017
 PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$USER/catalog/test3.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/012 \
@@ -52,7 +52,7 @@ PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$US
 PandaAnalysis/T3/bin/catalogT2Prod.py --cfg leptonic --outfile ~/public_html/$USER/catalog/testB.cfg --catalog ~cmsprod/catalog/t2mit/pandaf/013 \
 --include ADDMonoZ ZZ WZ WW JetsToLL_M-50 DYJetsToLL_M-10to50_Tune Unpart_Z tZq GluGluH VBFH VBF_H ttHToNonbb VHToNonbb \
 TTG TTZ TTW ST_tW TT WGstarTo WGToLNuG ZGTo2LG ZGToLLG JetsToLL DYJetsToTauTau NNPDF30_13TeV-powheg WJetsToLNu WpWpJJ WLLJJ JJ_EWK_M HToInvisible HToInv_ZToLL \
---exclude ZpWW_med JetsToLL_M-50_HT NNPDF30_13TeV-powheg DYJetsToLL_Zpt-100to200 DYJetsToLL_Zpt-200toInf ZZ_TuneCP5_13TeV-pythia8 WZ_TuneCP5_13TeV-pythia8 TTToSemiLeptonic WW_TuneCP5_13TeV-pythia8
+--exclude ZpWW_med JetsToLL_M-50_HT NNPDF30_13TeV-powheg DYJetsToLL_Zpt-100to200 DYJetsToLL_Zpt-200toInf ZZ_TuneCP5_13TeV-pythia8 WZ_TuneCP5_13TeV-pythia8 WW_TuneCP5_13TeV-pythia8
 
 cat ~/public_html/$USER/catalog/testA.cfg ~/public_html/$USER/catalog/testB.cfg > ~/public_html/$USER/catalog/test.cfg;
 wc ~/public_html/$USER/catalog/test.cfg;
