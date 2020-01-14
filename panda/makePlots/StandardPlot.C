@@ -18,6 +18,7 @@
 Bool_t isBSMOverlaid = true;
 
 float xPos[nPlotCategories] = {0.19,0.19,0.19,0.19,0.19,0.19,0.40,0.40,0.40,0.40,0.40,0.40,0.40,0.40,0.40}; 
+//float xPos[nPlotCategories] = {0.49,0.49,0.49,0.49,0.49,0.49,0.70,0.70,0.70,0.70,0.70,0.70,0.70,0.70,0.70};
 float yOff[nPlotCategories] = {   0,	1,   2,   3,   4,  5,   0,   1,   2,   3,   4,   5,   6,   7,   8};
 
 const Float_t _tsize   = 0.035;
@@ -152,7 +153,7 @@ void DrawLegendTG(Float_t x1,
 class StandardPlot {
 
     public: 
-        StandardPlot() { _hist.resize(nPlotCategories,0); _hist[kPlotData] = 0; _breakdown = false; _HiggsLabel = ""; _Higgs2Label = "";_labelEM = " Nonprompt";_labelVVV = " VVV";}
+        StandardPlot() { _hist.resize(nPlotCategories,0); _hist[kPlotData] = 0; _breakdown = false; _HiggsLabel = ""; _Higgs2Label = "FT1=1.0";_labelEM = " Nonprompt";_labelVVV = " VVV";}
         void setMCHist   (int s, TH1F * h)  { _hist[s] = h;} 
         void setOverlaid  (bool b)   { isBSMOverlaid = b;   }
         void setLabelEM   (TString s){ _labelEM  = s.Data();}
@@ -213,7 +214,8 @@ class StandardPlot {
             }
 
             if(_hist[kPlotBSM] ) _hist[kPlotBSM]->SetLineWidth(4);
-            if(_hist[kPlotSignal0] ) _hist[kPlotSignal0]->SetLineWidth(4);
+            if(_hist[kPlotSignal0] ) _hist[kPlotSignal0]->SetLineWidth(2);
+	    if(_hist[kPlotSignal0] ) _hist[kPlotSignal0]->SetLineColor(kOrange);
             if(_hist[kPlotBSM] ) _hist[kPlotBSM]->SetFillColor(0);
             if(_hist[kPlotSignal0] ) _hist[kPlotSignal0]->SetFillColor(0);
             if(_hist[kPlotBSM] ) _hist[kPlotBSM]->SetFillStyle(3001);
@@ -325,7 +327,8 @@ class StandardPlot {
             	hstack->SetMaximum(10000 * theMax);
             	hstack->SetMinimum(TMath::Max(0.9 * theMin,0.010));
             } else {
-              hstack->SetMaximum(2.6 * theMax);
+              hstack->SetMaximum(1.5 * theMax);
+		//hstack->SetMaximum(1.2 * theMax);
             }
 
             if(_breakdown) {
