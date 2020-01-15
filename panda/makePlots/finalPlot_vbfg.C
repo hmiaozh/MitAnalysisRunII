@@ -129,19 +129,19 @@ void finalPlot_vbfg(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TS
       SF_yield_unc[ic] = 0.0;
       if     ((TH1F*)mlfit->Get(Form("shapes_prefit/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) {
         double sum[3] = {0, 0, 0};
-        for(int i=1; i<=((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetNbinsX(); i++){
-          //sum[0] = sum[0] + ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetBinContent(i);
+        for(int i=1; i<=((TH1F*)mlfit->Get(Form("shapes_fit_b/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetNbinsX(); i++){
+          //sum[0] = sum[0] + ((TH1F*)mlfit->Get(Form("shapes_fit_b/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetBinContent(i);
 	  //sum[1] = sum[1] + ((TH1F*)mlfit->Get(Form("shapes_prefit/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetBinContent(i);
-	  sum[2] = sum[2] + ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetBinError(i);
-	  if(((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetNbinsX() ==_hist[ic]->GetNbinsX() && 
+	  sum[2] = sum[2] + ((TH1F*)mlfit->Get(Form("shapes_fit_b/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetBinError(i);
+	  if(((TH1F*)mlfit->Get(Form("shapes_fit_b/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetNbinsX() ==_hist[ic]->GetNbinsX() && 
 	     applyBBBBSF == true){
-	     _hist[ic]->SetBinContent(i,((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetBinContent(i));
-             _hist[ic]->SetBinError(i,((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetBinError(i));
+	     _hist[ic]->SetBinContent(i,((TH1F*)mlfit->Get(Form("shapes_fit_b/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetBinContent(i));
+             _hist[ic]->SetBinError(i,((TH1F*)mlfit->Get(Form("shapes_fit_b/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetBinError(i));
 	  }
         }
-        sum[0] = ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetSumOfWeights();
+        sum[0] = ((TH1F*)mlfit->Get(Form("shapes_fit_b/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetSumOfWeights();
 	sum[1] = ((TH1F*)mlfit->Get(Form("shapes_prefit/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetSumOfWeights();
-	if(((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetNbinsX() ==_hist[ic]->GetNbinsX() && 
+	if(((TH1F*)mlfit->Get(Form("shapes_fit_b/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetNbinsX() ==_hist[ic]->GetNbinsX() && 
 	   applyBBBBSF == true){
           // do nothing
 	}
@@ -150,7 +150,7 @@ void finalPlot_vbfg(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TS
           SF_yield_unc[ic] = sum[2] / sum[0];
         }
 	printf("POST FIT SFs: SF[%s] = %.3f +/- %.3f | %.3f\n",plotBaseNames[ic].Data(),SF_yield[ic],SF_yield_unc[ic],
-	       ((TH1F*)mlfit->Get(Form("shapes_fit_s/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetSumOfWeights()/
+	       ((TH1F*)mlfit->Get(Form("shapes_fit_b/%s/%s",channelName.Data(),plotBaseNames[ic].Data()))) ->GetSumOfWeights()/
 	       ((TH1F*)mlfit->Get(Form("shapes_prefit/%s/%s",channelName.Data(),plotBaseNames[ic].Data())))->GetSumOfWeights());
       }
       _hist[ic]->Scale(SF_yield[ic]);
@@ -179,7 +179,14 @@ void finalPlot_vbfg(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TS
       for(int i=1; i<=_hist[ic]->GetNbinsX(); i++) printf("%7.3f +/- %.3f\n",_hist[ic]->GetBinContent(i),_hist[ic]->GetBinError(i));
     }
   }
-  
+
+  _hist[kPlotGJ0]->Add(_hist[kPlotGJ1]);_hist[kPlotGJ1]->Scale(0.0);
+  _hist[kPlotWJ0]->Add(_hist[kPlotWJ1]);_hist[kPlotWJ1]->Scale(0.0);
+  _hist[kPlotWJ0]->Add(_hist[kPlotWJ2]);_hist[kPlotWJ2]->Scale(0.0);
+  _hist[kPlotWJ0]->Add(_hist[kPlotWJ3]);_hist[kPlotWJ3]->Scale(0.0);
+  _hist[kPlotWJ0]->Add(_hist[kPlotWJ4]);_hist[kPlotWJ4]->Scale(0.0);
+  _hist[kPlotWJ0]->Add(_hist[kPlotWJ5]);_hist[kPlotWJ5]->Scale(0.0);
+
   /*TFile* fileExtra;
   if(plotExtraName != ""){
      fileExtra = new TFile(plotExtraName, "read");
@@ -192,7 +199,7 @@ void finalPlot_vbfg(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TS
     //if(_hist[kPlotSignal0]->GetSumOfWeights() > 0 &&
     //   _hist[kPlotBSM]    ->GetSumOfWeights() > 0) { _hist[kPlotSignal0]->Add(_hist[kPlotBSM],-1); myPlot.setMCHist(kPlotSignal0, _hist[kPlotSignal0]);}
     //if(_hist[kPlotSignal0]->GetSumOfWeights() > 0) { _hist[kPlotSignal0]->Add(hBck); myPlot.setMCHist(kPlotSignal0, _hist[kPlotSignal0]);}
-    if(_hist[kPlotBSM]    ->GetSumOfWeights() > 0) { _hist[kPlotBSM    ]->Add(hBck); myPlot.setMCHist(kPlotBSM,     _hist[kPlotBSM    ]);}
+    if(_hist[kPlotBSM]->GetSumOfWeights() > 0) { _hist[kPlotBSM]->Add(hBck); myPlot.setMCHist(kPlotBSM,_hist[kPlotBSM]);}
     //myPlot.setOverlaid(true);
   }
 

@@ -279,11 +279,6 @@ public :
    Float_t         jotPhi[2];
    Float_t         jotCSV[2];
    Int_t           jotVBFID[2];
-   Float_t         barrelJet1Pt;
-   Float_t         barrelJet1Eta;
-   Float_t         barrelHT;
-   Float_t         barrelHTMiss;
-   Float_t         barrelJet12Pt;
    Float_t         jot12Mass;
    Float_t         jot12Mass_JESTotalUp;
    Float_t         jot12Mass_JESTotalDown;
@@ -665,11 +660,6 @@ public :
    TBranch        *b_jotPhi;   //!
    TBranch        *b_jotCSV;   //!
    TBranch        *b_jotVBFID;   //!
-   TBranch        *b_barrelJet1Pt;   //!
-   TBranch        *b_barrelJet1Eta;   //!
-   TBranch        *b_barrelHT;   //!
-   TBranch        *b_barrelHTMiss;   //!
-   TBranch        *b_barrelJet12Pt;   //!
    TBranch        *b_jot12Mass;   //!
    TBranch        *b_jot12Mass_JESTotalUp;   //!
    TBranch        *b_jot12Mass_JESTotalDown;   //!
@@ -1120,11 +1110,6 @@ void pandaFlat::Init(TTree *tree)
    fChain->SetBranchAddress("jotPhi", jotPhi, &b_jotPhi);
    fChain->SetBranchAddress("jotCSV", jotCSV, &b_jotCSV);
    fChain->SetBranchAddress("jotVBFID", jotVBFID, &b_jotVBFID);
-   fChain->SetBranchAddress("barrelJet1Pt", &barrelJet1Pt, &b_barrelJet1Pt);
-   fChain->SetBranchAddress("barrelJet1Eta", &barrelJet1Eta, &b_barrelJet1Eta);
-   fChain->SetBranchAddress("barrelHT", &barrelHT, &b_barrelHT);
-   fChain->SetBranchAddress("barrelHTMiss", &barrelHTMiss, &b_barrelHTMiss);
-   fChain->SetBranchAddress("barrelJet12Pt", &barrelJet12Pt, &b_barrelJet12Pt);
    fChain->SetBranchAddress("jot12Mass", &jot12Mass, &b_jot12Mass);
    fChain->SetBranchAddress("jot12Mass_JESTotalUp", &jot12Mass_JESTotalUp, &b_jot12Mass_JESTotalUp);
    fChain->SetBranchAddress("jot12Mass_JESTotalDown", &jot12Mass_JESTotalDown, &b_jot12Mass_JESTotalDown);

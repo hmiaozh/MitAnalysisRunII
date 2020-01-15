@@ -49,36 +49,44 @@ enum TriggerBits {
 
 
 enum plotCategory {
-  kPlotData      , // 0 
-  kPlotWW        , // 1  
-  kPlotZZ        , // 2  
-  kPlotWZ        , // 3  
-  kPlotWJ        , // 4  
-  kPlotDY        , // 5  
-  kPlotTop       , // 6  
-  kPlotVVV       , // 7  
-  kPlotWG        , // 8  
-  kPlotZG        , // 9  
-  kPlotGJ        , //10 
-  kPlotNonPrompt , //11  
-  kPlotPhotonE0  , //12  
-  kPlotPhotonE1  , //13  
-  kPlotBSM       , //14 
+  kPlotData      , // 0
+  kPlotVV        , // 1
+  kPlotWJ0       , // 2
+  kPlotWJ1       , // 3
+  kPlotWJ2       , // 4
+  kPlotWJ3       , // 5
+  kPlotWJ4       , // 6
+  kPlotWJ5       , // 7
+  kPlotDY        , // 8
+  kPlotTop       , // 9
+  kPlotVVV       , //10
+  kPlotWG        , //11
+  kPlotZG        , //12
+  kPlotGJ0       , //13
+  kPlotGJ1       , //14
+  kPlotNonPrompt , //15
+  kPlotPhotonE0  , //16
+  kPlotPhotonE1  , //17
+  kPlotBSM       , //18
   nPlotCategories
 };
 
 std::map<int, TString> plotBaseNames={
   { kPlotData	   , "Data" },
-  { kPlotWW	   , "WW" },
-  { kPlotZZ	   , "ZZ" },
-  { kPlotWZ	   , "WZ" },
-  { kPlotWJ	   , "WJ" },
+  { kPlotVV	   , "VV" },
+  { kPlotWJ0	   , "WJ0" },
+  { kPlotWJ1	   , "WJ1" },
+  { kPlotWJ2	   , "WJ2" },
+  { kPlotWJ3	   , "WJ3" },
+  { kPlotWJ4	   , "WJ4" },
+  { kPlotWJ5	   , "WJ5" },
   { kPlotDY	   , "DY" },
   { kPlotTop	   , "Top" },
   { kPlotVVV	   , "VVV" },
   { kPlotWG	   , "WG" },
   { kPlotZG        , "ZG" },
-  { kPlotGJ	   , "GJ" },
+  { kPlotGJ0	   , "GJ0" },
+  { kPlotGJ1	   , "GJ1" },
   { kPlotNonPrompt , "NonPrompt" },
   { kPlotPhotonE0  , "PhotonE0" },
   { kPlotPhotonE1  , "PhotonE1" },
@@ -86,55 +94,79 @@ std::map<int, TString> plotBaseNames={
 }; 
 
 std::map<int, int> plotColors={
-  { kPlotData	   , kBlack},
-  { kPlotWW	   , kAzure-9},
-  { kPlotZZ	   , TColor::GetColor(155,152,204)},
-  { kPlotWZ	   , kViolet-9},
-  { kPlotWJ	   , 901},
-  { kPlotDY	   , kAzure-2},
-  { kPlotTop	   , kYellow},
-  { kPlotVVV	   , 809},
-  { kPlotWG	   , 419},
-  { kPlotZG        , kAzure-9},
-  { kPlotGJ	   , kGreen-5},
-  { kPlotNonPrompt , kOrange},
-  { kPlotPhotonE0  , kBlue+3},
-  { kPlotPhotonE1  , kBlue+4},
+  { kPlotData      , kBlack},
+  { kPlotVV        , kAzure-9},
+  { kPlotWJ0       , 901},
+  { kPlotWJ1       , kMagenta+1},
+  { kPlotWJ2       , kMagenta+2},
+  { kPlotWJ3       , kMagenta+3},
+  { kPlotWJ4       , kMagenta+4},
+  { kPlotWJ5       , kMagenta+5},
+  { kPlotDY        , kYellow},
+  { kPlotTop       , kAzure-2},
+  { kPlotVVV       , TColor::GetColor(248,206,104)},
+  { kPlotWG        , TColor::GetColor(250,202,255)},
+  { kPlotZG        , kCyan+3},
+  { kPlotGJ0       , TColor::GetColor(222,90,106)},
+  { kPlotGJ1       , kMagenta+4},
+  { kPlotNonPrompt , kAzure-9},
+  { kPlotPhotonE0  , TColor::GetColor(155,152,204)},
+  { kPlotPhotonE1  , 809},
   { kPlotBSM	   , kGreen}
 }; 
 
 std::map<int, TString> plotNames={
     { kPlotData      , "Data"},
-    { kPlotWW        , "WW"},
-    { kPlotZZ	     , "ZZ"},
-    { kPlotWZ	     , "WZ"},
-    { kPlotWJ        , "W+jets"},
+    { kPlotVV        , "VV"},
+    { kPlotWJ0       , "W+jets"},
+    { kPlotWJ1       , "W+jets1"},
+    { kPlotWJ2       , "W+jets2"},
+    { kPlotWJ3       , "W+jets3"},
+    { kPlotWJ4       , "W+jets4"},
+    { kPlotWJ5       , "W+jets5"},
     { kPlotDY	     , "Z+jets"},
     { kPlotTop       , "Top quark"},
     { kPlotVVV       , "VVV"},
     { kPlotWG	     , "W#gamma" },
     { kPlotZG        , "Z#gamma"},
-    { kPlotGJ	     , "#gamma+jets"},
+    { kPlotGJ0	     , "#gamma+jets"},
+    { kPlotGJ1	     , "#gamma+jets1"},
     { kPlotNonPrompt , "Nonprompt"},
     { kPlotPhotonE0  , "Mismeasured #gamma low m_{jj}"},
     { kPlotPhotonE1  , "Mismeasured #gamma high m_{jj}"},
-   { kPlotBSM       , "BSM"}
+    { kPlotBSM       , "BSM"}
 };
 
 const double mass_el = 0.000510998928;
 const double mass_mu = 0.10566;
 
-double mcCorrection(int type, int year, int infileCat, double mjj, double mtg){
+double mcCorrection(int type, int year, int infileCat, double mjj, double mtg, int triggerCat){
   double totalWeight = 1.0;
 
   if(infileCat == kPlotBSM) totalWeight = totalWeight * 0.1; // 3.782;
 
   if     (type == 0){ // VBFG
-    if     (year == 2016 && infileCat == kPlotWG) totalWeight = totalWeight * 0.25;
-    else if(year == 2017 && infileCat == kPlotWG) totalWeight = totalWeight * 1.00;
-    else if(year == 2018 && infileCat == kPlotWG) totalWeight = totalWeight * 1.00;
+
+    if     (year == 2016 && infileCat == kPlotWG) totalWeight = totalWeight * 0.45;
+    else if(year == 2017 && infileCat == kPlotWG && triggerCat == 0) totalWeight = totalWeight * 0.65;
+    else if(year == 2017 && infileCat == kPlotWG && triggerCat == 1) totalWeight = totalWeight * 1.10;
+    else if(year == 2018 && infileCat == kPlotWG && triggerCat == 0) totalWeight = totalWeight * 0.90;
+    else if(year == 2018 && infileCat == kPlotWG && triggerCat == 1) totalWeight = totalWeight * 0.75;
 
 /*
+    else if(year == 2016 && infileCat == kPlotWJ && mjj <  1500) totalWeight = totalWeight * 1.55;
+    else if(year == 2016 && infileCat == kPlotWJ && mjj >= 1500) totalWeight = totalWeight * 1.20;
+
+    else if(year == 2017 && infileCat == kPlotWJ && mjj <  1500 && triggerCat == 0) totalWeight = totalWeight * 1.10;
+    else if(year == 2017 && infileCat == kPlotWJ && mjj <  1500 && triggerCat == 1) totalWeight = totalWeight * 0.85;
+    else if(year == 2017 && infileCat == kPlotWJ && mjj >= 1500 && triggerCat == 0) totalWeight = totalWeight * 0.90;
+    else if(year == 2017 && infileCat == kPlotWJ && mjj >= 1500 && triggerCat == 1) totalWeight = totalWeight * 0.90;
+
+    else if(year == 2018 && infileCat == kPlotWJ && mjj <  1500 && triggerCat == 0) totalWeight = totalWeight * 0.85;
+    else if(year == 2018 && infileCat == kPlotWJ && mjj <  1500 && triggerCat == 1) totalWeight = totalWeight * 1.15;
+    else if(year == 2018 && infileCat == kPlotWJ && mjj >= 1500 && triggerCat == 0) totalWeight = totalWeight * 1.20;
+    else if(year == 2018 && infileCat == kPlotWJ && mjj >= 1500 && triggerCat == 1) totalWeight = totalWeight * 1.40;
+
     else if(year == 2016 && infileCat == kPlotWJ && mjj <  1500 && mtg <  100) totalWeight = totalWeight * 1.872004;// * 1.95 * 0.96;
     else if(year == 2016 && infileCat == kPlotWJ && mjj <  1500              ) totalWeight = totalWeight * 3.216278;// * 1.95 * 1.65;
     else if(year == 2016 && infileCat == kPlotWJ && mjj >= 1500 && mtg <  100) totalWeight = totalWeight * 1.329084;// * 1.95 * 0.68;

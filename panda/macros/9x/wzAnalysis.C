@@ -21,9 +21,10 @@ const bool usePureMC = false; // if true, passLooseLepId not applied
 
 enum systType                     {JESUP=0, JESDOWN,  METUP,  METDOWN, nSystTypes};
 TString systTypeName[nSystTypes]= {"JESUP","JESDOWN","METUP","METDOWN"};
+bool isDesk014 = false;
 
 void wzAnalysis(
-int year, bool isDesk014 = false, TString WZName = "default"
+int year, TString WZName = "default"
 ){
   int nTypeLepSel[2] = {-1, -1};
   int whichYear = -1;

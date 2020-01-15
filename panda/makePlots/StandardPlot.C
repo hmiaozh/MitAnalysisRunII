@@ -353,8 +353,11 @@ class StandardPlot {
                     }
 		    else {
 		      _units = _units.ReplaceAll("BIN","");
-                      THStackAxisFonts(hstack, "x", TString::Format("%s [%s]",_xLabel.Data(),_units.Data()), _doApplyBinWidth);
-                      THStackAxisFonts(hstack, "y", TString::Format("Events / bin"), _doApplyBinWidth);
+ 		      if(strcmp(_units.Data(),"")==0) THStackAxisFonts(hstack, "x", TString::Format("%s",_xLabel.Data()), _doApplyBinWidth);
+                      else                            THStackAxisFonts(hstack, "x", TString::Format("%s [%s]",_xLabel.Data(),_units.Data()), _doApplyBinWidth);
+                      if     (_doApplyBinWidth == true && SFBinWidth == 1) THStackAxisFonts(hstack, "y", "Events / GeV", _doApplyBinWidth);
+                      else if(_doApplyBinWidth == true)                    THStackAxisFonts(hstack, "y", Form("Events / %.2f",SFBinWidth), _doApplyBinWidth);
+                      else                                                 THStackAxisFonts(hstack, "y", "Events / bin", _doApplyBinWidth);
 		    }
                 }
             }

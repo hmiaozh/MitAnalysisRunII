@@ -22,6 +22,7 @@ const int debug = 0;
 const bool showSyst = true;
 const bool produceMVAInputs = false;
 const bool isPseudoData = false;
+const double jetPtCut = 50;
 
 double syst_WZl[2] = {1.010, 1.012};
 
@@ -102,9 +103,9 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 
       infileName_.push_back(Form("%sWZ3l_MG_QCD.root" ,filesPath.Data()));        infileCat_.push_back(kPlotWZ);
 
-      infileName_.push_back(Form("%sZZJJ.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotZZ);
-      //infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotZZ);
-      //infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotZZ);
+      infileName_.push_back(Form("%sZZJJQCD.root" ,filesPath.Data()));            infileCat_.push_back(kPlotZZ);
+      infileName_.push_back(Form("%sZZJJEWK.root" ,filesPath.Data()));            infileCat_.push_back(kPlotZZ);
+      infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data()));               infileCat_.push_back(kPlotZZ);
 
       infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	          infileCat_.push_back(kPlotTVX);
       infileName_.push_back(Form("%sTTVV.root" ,filesPath.Data()));  	          infileCat_.push_back(kPlotTVX);
@@ -162,9 +163,9 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 
       infileName_.push_back(Form("%sWZ3l_MG_QCD.root" ,filesPath.Data()));        infileCat_.push_back(kPlotWZ);
 
-      infileName_.push_back(Form("%sZZJJ.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotZZ);
-      //infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotZZ);
-      //infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotZZ);
+      infileName_.push_back(Form("%sZZJJQCD.root" ,filesPath.Data()));            infileCat_.push_back(kPlotZZ);
+      infileName_.push_back(Form("%sZZJJEWK.root" ,filesPath.Data()));            infileCat_.push_back(kPlotZZ);
+      infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data()));               infileCat_.push_back(kPlotZZ);
 
       infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	          infileCat_.push_back(kPlotTVX);
       infileName_.push_back(Form("%sTTVV.root" ,filesPath.Data()));  	          infileCat_.push_back(kPlotTVX);
@@ -224,9 +225,9 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 
       infileName_.push_back(Form("%sWZ3l_MG_QCD.root" ,filesPath.Data()));	  infileCat_.push_back(kPlotWZ);
 
-      infileName_.push_back(Form("%sZZJJ.root" ,filesPath.Data()));		  infileCat_.push_back(kPlotZZ);
-      //infileName_.push_back(Form("%sqqZZ.root" ,filesPath.Data()));		  infileCat_.push_back(kPlotZZ);
-      //infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data()));		  infileCat_.push_back(kPlotZZ);
+      infileName_.push_back(Form("%sZZJJQCD.root" ,filesPath.Data()));            infileCat_.push_back(kPlotZZ);
+      infileName_.push_back(Form("%sZZJJEWK.root" ,filesPath.Data()));            infileCat_.push_back(kPlotZZ);
+      infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data()));               infileCat_.push_back(kPlotZZ);
 
       infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));		  infileCat_.push_back(kPlotTVX);
 
@@ -333,7 +334,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
   double xmaxPlot   = 200.0;
-  const int allPlots = 92;
+  const int allPlots = 98;
   TH1D* histo[allPlots][nPlotCategories];
   for(int thePlot=0; thePlot<allPlots; thePlot++){
     if     (thePlot >=   0 && thePlot <=   4) {nBinPlot =2500; xminPlot = 500.0; xmaxPlot = 3000.0;}
@@ -365,11 +366,18 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
     else if(thePlot >=  79 && thePlot <=  83) {nBinPlot = 12; xminPlot = 200; xmaxPlot = 500.0;}
     else if(thePlot >=  84 && thePlot <=  88) {nBinPlot =  22; xminPlot =  2.5; xmaxPlot = 8.0;}
     else if(thePlot >=  89 && thePlot <=  90) {nBinPlot = 2000; xminPlot = -1.0; xmaxPlot = 1.0;}
+    else if(thePlot >=  91 && thePlot <=  91) {nBinPlot = 200; xminPlot = -1.0; xmaxPlot = 1.0;}
+    else if(thePlot >=  92 && thePlot <=  92) {nBinPlot = 40; xminPlot = 0.0; xmaxPlot = TMath::Pi();}
+    else if(thePlot >=  93 && thePlot <=  93) {nBinPlot = 40; xminPlot = 0.0; xmaxPlot = 5.0;}
+    else if(thePlot >=  94 && thePlot <=  94) {nBinPlot = 40; xminPlot = 0.0; xmaxPlot = 1.0;}
+    else if(thePlot >=  95 && thePlot <=  95) {nBinPlot = 40; xminPlot = 0.0; xmaxPlot = 8.0;}
+    else if(thePlot >=  96 && thePlot <=  96) {nBinPlot = 40; xminPlot = 0.0; xmaxPlot = 0.4;}
     if     (thePlot == allPlots-1)            for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMVA, xbins);
     else if(thePlot >=   0 && thePlot <=   4) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMJJ, xbinsMJJ);
     else if(thePlot >=  66 && thePlot <=  67) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMLL, xbinsMLL);
     else if(thePlot >=  77 && thePlot <=  77) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinWZBDT, xbinsWZBDT);
     else if(thePlot >=  89 && thePlot <=  90) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinWWBDT, xbinsWWBDT);
+    else if(thePlot >=  91 && thePlot <=  91) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinWZBDT, xbinsWZBDT);
     else                                      for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinPlot, xminPlot, xmaxPlot);
   }
 
@@ -615,13 +623,13 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       bool passJetPtEtaCut = false;
       if(thePandaFlat.nJot >= 2){
         if(fidAna == 5) {
-          passJetPtEtaCut = thePandaFlat.jotPt[0] > 50 && thePandaFlat.jotPt[1] > 50;
+          passJetPtEtaCut = thePandaFlat.jotPt[0] > jetPtCut && thePandaFlat.jotPt[1] > jetPtCut;
 	}
 	else {
-          passJetPtEtaCut = thePandaFlat.jotPt[0] > 50 && thePandaFlat.jotPt[1] > 50;
+          passJetPtEtaCut = thePandaFlat.jotPt[0] > jetPtCut && thePandaFlat.jotPt[1] > jetPtCut;
 	}
-	if(TMath::Abs(thePandaFlat.jotEta[0]) > 2.4) passJetPtEtaCut = passJetPtEtaCut && thePandaFlat.jotPt[0] > 50;
-	if(TMath::Abs(thePandaFlat.jotEta[1]) > 2.4) passJetPtEtaCut = passJetPtEtaCut && thePandaFlat.jotPt[1] > 50;
+	if(TMath::Abs(thePandaFlat.jotEta[0]) > 2.4) passJetPtEtaCut = passJetPtEtaCut && thePandaFlat.jotPt[0] > jetPtCut;
+	if(TMath::Abs(thePandaFlat.jotEta[1]) > 2.4) passJetPtEtaCut = passJetPtEtaCut && thePandaFlat.jotPt[1] > jetPtCut;
       }
       if(passJetPtEtaCut == false) continue;
 
@@ -907,28 +915,28 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       bool passJetPtEtaSyst[nSystTypes] = {false, false, false, false};
       if(thePandaFlat.nJot >= 2){
         if(fidAna == 5) {
-          passJetPtEtaSyst[0] = vJot1JESUp.Pt()   > 50 && vJot2JESUp.Pt()   > 50;
-          passJetPtEtaSyst[1] = vJot1JESDown.Pt() > 50 && vJot2JESDown.Pt() > 50;
-          passJetPtEtaSyst[2] = vJot1JERUp.Pt()   > 50 && vJot2JERUp.Pt()   > 50;
-          passJetPtEtaSyst[3] = vJot1JERDown.Pt() > 50 && vJot2JERDown.Pt() > 50;
+          passJetPtEtaSyst[0] = vJot1JESUp.Pt()   > jetPtCut && vJot2JESUp.Pt()   > jetPtCut;
+          passJetPtEtaSyst[1] = vJot1JESDown.Pt() > jetPtCut && vJot2JESDown.Pt() > jetPtCut;
+          passJetPtEtaSyst[2] = vJot1JERUp.Pt()   > jetPtCut && vJot2JERUp.Pt()   > jetPtCut;
+          passJetPtEtaSyst[3] = vJot1JERDown.Pt() > jetPtCut && vJot2JERDown.Pt() > jetPtCut;
 	}
 	else {
-          passJetPtEtaSyst[0] = vJot1JESUp.Pt()   > 50 && vJot2JESUp.Pt()   > 50;
-          passJetPtEtaSyst[1] = vJot1JESDown.Pt() > 50 && vJot2JESDown.Pt() > 50;
-          passJetPtEtaSyst[2] = vJot1JERUp.Pt()   > 50 && vJot2JERUp.Pt()   > 50;
-          passJetPtEtaSyst[3] = vJot1JERDown.Pt() > 50 && vJot2JERDown.Pt() > 50;
+          passJetPtEtaSyst[0] = vJot1JESUp.Pt()   > jetPtCut && vJot2JESUp.Pt()   > jetPtCut;
+          passJetPtEtaSyst[1] = vJot1JESDown.Pt() > jetPtCut && vJot2JESDown.Pt() > jetPtCut;
+          passJetPtEtaSyst[2] = vJot1JERUp.Pt()   > jetPtCut && vJot2JERUp.Pt()   > jetPtCut;
+          passJetPtEtaSyst[3] = vJot1JERDown.Pt() > jetPtCut && vJot2JERDown.Pt() > jetPtCut;
 	}
 	if(TMath::Abs(vJot1.Eta()) > 2.4) {
-          passJetPtEtaSyst[0] = passJetPtEtaSyst[0] && vJot1JESUp.Pt()   > 50;
-          passJetPtEtaSyst[1] = passJetPtEtaSyst[1] && vJot1JESDown.Pt() > 50;
-          passJetPtEtaSyst[2] = passJetPtEtaSyst[2] && vJot1JERUp.Pt()   > 50;
-          passJetPtEtaSyst[3] = passJetPtEtaSyst[3] && vJot1JERDown.Pt() > 50;
+          passJetPtEtaSyst[0] = passJetPtEtaSyst[0] && vJot1JESUp.Pt()   > jetPtCut;
+          passJetPtEtaSyst[1] = passJetPtEtaSyst[1] && vJot1JESDown.Pt() > jetPtCut;
+          passJetPtEtaSyst[2] = passJetPtEtaSyst[2] && vJot1JERUp.Pt()   > jetPtCut;
+          passJetPtEtaSyst[3] = passJetPtEtaSyst[3] && vJot1JERDown.Pt() > jetPtCut;
 	}
 	if(TMath::Abs(vJot2.Eta()) > 2.4) {
-          passJetPtEtaSyst[0] = passJetPtEtaSyst[0] && vJot2JESUp.Pt()   > 50;
-          passJetPtEtaSyst[1] = passJetPtEtaSyst[1] && vJot2JESDown.Pt() > 50;
-          passJetPtEtaSyst[2] = passJetPtEtaSyst[2] && vJot2JERUp.Pt()   > 50;
-          passJetPtEtaSyst[3] = passJetPtEtaSyst[3] && vJot2JERDown.Pt() > 50;
+          passJetPtEtaSyst[0] = passJetPtEtaSyst[0] && vJot2JESUp.Pt()   > jetPtCut;
+          passJetPtEtaSyst[1] = passJetPtEtaSyst[1] && vJot2JESDown.Pt() > jetPtCut;
+          passJetPtEtaSyst[2] = passJetPtEtaSyst[2] && vJot2JERUp.Pt()   > jetPtCut;
+          passJetPtEtaSyst[3] = passJetPtEtaSyst[3] && vJot2JERDown.Pt() > jetPtCut;
 	}
       }
 
@@ -1202,7 +1210,8 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
         else             totalWeight = totalWeight * thePandaFlat.sf_btagGT0;
 
         //if(infileCat_[ifile] == kPlotWZ)                                                totalWeight = totalWeight * thePandaFlat.sf_wz;
-	//if(infileCat_[ifile] == kPlotZZ && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;
+	if(infileCat_[ifile] == kPlotZZ  && 
+	   (infileName_[ifile].Contains("qqZZ") == true || infileName_[ifile].Contains("ZZJJQCD") == true)) totalWeight = totalWeight * thePandaFlat.sf_zz;
 	//if((infileCat_[ifile] == kPlotEWKSSWW || infileCat_[ifile] == kPlotEWKSSWW_dim8) && thePandaFlat.genMjj > 500) totalWeight = totalWeight * hWW_KF_CMS->GetBinContent(hWW_KF_CMS->GetXaxis()->FindFixBin(TMath::Min(thePandaFlat.genMjj,1999.999f)));
 	//if((infileCat_[ifile] == kPlotEWKWZ || infileCat_[ifile] == kPlotEWKWZ_dim8) && thePandaFlat.genMjj > 500) totalWeight = totalWeight * hWZ_KF_CMS->GetBinContent(hWZ_KF_CMS->GetXaxis()->FindFixBin(TMath::Min(thePandaFlat.genMjj,2999.999f)));
 
@@ -1463,7 +1472,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       }
 
       double bdtWZValue = 0.0, bdtWZValueJESUp = 0.0, bdtWZValueJESDown = 0.0, bdtWZValueJERUp = 0.0, bdtWZValueJERDown = 0.0;
-      if(passEWKWZSel){
+      if(passEWKWZSel || passWZbSel){
         mvaWZInputs[0]  = (float)massJJ;
         mvaWZInputs[1]  = (float)deltaEtaJJ;
         mvaWZInputs[2]  = (float)deltaPhiJJ;
@@ -1550,8 +1559,8 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       if(theCategory == kPlotEWKSSWW && (fidAna == 2 || fidAna == 3) &&
          thePandaFlat.genLep1Pt > 20 && TMath::Abs(thePandaFlat.genLep1Eta) < 2.5 && TMath::Abs(thePandaFlat.genLep1PdgId) != 15 &&
 	 thePandaFlat.genLep2Pt > 20 && TMath::Abs(thePandaFlat.genLep2Eta) < 2.5 && TMath::Abs(thePandaFlat.genLep2PdgId) != 15 && 
-	 thePandaFlat.genJet1Pt > 50 && TMath::Abs(thePandaFlat.genJet1Eta) < 5.0 &&
-	 thePandaFlat.genJet2Pt > 50 && TMath::Abs(thePandaFlat.genJet2Eta) < 5.0){
+	 thePandaFlat.genJet1Pt > jetPtCut && TMath::Abs(thePandaFlat.genJet1Eta) < 5.0 &&
+	 thePandaFlat.genJet2Pt > jetPtCut && TMath::Abs(thePandaFlat.genJet2Eta) < 5.0){
         TLorentzVector vGen1,vGen2;
         double thePDGMass = mass_mu;
         if(abs(thePandaFlat.genLep1PdgId)==11) thePDGMass = mass_el;
@@ -1621,14 +1630,14 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       if(passQCDSel >= 0)    histo[passQCDSel+84][theCategory]->Fill(TMath::Min(deltaEtaJJ,7.999),totalWeight);
       if(passWWSel)          histo[         89][theCategory]->Fill(TMath::Max(-0.999, TMath::Min(bdtWWValue[0],0.999)),totalWeight);
       if(passBtagSel)        histo[         90][theCategory]->Fill(TMath::Max(-0.999, TMath::Min(bdtWWValue[0],0.999)),totalWeight);
-      //if(passWWSel) {
-      //  double theBDTWW =0; int BDTCat = -1;
-      //  if     (bdtWWValue[0] > bdtWWValue[1] && bdtWWValue[0] > bdtWWValue[2]) {theBDTWW = bdtWWValue[0]; BDTCat = 0;}
-      //  else if(bdtWWValue[1] > bdtWWValue[0] && bdtWWValue[1] > bdtWWValue[2]) {theBDTWW = bdtWWValue[1]; BDTCat = 1;}
-      //  else if(bdtWWValue[2] > bdtWWValue[0] && bdtWWValue[2] > bdtWWValue[1]) {theBDTWW = bdtWWValue[2]; BDTCat = 2;}
-      //  else printf("IMPOSSIBLE\n");
-      //  histo[83+BDTCat][theCategory]->Fill(TMath::Max(0.001, TMath::Min(theBDTWW,0.999)),totalWeight);
-      //}
+      if(passWZbSel)         histo[         91][theCategory]->Fill(TMath::Max(-0.999, TMath::Min(bdtWZValue,0.999)),totalWeight);
+      if(passEWKWZSel){
+        histo[92][theCategory]->Fill(TMath::Abs(deltaPhiJJ),totalWeight);
+        histo[93][theCategory]->Fill(TMath::Abs(vWln.Eta()-(vZ1l1+vZ1l2).Eta()),totalWeight);
+	histo[94][theCategory]->Fill(TMath::Min(wzZep,0.999),totalWeight);
+	histo[95][theCategory]->Fill(TMath::Sqrt(TMath::Power(TMath::Abs(vJot1.Eta()-(vZ1l1+vZ1l2).Eta()),2)+TMath::Power(TMath::Abs(vJot1.DeltaPhi(vZ1l1+vZ1l2)),2)),totalWeight);
+	histo[96][theCategory]->Fill(totSystem.Pt()/sumPtTot,totalWeight);
+      }
 
       if((theCategory == kPlotData && passEWKWZSel && debug == 1) || debug == 2){
         printf("DATA %d %d %llu | %d %d | %d -> %d %d %d %d %d %d %d %d %d | %.1f %.1f %.1f %.1f %.2f | %.1f %.1f %.1f %d | %.2f %.2f %.2f %.2f %.2f %.2f / %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\n",
@@ -2032,8 +2041,9 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 
         double sf_ewkcorrvv_unc = 1.0; double sf_ewkcorrzz_unc = 1.0; double sf_ggcorrzz_unc = 1.0; double sf_corrwzzz_unc = 1.0;
 	//if(theCategory == kPlotWZ) sf_ewkcorrvv_unc = 1.02;
-	//if(theCategory == kPlotZZ && infileName_[ifile].Contains("qqZZ") == true) sf_ewkcorrzz_unc = thePandaFlat.sf_zzUnc;
-	//else if(theCategory == kPlotZZ) sf_ggcorrzz_unc = 1.10;
+	if(theCategory == kPlotZZ && 
+	   (infileName_[ifile].Contains("qqZZ") == true || infileName_[ifile].Contains("ZZJJQCD") == true)) sf_ewkcorrzz_unc = thePandaFlat.sf_zzUnc;
+	else if(theCategory == kPlotZZ && infileName_[ifile].Contains("ggZZ") == true) sf_ggcorrzz_unc = 1.10;
 	if((theCategory == kPlotEWKSSWW || theCategory == kPlotEWKSSWW_dim8) && thePandaFlat.genMjj > 500) sf_ewkcorrvv_unc = hWW_KF_CMSUp->GetBinContent(hWW_KF_CMSUp->GetXaxis()->FindFixBin(TMath::Min(thePandaFlat.genMjj,1999.999f)))/
 	                                                                                     hWW_KF_CMS  ->GetBinContent(hWW_KF_CMS  ->GetXaxis()->FindFixBin(TMath::Min(thePandaFlat.genMjj,1999.999f)));
 	if((theCategory == kPlotEWKWZ || theCategory == kPlotEWKWZ_dim8) && thePandaFlat.genMjj > 500) sf_ewkcorrvv_unc = hWZ_KF_CMSUp->GetBinContent(hWZ_KF_CMSUp->GetXaxis()->FindFixBin(TMath::Min(thePandaFlat.genMjj,2999.999f)))/
@@ -2683,21 +2693,21 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   //}
   //newcardShape << Form("\n");
 
-  //newcardShape << Form("EWKqqZZCorr    shape     ");
-  //for (int ic=0; ic<nPlotCategories; ic++){
-  //  if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-  //  if(ic != kPlotZZ) newcardShape << Form("- ");
-  //  else              newcardShape << Form("1.0 ");
-  //}
-  //newcardShape << Form("\n");
+ newcardShape << Form("EWKqqZZCorr    shape	");
+ for (int ic=0; ic<nPlotCategories; ic++){
+   if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+   if(ic != kPlotZZ) newcardShape << Form("- ");
+   else 	     newcardShape << Form("1.0 ");
+ }
+ newcardShape << Form("\n");
 
-  //newcardShape << Form("ggZZCorr    shape     ");
-  //for (int ic=0; ic<nPlotCategories; ic++){
-  //  if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-  //  if(ic != kPlotZZ) newcardShape << Form("- ");
-  //  else              newcardShape << Form("1.0 ");
-  //}
-  //newcardShape << Form("\n");
+ newcardShape << Form("ggZZCorr    shape     ");
+ for (int ic=0; ic<nPlotCategories; ic++){
+   if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+   if(ic != kPlotZZ) newcardShape << Form("- ");
+   else 	     newcardShape << Form("1.0 ");
+ }
+ newcardShape << Form("\n");
 
   newcardShape << Form("WZTauH    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){

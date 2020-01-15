@@ -108,7 +108,8 @@ void skimmingAnalysis(int year, int specialMC = 0)
     infileName_.push_back(Form("WpWp_EWK.root"));
     infileName_.push_back(Form("WpWp_EWK_QCD.root"));
     infileName_.push_back(Form("WpWp_QCD.root"));
-    infileName_.push_back(Form("ZZJJ.root"));
+    infileName_.push_back(Form("ZZJJQCD.root"));
+    infileName_.push_back(Form("ZZJJEWK.root"));
     infileName_.push_back(Form("data.root"));
     infileName_.push_back(Form("ggWW.root"));
     infileName_.push_back(Form("ggZZ.root"));

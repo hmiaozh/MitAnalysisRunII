@@ -14,7 +14,7 @@
 #include "MitAnalysisRunII/panda/macros/9x/pandaFlat.C"
 #include "MitAnalysisRunII/panda/macros/9x/common.h"
 
-void makeZHDataCards(TString outputLimits = "zh_comb_input.root"){
+void makeZHDataCards(TString outputLimits = "zh_comb_input.root", int jetValue = -1){
 
   double qcdScaleTotal[2] = {0.035, 0.231};
   double pdfTotal[2] = {0.016, 0.051};
@@ -284,7 +284,10 @@ void makeZHDataCards(TString outputLimits = "zh_comb_input.root"){
 
   newcardShape << Form("CMS_hinv_vvnorm_bin  rateParam * %s 1 [0.1,10]\n",plotBaseNames[kPlotZZ].Data());
   newcardShape << Form("CMS_hinv_vvnorm_bin  rateParam * %s 1 [0.1,10]\n",plotBaseNames[kPlotWZ].Data());
-  newcardShape << Form("CMS_hinv_emnorm_bin  rateParam * %s 1 [0.1,10]\n",plotBaseNames[kPlotEM].Data());
+  if(jetValue != -1){
+    newcardShape << Form("CMS_hinv_emnorm_bin  rateParam * %s 1 [0.1,10]\n",plotBaseNames[kPlotEM].Data());
+    newcardShape << Form("CMS_hinv_dynorm%d_bin rateParam * %s 1 [0.1,10]\n",jetValue,plotBaseNames[kPlotDY].Data());
+  }
 
   newcardShape << Form("ch1 autoMCStats 0\n");
 

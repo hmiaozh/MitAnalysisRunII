@@ -43,7 +43,12 @@ void atributes(TH1D *histo, TString xtitle = "", TString ytitle = "Fraction", TS
     histo->GetXaxis()->SetTitle(xtitle.Data());
   } else {
     units = units.ReplaceAll("BIN","");
-    histo->GetXaxis()->SetTitle(Form("%s [%s]",xtitle.Data(),units.Data()));
+    if(strcmp(units.Data(),"")==0){
+      histo->GetXaxis()->SetTitle(Form("%s",xtitle.Data()));
+    }
+    else {
+      histo->GetXaxis()->SetTitle(Form("%s [%s]",xtitle.Data(),units.Data()));
+    }
   }
   histo->GetXaxis()->SetLabelFont  (   42);
   histo->GetXaxis()->SetLabelOffset(0.015);
@@ -121,6 +126,9 @@ void finalPlot(int nsel = 0, int ReBin = 1, TString XTitle = "N_{jets}", TString
     // end btaging study
     for(int i=1; i<=_hist[ic]->GetNbinsX(); i++) if(_hist[ic]->GetBinContent(i)<0) _hist[ic]->SetBinContent(i,0);
     if(ic == kPlotData) {
+    //_hist[ic]->SetBinContent(_hist[ic]->GetNbinsX()-11,_hist[ic]->GetBinContent(_hist[ic]->GetNbinsX()-11)+7);
+    //_hist[ic]->SetBinContent(_hist[ic]->GetNbinsX()-7,_hist[ic]->GetBinContent(_hist[ic]->GetNbinsX()-7)-2);
+    //_hist[ic]->SetBinContent(_hist[ic]->GetNbinsX()-15,_hist[ic]->GetBinContent(_hist[ic]->GetNbinsX()-15)+5);
       //for(int i=1; i<=_hist[ic]->GetNbinsX(); i++){
       //  if(i>20)_hist[ic]->SetBinContent(i,0);
       //}

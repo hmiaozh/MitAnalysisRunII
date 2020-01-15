@@ -157,6 +157,7 @@ std::map<int, TString> plotBaseNames={
 }; 
 
 std::map<int, int> plotColors={
+  { kPlotData	     , kBlack},
   { kPlotqqWW	     , kAzure-9},
   { kPlotggWW	     , 901},
   { kPlotTop	     , kYellow},
