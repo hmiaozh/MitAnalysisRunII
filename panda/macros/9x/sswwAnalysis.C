@@ -1186,8 +1186,19 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 					thePandaFlat.rw_fs1_7p5, thePandaFlat.rw_fs1_10, thePandaFlat.rw_fs1_15, thePandaFlat.rw_fs1_20, thePandaFlat.rw_fs1_25, 
 					thePandaFlat.rw_fs1_30, thePandaFlat.rw_fs1_33, thePandaFlat.rw_fs1_35};
       double totalWeight = 1.0; double puWeight = 1.0; double puWeightUp = 1.0; double puWeightDown = 1.0; double effWSUnc = 1.0; double sf_l1PrefireE = 1.0;
+      double theQCDScale[6] = {1,1,1,1,1,1}; double thePDFScale[2] = {1,1}; double bTagSyst[4] = {1,1,1,1};
       double triggerWeights[2] = {1.0, 0.0};
       if(theCategory != kPlotData){
+        // Avoid QCD scale weights that are anomalous high
+        double maxQCDscale = (TMath::Abs(thePandaFlat.scale[0])+TMath::Abs(thePandaFlat.scale[1])+TMath::Abs(thePandaFlat.scale[2])+
+                              TMath::Abs(thePandaFlat.scale[3])+TMath::Abs(thePandaFlat.scale[4])+TMath::Abs(thePandaFlat.scale[5]))/6.0;
+        if(maxQCDscale == 0) maxQCDscale = 1;
+        for(int i=0; i<6; i++) theQCDScale[i] = TMath::Abs(thePandaFlat.scale[i])/maxQCDscale;
+        thePDFScale[0] = thePandaFlat.pdfUp; thePDFScale[1] = thePandaFlat.pdfDown;
+        bTagSyst[0] = thePandaFlat.sf_btag0BUp  /thePandaFlat.sf_btag0;
+        bTagSyst[1] = thePandaFlat.sf_btag0BDown/thePandaFlat.sf_btag0;
+        bTagSyst[2] = thePandaFlat.sf_btag0MUp  /thePandaFlat.sf_btag0;
+        bTagSyst[3] = thePandaFlat.sf_btag0MDown/thePandaFlat.sf_btag0;
 	trigger_sf(triggerWeights,thePandaFlat.nLooseLep,
 	trgSFMMBB,trgSFMMEB,trgSFMMBE,trgSFMMEE,trgSFEEBB,trgSFEEEB,trgSFEEBE,trgSFEEEE,
 	trgSFMEBB,trgSFMEEB,trgSFMEBE,trgSFMEEE,trgSFEMBB,trgSFEMEB,trgSFEMBE,trgSFEMEE,
@@ -1265,7 +1276,9 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       }
 
       if(theCategory != kPlotData){
-        totalWeight = totalWeight * mcCorrection(0, year, thePandaFlat.jetNMBtags,thePandaFlat.jetNBtags, thePandaFlat.nJot, 0.0, theCategory);
+        int theFileCat[2] = {theCategory, (int)passWZbSel};
+        totalWeight = totalWeight * mcCorrection(0, year, thePandaFlat.jetNMBtags,thePandaFlat.jetNBtags, thePandaFlat.nJot, 0.0, theFileCat);
+	theCategory = theFileCat[0];
       }
 
       if((passWWSel || passEWKWZSel) && produceMVAInputs == true){
@@ -2034,11 +2047,6 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
           else if(dataCardSelJERDown == 4) MVAVarJERDown = nBinMJJCR*nBinWWBDT + nBinWWBDT + 2*nBinMJJCR + typeSelAux2[whichBin] + 4*typeSelAux3[whichBin];
         }
 
-        // Avoid QCD scale weights that are anomalous high
-        double maxQCDscale = (TMath::Abs(thePandaFlat.scale[0])+TMath::Abs(thePandaFlat.scale[1])+TMath::Abs(thePandaFlat.scale[2])+
-	                      TMath::Abs(thePandaFlat.scale[3])+TMath::Abs(thePandaFlat.scale[4])+TMath::Abs(thePandaFlat.scale[5]))/6.0;
-        if(maxQCDscale == 0) maxQCDscale = 1;
-
         double sf_ewkcorrvv_unc = 1.0; double sf_ewkcorrzz_unc = 1.0; double sf_ggcorrzz_unc = 1.0; double sf_corrwzzz_unc = 1.0;
 	//if(theCategory == kPlotWZ) sf_ewkcorrvv_unc = 1.02;
 	if(theCategory == kPlotZZ && 
@@ -2055,24 +2063,24 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
         else if(theCategory != kPlotData){
 	  if(dataCardSel >= 0) {
 	    histo_Baseline[theCategory]->Fill(MVAVar,totalWeight);
-	    histo_QCDScaleBounding[theCategory][0]->Fill(MVAVar,totalWeight*TMath::Abs(thePandaFlat.scale[0])/maxQCDscale);
-	    histo_QCDScaleBounding[theCategory][1]->Fill(MVAVar,totalWeight*TMath::Abs(thePandaFlat.scale[1])/maxQCDscale);
-	    histo_QCDScaleBounding[theCategory][2]->Fill(MVAVar,totalWeight*TMath::Abs(thePandaFlat.scale[2])/maxQCDscale);
-	    histo_QCDScaleBounding[theCategory][3]->Fill(MVAVar,totalWeight*TMath::Abs(thePandaFlat.scale[3])/maxQCDscale);
-	    histo_QCDScaleBounding[theCategory][4]->Fill(MVAVar,totalWeight*TMath::Abs(thePandaFlat.scale[4])/maxQCDscale);
-	    histo_QCDScaleBounding[theCategory][5]->Fill(MVAVar,totalWeight*TMath::Abs(thePandaFlat.scale[5])/maxQCDscale);
-	    histo_PDFBoundingUp[theCategory]  ->Fill(MVAVar,totalWeight*TMath::Max((double)thePandaFlat.pdfUp,1.01));
-	    histo_PDFBoundingDown[theCategory]->Fill(MVAVar,totalWeight*TMath::Min((double)thePandaFlat.pdfDown,0.99));
+	    histo_QCDScaleBounding[theCategory][0]->Fill(MVAVar,totalWeight*theQCDScale[0]);
+	    histo_QCDScaleBounding[theCategory][1]->Fill(MVAVar,totalWeight*theQCDScale[1]);
+	    histo_QCDScaleBounding[theCategory][2]->Fill(MVAVar,totalWeight*theQCDScale[2]);
+	    histo_QCDScaleBounding[theCategory][3]->Fill(MVAVar,totalWeight*theQCDScale[3]);
+	    histo_QCDScaleBounding[theCategory][4]->Fill(MVAVar,totalWeight*theQCDScale[4]);
+	    histo_QCDScaleBounding[theCategory][5]->Fill(MVAVar,totalWeight*theQCDScale[5]);
+	    histo_PDFBoundingUp[theCategory]  ->Fill(MVAVar,totalWeight*TMath::Max(thePDFScale[0],1.01));
+	    histo_PDFBoundingDown[theCategory]->Fill(MVAVar,totalWeight*TMath::Min(thePDFScale[1],0.99));
             histo_LepEffMBoundingUp  [theCategory]->Fill(MVAVar,totalWeight*muSFUnc); histo_LepEffEBoundingUp  [theCategory]->Fill(MVAVar,totalWeight*elSFUnc);
             histo_LepEffMBoundingDown[theCategory]->Fill(MVAVar,totalWeight/muSFUnc); histo_LepEffEBoundingDown[theCategory]->Fill(MVAVar,totalWeight/elSFUnc);
             histo_PUBoundingUp  [theCategory]->Fill(MVAVar,totalWeight*puWeightUp  /puWeight);
             histo_PUBoundingDown[theCategory]->Fill(MVAVar,totalWeight*puWeightDown/puWeight);
 	    for(int ny=0; ny<nYears; ny++){
 	      if(ny == whichYear) {
-                histo_BTAGBBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0BUp  /thePandaFlat.sf_btag0);
-                histo_BTAGBBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0BDown/thePandaFlat.sf_btag0);
-                histo_BTAGLBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MUp  /thePandaFlat.sf_btag0);
-                histo_BTAGLBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight*thePandaFlat.sf_btag0MDown/thePandaFlat.sf_btag0);
+                histo_BTAGBBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight*bTagSyst[0]);
+                histo_BTAGBBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight*bTagSyst[1]);
+                histo_BTAGLBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight*bTagSyst[2]);
+                histo_BTAGLBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight*bTagSyst[3]);
                 histo_PreFireBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight*sf_l1PrefireE);
                 histo_PreFireBoundingDown[ny][theCategory]->Fill(MVAVar,totalWeight/sf_l1PrefireE);
                 histo_TriggerBoundingUp  [ny][theCategory]->Fill(MVAVar,totalWeight*(1+triggerWeights[1]));
