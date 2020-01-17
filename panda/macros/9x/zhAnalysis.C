@@ -592,7 +592,7 @@ int year, int jetValue, TString whichBSMName = "", bool isBlinded = false
 	else if(infileCat_[ifile] == kPlotZZ && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;
 
         int theFileCat[2] = {infileCat_[ifile], 0};
-        totalWeight = totalWeight * mcCorrection(1, year, thePandaFlat.jetNMBtags,thePandaFlat.jetNBtags, thePandaFlat.nJot, dPhiDiLepMET, theFileCat);
+        totalWeight = totalWeight * mcCorrection(1, year, thePandaFlat.jetNMBtags,thePandaFlat.jetNBtags, thePandaFlat.nJot, dPhiDiLepMET, theFileCat, thePandaFlat.eventNumber);
 
         if(infileCat_[ifile] == kPlotDY && year == 2018 && thePandaFlat.normalizedWeight < -0.05 && vMet.Pt() > 100) totalWeight = 0.0;
 /*

@@ -217,7 +217,7 @@ std::map<int, TString> plotNames={
 const double mass_el = 0.000510998928;
 const double mass_mu = 0.10566;
 
-double mcCorrection(int type, int year, int jetNMBtags, int jetNBtags, int nJot, double dphillmet, int infileCat[2]){
+double mcCorrection(int type, int year, int jetNMBtags, int jetNBtags, int nJot, double dphillmet, int infileCat[2], ULong64_t eventNumber){
   double totalWeight = 1.0;
 
   if     (type == 0 &&
@@ -247,7 +247,7 @@ double mcCorrection(int type, int year, int jetNMBtags, int jetNBtags, int nJot,
     else if(year == 2018 && infileCat[0] == kPlotDY) totalWeight = totalWeight * (0.917654 + 0.04973930 * dphillmet);
   }
 
-  if(type == 0 && year != 2016 && infileCat[0] == kPlotNonPrompt && infileCat[1] == 1 && gRandom->Uniform() < 0.9) infileCat[0] = kPlotTVX;
+  if(type == 0 && year != 2016 && infileCat[0] == kPlotNonPrompt && infileCat[1] == 1 && eventNumber%10 < 9) infileCat[0] = kPlotTVX;
 
   return totalWeight;
 }
