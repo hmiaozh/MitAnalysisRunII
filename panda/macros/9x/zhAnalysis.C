@@ -911,6 +911,14 @@ int year, int jetValue, TString whichBSMName = "", bool isBlinded = false
     }
   }
 
+  // put CorrWZZZ uncertainties from ZZ to WZ
+  for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {
+    if(histo_Baseline[kPlotZZ]->GetBinContent(i) > 0 && histo_Baseline[kPlotWZ]->GetBinContent(i) > 0) {
+      histo_CorrWZZZUp  [kPlotWZ]->SetBinContent(i,histo_CorrWZZZUp  [kPlotZZ]->GetBinContent(i)/histo_Baseline[kPlotZZ]->GetBinContent(i)*histo_Baseline[kPlotWZ]->GetBinContent(i));
+      histo_CorrWZZZDown[kPlotWZ]->SetBinContent(i,histo_CorrWZZZDown[kPlotZZ]->GetBinContent(i)/histo_Baseline[kPlotZZ]->GetBinContent(i)*histo_Baseline[kPlotWZ]->GetBinContent(i));
+    }
+  }
+
   if(showSyst == true){
     printf("Yields\n");
     for(unsigned ic=0; ic<nPlotCategories; ic++) {
