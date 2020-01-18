@@ -86,25 +86,6 @@ void makeSSWWDataCards(TString outputLimits = "ssww_comb_input.root", int fidAna
   newcardShape << Form("\n");
 
   for(int ny=2016; ny<2016+nYears; ny++){
-    newcardShape << Form("CMS_fake_m_%d    lnN     ",ny);
-    for (int ic=0; ic<nPlotCategories; ic++){
-      if(!histo_Baseline[ic]) continue;
-      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-      if(ic == kPlotNonPrompt) newcardShape << Form("%.3f ",TMath::Sqrt(lumiV[ny-2016]/totalLumiV) * (1.15-1.0)+1.0);
-      else                     newcardShape << Form("- ");
-    }
-    newcardShape << Form("\n");
-    newcardShape << Form("CMS_fake_e_%d    lnN     ",ny);
-    for (int ic=0; ic<nPlotCategories; ic++){
-      if(!histo_Baseline[ic]) continue;
-      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-      if(ic == kPlotNonPrompt) newcardShape << Form("%.3f ",TMath::Sqrt(lumiV[ny-2016]/totalLumiV) * (1.15-1.0)+1.0);
-      else                     newcardShape << Form("- ");
-    }
-    newcardShape << Form("\n");
-  }
-
-  for(int ny=2016; ny<2016+nYears; ny++){
     newcardShape << Form("lumi_13TeV_%d    lnN     ",ny);
     for (int ic=0; ic<nPlotCategories; ic++){
       if(!histo_Baseline[ic]) continue;
@@ -246,50 +227,125 @@ void makeSSWWDataCards(TString outputLimits = "ssww_comb_input.root", int fidAna
   newcardShape << Form("\n");
 
   for(int ny=2016; ny<2016+nYears; ny++){
-     newcardShape << Form("CMS_btagb_%d    shape     ",ny);
-     for (int ic=0; ic<nPlotCategories; ic++){
-       if(!histo_Baseline[ic]) continue;
-       if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-       if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-       else                     newcardShape << Form("1.0 ");
-     }
-     newcardShape << Form("\n");
+    newcardShape << Form("CMS_fakeM3L_%d  shape   ",ny);
+    for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotNonPrompt) newcardShape << Form("1.0 ");
+      else                     newcardShape << Form("- ");
+    }
+    newcardShape << Form("\n");
 
-     newcardShape << Form("CMS_btagl_%d    shape     ",ny);
-     for (int ic=0; ic<nPlotCategories; ic++){
-       if(!histo_Baseline[ic]) continue;
-       if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-       if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-       else                     newcardShape << Form("1.0 ");
-     }
-     newcardShape << Form("\n");
+    newcardShape << Form("CMS_fakeE3L_%d  shape   ",ny);
+    for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotNonPrompt) newcardShape << Form("1.0 ");
+      else                     newcardShape << Form("- ");
+    }
+    newcardShape << Form("\n");
 
-     newcardShape << Form("CMS_jes_%d    shape     ",ny);
-     for (int ic=0; ic<nPlotCategories; ic++){
-       if(!histo_Baseline[ic]) continue;
-       if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-       if(ic == kPlotNonPrompt || ic == kPlotDY) newcardShape << Form("- ");
-       else                                      newcardShape << Form("1.0 ");
-     }
-     newcardShape << Form("\n");
+    if(fidAna == 6){
+      newcardShape << Form("CMS_fakeMP_%d  shape   ",ny);
+      for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+	if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+	if(ic == kPlotNonPrompt) newcardShape << Form("1.0 ");
+	else                     newcardShape << Form("- ");
+      }
+      newcardShape << Form("\n");
 
-     newcardShape << Form("CMS_prefire_%d    shape     ",ny);
-     for (int ic=0; ic<nPlotCategories; ic++){
-       if(!histo_Baseline[ic]) continue;
-       if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-       if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-       else                     newcardShape << Form("1.0 ");
-     }
-     newcardShape << Form("\n");
+      newcardShape << Form("CMS_fakeMN_%d  shape   ",ny);
+      for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+	if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+	if(ic == kPlotNonPrompt) newcardShape << Form("1.0 ");
+	else                     newcardShape << Form("- ");
+      }
+      newcardShape << Form("\n");
 
-     newcardShape << Form("CMS_trigger_%d    shape     ",ny);
-     for (int ic=0; ic<nPlotCategories; ic++){
-       if(!histo_Baseline[ic]) continue;
-       if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-       if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-       else                     newcardShape << Form("1.0 ");
-     }
-     newcardShape << Form("\n");
+      newcardShape << Form("CMS_fakeEP_%d  shape   ",ny);
+      for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+	if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+	if(ic == kPlotNonPrompt) newcardShape << Form("1.0 ");
+	else                     newcardShape << Form("- ");
+      }
+      newcardShape << Form("\n");
+
+      newcardShape << Form("CMS_fakeEN_%d  shape   ",ny);
+      for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+	if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+	if(ic == kPlotNonPrompt) newcardShape << Form("1.0 ");
+	else                     newcardShape << Form("- ");
+      }
+      newcardShape << Form("\n");
+    }
+    else {
+      newcardShape << Form("CMS_fakeM_%d  shape   ",ny);
+      for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+	if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+	if(ic == kPlotNonPrompt) newcardShape << Form("1.0 ");
+	else                     newcardShape << Form("- ");
+      }
+      newcardShape << Form("\n");
+
+      newcardShape << Form("CMS_fakeE_%d  shape   ",ny);
+      for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+	if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+	if(ic == kPlotNonPrompt) newcardShape << Form("1.0 ");
+	else                     newcardShape << Form("- ");
+      }
+      newcardShape << Form("\n");
+    }
+
+    newcardShape << Form("CMS_btagb_%d    shape     ",ny);
+    for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotNonPrompt) newcardShape << Form("- ");
+      else		       newcardShape << Form("1.0 ");
+    }
+    newcardShape << Form("\n");
+
+    newcardShape << Form("CMS_btagl_%d    shape     ",ny);
+    for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotNonPrompt) newcardShape << Form("- ");
+      else		       newcardShape << Form("1.0 ");
+    }
+    newcardShape << Form("\n");
+
+    newcardShape << Form("CMS_jes_%d	shape	  ",ny);
+    for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotNonPrompt || ic == kPlotDY) newcardShape << Form("- ");
+      else					newcardShape << Form("1.0 ");
+    }
+    newcardShape << Form("\n");
+
+    newcardShape << Form("CMS_prefire_%d    shape     ",ny);
+    for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotNonPrompt) newcardShape << Form("- ");
+      else		       newcardShape << Form("1.0 ");
+    }
+    newcardShape << Form("\n");
+
+    newcardShape << Form("CMS_trigger_%d    shape     ",ny);
+    for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic == kPlotNonPrompt) newcardShape << Form("- ");
+      else		       newcardShape << Form("1.0 ");
+    }
+    newcardShape << Form("\n");
   }
 
   newcardShape << Form("CMS_ssww_tvxnorm rateParam * %s 1 [0.1,3]\n",plotBaseNames[kPlotTVX].Data());
