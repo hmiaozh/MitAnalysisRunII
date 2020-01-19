@@ -733,7 +733,7 @@ void zAnalysis(int year, bool isTopSel = false, int whichDY = 0,  int debug = 0)
       }
       //else if(year == 2017){
       //  passSSWWLepId = (looseLepSelBit[0] & kFake) == kFake && (looseLepSelBit[0] & kTight) == kTight && (looseLepSelBit[0] & kDxyz) == kDxyz && looseLepMissingHits[0] == 0 && looseLepTripleCharge[0] == 1 &&
-      //     		(looseLepSelBit[1] & kFake) == kFake && (looseLepSelBit[1] & kTight) == kTight && (looseLepSelBit[1] & kDxyz) == kDxyz && looseLepMissingHits[1] == 0 && looseLepTripleCharge[1] == 1;
+      //     		  (looseLepSelBit[1] & kFake) == kFake && (looseLepSelBit[1] & kTight) == kTight && (looseLepSelBit[1] & kDxyz) == kDxyz && looseLepMissingHits[1] == 0 && looseLepTripleCharge[1] == 1;
       //}
       if(passSSWWLepId && lepType == 1) {
         int theWSStudyCategory = 0; double totalWSStudyWeight = totalWeight;
