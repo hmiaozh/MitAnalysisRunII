@@ -34,10 +34,10 @@ elif [ $NSEL == 'zhg' ]; then
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh zhgpaper 0 2019;
 
 elif [ $NSEL == 'ssww' ]; then
-./MitAnalysisRunII/panda/makePlots/makePlots.sh ssww 1 2016 $2;
-./MitAnalysisRunII/panda/makePlots/makePlots.sh ssww 1 2017 $2;
-./MitAnalysisRunII/panda/makePlots/makePlots.sh ssww 1 2018 $2;
-./MitAnalysisRunII/panda/makePlots/makePlots.sh ssww 1 2019 $2;
+./MitAnalysisRunII/panda/makePlots/makePlots.sh ssww 0 2016 $2;
+./MitAnalysisRunII/panda/makePlots/makePlots.sh ssww 0 2017 $2;
+./MitAnalysisRunII/panda/makePlots/makePlots.sh ssww 0 2018 $2;
+./MitAnalysisRunII/panda/makePlots/makePlots.sh ssww 0 2019 $2;
 
 elif [ $NSEL == 'z' ]; then
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh z 1 2016;
