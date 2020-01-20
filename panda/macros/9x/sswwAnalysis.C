@@ -325,7 +325,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   const int nBinWWBDT = 7; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.000,-0.244, 0.040, 0.243, 0.401, 0.535, 0.662, 1.000}; // V1_v6
   int nBinMVAAux = 0;
   if     (fidAna == 0 || fidAna == 2 || fidAna == 3) nBinMVAAux = nBinMJJ*nBinMLL + 3*nBinMJJCR + nBinWZBDT;
-  else if(fidAna == 1) nBinMVAAux = nBinMJJCR*nBinMLL*2 + nBinMJJCR + 2 + 12;
+  else if(fidAna == 1) nBinMVAAux = nBinMJJCR*nBinMLL*2 + nBinMJJCR + 2 + 12 + 3;
   else if(fidAna == 4) nBinMVAAux = 4*5 + 4 + 2 + 6;
   else if(fidAna == 5) nBinMVAAux = nBinMJJCR*nBinWWBDT + nBinWWBDT + 2*nBinMJJCR + 12;
   else if(fidAna == 6) nBinMVAAux = nBinMVAAux = nBinMJJCR*nBinMLL*2 + 4*nBinMJJCR + nBinWZBDT;
@@ -1151,7 +1151,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       else if(passEWKWZSelJERDown) dataCardSelJERDown = 4;
       else if(passQCDWZSelJERDown) dataCardSelJERDown = 5;
 
-      if(1){
+      if(fidAna != 1){
         if(dataCardSel        == 5) dataCardSel        = -1;
         if(dataCardSelJESUp   == 5) dataCardSelJESUp   = -1;
         if(dataCardSelJESDown == 5) dataCardSelJESDown = -1;
