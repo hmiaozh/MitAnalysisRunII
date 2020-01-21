@@ -70,6 +70,7 @@ void atributes(TH1D *histo, TString xtitle = "", TString ytitle = "Fraction", TS
   histo->GetYaxis()->SetTickLength (0.03 );
 
   histo->SetLineColor  (kBlack);
+  histo->SetMarkerSize(0.8);
   histo->SetMarkerStyle(kFullCircle);
 }
 

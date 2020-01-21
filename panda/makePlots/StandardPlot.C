@@ -221,6 +221,7 @@ class StandardPlot {
             if(_hist[kPlotSignal0] ) _hist[kPlotSignal0]->SetFillStyle(3002);
             if(_hist[kPlotData]) _hist[kPlotData]->Rebin(rebin);
             if(_hist[kPlotData]) _hist[kPlotData]->SetLineColor  (kBlack);
+            if(_hist[kPlotData]) _hist[kPlotData]->SetMarkerSize(0.8);
             if(_hist[kPlotData]) _hist[kPlotData]->SetMarkerStyle(kFullCircle);
 
             //_hist[kPlotData]->SetBinContent(5,_hist[kPlotData]->GetBinContent(5)-1);
@@ -268,8 +269,8 @@ class StandardPlot {
                   g->SetPointEYlow(i,double(N)-L);
                   g->SetPointEYhigh(i, U-double(N));
 
-                  g->SetPointEXlow (i, _hist[kPlotData]->GetBinWidth(i+1)/2.);
-                  g->SetPointEXhigh(i, _hist[kPlotData]->GetBinWidth(i+1)/2.);
+                  g->SetPointEXlow (i, 0);//g->SetPointEXlow (i, _hist[kPlotData]->GetBinWidth(i+1)/2.);
+                  g->SetPointEXhigh(i, 0);//g->SetPointEXhigh(i, _hist[kPlotData]->GetBinWidth(i+1)/2.);
 
                   if(N==0 && j!=i) g->SetPoint(i, g->GetX()[i], -0.1);
                   if(N==0 && j==i) g->SetMarkerSize(0);
