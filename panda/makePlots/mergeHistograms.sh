@@ -38,7 +38,7 @@ done
 
 elif [ $# == 1 ] && [ $1 == "ssww" ]; then
 
-for i in `seq 0 100`;
+for i in `seq 0 150`;
 do
   ls done_ana/histossww_2016_${i}.root done_ana/histossww_2017_${i}.root done_ana/histossww_2018_${i}.root >& /dev/null
   if [ $? -eq 0 ]; then
@@ -48,12 +48,14 @@ done
 
 elif [ $# == 1 ] && [ $1 == "zh" ]; then
 
-for i in `seq 0 100`;
-do
-  ls done_ana/histoZH_2016_${i}.root done_ana/histoZH_2017_${i}.root done_ana/histoZH_2018_${i}.root >& /dev/null
-  if [ $? -eq 0 ]; then
-    hadd -f done_ana/histoZH_2019_${i}.root done_ana/histoZH_2016_${i}.root done_ana/histoZH_2017_${i}.root done_ana/histoZH_2018_${i}.root
-  fi
+for NJET in 0 1; do
+  for i in `seq 0 100`;
+  do
+    ls done_ana/histoZH_2016_${NJET}j_${i}.root done_ana/histoZH_2017_${NJET}j_${i}.root done_ana/histoZH_2018_${NJET}j_${i}.root >& /dev/null
+    if [ $? -eq 0 ]; then
+      hadd -f done_ana/histoZH_2019_${NJET}j_${i}.root done_ana/histoZH_2016_${NJET}j_${i}.root done_ana/histoZH_2017_${NJET}j_${i}.root done_ana/histoZH_2018_${NJET}j_${i}.root
+    fi
+  done
 done
 
 for i in `seq 0 100`;

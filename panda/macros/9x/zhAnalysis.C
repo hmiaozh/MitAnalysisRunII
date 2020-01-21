@@ -24,9 +24,10 @@ enum selType                     { ZHSEL,   ZHTIGHTSEL,   BTAGSEL,   ZLLSEL,   W
 TString selTypeName[nSelTypes]=  {"ZHSEL", "ZHTIGHTSEL", "BTAGSEL", "ZLLSEL", "WWSEL", "PRESEL" ,"DYSEL"};
 enum systType                     {JESUP=0, JESDOWN,  METUP,  METDOWN, nSystTypes};
 TString systTypeName[nSystTypes]= {"JESUP","JESDOWN","METUP","METDOWN"};
+bool isDesk014 = false;
 
 void zhAnalysis(
-int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = false
+int year, int jetValue, TString whichBSMName = "", bool isBlinded = false
 ){
   int whichYear = -1;
   if     (year == 2016) whichYear = Y2016;
@@ -158,8 +159,8 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
   }
 
   //infileName_.clear();infileCat_.clear();
-  //infileName_.push_back(Form("%sqqZH125inv.root" ,filesPath.Data()));          infileCat_.push_back(kPlotBSM);
-  //infileName_.push_back(Form("%sggZH125inv.root" ,filesPath.Data()));          infileCat_.push_back(kPlotBSM);
+  //infileName_.push_back(Form("%sqqZH125inv.root" ,filesPath.Data()));	       infileCat_.push_back(kPlotBSM);
+  //infileName_.push_back(Form("%sggZH125inv.root" ,filesPath.Data()));	       infileCat_.push_back(kPlotBSM);
 
   TFile *fLepton_Fakes = TFile::Open(fLepton_FakesName.Data());
   TH2D* histoFakeEffSelMediumEtaPt_m = (TH2D*)fLepton_Fakes->Get("histoFakeEffSelEtaPt_2_0"); histoFakeEffSelMediumEtaPt_m->SetDirectory(0);
@@ -203,12 +204,19 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
   TH2D *trgSFEMEE = (TH2D*)(ftrgSF->Get("trgSFEMEE")); assert(trgSFEMEE); trgSFEMEE->SetDirectory(0);
   delete ftrgSF;
 
+  TString fileADDName = "ADDMonoZ_MD_2_d_2"; // dummy for practical purposes!
+  if(whichBSMName.Contains("ADD") == true) fileADDName = whichBSMName;
+  TFile *fADDRatios = TFile::Open(Form("MitAnalysisRunII/data/90x/add/%s_%d.root",fileADDName.Data(),year));
+  TH1D* histoADDRatio = (TH1D*)fADDRatios->Get("ratio;1"); histoADDRatio->SetDirectory(0);
+  fADDRatios->Close();
+
   //const int nBinMVA = 36; Float_t xbins[nBinMVA+1] = {0,  80, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600,1000,
   //						        1080,1100,1125,1150,1175,1200,1250,1300,1350,1400,1500,1600,2000,
   //						        2100,2125,2150,2200,3000,
   //						        3100,3125,3150,3200,4000};
-  const int nBinMVA = 26; Float_t xbins[nBinMVA+1] = {0,  80, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600,1000,
-  						        1080,1100,1125,1150,1175,1200,1250,1300,1350,1400,1500,1600,2000};
+  //const int nBinMVA = 26; Float_t xbins[nBinMVA+1] = {0,  80, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600,1000,
+  //						        1080,1100,1125,1150,1175,1200,1250,1300,1350,1400,1500,1600,2000};
+  const int nBinMVA = 13; Float_t xbins[nBinMVA+1] = {0,  80, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600,1000};
   const int nBin1DMET = 12; Float_t xbins1DMET[nBin1DMET+1] = {80, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600, 1000};
 
   const double metMax = 999.999;
@@ -287,10 +295,6 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
   TH1D *histo_CorrWZZZDown[nPlotCategories];
   TH1D *histo_EWKCorrZHUp[nPlotCategories];
   TH1D *histo_EWKCorrZHDown[nPlotCategories];
-  TH1D *histo_DYNorm0jetUp;
-  TH1D *histo_DYNorm0jetDown;
-  TH1D *histo_DYNorm1jetUp;
-  TH1D *histo_DYNorm1jetDown;
   
   for(unsigned ic=kPlotData; ic!=nPlotCategories; ic++) {
     for(int i=0; i<6; i++)  histo_QCDScaleBounding[ic][i] = (TH1D*)histo_MVA->Clone(Form("histo_%s_%d_QCDScaleBounding",plotBaseNames[ic].Data(),i));
@@ -328,10 +332,6 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
     histo_EWKCorrZHUp		[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_EWKZHCorrUp"        , plotBaseNames[ic].Data()));
     histo_EWKCorrZHDown 	[ic] = (TH1D*)histo_MVA->Clone(Form("histo_%s_EWKZHCorrDown"      , plotBaseNames[ic].Data()));
   }
-  histo_DYNorm0jetUp   = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_DYNorm0jetcat_%dUp"   , plotBaseNames[kPlotDY].Data(),year));
-  histo_DYNorm0jetDown = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_DYNorm0jetcat_%dDown" , plotBaseNames[kPlotDY].Data(),year));
-  histo_DYNorm1jetUp   = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_DYNorm1jetcat_%dUp"   , plotBaseNames[kPlotDY].Data(),year));
-  histo_DYNorm1jetDown = (TH1D*)histo_MVA->Clone(Form("histo_%s_CMS_DYNorm1jetcat_%dDown" , plotBaseNames[kPlotDY].Data(),year));
 
   //*******************************************************
   // Chain Loop
@@ -357,13 +357,6 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
                          (thePandaFlat.trigger & (1<<kSingleEleTrig)) != 0;
       if(passTrigger == false) continue;
       if(thePandaFlat.metFilter == 0) continue;
-
-      // Remove jet forward events right away
-      bool passJetEtaCut = true;
-      if(thePandaFlat.nJot >= 1){
-        passJetEtaCut = TMath::Abs(thePandaFlat.jotEta[0]) < 2.5;
-      }
-      if(passJetEtaCut == false) continue;
 
       if(thePandaFlat.nLooseLep != 2) continue;
 
@@ -522,9 +515,13 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
       bool passDPhiZMETUp   = dPhiDiLepMETUp   > 2.6;
       bool passDPhiZMETDown = dPhiDiLepMETDown > 2.6;
       bool passDPhiZMETTight = dPhiDiLepMET > 2.6;
-      bool passNjets     = thePandaFlat.nJot              <= 1;
-      bool passNjetsUp   = thePandaFlat.nJot_JESTotalUp   <= 1;
-      bool passNjetsDown = thePandaFlat.nJot_JESTotalDown <= 1;
+      bool passJetEtaCut[3] = {true, true, true};
+      if(thePandaFlat.nJot              >= 1 && year == 2017) passJetEtaCut[0] = TMath::Abs(thePandaFlat.jotEta[0]) < 2.5;
+      if(thePandaFlat.nJot_JESTotalUp   >= 1 && year == 2017) passJetEtaCut[1] = TMath::Abs(thePandaFlat.jotEta[0]) < 2.5;
+      if(thePandaFlat.nJot_JESTotalDown >= 1 && year == 2017) passJetEtaCut[2] = TMath::Abs(thePandaFlat.jotEta[0]) < 2.5;
+      bool passNjets     = thePandaFlat.nJot              == jetValue && passJetEtaCut[0];
+      bool passNjetsUp   = thePandaFlat.nJot_JESTotalUp   == jetValue && passJetEtaCut[1];
+      bool passNjetsDown = thePandaFlat.nJot_JESTotalDown == jetValue && passJetEtaCut[2];
 
       bool passBtagVeto = thePandaFlat.jetNMBtags == 0; bool passBtagVetoUp = thePandaFlat.jetNMBtags_JESTotalUp == 0; bool passBtagVetoDown = thePandaFlat.jetNMBtags_JESTotalDown == 0;
       double dphill = TMath::Abs(vZ1l1.DeltaPhi(vZ1l2));
@@ -532,9 +529,9 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
       double drll = sqrt(dphill*dphill+detall*detall);
       bool passDRLL = drll < 1.8;
 
-      bool passDPhiJetMET     = dPhiJetMET     == -1 || (dPhiJetMET     >= 0.5 && TMath::Abs(thePandaFlat.jotEta[0]) < 2.5);
-      bool passDPhiJetMETUp   = dPhiJetMETUp   == -1 || (dPhiJetMETUp   >= 0.5 && TMath::Abs(thePandaFlat.jotEta[0]) < 2.5);
-      bool passDPhiJetMETDown = dPhiJetMETDown == -1 || (dPhiJetMETDown >= 0.5 && TMath::Abs(thePandaFlat.jotEta[0]) < 2.5);
+      bool passDPhiJetMET     = dPhiJetMET     == -1 || dPhiJetMET     >= 0.5;
+      bool passDPhiJetMETUp   = dPhiJetMETUp   == -1 || dPhiJetMETUp   >= 0.5;
+      bool passDPhiJetMETDown = dPhiJetMETDown == -1 || dPhiJetMETDown >= 0.5;
       bool passTauVeto = thePandaFlat.nTau == 0;
 
       //                               0       1         2            3                 4            5        6              7          8           9
@@ -594,7 +591,8 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
         if     (infileCat_[ifile] == kPlotWZ)                                                totalWeight = totalWeight * thePandaFlat.sf_wz;
 	else if(infileCat_[ifile] == kPlotZZ && infileName_[ifile].Contains("qqZZ") == true) totalWeight = totalWeight * thePandaFlat.sf_zz;
 
-        totalWeight = totalWeight * mcCorrection(1, year, thePandaFlat.jetNMBtags,thePandaFlat.jetNBtags, thePandaFlat.nJot, dPhiDiLepMET, infileCat_[ifile]);
+        int theFileCat[2] = {infileCat_[ifile], 0};
+        totalWeight = totalWeight * mcCorrection(1, year, thePandaFlat.jetNMBtags,thePandaFlat.jetNBtags, thePandaFlat.nJot, dPhiDiLepMET, theFileCat, thePandaFlat.eventNumber);
 
         if(infileCat_[ifile] == kPlotDY && year == 2018 && thePandaFlat.normalizedWeight < -0.05 && vMet.Pt() > 100) totalWeight = 0.0;
 /*
@@ -640,6 +638,26 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
 	  sf_EWKZHDown = thePandaFlat.sf_vhDown;
 	}
 	totalWeight = totalWeight * sf_EWKZH;
+
+        if(infileCat_[ifile] == kPlotBSM && whichBSMName.Contains("ADD") == true){
+          double genDilPt = dilep.Pt();
+          if(thePandaFlat.genLep1Pt > 0 && TMath::Abs(thePandaFlat.genLep1Eta) < 5 &&
+	     thePandaFlat.genLep2Pt > 0 && TMath::Abs(thePandaFlat.genLep2Eta) < 5){
+            TLorentzVector vGen1,vGen2;
+            double thePDGMass = mass_mu;
+            if(abs(thePandaFlat.genLep1PdgId)==11) thePDGMass = mass_el;
+            vGen1.SetPtEtaPhiM(thePandaFlat.genLep1Pt,thePandaFlat.genLep1Eta,thePandaFlat.genLep1Phi,thePDGMass);
+            thePDGMass = mass_mu;
+            if(abs(thePandaFlat.genLep2PdgId)==11) thePDGMass = mass_el;
+            vGen2.SetPtEtaPhiM(thePandaFlat.genLep2Pt,thePandaFlat.genLep2Eta,thePandaFlat.genLep2Phi,thePDGMass);
+            genDilPt = (vGen1+vGen2).Pt();
+	  }
+	  int genBinDilPt = histoADDRatio->GetXaxis()->FindFixBin(TMath::Max(TMath::Min(genDilPt,3999.999),50.001));
+	  totalWeight = totalWeight * histoADDRatio->GetBinContent(genBinDilPt);
+	  if     (year == 2016 && whichBSMName == "ADDMonoZ_MD_1_d_2") totalWeight = totalWeight * 27.0;
+	  else if(year == 2016 && whichBSMName == "ADDMonoZ_MD_2_d_2") totalWeight = totalWeight * 1.20;
+	  else if(year == 2016 && whichBSMName == "ADDMonoZ_MD_3_d_2") totalWeight = totalWeight * 1.50;
+        }
 
         double effSF = 1.0;
         for(unsigned int nl=0; nl<idLep.size(); nl++){
@@ -726,9 +744,9 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
       //double MVAVar = TMath::Min(vMet.Pt(),xbins[nBinMVA]-0.0001); double MVAVarUp = TMath::Min(vMetUp.Pt(),xbins[nBinMVA]-0.0001); double MVAVarDown = TMath::Min(vMetDown.Pt(),xbins[nBinMVA]-0.0001);
       double MVAVar = TMath::Min(vMet.Pt(),metMax); double MVAVarUp = TMath::Min(vMetUp.Pt(),metMax); double MVAVarDown = TMath::Min(vMetDown.Pt(),metMax);
       if     (lepType == 2) {MVAVar = 0.5; MVAVarUp = 0.5; MVAVarDown = 0.5; }
-      if(thePandaFlat.nJot              == 1) MVAVar     = MVAVar     + 1000;
-      if(thePandaFlat.nJot_JESTotalUp   == 1) MVAVarUp   = MVAVarUp   + 1000;
-      if(thePandaFlat.nJot_JESTotalDown == 1) MVAVarDown = MVAVarDown + 1000;
+      //if(thePandaFlat.nJot              == 1) MVAVar     = MVAVar     + 1000;
+      //if(thePandaFlat.nJot_JESTotalUp   == 1) MVAVarUp   = MVAVarUp   + 1000;
+      //if(thePandaFlat.nJot_JESTotalDown == 1) MVAVarDown = MVAVarDown + 1000;
       //if(dPhiDiLepMET     <= 2.6) MVAVar     = MVAVar     + 2000;
       //if(dPhiDiLepMETUp   <= 2.6) MVAVarUp   = MVAVarUp   + 2000;
       //if(dPhiDiLepMETDown <= 2.6) MVAVarDown = MVAVarDown + 2000;
@@ -893,27 +911,12 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
     }
   }
 
-  // 0 jet
-  histo_DYNorm0jetUp  ->Add(histo_Baseline[kPlotDY]);
-  histo_DYNorm0jetDown->Add(histo_Baseline[kPlotDY]);
-  for(int i=1; i<=13; i++) {
-    histo_DYNorm0jetUp  ->SetBinContent(i,histo_DYNorm0jetUp  ->GetBinContent(i)*10.0);
-    histo_DYNorm0jetDown->SetBinContent(i,histo_DYNorm0jetDown->GetBinContent(i)/10.0);
-  }
-  for(int i=27; i<=31; i++) {
-    histo_DYNorm0jetUp  ->SetBinContent(i,histo_DYNorm0jetUp  ->GetBinContent(i)*10.0);
-    histo_DYNorm0jetDown->SetBinContent(i,histo_DYNorm0jetDown->GetBinContent(i)/10.0);
-  }
-  // 1 jet
-  histo_DYNorm1jetUp  ->Add(histo_Baseline[kPlotDY]);
-  histo_DYNorm1jetDown->Add(histo_Baseline[kPlotDY]);
-  for(int i=14; i<=26; i++) {
-    histo_DYNorm1jetUp  ->SetBinContent(i,histo_DYNorm1jetUp  ->GetBinContent(i)*10.0);
-    histo_DYNorm1jetDown->SetBinContent(i,histo_DYNorm1jetDown->GetBinContent(i)/10.0);
-  }
-  for(int i=32; i<=36; i++) {
-    histo_DYNorm1jetUp  ->SetBinContent(i,histo_DYNorm1jetUp  ->GetBinContent(i)*10.0);
-    histo_DYNorm1jetDown->SetBinContent(i,histo_DYNorm1jetDown->GetBinContent(i)/10.0);
+  // put CorrWZZZ uncertainties from ZZ to WZ
+  for(int i=1; i<=histo_MVA->GetNbinsX(); i++) {
+    if(histo_Baseline[kPlotZZ]->GetBinContent(i) > 0 && histo_Baseline[kPlotWZ]->GetBinContent(i) > 0) {
+      histo_CorrWZZZUp  [kPlotWZ]->SetBinContent(i,histo_CorrWZZZUp  [kPlotZZ]->GetBinContent(i)/histo_Baseline[kPlotZZ]->GetBinContent(i)*histo_Baseline[kPlotWZ]->GetBinContent(i));
+      histo_CorrWZZZDown[kPlotWZ]->SetBinContent(i,histo_CorrWZZZDown[kPlotZZ]->GetBinContent(i)/histo_Baseline[kPlotZZ]->GetBinContent(i)*histo_Baseline[kPlotWZ]->GetBinContent(i));
+    }
   }
 
   if(showSyst == true){
@@ -1125,7 +1128,7 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
 
   // Filling datacards input root file
   char outputLimits[200];
-  sprintf(outputLimits,"zh%s_%d_input.root",whichBSMName.Data(),year);
+  sprintf(outputLimits,"zh%s_%d_%dj_input.root",whichBSMName.Data(),year,jetValue);
   TFile* outFileLimits = new TFile(outputLimits,"recreate");
   outFileLimits->cd();
 
@@ -1166,16 +1169,12 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
     histo_EWKCorrZHUp		[ic]->Write();
     histo_EWKCorrZHDown 	[ic]->Write();
   }
-  histo_DYNorm0jetUp  ->Write();
-  histo_DYNorm0jetDown->Write();
-  histo_DYNorm1jetUp  ->Write();
-  histo_DYNorm1jetDown->Write();
   outFileLimits->Close();
 
 
   // Filling datacards txt file
   char outputLimitsCard[200];  					  
-  sprintf(outputLimitsCard,"datacard_zh%s_%d.txt",whichBSMName.Data(),year);
+  sprintf(outputLimitsCard,"datacard_zh%s_%d_%dj.txt",whichBSMName.Data(),year,jetValue);
   ofstream newcardShape;
   newcardShape.open(outputLimitsCard);
   newcardShape << Form("imax * number of channels\n");
@@ -1389,22 +1388,6 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
   }
   newcardShape << Form("\n");
 
-  newcardShape << Form("CMS_DYNorm0jetcat_%d    shape     ",year);
-  for (int ic=0; ic<nPlotCategories; ic++){
-    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotDY) newcardShape << Form("1.0 ");
-    else              newcardShape << Form("- ");
-  }
-  newcardShape << Form("\n");
-
-  newcardShape << Form("CMS_DYNorm1jetcat_%d    shape     ",year);
-  for (int ic=0; ic<nPlotCategories; ic++){
-    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic == kPlotDY) newcardShape << Form("1.0 ");
-    else              newcardShape << Form("- ");
-  }
-  newcardShape << Form("\n");
-
   if(useZZWZEWKUnc == true){
     newcardShape << Form("CMS_hinv_vvnorm_bin_%d  rateParam * %s 1 [0.1,10]\n",year,plotBaseNames[kPlotZZ].Data());
     newcardShape << Form("CMS_hinv_vvnorm_bin_%d  rateParam * %s 1 [0.1,10]\n",year,plotBaseNames[kPlotWZ].Data());
@@ -1414,6 +1397,7 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
     newcardShape << Form("CMS_hinv_wznorm_bin_%d  rateParam * %s 1 [0.1,10]\n",year,plotBaseNames[kPlotWZ].Data());
   }
   newcardShape << Form("CMS_hinv_emnorm_bin_%d  rateParam * %s 1 [0.1,10]\n",year,plotBaseNames[kPlotEM].Data());
+  newcardShape << Form("CMS_hinv_dynorm%d_bin_%d  rateParam * %s 1 [0.1,10]\n",jetValue,year,plotBaseNames[kPlotDY].Data());
 
   newcardShape << Form("ch1 autoMCStats 0\n");
 
@@ -1423,7 +1407,7 @@ int year, bool isDesk014 = false, TString whichBSMName = "", bool isBlinded = fa
   char output[200];
   if(whichBSMName == ""){
     for(int thePlot=0; thePlot<allPlots; thePlot++){
-      sprintf(output,"histoZH%s_%d_%d.root",whichBSMName.Data(),year,thePlot);	
+      sprintf(output,"histoZH%s_%d_%dj_%d.root",whichBSMName.Data(),year,jetValue,thePlot);	
       TFile* outFilePlotsNote = new TFile(output,"recreate");
       outFilePlotsNote->cd();
       double totBck = 0;

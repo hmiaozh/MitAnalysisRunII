@@ -159,27 +159,27 @@ rm -f studyFitResults*.txt;
 
 elif [ $NSEL == 'zh' ]; then
 echo "***************ZH SR*****"
-root -l -q -b MitAnalysisRunII/panda/makePlots/studyFitResults.C+'(21, "done_ana/histoZH_2016_48.root", "ana_zh/fitDiagnosticszh_comb_obs.root", "ZH_2016")';
+root -l -q -b MitAnalysisRunII/panda/makePlots/studyFitResults.C+'(21, "done_ana/histoZH_2016_0j_48.root", "ana_zh/fitDiagnosticszh_comb_obs.root", "ZH0_2016")';
 mv studyFitResults.txt studyFitResults_0j_2016.txt;
 mv histoDatacard_21.root histoDatacard_zh_0j_2016.root
 
-root -l -q -b MitAnalysisRunII/panda/makePlots/studyFitResults.C+'(22, "done_ana/histoZH_2016_50.root", "ana_zh/fitDiagnosticszh_comb_obs.root", "ZH_2016")';
+root -l -q -b MitAnalysisRunII/panda/makePlots/studyFitResults.C+'(22, "done_ana/histoZH_2016_1j_50.root", "ana_zh/fitDiagnosticszh_comb_obs.root", "ZH1_2016")';
 mv studyFitResults.txt studyFitResults_1j_2016.txt;
 mv histoDatacard_22.root histoDatacard_zh_1j_2016.root
 
-root -l -q -b MitAnalysisRunII/panda/makePlots/studyFitResults.C+'(21, "done_ana/histoZH_2017_48.root", "ana_zh/fitDiagnosticszh_comb_obs.root", "ZH_2017")';
+root -l -q -b MitAnalysisRunII/panda/makePlots/studyFitResults.C+'(21, "done_ana/histoZH_2017_0j_48.root", "ana_zh/fitDiagnosticszh_comb_obs.root", "ZH0_2017")';
 mv studyFitResults.txt studyFitResults_0j_2017.txt;
 mv histoDatacard_21.root histoDatacard_zh_0j_2017.root
 
-root -l -q -b MitAnalysisRunII/panda/makePlots/studyFitResults.C+'(22, "done_ana/histoZH_2017_50.root", "ana_zh/fitDiagnosticszh_comb_obs.root", "ZH_2017")';
+root -l -q -b MitAnalysisRunII/panda/makePlots/studyFitResults.C+'(22, "done_ana/histoZH_2017_1j_50.root", "ana_zh/fitDiagnosticszh_comb_obs.root", "ZH1_2017")';
 mv studyFitResults.txt studyFitResults_1j_2017.txt;
 mv histoDatacard_22.root histoDatacard_zh_1j_2017.root
 
-root -l -q -b MitAnalysisRunII/panda/makePlots/studyFitResults.C+'(21, "done_ana/histoZH_2018_48.root", "ana_zh/fitDiagnosticszh_comb_obs.root", "ZH_2018")';
+root -l -q -b MitAnalysisRunII/panda/makePlots/studyFitResults.C+'(21, "done_ana/histoZH_2018_0j_48.root", "ana_zh/fitDiagnosticszh_comb_obs.root", "ZH0_2018")';
 mv studyFitResults.txt studyFitResults_0j_2018.txt;
 mv histoDatacard_21.root histoDatacard_zh_0j_2018.root
 
-root -l -q -b MitAnalysisRunII/panda/makePlots/studyFitResults.C+'(22, "done_ana/histoZH_2018_50.root", "ana_zh/fitDiagnosticszh_comb_obs.root", "ZH_2018")';
+root -l -q -b MitAnalysisRunII/panda/makePlots/studyFitResults.C+'(22, "done_ana/histoZH_2018_1j_50.root", "ana_zh/fitDiagnosticszh_comb_obs.root", "ZH1_2018")';
 mv studyFitResults.txt studyFitResults_1j_2018.txt;
 mv histoDatacard_22.root histoDatacard_zh_1j_2018.root
 

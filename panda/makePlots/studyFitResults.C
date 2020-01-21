@@ -87,11 +87,10 @@ void studyFitResults(int nsel = 0,  TString plotName = "done_ana/histoZHG_mH125_
   }
   else if(nsel == 21){ // ZH SR 0j
     excludeBins[0] =  1;
-    for(int i=13; i<26; i++) excludeBins[i] = i+1;
     binToCount = kPlotEM;
   }
   else if(nsel == 22){ // ZH SR 1 
-    for(int i=0; i<14; i++) excludeBins[i] = i+1;
+    excludeBins[0] =  1;
     binToCount = kPlotEM;
   }
   printf("Bins to exclude:");

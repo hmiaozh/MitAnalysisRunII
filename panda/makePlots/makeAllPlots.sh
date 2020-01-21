@@ -24,10 +24,7 @@ if [ $NSEL == 'zh' ]; then
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh zh 1 2018 $2;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh zh 1 2019 $2;
 
-./MitAnalysisRunII/panda/makePlots/makePlots.sh zhpaper 1 2016 $2;
-./MitAnalysisRunII/panda/makePlots/makePlots.sh zhpaper 1 2017 $2;
-./MitAnalysisRunII/panda/makePlots/makePlots.sh zhpaper 1 2018 $2;
-./MitAnalysisRunII/panda/makePlots/makePlots.sh zhpaper 1 2019 $2;
+./MitAnalysisRunII/panda/makePlots/makePlots.sh zhpaper 1 2016 0;
 
 elif [ $NSEL == 'zhg' ]; then
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh zhg 0 2016;
@@ -51,5 +48,12 @@ elif [ $NSEL == 'ww' ]; then
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh ww 0 2016;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh ww 0 2017;
 ./MitAnalysisRunII/panda/makePlots/makePlots.sh ww 0 2018;
+
+elif [ $NSEL == 'vbfg' ]; then
+./MitAnalysisRunII/panda/makePlots/makePlots_vbfg.sh vbfg 0 2016 0 $2
+./MitAnalysisRunII/panda/makePlots/makePlots_vbfg.sh vbfg 0 2017 0 $2
+./MitAnalysisRunII/panda/makePlots/makePlots_vbfg.sh vbfg 0 2017 1 $2
+./MitAnalysisRunII/panda/makePlots/makePlots_vbfg.sh vbfg 0 2018 0 $2
+./MitAnalysisRunII/panda/makePlots/makePlots_vbfg.sh vbfg 0 2018 1 $2
 
 fi

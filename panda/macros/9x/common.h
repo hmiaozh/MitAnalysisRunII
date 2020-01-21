@@ -158,6 +158,7 @@ std::map<int, TString> plotBaseNames={
 }; 
 
 std::map<int, int> plotColors={
+  { kPlotData	     , kBlack},
   { kPlotqqWW	     , kAzure-9},
   { kPlotggWW	     , 901},
   { kPlotTop	     , kYellow},
@@ -217,11 +218,11 @@ std::map<int, TString> plotNames={
 const double mass_el = 0.000510998928;
 const double mass_mu = 0.10566;
 
-double mcCorrection(int type, int year, int jetNMBtags, int jetNBtags, int nJot, double dphillmet, int infileCat){
+double mcCorrection(int type, int year, int jetNMBtags, int jetNBtags, int nJot, double dphillmet, int infileCat[2], ULong64_t eventNumber){
   double totalWeight = 1.0;
 
   if     (type == 0 &&
-         (infileCat == kPlotNonPrompt || infileCat == kPlotTVX || infileCat == kPlotWS)){ // SSWW
+         (infileCat[0] == kPlotNonPrompt || infileCat[0] == kPlotTVX || infileCat[0] == kPlotWS)){ // SSWW
     if     (year == 2017 && jetNMBtags > 0) totalWeight = totalWeight * 0.95;
     else if(year == 2017 && jetNBtags  > 0) totalWeight = totalWeight * 0.58;
 
@@ -229,23 +230,25 @@ double mcCorrection(int type, int year, int jetNMBtags, int jetNBtags, int nJot,
     else if(year == 2018 && jetNBtags  > 0) totalWeight = totalWeight * 0.96;
   }
   else if(type == 1){ // ZH
-    if     (year == 2016 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 1.40;
-    else if(year == 2016 && infileCat == kPlotDY && nJot >= 1) totalWeight = totalWeight * 0.88;
+    if     (year == 2016 && infileCat[0] == kPlotDY && nJot == 0) totalWeight = totalWeight * 1.40;
+    else if(year == 2016 && infileCat[0] == kPlotDY && nJot >= 1) totalWeight = totalWeight * 0.88;
 
-    else if(year == 2017 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 1.45;
-    else if(year == 2017 && infileCat == kPlotDY && nJot >= 1) totalWeight = totalWeight * 1.10;
+    else if(year == 2017 && infileCat[0] == kPlotDY && nJot == 0) totalWeight = totalWeight * 1.45;
+    else if(year == 2017 && infileCat[0] == kPlotDY && nJot >= 1) totalWeight = totalWeight * 1.10;
 
-    else if(year == 2018 && infileCat == kPlotDY && nJot == 0) totalWeight = totalWeight * 2.40;
-    else if(year == 2018 && infileCat == kPlotDY && nJot >= 1) totalWeight = totalWeight * 1.70;
+    else if(year == 2018 && infileCat[0] == kPlotDY && nJot == 0) totalWeight = totalWeight * 2.40;
+    else if(year == 2018 && infileCat[0] == kPlotDY && nJot >= 1) totalWeight = totalWeight * 1.70;
   }
 
   if(type == 1 || type  == 2){ // ZH or Z
-    if     (year == 2016 && infileCat == kPlotDY) totalWeight = totalWeight * (0.986772 + 0.00796195 * dphillmet);
+    if     (year == 2016 && infileCat[0] == kPlotDY) totalWeight = totalWeight * (0.986772 + 0.00796195 * dphillmet);
  
-    else if(year == 2017 && infileCat == kPlotDY) totalWeight = totalWeight * (0.968796 + 0.01901070 * dphillmet);
+    else if(year == 2017 && infileCat[0] == kPlotDY) totalWeight = totalWeight * (0.968796 + 0.01901070 * dphillmet);
 
-    else if(year == 2018 && infileCat == kPlotDY) totalWeight = totalWeight * (0.917654 + 0.04973930 * dphillmet);
+    else if(year == 2018 && infileCat[0] == kPlotDY) totalWeight = totalWeight * (0.917654 + 0.04973930 * dphillmet);
   }
+
+  if(type == 0 && year != 2016 && infileCat[0] == kPlotNonPrompt && infileCat[1] == 1 && eventNumber%10 < 9) infileCat[0] = kPlotTVX;
 
   return totalWeight;
 }
