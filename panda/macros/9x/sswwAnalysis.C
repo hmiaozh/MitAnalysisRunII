@@ -325,7 +325,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   //const int nBinWZBDT =  6; Float_t xbinsWZBDT[nBinWZBDT+1] = {-1.000,-0.180, 0.160, 0.430, 0.660, 0.830, 1.000}; // ptj > 50
   const int nBinWZBDT =  8; Float_t xbinsWZBDT[nBinWZBDT+1] = {-1.000,-0.280,-0.000, 0.230, 0.430, 0.600, 0.740, 0.860, 1.000}; // ptj > 50 default
   //const int nBinWZBDT = 10; Float_t xbinsWZBDT[nBinWZBDT+1] = {-1.000,-0.350,-0.100, 0.100, 0.270, 0.430, 0.570, 0.700, 0.800, 0.890, 1.000}; // ptj > 50
-  //const int nBinWZBDT = 8; Float_t xbinsWZBDT[nBinWZBDT+1] = {-1.000,-0.220, 0.080, 0.300, 0.480, 0.630, 0.760, 0.870, 1.000}; // ptj > 30
+  //const int nBinWZBDT = 8; Float_t xbinsWZBDT[nBinWZBDT+1] = {-1.000,-0.230, 0.100, 0.330, 0.520, 0.670, 0.790, 0.890, 1.000}; // ptj > 30
   const int nBinWWBDT = 7; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.000,-0.244, 0.040, 0.243, 0.401, 0.535, 0.662, 1.000}; // V1_v6
   int nBinMVAAux = 0;
   if     (fidAna == 0 || fidAna == 2 || fidAna == 3) nBinMVAAux = nBinMJJ*nBinMLL + 3*nBinMJJCR + nBinWZBDT;
