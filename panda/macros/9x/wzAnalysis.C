@@ -226,7 +226,8 @@ int year, TString WZName = "default"
   //TH1D *fhDNPV    = (TH1D*)(fNPVFile->Get("npvWeights"));   assert(fhDNPV);    fhDNPV	->SetDirectory(0);
   //delete fNPVFile;
 
-  const int nBinMVA = 11; Float_t xbins[nBinMVA+1] = {100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600, 1000};
+  const float metCut = 80;
+  const int nBinMVA = 12; Float_t xbins[nBinMVA+1] = {metCut, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600, 1000};
 
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
@@ -237,7 +238,7 @@ int year, TString WZName = "default"
     if     (thePlot >=  0 && thePlot <=  9) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 100;}
     else if(thePlot >= 10 && thePlot <= 44) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
     else if(thePlot >= 45 && thePlot <= 59) {nBinPlot =   5; xminPlot = -0.5; xmaxPlot = 4.5;}
-    else if(thePlot >= 60 && thePlot <= 69) {nBinPlot =  50; xminPlot =100.0; xmaxPlot = 300;}
+    else if(thePlot >= 60 && thePlot <= 69) {nBinPlot =  11; xminPlot = 80.0; xmaxPlot = 300;}
     else if(thePlot >= 70 && thePlot <= 70) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = TMath::Pi();}
     else if(thePlot >= 71 && thePlot <= 71) {nBinPlot = 100; xminPlot =  0.0; xmaxPlot = 1.0;}
     else if(thePlot >= 72 && thePlot <= 72) {nBinPlot =  30; xminPlot =  0.0; xmaxPlot = 3.0;}
@@ -510,7 +511,7 @@ int year, TString WZName = "default"
       TLorentzVector vMetZXLike = vMet + vWln; TLorentzVector vMetZXLikeUp = vMetUp + vWln; TLorentzVector vMetZXLikeDown = vMetDown + vWln;
       TLorentzVector dilep = vZl1 + vZl2;
 
-      bool passMET = vMetZXLike.Pt() > 100; bool passMETUp = vMetZXLikeUp.Pt() > 100;  bool passMETDown = vMetZXLikeDown.Pt() > 100;
+      bool passMET = vMetZXLike.Pt() > metCut; bool passMETUp = vMetZXLikeUp.Pt() > metCut;  bool passMETDown = vMetZXLikeDown.Pt() > metCut;
 
       bool passPTLL = dilep.Pt() > 60;
       double ptFrac = TMath::Abs(dilep.Pt()-vMetZXLike.Pt())/dilep.Pt(); double ptFracUp = TMath::Abs(dilep.Pt()-vMetZXLikeUp.Pt())/dilep.Pt(); double ptFracDown = TMath::Abs(dilep.Pt()-vMetZXLikeDown.Pt())/dilep.Pt();

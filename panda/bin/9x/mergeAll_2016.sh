@@ -107,6 +107,8 @@ PandaAnalysis/T3/merging/merge.py --cfg leptonic ZH_ZToLL_HToGDarkG_M300
 elif [ $NSEL == 'dim8' ]; then
 PandaAnalysis/T3/merging/merge.py --cfg leptonic WWjj_SS_dim8_ewk
 PandaAnalysis/T3/merging/merge.py --cfg leptonic WZjj_dim8_ewk
+PandaAnalysis/T3/merging/merge.py --cfg leptonic WWjj_SS_dim8_ewk_ext
+PandaAnalysis/T3/merging/merge.py --cfg leptonic WZjj_dim8_ewk_ext
 PandaAnalysis/T3/merging/merge.py --cfg leptonic WWjj_SS_long
 PandaAnalysis/T3/merging/merge.py --cfg leptonic WWjj_SS_lttt
 

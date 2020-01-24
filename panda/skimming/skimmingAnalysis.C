@@ -135,6 +135,8 @@ void skimmingAnalysis(int year, int specialMC = 0)
   else if(specialMC == 2){
     infileName_.push_back(Form("WWjj_SS_dim8_ewk.root"));
     infileName_.push_back(Form("WZjj_dim8_ewk.root"));
+    infileName_.push_back(Form("WWjj_SS_dim8_ewk_ext.root"));
+    infileName_.push_back(Form("WZjj_dim8_ewk_ext.root"));
     infileName_.push_back(Form("WWjj_SS_lttt.root"));
     infileName_.push_back(Form("WWjj_SS_long.root"));
   }
