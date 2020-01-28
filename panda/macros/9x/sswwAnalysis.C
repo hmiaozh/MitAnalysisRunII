@@ -326,6 +326,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   const int nBinWZBDT =  8; Float_t xbinsWZBDT[nBinWZBDT+1] = {-1.000,-0.280,-0.000, 0.230, 0.430, 0.600, 0.740, 0.860, 1.000}; // ptj > 50 default
   //const int nBinWZBDT = 10; Float_t xbinsWZBDT[nBinWZBDT+1] = {-1.000,-0.350,-0.100, 0.100, 0.270, 0.430, 0.570, 0.700, 0.800, 0.890, 1.000}; // ptj > 50
   //const int nBinWZBDT = 8; Float_t xbinsWZBDT[nBinWZBDT+1] = {-1.000,-0.230, 0.100, 0.330, 0.520, 0.670, 0.790, 0.890, 1.000}; // ptj > 30
+  //const int nBinWZBDT = 8; Float_t xbinsWZBDT[nBinWZBDT+1] = {-1.000,-0.510,-0.260,-0.040, 0.170, 0.380, 0.580, 0.760, 1.000}; // 20var_ptj50
   const int nBinWWBDT = 7; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.000,-0.244, 0.040, 0.243, 0.401, 0.535, 0.662, 1.000}; // V1_v6
   int nBinMVAAux = 0;
   if     (fidAna == 0 || fidAna == 2 || fidAna == 3) nBinMVAAux = nBinMJJ*nBinMLL + 3*nBinMJJCR + nBinWZBDT;
@@ -570,6 +571,7 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   TString bdtWZWeights="";
   bdtWZWeights="MitAnalysisRunII/BDT/ssww_WZNov_V0/bdt_BDTG_13var_detajj2p5.weights.xml";
   //bdtWZWeights="MitAnalysisRunII/BDT/ssww_WZNov_V0/bdt_BDTG_v1_ptj30.weights.xml";
+  //bdtWZWeights="MitAnalysisRunII/BDT/ssww_WZNov_V0/bdt_BDTG_20var_ptj50_detajj2p5.weights.xml";
 
   TMVA::Reader *theReaderWZ = new TMVA::Reader("Silent");
   theReaderWZ->AddVariable("mvamjj"    ,&mvaWZInputs[0]);
@@ -585,6 +587,14 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   theReaderWZ->AddVariable("mvazep3"   ,&mvaWZInputs[10]);
   theReaderWZ->AddVariable("mvaj1Zdr"  ,&mvaWZInputs[11]);
   theReaderWZ->AddVariable("mvapttot/mvasumpttot" ,&mvaWZInputs[12]);
+  //theReaderWZ->AddVariable("mvamaxzep"  ,&mvaWZInputs[13]);
+  //theReaderWZ->AddVariable("mvajeteta2" ,&mvaWZInputs[14]);
+  //theReaderWZ->AddVariable("mvaWpt"     ,&mvaWZInputs[15]);
+  //theReaderWZ->AddVariable("mvaZpt"     ,&mvaWZInputs[16]);
+  //theReaderWZ->AddVariable("mvaVVmt"    ,&mvaWZInputs[17]);
+  //theReaderWZ->AddVariable("mvaj2Zdr"   ,&mvaWZInputs[18]);
+  //theReaderWZ->AddVariable("mvasumpttot",&mvaWZInputs[19]);
+
   theReaderWZ->BookMVA("BDT", bdtWZWeights.Data());
   // End MVA-weigths initialization
 
@@ -1559,6 +1569,13 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 	mvaWZInputs[10] = (float)vvZepSS[2];
 	mvaWZInputs[11] = (float)TMath::Sqrt(TMath::Power(TMath::Abs(vJot1.Eta()-(vZ1l1+vZ1l2).Eta()),2)+TMath::Power(TMath::Abs(vJot1.DeltaPhi(vZ1l1+vZ1l2)),2));
 	mvaWZInputs[12] = (float)totSystem.Pt()/sumPtTot;
+	//mvaWZInputs[13] = (float)maxLeptonZep;
+	//mvaWZInputs[14] = (float)vJot2.Pt();
+	//mvaWZInputs[15] = (float)vW.Pt();
+	//mvaWZInputs[16] = (float)(vZ1l1+vZ1l2).Pt();
+	//mvaWZInputs[17] = (float)mtVV;
+	//mvaWZInputs[18] = (float)TMath::Sqrt(TMath::Power(TMath::Abs(vJot2.Eta()-(vZ1l1+vZ1l2).Eta()),2)+TMath::Power(TMath::Abs(vJot2.DeltaPhi(vZ1l1+vZ1l2)),2));
+	//mvaWZInputs[19] = (float)totSystem.Pt();
         bdtWZValue = TMath::Min(theReaderWZ->EvaluateMVA("BDT"),0.999);
       }
 
@@ -1576,6 +1593,13 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 	mvaWZInputs[10] = (float)vvZepSSUp[2];
 	mvaWZInputs[11] = (float)TMath::Sqrt(TMath::Power(TMath::Abs(vJot1JESUp.Eta()-(vZ1l1+vZ1l2).Eta()),2)+TMath::Power(TMath::Abs(vJot1JESUp.DeltaPhi(vZ1l1+vZ1l2)),2));
 	mvaWZInputs[12] = (float)totSystemJESUp.Pt()/sumPtTotJESUp;
+	//mvaWZInputs[13] = (float)maxLeptonZepUp;
+	//mvaWZInputs[14] = (float)vJot2JESUp.Pt();
+	//mvaWZInputs[15] = (float)vWUp.Pt();
+	//mvaWZInputs[16] = (float)(vZ1l1+vZ1l2).Pt();
+	//mvaWZInputs[17] = (float)mtVVUp;
+	//mvaWZInputs[18] = (float)TMath::Sqrt(TMath::Power(TMath::Abs(vJot2JESUp.Eta()-(vZ1l1+vZ1l2).Eta()),2)+TMath::Power(TMath::Abs(vJot2JESUp.DeltaPhi(vZ1l1+vZ1l2)),2));
+	//mvaWZInputs[19] = (float)totSystemJESUp.Pt();
         bdtWZValueJESUp = TMath::Min(theReaderWZ->EvaluateMVA("BDT"),0.999);
       }
 
@@ -1593,6 +1617,13 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 	mvaWZInputs[10] = (float)vvZepSSDown[2];
 	mvaWZInputs[11] = (float)TMath::Sqrt(TMath::Power(TMath::Abs(vJot1JESDown.Eta()-(vZ1l1+vZ1l2).Eta()),2)+TMath::Power(TMath::Abs(vJot1JESDown.DeltaPhi(vZ1l1+vZ1l2)),2));
 	mvaWZInputs[12] = (float)totSystemJESDown.Pt()/sumPtTotJESDown;
+	//mvaWZInputs[13] = (float)maxLeptonZepDown;
+	//mvaWZInputs[14] = (float)vJot2JESDown.Pt();
+	//mvaWZInputs[15] = (float)vWDown.Pt();
+	//mvaWZInputs[16] = (float)(vZ1l1+vZ1l2).Pt();
+	//mvaWZInputs[17] = (float)mtVVDown;
+	//mvaWZInputs[18] = (float)TMath::Sqrt(TMath::Power(TMath::Abs(vJot2JESDown.Eta()-(vZ1l1+vZ1l2).Eta()),2)+TMath::Power(TMath::Abs(vJot2JESDown.DeltaPhi(vZ1l1+vZ1l2)),2));
+	//mvaWZInputs[19] = (float)totSystem.Pt();
         bdtWZValueJESDown = TMath::Min(theReaderWZ->EvaluateMVA("BDT"),0.999);
       }
       if(passEWKWZSelJERUp){
@@ -1609,6 +1640,13 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 	mvaWZInputs[10] = (float)vvZepSS[2];
 	mvaWZInputs[11] = (float)TMath::Sqrt(TMath::Power(TMath::Abs(vJot1JERUp.Eta()-(vZ1l1+vZ1l2).Eta()),2)+TMath::Power(TMath::Abs(vJot1JERUp.DeltaPhi(vZ1l1+vZ1l2)),2));
 	mvaWZInputs[12] = (float)totSystemJERUp.Pt()/sumPtTotJERUp;
+	//mvaWZInputs[13] = (float)maxLeptonZep;
+	//mvaWZInputs[14] = (float)vJot2JERUp.Pt();
+	//mvaWZInputs[15] = (float)vW.Pt();
+	//mvaWZInputs[16] = (float)(vZ1l1+vZ1l2).Pt();
+	//mvaWZInputs[17] = (float)mtVV;
+	//mvaWZInputs[18] = (float)TMath::Sqrt(TMath::Power(TMath::Abs(vJot2JERUp.Eta()-(vZ1l1+vZ1l2).Eta()),2)+TMath::Power(TMath::Abs(vJot2JERUp.DeltaPhi(vZ1l1+vZ1l2)),2));
+	//mvaWZInputs[19] = (float)totSystemJERUp.Pt();
         bdtWZValueJERUp = TMath::Min(theReaderWZ->EvaluateMVA("BDT"),0.999);
       }
 
@@ -1626,6 +1664,13 @@ int year, int fidAna = 0, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 	mvaWZInputs[10] = (float)vvZepSS[2];
 	mvaWZInputs[11] = (float)TMath::Sqrt(TMath::Power(TMath::Abs(vJot1JERDown.Eta()-(vZ1l1+vZ1l2).Eta()),2)+TMath::Power(TMath::Abs(vJot1JERDown.DeltaPhi(vZ1l1+vZ1l2)),2));
 	mvaWZInputs[12] = (float)totSystemJERDown.Pt()/sumPtTotJERDown;
+	//mvaWZInputs[13] = (float)maxLeptonZep;
+	//mvaWZInputs[14] = (float)vJot2JERDown.Pt();
+	//mvaWZInputs[15] = (float)vW.Pt();
+	//mvaWZInputs[16] = (float)(vZ1l1+vZ1l2).Pt();
+	//mvaWZInputs[17] = (float)mtVV;
+	//mvaWZInputs[18] = (float)TMath::Sqrt(TMath::Power(TMath::Abs(vJot2JERDown.Eta()-(vZ1l1+vZ1l2).Eta()),2)+TMath::Power(TMath::Abs(vJot2JERDown.DeltaPhi(vZ1l1+vZ1l2)),2));
+	//mvaWZInputs[19] = (float)totSystemJERDown.Pt();
         bdtWZValueJERDown = TMath::Min(theReaderWZ->EvaluateMVA("BDT"),0.999);
       }
 

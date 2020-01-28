@@ -1,6 +1,7 @@
 #!/bin/sh
 
-cat > list_of_samples.txt <<EOF
+cat > list_of_zh_samples.txt <<EOF
+
 Unpart_ZToLL_SU-0_dU-1p01
 Unpart_ZToLL_SU-0_dU-1p02
 Unpart_ZToLL_SU-0_dU-1p04
@@ -37,7 +38,7 @@ ADDMonoZ_MD_3_d_6
 ADDMonoZ_MD_3_d_7
 EOF
 
-for sampleName; do
+for sampleName in `cat list_of_zh_samples.txt`; do
   for jetValue in 0 1; do
     for year in 2016 2017 2018; do
       hadd -f zh${sampleName}_${year}_${jetValue}j_input.root zhNoBSM_${year}_${jetValue}j_input.root zhOnly${sampleName}_${year}_${jetValue}j_input.root;
