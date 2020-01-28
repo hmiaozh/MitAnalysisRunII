@@ -86,13 +86,6 @@ int year, int jetValue, TString whichBSMName = "", bool isBlinded = false
     infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));  	         infileCat_.push_back(kPlotVVV);
     infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	         infileCat_.push_back(kPlotVVV);
     infileName_.push_back(Form("%sTTVV.root" ,filesPath.Data()));  	         infileCat_.push_back(kPlotVVV);
-    if(whichBSMName == ""){
-      infileName_.push_back(Form("%sqqZH125inv.root" ,filesPath.Data()));          infileCat_.push_back(kPlotBSM);
-      infileName_.push_back(Form("%sggZH125inv.root" ,filesPath.Data()));          infileCat_.push_back(kPlotBSM);
-    }
-    else {
-      infileName_.push_back(Form("%s%s.root" ,filesPath.Data(),whichBSMName.Data())); infileCat_.push_back(kPlotBSM);
-    }
   }
   else if(year == 2017) {
     filesPath = Form("%s/ceballos/panda/v_004_1/",inputFolder.Data());
@@ -114,13 +107,6 @@ int year, int jetValue, TString whichBSMName = "", bool isBlinded = false
     infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));  	         infileCat_.push_back(kPlotVVV);
     infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	         infileCat_.push_back(kPlotVVV);
     infileName_.push_back(Form("%sTTVV.root" ,filesPath.Data()));  	         infileCat_.push_back(kPlotVVV);
-    if(whichBSMName == ""){
-      infileName_.push_back(Form("%sqqZH125inv.root" ,filesPath.Data()));          infileCat_.push_back(kPlotBSM);
-      infileName_.push_back(Form("%sggZH125inv.root" ,filesPath.Data()));          infileCat_.push_back(kPlotBSM);
-    }
-    else {
-      infileName_.push_back(Form("%s%s.root" ,filesPath.Data(),whichBSMName.Data())); infileCat_.push_back(kPlotBSM);
-    }
   }
   else if(year == 2016) {
     filesPath = Form("%s/ceballos/panda/v_002_1/",inputFolder.Data());
@@ -146,16 +132,20 @@ int year, int jetValue, TString whichBSMName = "", bool isBlinded = false
     infileName_.push_back(Form("%sggZZ.root" ,filesPath.Data())); 	          infileCat_.push_back(kPlotZZ);
     infileName_.push_back(Form("%sVVV.root" ,filesPath.Data()));  	          infileCat_.push_back(kPlotVVV);
     infileName_.push_back(Form("%sTTV.root" ,filesPath.Data()));  	          infileCat_.push_back(kPlotVVV);
-    if(whichBSMName == ""){
-      infileName_.push_back(Form("%sqqZH125inv.root" ,filesPath.Data()));          infileCat_.push_back(kPlotBSM);
-      infileName_.push_back(Form("%sggZH125inv.root" ,filesPath.Data()));          infileCat_.push_back(kPlotBSM);
-    }
-    else {
-      infileName_.push_back(Form("%s%s.root" ,filesPath.Data(),whichBSMName.Data())); infileCat_.push_back(kPlotBSM);
-    }
   }
   else {
     return;
+  }
+
+  if     (whichBSMName == ""){
+    infileName_.push_back(Form("%sqqZH125inv.root" ,filesPath.Data())); 	 infileCat_.push_back(kPlotBSM);
+    infileName_.push_back(Form("%sggZH125inv.root" ,filesPath.Data())); 	 infileCat_.push_back(kPlotBSM);
+  }
+  else if(whichBSMName == "NoBSM"){
+  }
+  else {
+    infileName_.clear();infileCat_.clear();
+    infileName_.push_back(Form("%s%s.root" ,filesPath.Data(),whichBSMName.Data())); infileCat_.push_back(kPlotBSM);
   }
 
   //infileName_.clear();infileCat_.clear();
@@ -836,6 +826,9 @@ int year, int jetValue, TString whichBSMName = "", bool isBlinded = false
   } // end chain loop
 
   for(int ic=0; ic<nPlotCategories; ic++) histo[allPlots-1][ic]->Add(histo_Baseline[ic]);
+
+  if(whichBSMName != "" && whichBSMName != "NoBSM") whichBSMName = Form("Only%s",whichBSMName.Data());
+
 
   double qcdScaleTotal[2] = {0.0345, 0.2200}; // use sigma(ZH) (0.0345) instead of sigma(qq->ZZ) (0.0055) and sigma(gg->ZH) (0.2200)
   if(whichBSMName != "") {qcdScaleTotal[0] = 0.0; qcdScaleTotal[1] = 0.0;}
