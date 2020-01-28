@@ -464,10 +464,12 @@ int year, int triggerCat, int mH = 125
       if (infileCat_[ifile] != 0 && jentry%(int)theMCPrescale != 0) continue;
 
 /*bool thePass =
-(thePandaFlat.lumiNumber==31395009&&thePandaFlat.eventNumber==332)||
-(thePandaFlat.lumiNumber==31395074&&thePandaFlat.eventNumber==421)||
-(thePandaFlat.lumiNumber==31395936&&thePandaFlat.eventNumber==178);
+(thePandaFlat.runNumber==297563&&thePandaFlat.eventNumber==278996355)||
+(thePandaFlat.runNumber==303838&&thePandaFlat.eventNumber==308439887)||
+(thePandaFlat.runNumber==306029&&thePandaFlat.eventNumber==31771161);
       if(thePass == false) continue;*/
+
+      if(debug == 3) printf("DEBUG%d STEP0 %d %d %llu\n",ifile,thePandaFlat.runNumber,thePandaFlat.lumiNumber,thePandaFlat.eventNumber);
 
       bool passTrigger = false;
       bool passSinglePhotonTrigger = false;
@@ -630,7 +632,11 @@ int year, int triggerCat, int mH = 125
         theG = vPhoton;
       }
 
+      if(debug == 3) printf("DEBUG%d STEP2 %d %d %llu %d %d %zu\n",ifile,thePandaFlat.runNumber,thePandaFlat.lumiNumber,thePandaFlat.eventNumber,theMinSelType,passPhoSel,vLoose.size());
+
       if(theMinSelType == -1) continue;
+
+      if(debug == 3) printf("DEBUG%d STEP3 %d %d %llu %d %f\n",ifile,thePandaFlat.runNumber,thePandaFlat.lumiNumber,thePandaFlat.eventNumber,passSinglePhotonTrigger,theG.Pt());
 
       if(year != 2016 && triggerCat == 0 && passSinglePhotonTrigger == true && theG.Pt() > 200) continue;
 
@@ -643,6 +649,8 @@ int year, int triggerCat, int mH = 125
         if(dPhiJetG > TMath::Abs(vJetTemp.DeltaPhi(theG))) dPhiJetG = TMath::Abs(vJetTemp.DeltaPhi(theG));
         if(dRJetG > TMath::Abs(vJetTemp.DeltaR(theG))) dRJetG = TMath::Abs(vJetTemp.DeltaR(theG));
       }
+
+      if(debug == 3) printf("DEBUG%d STEP4 %d %d %llu %f %f\n",ifile,thePandaFlat.runNumber,thePandaFlat.lumiNumber,thePandaFlat.eventNumber,dRJetG,vMet.Pt());
 
       if(dRJetG < 0.4) continue; // Remove events where photon and jet overlap
       
@@ -688,15 +696,15 @@ int year, int triggerCat, int mH = 125
       totSystemUp   = totSystemUp   + vJot1Up   + vJot2Up;
       totSystemDown = totSystemDown + vJot1Down + vJot2Down;
 
-      double massJJ         = (vJot1    +vJot2    ).M(); //thePandaFlat.jot12Mass;
-      double massJJUp       = (vJot1Up  +vJot2Up  ).M(); //thePandaFlat.jot12Mass_JESTotalUp;
-      double massJJDown     = (vJot1Down+vJot2Down).M(); //thePandaFlat.jot12Mass_JESTotalDown;
-      double deltaEtaJJ     = TMath::Abs(vJot1    .Eta()-vJot2    .Eta()); //thePandaFlat.jot12DEta;
-      double deltaEtaJJUp   = TMath::Abs(vJot1Up  .Eta()-vJot2Up  .Eta()); //thePandaFlat.jot12DEta_JESTotalUp;
-      double deltaEtaJJDown = TMath::Abs(vJot1Down.Eta()-vJot2Down.Eta()); //thePandaFlat.jot12DEta_JESTotalDown;
-      double deltaPhiJJ     = vJot1    .DeltaPhi(vJot2    ); //thePandaFlat.jot12DPhi;
-      double deltaPhiJJUp   = vJot1Up  .DeltaPhi(vJot2Up  ); //thePandaFlat.jot12DPhi_JESTotalUp;
-      double deltaPhiJJDown = vJot1Down.DeltaPhi(vJot2Down); //thePandaFlat.jot12DPhi_JESTotalDown;
+      double massJJ         = thePandaFlat.jot12Mass;
+      double massJJUp       = thePandaFlat.jot12Mass_JESTotalUp;
+      double massJJDown     = thePandaFlat.jot12Mass_JESTotalDown;
+      double deltaEtaJJ     = thePandaFlat.jot12DEta;
+      double deltaEtaJJUp   = thePandaFlat.jot12DEta_JESTotalUp;
+      double deltaEtaJJDown = thePandaFlat.jot12DEta_JESTotalDown;
+      double deltaPhiJJ     = thePandaFlat.jot12DPhi;
+      double deltaPhiJJUp   = thePandaFlat.jot12DPhi_JESTotalUp;
+      double deltaPhiJJDown = thePandaFlat.jot12DPhi_JESTotalDown;
 
       double gZep     = TMath::Min(TMath::Abs(theG.Eta()-(vJot1.Eta()+vJot2.Eta())/2.)/deltaEtaJJ,0.999);
       double gZepUp   = TMath::Min(TMath::Abs(theG.Eta()-(vJot1Up.Eta()+vJot2Up.Eta())/2.)/deltaEtaJJUp,0.999);
@@ -739,7 +747,7 @@ int year, int triggerCat, int mH = 125
       bool passCutEvol[numberOfCuts] = {theMinSelType >= 0,passZMass && passPtTot,passNjets,passMET,passDPhiJetMET,passMJJ,passDEtaJJ,passgZep};
       bool passCutEvolAll = true;
 
-      if(debug == 1 && theMinSelType >= 0) printf("DEBUG %d %d %d %d %d %d %d %d\n",theMinSelType,passZMass,passPtTot,passMET,passNjets,passDPhiJetMET,passMJJ,passDEtaJJ);
+      if((debug == 1 || debug == 3) && theMinSelType >= 0) printf("DEBUG %d %d %d %d %d %d %d %d\n",theMinSelType,passZMass,passPtTot,passMET,passNjets,passDPhiJetMET,passMJJ,passDEtaJJ);
 
       bool passAllCuts[nSelTypes] = {                   
      theMinSelType == VBFGSEL && passZMass && passMET && passNjets && passDPhiJetMET && passMJJ && passDEtaJJ && passgZep && passPtTot,
@@ -1120,13 +1128,17 @@ int year, int triggerCat, int mH = 125
       histo_ScaleGBoundingDown    [ic]->SetBinContent(nb, TMath::Max((float)histo_ScaleGBoundingDown    [ic]->GetBinContent(nb),0.0f));
       histo_PUBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PUBoundingUp  	[ic]->GetBinContent(nb),0.0f));
       histo_PUBoundingDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PUBoundingDown	[ic]->GetBinContent(nb),0.0f));
+      histo_PUBoundingDown        [ic]->SetBinContent(nb, TMath::Max((float)(2*histo_Baseline[ic]->GetBinContent(nb)-histo_PUBoundingUp[ic]->GetBinContent(nb)),0.0f));
       for(int ny=0; ny<nYears; ny++){
       histo_BTAGBBoundingUp    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGBBoundingUp    [ny][ic]->GetBinContent(nb),0.0f));
       histo_BTAGBBoundingDown  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGBBoundingDown  [ny][ic]->GetBinContent(nb),0.0f));
+      histo_BTAGBBoundingDown  [ny][ic]->SetBinContent(nb, TMath::Max((float)(2*histo_Baseline[ic]->GetBinContent(nb)-histo_BTAGBBoundingUp[ny][ic]->GetBinContent(nb)),0.0f));
       histo_BTAGLBoundingUp    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGLBoundingUp    [ny][ic]->GetBinContent(nb),0.0f));
       histo_BTAGLBoundingDown  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGLBoundingDown  [ny][ic]->GetBinContent(nb),0.0f));
+      histo_BTAGLBoundingDown  [ny][ic]->SetBinContent(nb, TMath::Max((float)(2*histo_Baseline[ic]->GetBinContent(nb)-histo_BTAGLBoundingUp[ny][ic]->GetBinContent(nb)),0.0f));
       histo_JESBoundingUp      [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingUp      [ny][ic]->GetBinContent(nb),0.0f));
       histo_JESBoundingDown    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingDown    [ny][ic]->GetBinContent(nb),0.0f));
+      histo_JESBoundingDown    [ny][ic]->SetBinContent(nb, TMath::Max((float)(2*histo_Baseline[ic]->GetBinContent(nb)-histo_JESBoundingUp[ny][ic]->GetBinContent(nb)),0.0f));
       histo_PreFireBoundingUp  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingUp  [ny][ic]->GetBinContent(nb),0.0f));
       histo_PreFireBoundingDown[ny][ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingDown[ny][ic]->GetBinContent(nb),0.0f));
       histo_TriggerBoundingUp  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_TriggerBoundingUp  [ny][ic]->GetBinContent(nb),0.0f));

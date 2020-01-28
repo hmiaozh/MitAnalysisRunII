@@ -38,6 +38,8 @@ elif [ $NSEL == 5 ]; then
   nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}',1)'   >& log_zh_${YEAR}_1j &
   if [ $# == 3 ] && [ $3 == 1 ]; then
     for jetValue in 0 1; do
+      nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}','${jetValue}',"NoBSM")' >& log_zhNoBSM_${YEAR}_${jetValue}j &
+
       nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}','${jetValue}',"Unpart_ZToLL_SU-0_dU-1p01")' >& log_zhUnpart_ZToLL_SU-0_dU-1p01_${YEAR}_${jetValue}j &
       nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}','${jetValue}',"Unpart_ZToLL_SU-0_dU-1p02")' >& log_zhUnpart_ZToLL_SU-0_dU-1p02_${YEAR}_${jetValue}j &
       nohup time root -q -l -b MitAnalysisRunII/panda/macros/9x/zhAnalysis.C+'('${YEAR}','${jetValue}',"Unpart_ZToLL_SU-0_dU-1p04")' >& log_zhUnpart_ZToLL_SU-0_dU-1p04_${YEAR}_${jetValue}j &

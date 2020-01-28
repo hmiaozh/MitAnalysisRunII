@@ -158,6 +158,7 @@ rm -f studyFitResults*.txt;
 
 
 elif [ $NSEL == 'zh' ]; then
+#grep -e POST -e background log|awk '{if($1=="POST"&&$3~"BSM")printf("%20s %6.1f pm %6.1f\n",$3,$16,$18);else if($1=="POST")printf("%20s %6.1f pm %6.1f\n",$3,$20,$22);else printf("\n%20s %6.1f pm %6.1f\n",$2,$10,$12);}'
 echo "***************ZH SR*****"
 root -l -q -b MitAnalysisRunII/panda/makePlots/studyFitResults.C+'(21, "done_ana/histoZH_2016_0j_48.root", "ana_zh/fitDiagnosticszh_comb_obs.root", "ZH0_2016")';
 mv studyFitResults.txt studyFitResults_0j_2016.txt;

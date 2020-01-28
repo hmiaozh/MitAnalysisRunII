@@ -14,13 +14,25 @@
 #include "MitAnalysisRunII/panda/macros/9x/pandaFlat.C"
 #include "MitAnalysisRunII/panda/macros/9x/common.h"
 
-void makeZHDataCards(TString outputLimits = "zh_comb_input.root", int jetValue = -1){
+void makeZHYearDataCards(TString folder = "", TString outputLimits = "zh_2016_input.root", int jetValue = -1, TString whichBSMName = ""){
 
-  double qcdScaleTotal[2] = {0.035, 0.231};
+  int year = -1;
+  if     (outputLimits.Contains("2016")) year = 2016;
+  else if(outputLimits.Contains("2017")) year = 2017;
+  else if(outputLimits.Contains("2018")) year = 2018;
+
+  int whichYear = -1;
+  if     (year == 2016) {whichYear = Y2016;}
+  else if(year == 2017) {whichYear = Y2017;}
+  else if(year == 2018) {whichYear = Y2018;}
+  else {printf("Wrong year (%d)!\n",year); return;}
+
+  double qcdScaleTotal[2] = {0.0345, 0.2200}; // use sigma(ZH) (0.0345) instead of sigma(qq->ZZ) (0.0055) and sigma(gg->ZH) (0.2200)
+  if(whichBSMName != "") {qcdScaleTotal[0] = 0.0; qcdScaleTotal[1] = 0.0;}
   double pdfTotal[2] = {0.016, 0.051};
   double syst_WZl[2] = {1.010, 1.012};
 
-  TFile* infile = new TFile(outputLimits,"read");
+  TFile* infile = new TFile(Form("%s%s",folder.Data(),outputLimits.Data()),"read");
 
   TH1D *histo_Baseline[nPlotCategories];
   for(unsigned ic=kPlotData; ic!=nPlotCategories; ic++) {
@@ -31,8 +43,9 @@ void makeZHDataCards(TString outputLimits = "zh_comb_input.root", int jetValue =
 
   // Filling datacards txt file
   TString outputLimitsCard = outputLimits; outputLimitsCard = "datacard_" + outputLimitsCard.ReplaceAll("_input.root",".txt");
+  printf("datacard: %s%s\n",folder.Data(),outputLimitsCard.Data());
   ofstream newcardShape;
-  newcardShape.open(outputLimitsCard.Data());
+  newcardShape.open(Form("%s%s",folder.Data(),outputLimitsCard.Data()));
   newcardShape << Form("imax * number of channels\n");
   newcardShape << Form("jmax * number of background minus 1\n");
   newcardShape << Form("kmax * number of nuisance parameters\n");
@@ -75,35 +88,23 @@ void makeZHDataCards(TString outputLimits = "zh_comb_input.root", int jetValue =
   }
   newcardShape << Form("\n");
 
-  for(int ny=2016; ny<2016+nYears; ny++){
-    newcardShape << Form("CMS_fake_m_%d    lnN     ",ny);
-    for (int ic=0; ic<nPlotCategories; ic++){
-      if(!histo_Baseline[ic]) continue;
-      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-      if(ic == kPlotNonPrompt) newcardShape << Form("%.3f ",TMath::Sqrt(lumiV[ny-2016]/totalLumiV) * (1.15-1.0)+1.0);
-      else                     newcardShape << Form("- ");
-    }
-    newcardShape << Form("\n");
-    newcardShape << Form("CMS_fake_e_%d    lnN     ",ny);
-    for (int ic=0; ic<nPlotCategories; ic++){
-      if(!histo_Baseline[ic]) continue;
-      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-      if(ic == kPlotNonPrompt) newcardShape << Form("%.3f ",TMath::Sqrt(lumiV[ny-2016]/totalLumiV) * (1.15-1.0)+1.0);
-      else                     newcardShape << Form("- ");
-    }
-    newcardShape << Form("\n");
+  newcardShape << Form("CMS_fake    lnN     ");
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(!histo_Baseline[ic]) continue;
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    if(ic == kPlotNonPrompt) newcardShape << Form("1.2 ");
+    else                     newcardShape << Form("- ");
   }
+  newcardShape << Form("\n");
 
-  for(int ny=2016; ny<2016+nYears; ny++){
-    newcardShape << Form("lumi_13TeV_%d    lnN     ",ny);
-    for (int ic=0; ic<nPlotCategories; ic++){
-      if(!histo_Baseline[ic]) continue;
-      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-      if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-      else                     newcardShape << Form("%6.3f ",TMath::Sqrt(lumiV[ny-2016]/totalLumiV) * (lumiE[ny-2016]-1.0)+1.0);
-    }
-    newcardShape << Form("\n");
+  newcardShape << Form("lumi_13TeV_%d    lnN     ",year);
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(!histo_Baseline[ic]) continue;
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
+    else                     newcardShape << Form("%6.3f ",lumiE[whichYear]);
   }
+  newcardShape << Form("\n");
 
   newcardShape << Form("CMS_momres_m    lnN     ");
   for (int ic=0; ic<nPlotCategories; ic++){
@@ -132,30 +133,51 @@ void makeZHDataCards(TString outputLimits = "zh_comb_input.root", int jetValue =
   }
   newcardShape << Form("\n");
 
-  newcardShape << Form("EWKWZCorr    shape     ");
-  for (int ic=0; ic<nPlotCategories; ic++){
-    if(!histo_Baseline[ic]) continue;
-    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic != kPlotWZ) newcardShape << Form("- ");
-    else              newcardShape << Form("1.0 ");
-  }
-  newcardShape << Form("\n");
+  if(useZZWZEWKUnc == false){
+    newcardShape << Form("EWKWZCorr    shape     ");
+    for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic != kPlotWZ) newcardShape << Form("- ");
+      else              newcardShape << Form("1.0 ");
+    }
+    newcardShape << Form("\n");
 
-  newcardShape << Form("EWKqqZZCorr    shape     ");
-  for (int ic=0; ic<nPlotCategories; ic++){
-    if(!histo_Baseline[ic]) continue;
-    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic != kPlotZZ) newcardShape << Form("- ");
-    else              newcardShape << Form("1.0 ");
-  }
-  newcardShape << Form("\n");
+    newcardShape << Form("EWKqqZZCorr    shape     ");
+    for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic != kPlotZZ) newcardShape << Form("- ");
+      else              newcardShape << Form("1.0 ");
+    }
+    newcardShape << Form("\n");
 
-  newcardShape << Form("ggZZCorr    shape     ");
+    newcardShape << Form("ggZZCorr    shape     ");
+    for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic != kPlotZZ) newcardShape << Form("- ");
+      else              newcardShape << Form("1.0 ");
+    }
+    newcardShape << Form("\n");
+  }
+  else {
+    newcardShape << Form("CorrWZZZ    shape     ");
+    for (int ic=0; ic<nPlotCategories; ic++){
+      if(!histo_Baseline[ic]) continue;
+      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+      if(ic != kPlotZZ) newcardShape << Form("- ");
+      else              newcardShape << Form("1.0 ");
+    }
+    newcardShape << Form("\n");
+  }
+
+  newcardShape << Form("EWKZHCorr    shape     ");
   for (int ic=0; ic<nPlotCategories; ic++){
     if(!histo_Baseline[ic]) continue;
     if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-    if(ic != kPlotZZ) newcardShape << Form("- ");
-    else              newcardShape << Form("1.0 ");
+    if(ic != kPlotBSM) newcardShape << Form("- ");
+    else	       newcardShape << Form("1.0 ");
   }
   newcardShape << Form("\n");
 
@@ -235,58 +257,62 @@ void makeZHDataCards(TString outputLimits = "zh_comb_input.root", int jetValue =
   }
   newcardShape << Form("\n");
 
-  for(int ny=2016; ny<2016+nYears; ny++){
-    newcardShape << Form("CMS_btagb_%d    shape     ",ny);
-    for (int ic=0; ic<nPlotCategories; ic++){
-      if(!histo_Baseline[ic]) continue;
-      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-      if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-      else                     newcardShape << Form("1.0 ");
-    }
-    newcardShape << Form("\n");
-
-    newcardShape << Form("CMS_btagl_%d    shape     ",ny);
-    for (int ic=0; ic<nPlotCategories; ic++){
-      if(!histo_Baseline[ic]) continue;
-      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-      if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-      else                     newcardShape << Form("1.0 ");
-    }
-    newcardShape << Form("\n");
-
-    newcardShape << Form("CMS_jes_%d    shape     ",ny);
-    for (int ic=0; ic<nPlotCategories; ic++){
-      if(!histo_Baseline[ic]) continue;
-      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-      if(ic == kPlotNonPrompt || ic == kPlotDY) newcardShape << Form("- ");
-      else                                      newcardShape << Form("1.0 ");
-    }
-    newcardShape << Form("\n");
-
-    newcardShape << Form("CMS_prefire_%d    shape     ",ny);
-    for (int ic=0; ic<nPlotCategories; ic++){
-      if(!histo_Baseline[ic]) continue;
-      if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-      if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-      else                     newcardShape << Form("1.0 ");
-    }
-    newcardShape << Form("\n");
-
-     newcardShape << Form("CMS_trigger_%d    shape     ",ny);
-     for (int ic=0; ic<nPlotCategories; ic++){
-       if(!histo_Baseline[ic]) continue;
-       if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
-       if(ic == kPlotNonPrompt) newcardShape << Form("- ");
-       else                     newcardShape << Form("1.0 ");
-     }
-     newcardShape << Form("\n");
+  newcardShape << Form("CMS_btagb_%d    shape     ",year);
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(!histo_Baseline[ic]) continue;
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
+    else                     newcardShape << Form("1.0 ");
   }
+  newcardShape << Form("\n");
 
-  newcardShape << Form("CMS_hinv_vvnorm_bin  rateParam * %s 1 [0.1,10]\n",plotBaseNames[kPlotZZ].Data());
-  newcardShape << Form("CMS_hinv_vvnorm_bin  rateParam * %s 1 [0.1,10]\n",plotBaseNames[kPlotWZ].Data());
-  if(jetValue != -1){
-    newcardShape << Form("CMS_hinv_emnorm_bin  rateParam * %s 1 [0.1,10]\n",plotBaseNames[kPlotEM].Data());
-    newcardShape << Form("CMS_hinv_dynorm%d_bin rateParam * %s 1 [0.1,10]\n",jetValue,plotBaseNames[kPlotDY].Data());
+  newcardShape << Form("CMS_btagl_%d    shape     ",year);
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(!histo_Baseline[ic]) continue;
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
+    else                     newcardShape << Form("1.0 ");
+  }
+  newcardShape << Form("\n");
+
+  newcardShape << Form("CMS_jes_%d    shape     ",year);
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(!histo_Baseline[ic]) continue;
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    if(ic == kPlotNonPrompt || ic == kPlotDY) newcardShape << Form("- ");
+    else                                      newcardShape << Form("1.0 ");
+  }
+  newcardShape << Form("\n");
+
+  newcardShape << Form("CMS_prefire_%d    shape     ",year);
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(!histo_Baseline[ic]) continue;
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
+    else                     newcardShape << Form("1.0 ");
+  }
+  newcardShape << Form("\n");
+
+  newcardShape << Form("CMS_trigger_%d    shape     ",year);
+  for (int ic=0; ic<nPlotCategories; ic++){
+    if(!histo_Baseline[ic]) continue;
+    if(ic == kPlotData || histo_Baseline[ic]->GetSumOfWeights() <= 0) continue;
+    if(ic == kPlotNonPrompt) newcardShape << Form("- ");
+    else                     newcardShape << Form("1.0 ");
+  }
+  newcardShape << Form("\n");
+
+  if(useZZWZEWKUnc == true){
+    newcardShape << Form("CMS_hinv_vvnorm_bin_%d  rateParam * %s 1 [0.1,10]\n",year,plotBaseNames[kPlotZZ].Data());
+    newcardShape << Form("CMS_hinv_vvnorm_bin_%d  rateParam * %s 1 [0.1,10]\n",year,plotBaseNames[kPlotWZ].Data());
+  }
+  else {
+    newcardShape << Form("CMS_hinv_zznorm_bin_%d  rateParam * %s 1 [0.1,10]\n",year,plotBaseNames[kPlotZZ].Data());
+    newcardShape << Form("CMS_hinv_wznorm_bin_%d  rateParam * %s 1 [0.1,10]\n",year,plotBaseNames[kPlotWZ].Data());
+  }
+  newcardShape << Form("CMS_hinv_emnorm_bin_%d  rateParam * %s 1 [0.1,10]\n",year,plotBaseNames[kPlotEM].Data());
+  if(jetValue >= 0) {
+    newcardShape << Form("CMS_hinv_dynorm%d_bin_%d  rateParam * %s 1 [0.1,10]\n",jetValue,year,plotBaseNames[kPlotDY].Data());
   }
 
   newcardShape << Form("ch1 autoMCStats 0\n");

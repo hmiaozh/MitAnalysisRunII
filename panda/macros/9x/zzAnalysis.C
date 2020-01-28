@@ -164,7 +164,8 @@ int year
   //TH1D *fhDNPV    = (TH1D*)(fNPVFile->Get("npvWeights"));   assert(fhDNPV);    fhDNPV	->SetDirectory(0);
   //delete fNPVFile;
 
-  const int nBinMVA = 11; Float_t xbins[nBinMVA+1] = {100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600, 1000};
+  const float metCut = 80;
+  const int nBinMVA = 12; Float_t xbins[nBinMVA+1] = {metCut, 100, 125, 150, 175, 200, 250, 300, 350, 400, 500, 600, 1000};
 
   int nBinPlot      = 200;
   double xminPlot   = 0.0;
@@ -176,7 +177,7 @@ int year
     else if(thePlot >= 15 && thePlot <= 19) {nBinPlot = 800; xminPlot =  0.0; xmaxPlot = 800;}
     else if(thePlot >= 20 && thePlot <= 44) {nBinPlot = 200; xminPlot =  0.0; xmaxPlot = 200;}
     else if(thePlot >= 45 && thePlot <= 54) {nBinPlot =   5; xminPlot = -0.5; xmaxPlot = 4.5;}
-    else if(thePlot >= 55 && thePlot <= 64) {nBinPlot =  50; xminPlot =100.0; xmaxPlot = 300;}
+    else if(thePlot >= 55 && thePlot <= 64) {nBinPlot =  11; xminPlot = 80.0; xmaxPlot = 300;}
     else if(thePlot >= 65 && thePlot <= 69) {nBinPlot =   7; xminPlot = -0.5; xmaxPlot = 6.5;}
     if(thePlot == allPlots-1) for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinMVA, xbins);
     else                      for(int i=0; i<nPlotCategories; i++) histo[thePlot][i] = new TH1D(Form("histo_%d_%d",thePlot,i), Form("histo_%d_%d",thePlot,i), nBinPlot, xminPlot, xmaxPlot);
@@ -440,7 +441,7 @@ int year
       TLorentzVector vMetZXLike = vMet + vZ2l1 + vZ2l2; TLorentzVector vMetZXLikeUp = vMetUp + vZ2l1 + vZ2l2; TLorentzVector vMetZXLikeDown = vMetDown + vZ2l1 + vZ2l2;
       TLorentzVector dilep = vZ1l1 + vZ1l2;
 
-      bool passMET = vMetZXLike.Pt() > 100; bool passMETUp = vMetZXLikeUp.Pt() > 100; bool passMETDown = vMetZXLikeDown.Pt() > 100;
+      bool passMET = vMetZXLike.Pt() > metCut; bool passMETUp = vMetZXLikeUp.Pt() > metCut; bool passMETDown = vMetZXLikeDown.Pt() > metCut;
 
       bool passPTLL = dilep.Pt() > 60;
       double ptFrac = TMath::Abs(dilep.Pt()-vMetZXLike.Pt())/dilep.Pt(); double ptFracUp = TMath::Abs(dilep.Pt()-vMetZXLikeUp.Pt())/dilep.Pt(); double ptFracDown = TMath::Abs(dilep.Pt()-vMetZXLikeDown.Pt())/dilep.Pt();
@@ -670,15 +671,19 @@ int year
       histo_LepEffMBoundingDown   [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffMBoundingDown	[ic]->GetBinContent(nb),0.0f));
       histo_LepEffEBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffEBoundingUp	[ic]->GetBinContent(nb),0.0f));
       histo_LepEffEBoundingDown   [ic]->SetBinContent(nb, TMath::Max((float)histo_LepEffEBoundingDown	[ic]->GetBinContent(nb),0.0f));
-      histo_PUBoundingUp	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PUBoundingUp  	[ic]->GetBinContent(nb),0.0f));
-      histo_PUBoundingDown	  [ic]->SetBinContent(nb, TMath::Max((float)histo_PUBoundingDown	[ic]->GetBinContent(nb),0.0f));
+      histo_PUBoundingUp          [ic]->SetBinContent(nb, TMath::Max((float)histo_PUBoundingUp  	[ic]->GetBinContent(nb),0.0f));
+      histo_PUBoundingDown        [ic]->SetBinContent(nb, TMath::Max((float)histo_PUBoundingDown	[ic]->GetBinContent(nb),0.0f));
+      histo_PUBoundingDown        [ic]->SetBinContent(nb, TMath::Max((float)(2*histo_Baseline[ic]->GetBinContent(nb)-histo_PUBoundingUp[ic]->GetBinContent(nb)),0.0f));
       for(int ny=0; ny<nYears; ny++){
       histo_BTAGBBoundingUp    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGBBoundingUp    [ny][ic]->GetBinContent(nb),0.0f));
       histo_BTAGBBoundingDown  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGBBoundingDown  [ny][ic]->GetBinContent(nb),0.0f));
+      histo_BTAGBBoundingDown  [ny][ic]->SetBinContent(nb, TMath::Max((float)(2*histo_Baseline[ic]->GetBinContent(nb)-histo_BTAGBBoundingUp[ny][ic]->GetBinContent(nb)),0.0f));
       histo_BTAGLBoundingUp    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGLBoundingUp    [ny][ic]->GetBinContent(nb),0.0f));
       histo_BTAGLBoundingDown  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_BTAGLBoundingDown  [ny][ic]->GetBinContent(nb),0.0f));
+      histo_BTAGLBoundingDown  [ny][ic]->SetBinContent(nb, TMath::Max((float)(2*histo_Baseline[ic]->GetBinContent(nb)-histo_BTAGLBoundingUp[ny][ic]->GetBinContent(nb)),0.0f));
       histo_JESBoundingUp      [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingUp      [ny][ic]->GetBinContent(nb),0.0f));
       histo_JESBoundingDown    [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_JESBoundingDown    [ny][ic]->GetBinContent(nb),0.0f));
+      histo_JESBoundingDown    [ny][ic]->SetBinContent(nb, TMath::Max((float)(2*histo_Baseline[ic]->GetBinContent(nb)-histo_JESBoundingUp[ny][ic]->GetBinContent(nb)),0.0f));
       histo_PreFireBoundingUp  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingUp  [ny][ic]->GetBinContent(nb),0.0f));
       histo_PreFireBoundingDown[ny][ic]->SetBinContent(nb, TMath::Max((float)histo_PreFireBoundingDown[ny][ic]->GetBinContent(nb),0.0f));
       histo_TriggerBoundingUp  [ny][ic]->SetBinContent(nb, TMath::Max((float)histo_TriggerBoundingUp  [ny][ic]->GetBinContent(nb),0.0f));

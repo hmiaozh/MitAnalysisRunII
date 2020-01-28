@@ -89,21 +89,21 @@ void ewkvbsMVA(
     dataloader->AddVariable("mvajetpt1" , "mvajetpt1" , "", 'F');
     dataloader->AddVariable("mvajetpt2" , "mvajetpt2" , "", 'F');
     dataloader->AddVariable("mvajeteta1", "mvajeteta1", "", 'F');
-    //dataloader->AddVariable("mvajeteta2", "mvajeteta2", "", 'F');
-    //dataloader->AddVariable("mvanjets"  , "mvanjets"  , "", 'F');
-    //dataloader->AddVariable("mvaWpt"    , "mvaWpt"    , "", 'F');
-    //dataloader->AddVariable("mvaZpt"    , "mvaZpt"    , "", 'F');
-    //dataloader->AddVariable("mvaVVmt"   , "mvaVVmt"   , "", 'F');
     dataloader->AddVariable("mvaWlZdeta", "mvaWlZdeta", "", 'F');
     dataloader->AddVariable("mvazstar"  , "mvazstar"  , "", 'F');
     dataloader->AddVariable("mvazep1"   , "mvazep1"   , "", 'F');
     dataloader->AddVariable("mvazep2"   , "mvazep2"   , "", 'F');
     dataloader->AddVariable("mvazep3"   , "mvazep3"   , "", 'F');
-    //dataloader->AddVariable("mvamaxzep" , "mvamaxzep" , "", 'F');
     dataloader->AddVariable("mvaj1Zdr"  , "mvaj1Zdr"  , "", 'F');
-    //dataloader->AddVariable("mvaj2Zdr"  , "mvaj2Zdr"  , "", 'F');
     dataloader->AddVariable("mvapttot/mvasumpttot" , "mvapttotN" , "", 'F');
-    //dataloader->AddVariable("mvasumpttot"  , "mvasumpttot"  , "", 'F');
+    dataloader->AddVariable("mvamaxzep" , "mvamaxzep" , "", 'F');
+    dataloader->AddVariable("mvajeteta2", "mvajeteta2", "", 'F');
+    dataloader->AddVariable("mvaWpt"	, "mvaWpt"    , "", 'F');
+    dataloader->AddVariable("mvaZpt"	, "mvaZpt"    , "", 'F');
+    dataloader->AddVariable("mvaVVmt"	, "mvaVVmt"   , "", 'F');
+    dataloader->AddVariable("mvaj2Zdr"  , "mvaj2Zdr"  , "", 'F');
+    dataloader->AddVariable("mvasumpttot"  , "mvasumpttot"  , "", 'F');
+    //dataloader->AddVariable("mvanjets"  , "mvanjets"  , "", 'F');
   }
 
   TString prepareOptions="NormMode=None";
