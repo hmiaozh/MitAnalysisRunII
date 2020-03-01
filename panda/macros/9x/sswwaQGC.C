@@ -33,8 +33,8 @@ enum systType                     {JESUP=0, JESDOWN,  JERUP,  JERDOWN, nSystType
 TString systTypeName[nSystTypes]= {"JESUP","JESDOWN","JERUP","JERDOWN"};
 
 
-const int which_para = 2;
-const int which_point = 34;
+const int which_para = 3;
+const int which_point = 31;
 
 
 //TString AQGCParaName[1] = {"ft1"};
@@ -311,6 +311,8 @@ int year, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   TH1D *hWW_KF_CMSDown = (TH1D*)(fVVEWKCorr->Get("hWW_KF_CMSDown")); assert(hWW_KF_CMSDown); hWW_KF_CMSDown->SetDirectory(0);
   delete fVVEWKCorr;
 
+
+  //const int nBinAQGCMTW = 3; Float_t xbinsAQGCMTW[nBinAQGCMTW+1] = {0,100,200,300,400,500,600,700,800};
   /*
   const int nBinMVA = 52; Float_t xbins[nBinMVA+1] = {500, 800, 1200, 1800, 2000,
                                                           2800, 3200, 3800, 4000,
@@ -339,12 +341,26 @@ int year, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   const int nBinMJJ = 8; Float_t xbinsMJJ[nBinMJJ+1] = {500,650,800,1000,1200,1500,1800,2300,3000};
   const int nBinMJJCR = 4; Float_t xbinsMJJCR[nBinMJJCR+1] = {500,800,1200,1800,3000};
   const int nBinMLL = 4; Float_t xbinsMLL[nBinMLL+1] = {20, 80, 140, 240, 500};
+  const int nBinWWMT = 5; Float_t xbinsWWMT[nBinWWMT+1] = {0., 350, 650, 850, 1050, 1250};
+  const int nBinWZMT = 5; Float_t xbinsWZMT[nBinWZMT+1] = {0., 400, 750, 1050, 1350, 1650};
   const int nBinWZBDT = 8; Float_t xbinsWZBDT[nBinWZBDT+1] = {-1.000,-0.280,-0.000, 0.230, 0.430, 0.600, 0.740, 0.860, 1.000};
   const int nBinWWBDT = 7; Float_t xbinsWWBDT[nBinWWBDT+1] = {-1.000,-0.244, 0.040, 0.243, 0.401, 0.535, 0.662, 1.000}; // V1_v6
 
-  const int nBinMVA = 32; Float_t xbins[nBinMVA+1];
+
+  TH1D* histo_mT_ww[nPlotCategories];
+  TH1D* histo_mT_wz[nPlotCategories];
+  TH2D* histo_mT_mll[nPlotCategories];
+  for(int i=0; i<nPlotCategories; i++){
+     histo_mT_ww[i] = new TH1D(Form("histo_mT_ww_%d",i), Form("histo_mT_ww_%d",i), nBinWWMT, xbinsWWMT);
+     histo_mT_wz[i] = new TH1D(Form("histo_mT_wz_%d",i), Form("histo_mT_wz_%d",i), nBinWZMT, xbinsWZMT);
+     histo_mT_mll[i]= new TH2D(Form("histo_mT_mll_%d",i), Form("histo_mT_mll_%d",i), 100 ,0,4000,100,0,2000);
+  }
+
+
+
+  const int nBinMVA = 36; Float_t xbins[nBinMVA+1];
   const int nBinMVA_ww =24; Float_t xbins_ww[nBinMVA_ww+1];
-  const int nBinMVA_wz = 6; Float_t xbins_wz[nBinMVA_wz+1];
+  const int nBinMVA_wz = 10; Float_t xbins_wz[nBinMVA_wz+1];
   for(int nb=0; nb<=nBinMVA; nb++) xbins[nb] = -0.5 + nb;
   for(int nb=0; nb<=nBinMVA_ww; nb++) xbins_ww[nb] = -0.5 + nb;
   for(int nb=0; nb<=nBinMVA_wz; nb++) xbins_wz[nb] = -0.5 + nb;
@@ -1027,6 +1043,11 @@ int year, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       double mtVVUp   = TMath::Sqrt(2.0*alllep.Pt()*vMetUp.Pt()  *(1.0 - cos(deltaPhiAllleptonMetUp  )));
       double mtVVDown = TMath::Sqrt(2.0*alllep.Pt()*vMetDown.Pt()*(1.0 - cos(deltaPhiAllleptonMetDown)));
 
+      double mt2VV    = (alllep + vMet).Mt();
+      double mt2VVUp  = (alllep + vMetUp).Mt();
+      double mt2VVDown= (alllep + vMetDown).Mt();
+
+
       TLorentzVector vW     = vWln + vMet;
       TLorentzVector vWUp   = vWln + vMetUp;
       TLorentzVector vWDown = vWln + vMetDown;
@@ -1335,25 +1356,33 @@ int year, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 
 
       double totalWeight_aqgc = totalWeight;
+      double totalWeight_plot = totalWeight;
 
       if(theCategory == kPlotEWKSSWW || theCategory == kPlotEWKWZ) totalWeight *= rw_aqgc_ft0[17];
 
-      /*
+      
       if(theCategory == kPlotEWKSSWW || theCategory == kPlotEWKWZ){
         //totalWeight *= rw_aqgc_ft0[17];
         switch(which_para){
-          case 1: totalWeight *= rw_aqgc_ft0[which_point]; break;
-          case 2: totalWeight *= rw_aqgc_ft1[which_point]; break;
-          case 3: totalWeight *= rw_aqgc_ft2[which_point]; break;
-          case 4: totalWeight *= rw_aqgc_fm0[which_point]; break;
-          case 5: totalWeight *= rw_aqgc_fm1[which_point]; break;
-          case 6: totalWeight *= rw_aqgc_fm6[which_point]; break;
-          case 7: totalWeight *= rw_aqgc_fm7[which_point]; break;
-          case 8: totalWeight *= rw_aqgc_fs0[which_point]; break;
-          case 9: totalWeight *= rw_aqgc_fs1[which_point]; break;
+          case 1: totalWeight_plot *= rw_aqgc_ft0[which_point]; break;
+          case 2: totalWeight_plot *= rw_aqgc_ft1[which_point]; break;
+          case 3: totalWeight_plot *= rw_aqgc_ft2[which_point]; break;
+          case 4: totalWeight_plot *= rw_aqgc_fm0[which_point]; break;
+          case 5: totalWeight_plot *= rw_aqgc_fm1[which_point]; break;
+          case 6: totalWeight_plot *= rw_aqgc_fm6[which_point]; break;
+          case 7: totalWeight_plot *= rw_aqgc_fm7[which_point]; break;
+          case 8: totalWeight_plot *= rw_aqgc_fs0[which_point]; break;
+          case 9: totalWeight_plot *= rw_aqgc_fs1[which_point]; break;
         }
       }
-      */ 
+       
+
+      if(passWWSel)          {histo_mT_ww[theCategory]->Fill(TMath::Min(mt2VV,1249.999),totalWeight); histo_mT_mll[theCategory]->Fill(TMath::Min(mt2VV,3999.999),TMath::Min(mllZ,1999.999) );}
+      if(passEWKWZSel)       histo_mT_wz[theCategory]->Fill(TMath::Min(mt2VV,1649.999),totalWeight);
+
+      if(theCategory == kPlotEWKSSWW && passWWSel) histo_mT_ww[24]->Fill(TMath::Min(mt2VV,1249.999),totalWeight_plot);
+      if(theCategory == kPlotEWKWZ && passEWKWZSel)   histo_mT_wz[25]->Fill(TMath::Min(mt2VV,1649.999),totalWeight_plot);
+
 
       int qTotCat = 0; if(qTot<0) qTotCat = 1;
 
@@ -1374,14 +1403,37 @@ int year, bool isDesk014 = false, TString WZName = "WZ3l_MG"
         double MVAVarJERUp   = -1;
         double MVAVarJERDown = -1;
 
+	/*
         double typeSelAux0 = 0;
         if     (mllZ < 150) typeSelAux0 = 0;
         else if(mllZ < 300) typeSelAux0 = 1;
         else if(mllZ < 450) typeSelAux0 = 2;
         else if(mllZ < 600) typeSelAux0 = 3;
         else                typeSelAux0 = 4;
+	*/
+
+	double typeSelAux0[5] = {0,0,0,0,0};
+        if     (mt2VV     <  350) typeSelAux0[0] = 0;
+        else if(mt2VV     <  650) typeSelAux0[0] = 1;
+        else if(mt2VV     <  850) typeSelAux0[0] = 2;
+        else if(mt2VV     < 1050) typeSelAux0[0] = 3;
+        else                      typeSelAux0[0] = 4; 
+        if     (mt2VVUp   <  350) typeSelAux0[1] = 0;
+        else if(mt2VVUp   <  650) typeSelAux0[1] = 1;
+        else if(mt2VVUp   <  850) typeSelAux0[1] = 2;
+        else if(mt2VVUp   < 1050) typeSelAux0[1] = 3;
+        else                      typeSelAux0[1] = 4; 
+        if     (mt2VVDown <  350) typeSelAux0[2] = 0;
+        else if(mt2VVDown <  650) typeSelAux0[2] = 1;
+        else if(mt2VVDown <  850) typeSelAux0[2] = 2;
+        else if(mt2VVDown < 1050) typeSelAux0[2] = 3;
+        else                      typeSelAux0[2] = 4; 
+	typeSelAux0[3] = typeSelAux0[0];
+        typeSelAux0[4] = typeSelAux0[0];
+
 
         double typeSelAux1[5] = {0,0,0,0,0};
+	
         if     (massJJ        <  800) typeSelAux1[0] = 0;
 	else if(massJJ        < 1200) typeSelAux1[0] = 1;
 	else if(massJJ        < 1800) typeSelAux1[0] = 2;
@@ -1402,8 +1454,10 @@ int year, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 	else if(massJJJERDown < 1200) typeSelAux1[4] = 1;
 	else if(massJJJERDown < 1800) typeSelAux1[4] = 2;
 	else                          typeSelAux1[4] = 3; 
+	
 
         double typeSelAux2[5] = {0,0,0,0,0};
+	/*
         if     (mtVV <  300) typeSelAux2[0] = 0;
 	else if(mtVV <  600) typeSelAux2[0] = 1;
 	else                 typeSelAux2[0] = 2;
@@ -1418,37 +1472,75 @@ int year, bool isDesk014 = false, TString WZName = "WZ3l_MG"
 	if(massJJJESDown > 1200) typeSelAux2[2] += 3;
         typeSelAux2[3] = typeSelAux2[0];
         typeSelAux2[4] = typeSelAux2[0];
+	*/
+        if     (mt2VV     <  400) typeSelAux2[0] = 0;
+        else if(mt2VV     <  750) typeSelAux2[0] = 1;
+        else if(mt2VV     < 1050) typeSelAux2[0] = 2;
+        else if(mt2VV     < 1350) typeSelAux2[0] = 3;
+        else                      typeSelAux2[0] = 4;
+	if(massJJ > 1200)         typeSelAux2[0] += 5;
+        if     (mt2VVUp   <  400) typeSelAux2[1] = 0;
+        else if(mt2VVUp   <  750) typeSelAux2[1] = 1;
+        else if(mt2VVUp   < 1050) typeSelAux2[1] = 2;
+        else if(mt2VVUp   < 1350) typeSelAux2[1] = 3;
+        else                      typeSelAux2[1] = 4;
+	if(massJJJESUp > 1200)    typeSelAux2[1] += 5;
+        if     (mt2VVDown <  400) typeSelAux2[2] = 0;
+        else if(mt2VVDown <  750) typeSelAux2[2] = 1;
+        else if(mt2VVDown < 1050) typeSelAux2[2] = 2;
+        else if(mt2VVDown < 1350) typeSelAux2[2] = 3;
+        else                      typeSelAux2[2] = 4;
+	if(massJJJESDown > 1200)  typeSelAux2[2] += 5;
+        typeSelAux0[3] = typeSelAux0[0];
+        typeSelAux0[4] = typeSelAux0[0];
+
+	/*
+	if     (mt2VV <  600) typeSelAux2[0] = 0;
+        else if(mt2VV <  1200) typeSelAux2[0] = 1;
+        else                 typeSelAux2[0] = 2;
+        if(massJJ > 1200) typeSelAux2[0] += 3;
+        if     (mt2VVUp <  600) typeSelAux2[1] = 0;
+        else if(mt2VVUp <  1200) typeSelAux2[1] = 1;
+        else                   typeSelAux2[1] = 2;
+        if(massJJJESUp > 1200) typeSelAux2[1] += 3;
+        if     (mt2VVDown <  600) typeSelAux2[2] = 0;
+        else if(mt2VVDown <  1200) typeSelAux2[2] = 1;
+        else                     typeSelAux2[2] = 2;
+        if(massJJJESDown > 1200) typeSelAux2[2] += 3;
+        typeSelAux2[3] = typeSelAux2[0];
+        typeSelAux2[4] = typeSelAux2[0];
+	*/
 
         int whichBin = 0;
-        if     (dataCardSel        == 0) MVAVar        = typeSelAux0 + 5*typeSelAux1[whichBin];
+        if     (dataCardSel        == 0) MVAVar        = typeSelAux0[whichBin] + 5*typeSelAux1[whichBin];
         else if(dataCardSel        == 1) MVAVar        = 20 + typeSelAux1[whichBin];
         else if(dataCardSel        == 2) MVAVar        = 24;
         else if(dataCardSel        == 3) MVAVar        = 25;
         else if(dataCardSel        == 4) MVAVar        = 26 + typeSelAux2[whichBin];
 
         whichBin = 1;
-        if     (dataCardSelJESUp   == 0) MVAVarJESUp   = typeSelAux0 + 5*typeSelAux1[whichBin];
+        if     (dataCardSelJESUp   == 0) MVAVarJESUp   = typeSelAux0[whichBin] + 5*typeSelAux1[whichBin];
         else if(dataCardSelJESUp   == 1) MVAVarJESUp   = 20 + typeSelAux1[whichBin];
         else if(dataCardSelJESUp   == 2) MVAVarJESUp   = 24;
         else if(dataCardSelJESUp   == 3) MVAVarJESUp   = 25;
         else if(dataCardSelJESUp   == 4) MVAVarJESUp   = 26 + typeSelAux2[whichBin];
 
         whichBin = 2;
-        if     (dataCardSelJESDown == 0) MVAVarJESDown = typeSelAux0 + 5*typeSelAux1[whichBin];
+        if     (dataCardSelJESDown == 0) MVAVarJESDown = typeSelAux0[whichBin] + 5*typeSelAux1[whichBin];
         else if(dataCardSelJESDown == 1) MVAVarJESDown = 20 + typeSelAux1[whichBin];
         else if(dataCardSelJESDown == 2) MVAVarJESDown = 24;
         else if(dataCardSelJESDown == 3) MVAVarJESDown = 25;
         else if(dataCardSelJESDown == 4) MVAVarJESDown = 26 + typeSelAux2[whichBin];
 
         whichBin = 3;
-        if     (dataCardSelJERUp   == 0) MVAVarJERUp   = typeSelAux0 + 5*typeSelAux1[whichBin];
+        if     (dataCardSelJERUp   == 0) MVAVarJERUp   = typeSelAux0[whichBin] + 5*typeSelAux1[whichBin];
         else if(dataCardSelJERUp   == 1) MVAVarJERUp   = 20 + typeSelAux1[whichBin];
         else if(dataCardSelJERUp   == 2) MVAVarJERUp   = 24;
         else if(dataCardSelJERUp   == 3) MVAVarJERUp   = 25;
         else if(dataCardSelJERUp   == 4) MVAVarJERUp   = 26 + typeSelAux2[whichBin];
 
         whichBin = 4;
-        if     (dataCardSelJERDown == 0) MVAVarJERDown = typeSelAux0 + 5*typeSelAux1[whichBin];
+        if     (dataCardSelJERDown == 0) MVAVarJERDown = typeSelAux0[whichBin] + 5*typeSelAux1[whichBin];
         else if(dataCardSelJERDown == 1) MVAVarJERDown = 20 + typeSelAux1[whichBin];
         else if(dataCardSelJERDown == 2) MVAVarJERDown = 24;
         else if(dataCardSelJERDown == 3) MVAVarJERDown = 25;
@@ -1696,7 +1788,8 @@ int year, bool isDesk014 = false, TString WZName = "WZ3l_MG"
       else if(nb > nBinMVA_ww + nBinMVA_interval && nb <= nBinMVA_ww + nBinMVA_wz + nBinMVA_interval){itype = 1; nbnew = nb - (nBinMVA_ww + nBinMVA_interval);}
       else continue;
 
-      histo_dim8_Baseline            [itype][ic]->SetBinContent(nbnew, TMath::Max((float)histo_Baseline              [ic]->GetBinContent(nb),0.0f));
+      if(ic == kPlotNonPrompt) histo_dim8_Baseline            [itype][ic]->SetBinContent(nbnew, TMath::Max((float)histo_Baseline              [ic]->GetBinContent(nb),0.01f));
+      else histo_dim8_Baseline            [itype][ic]->SetBinContent(nbnew, TMath::Max((float)histo_Baseline              [ic]->GetBinContent(nb),0.0f));
       histo_dim8_QCDScaleUp          [itype][ic]->SetBinContent(nbnew, TMath::Max((float)histo_QCDScaleUp            [ic]->GetBinContent(nb),0.0f));
       histo_dim8_QCDScaleDown        [itype][ic]->SetBinContent(nbnew, TMath::Max((float)histo_QCDScaleDown          [ic]->GetBinContent(nb),0.0f));
       histo_dim8_PDFBoundingUp       [itype][ic]->SetBinContent(nbnew, TMath::Max((float)histo_PDFBoundingUp         [ic]->GetBinContent(nb),0.0f));
@@ -2576,6 +2669,9 @@ int year, bool isDesk014 = false, TString WZName = "WZ3l_MG"
   for(int i=1; i<nPlotCategories; i++) if(histo[i]->GetSumOfWeights() > 0) totBck = totBck + histo[i]->GetSumOfWeights();
   printf(" %7.1f vs. %7.1f ",histo[0]->GetSumOfWeights(),totBck);
   for(int np=0; np<nPlotCategories; np++) {histo[np]->SetNameTitle(Form("histo%d",np),Form("histo%d",np));histo[np]->Write();}
+  for(int np=0; np<nPlotCategories; np++) {histo_mT_ww[np]->SetNameTitle(Form("histo_mt_ww_%d",np),Form("histo_mt_ww_%d",np));histo_mT_ww[np]->Write();}
+  for(int np=0; np<nPlotCategories; np++) {histo_mT_wz[np]->SetNameTitle(Form("histo_mt_wz_%d",np),Form("histo_mt_wz_%d",np));histo_mT_wz[np]->Write();}
+  for(int np=0; np<nPlotCategories; np++) {histo_mT_mll[np]->Write();}
   outFilePlotsNote->Close();
 
 

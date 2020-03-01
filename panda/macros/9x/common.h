@@ -28,7 +28,7 @@ double elScaleCorr_2018[nBinLepEtaCorr] = {1.002245,1.003784,0.997714,0.990361,1
 
 const bool useZZWZEWKUnc = true;
 
-TString AQGCParaName[9] = {"ft0","ft1","ft2","fm0","fm1","fm6","fm7","fs0","fs1"};
+/*TString AQGCParaName[9] = {"ft0","ft1","ft2","fm0","fm1","fm6","fm7","fs0","fs1"};
 const int nscan_ft0 = 34;
 const int nscan_ft1 = 34;
 const int nscan_ft2 = 34;
@@ -48,6 +48,7 @@ const TString AQGC_fm6_range[nscan_fm6] = {"m20", "m18", "m15", "m12", "m10", "m
 const TString AQGC_fm7_range[nscan_fm7] = {"m40", "m35", "m30", "m25", "m20", "m15", "m10", "m5p0", "m3p5", "m3p0", "m2p5", "m2p0", "m1p5", "m1p0", "m0p5", "0p5", "1p0", "1p5", "2p0", "2p5", "3p0", "3p5", "5p0", "10", "15", "20", "25", "30", "35", "40"};
 const TString AQGC_fs0_range[nscan_fs0] = {"m50", "m45", "m40", "m35", "m30", "m20", "m10", "m8p0", "m6p0", "m5p0", "m4p0", "m3p0", "m2p5", "m2p0", "m1p5", "m1p2", "m1p0", "m0p8", "m0p6", "m0p4", "m0p2", "0p2", "0p4", "0p6", "0p8","1p0", "1p2", "1p5", "2p0", "2p5", "3p0", "4p0", "5p0", "6p0", "8p0", "10", "20", "30", "35", "40", "45", "50"};
 const TString AQGC_fs1_range[nscan_fs1] = {"m35", "m33", "m30", "m25", "m20", "m15", "m10", "m7p5", "m5p0", "m4p0", "m3p0", "m2p5", "m2p0", "m1p5", "m1p0", "m0p5", "0p5", "1p0", "1p5", "2p0", "2p5", "3p0", "4p0", "5p0", "7p5", "10", "15", "20", "25", "30", "33", "35"};
+*/
 
 double ewkCorrWpWp(double mjj){
   double fitPar[2]={ -5.37274e+00, -7.33731e-03};
